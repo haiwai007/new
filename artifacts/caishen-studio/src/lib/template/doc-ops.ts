@@ -195,6 +195,8 @@ export function referencedAssetIds(doc: TemplateDoc): string[] {
   const ids = new Set<string>();
   if (doc.canvas.backgroundImage?.kind === "asset") ids.add(doc.canvas.backgroundImage.assetId);
   if (doc.source) ids.add(doc.source.originalAssetId);
+  for (const icon of doc.phone?.appIcons ?? [])
+    if (icon.kind === "custom" && icon.src.kind === "asset") ids.add(icon.src.assetId);
   for (const l of doc.layers) {
     if (l.type === "image" && l.src?.kind === "asset") ids.add(l.src.assetId);
   }

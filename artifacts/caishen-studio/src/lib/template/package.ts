@@ -102,6 +102,16 @@ export function remapAssetIds(
       : s;
   return {
     ...doc,
+    ...(doc.phone
+      ? {
+          phone: {
+            ...doc.phone,
+            appIcons: (doc.phone.appIcons ?? []).map((icon) =>
+              icon.kind === "custom" ? { ...icon, src: src(icon.src) } : icon,
+            ),
+          },
+        }
+      : {}),
     canvas: { ...doc.canvas, backgroundImage: src(doc.canvas.backgroundImage) },
     source: doc.source
       ? {
@@ -143,6 +153,18 @@ export function mapImageSources(
 ): TemplateDoc {
   return {
     ...doc,
+    ...(doc.phone
+      ? {
+          phone: {
+            ...doc.phone,
+            appIcons: (doc.phone.appIcons ?? []).map((icon) =>
+              icon.kind === "custom"
+                ? { ...icon, src: replace(icon.src) }
+                : icon,
+            ),
+          },
+        }
+      : {}),
     canvas: {
       ...doc.canvas,
       backgroundImage: doc.canvas.backgroundImage

@@ -188,3 +188,23 @@ it("limits new names but roundtrips legacy long names through repeated backup/re
   await restoreWorkspace(second);
   await expect(exportWorkspace()).resolves.toBeInstanceOf(Blob);
 });
+
+it("packages hidden custom APP icon assets and remaps their settings on restore", async () => {
+  const { applyPhoneLayers, defaultPhoneSettings } = await import("../phone/layers");
+  const { referencedAssetIds } = await import("../template/doc-ops");
+  const asset = await saveAsset(new Blob(["icon"], {type:"image/png"}), {name:"custom-app", width:128, height:128, scope:"internal"});
+  const doc = applyPhoneLayers(structuredClone(BUILTIN_TEMPLATES[0].doc), { ...defaultPhoneSettings(), appIcons:[{id:"app_aaaaaaaaaa",kind:"custom",name:"自定义",src:{kind:"asset",assetId:asset.id},visible:false}] });
+  const work = await createWork({kind:"template",name:"APP 模板",doc});
+  const backup = await readWorkspaceBackup(new File([await exportWorkspace()], "backup.json"));
+  expect(backup.assets.map(a => a.id)).toContain(asset.id);
+  await restoreWorkspace(backup);
+  const db = await getDb();
+  const restored = (await db.getAll("works")).find(w => w.id !== work.id)!;
+  const icon = restored.doc.phone!.appIcons[0];
+  if (icon.kind !== "custom" || icon.src.kind !== "asset") throw new Error("Expected a local custom icon");
+  expect(icon.src.assetId).not.toBe(asset.id);
+  expect(await db.get("assets",icon.src.assetId)).toBeDefined();
+  expect(referencedAssetIds(restored.doc)).not.toContain(asset.id);
+  const refreshed = applyPhoneLayers(restored.doc, restored.doc.phone!);
+  expect(refreshed.layers.find(l => l.id.endsWith(icon.id))).toMatchObject({src:{kind:"asset",assetId:icon.src.assetId},visible:false});
+});

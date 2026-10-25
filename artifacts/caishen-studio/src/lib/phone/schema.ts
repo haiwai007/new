@@ -1,7 +1,16 @@
+import { APP_ICON_IDS, MAX_APP_ICONS } from "./app-icon-catalog";
 import { z } from "zod";
 import { PHONE_MODELS } from "./models";
 const HEX = /^#[0-9a-fA-F]{6}$/;
-export const PHONE_NETWORKS = ["none", "3G", "4G", "4G+", "5G", "5G+", "LTE"] as const;
+export const PHONE_NETWORKS = [
+  "none",
+  "3G",
+  "4G",
+  "4G+",
+  "5G",
+  "5G+",
+  "LTE",
+] as const;
 export function validPhoneDate(value: string) {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
   const [y, m, d] = value.split("-").map(Number);
@@ -14,6 +23,24 @@ export function validPhoneDate(value: string) {
     date.getUTCDate() === d
   );
 }
+const appBase = {
+  id: z.string().regex(/^app_[a-z0-9]{10}$/),
+  name: z.string().min(1).max(40),
+  visible: z.boolean().default(true),
+};
+const appSource = z.discriminatedUnion("kind", [
+  z.object({ kind: z.literal("asset"), assetId: z.string().min(1).max(200) }),
+  z.object({ kind: z.literal("url"), url: z.string().min(1) }),
+]);
+export const phoneAppIconSchema = z.discriminatedUnion("kind", [
+  z.object({
+    ...appBase,
+    kind: z.literal("builtin"),
+    builtinId: z.enum(APP_ICON_IDS),
+  }),
+  z.object({ ...appBase, kind: z.literal("custom"), src: appSource }),
+]);
+export type PhoneAppIcon = z.infer<typeof phoneAppIconSchema>;
 export const phoneSettingsSchema = z.object({
   groupId: z.string().regex(/^phone_[a-z0-9]{10}$/),
   modelId: z.enum(PHONE_MODELS.map((m) => m.id)),
@@ -58,5 +85,15 @@ export const phoneSettingsSchema = z.object({
   mute: z.boolean().default(false),
   dnd: z.boolean().default(false),
   vpn: z.boolean().default(false),
+  appIcons: z
+    .array(phoneAppIconSchema)
+    .max(MAX_APP_ICONS)
+    .refine(
+      (icons) => new Set(icons.map((icon) => icon.id)).size === icons.length,
+      "APP 图标标识不能重复",
+    )
+    .default([]),
+  appIconSize: z.number().int().min(8).max(20).default(12),
+  appIconGap: z.number().int().min(1).max(8).default(3),
 });
 export type PhoneSettings = z.infer<typeof phoneSettingsSchema>;

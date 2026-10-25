@@ -1,3 +1,4 @@
+import AppIconsEditor from "@/components/phone/app-icons-editor";
 import { Input } from "@/components/ui/input";
 import { uploadCoverRatio } from "@/lib/phone/upload-fit";
 import { createImageLayer } from "@/lib/template/layers";
@@ -62,15 +63,18 @@ export default function UploadPhone({
   const [preview, setPreview] = useState("");
   const [error, setError] = useState("");
   const [matching, setMatching] = useState(false);
+  const [appUploading, setAppUploading] = useState(false);
+  useEffect(() => {
+    onReadyChange(!phone || (!matching && !appUploading));
+  }, [matching, appUploading, phone?.modelId, onReadyChange]);
   // Match the top strip once per model/image/size change, without modifying the source image.
   useEffect(() => {
     if (!image || !size || !phone) {
-      onReadyChange(true);
+      setMatching(false);
       return;
     }
     let alive = true;
     setMatching(true);
-    onReadyChange(false);
     const selected = phone;
     renderDoc(previewDoc(image, size, mode), {
       multiplier: Math.min(1, 400 / size.width),
@@ -111,7 +115,6 @@ export default function UploadPhone({
       .finally(() => {
         if (alive) {
           setMatching(false);
-          onReadyChange(true);
         }
       });
     return () => {
@@ -216,6 +219,13 @@ export default function UploadPhone({
               </figcaption>
             </figure>
           )}
+          <AppIconsEditor
+            settings={phone}
+            scopeKey={`${image?.previewUrl}:${phone.groupId}`}
+            disabled={disabled || matching}
+            onBusyChange={setAppUploading}
+            onChange={onChange}
+          />
           {error && (
             <p role="alert" className="text-xs text-destructive">
               {error}

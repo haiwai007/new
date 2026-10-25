@@ -1,3 +1,4 @@
+import { builtinAppIconSource } from "./app-icon-catalog";
 import { statusProfile } from "./profiles";
 import type {
   ImageSource,
@@ -54,6 +55,9 @@ export function defaultPhoneSettings(): PhoneSettings {
     mute: false,
     dnd: false,
     vpn: false,
+    appIcons: [],
+    appIconSize: 12,
+    appIconGap: 3,
   };
 }
 export function phoneTime(settings: PhoneSettings): string {
@@ -316,9 +320,13 @@ export function statusIconsSvg(settings: PhoneSettings): string {
 }
 function generatedIds(settings: PhoneSettings) {
   return new Set(
-    ["background", "time", "date", "carrier", "icons", "cutout", "home"].map(
-      (role) => `${settings.groupId}_${role}`,
-    ),
+    ["background", "time", "date", "carrier", "icons", "cutout", "home"]
+      .map((role) => `${settings.groupId}_${role}`)
+      .concat(
+        (settings.appIcons ?? []).map(
+          (icon) => `${settings.groupId}_app_${icon.id}`,
+        ),
+      ),
   );
 }
 export function removePhoneLayers(doc: TemplateDoc): TemplateDoc {
@@ -412,18 +420,32 @@ export function applyPhoneLayers(
     model.style === "ios" ? Math.max(1, (W - cutoutWidth * s) / 2) : 0;
   const leftLimit =
     model.cutout === "none" ? W * 0.48 : W / 2 - (cutoutWidth * s) / 2 - 4 * s;
-  const timeBox = classic
-    ? {
-        x: W / 2 - Math.min(60 * k, W * 0.25),
-        width: Math.min(120 * k, W * 0.5),
-      }
-    : {
-        x: edge,
-        width: Math.max(
-          1,
-          Math.min(110 * k, (ear || leftLimit) - edge - 4 * s),
-        ),
-      };
+  const visibleApps = phone.appIcons.filter((icon) => icon.visible);
+  const appCount = visibleApps.length;
+  const carrierOnExtraRow =
+    (android || (classic && appCount > 0)) && phone.showCarrier;
+  const leftSpace = Math.max(1, (ear || leftLimit) - edge - 4 * s);
+  const appGapRatio = phone.appIconGap / phone.appIconSize;
+  const appSize = Math.min(
+    phone.appIconSize * k,
+    bar * 0.65,
+    (leftSpace * 0.52) / Math.max(1, appCount + (appCount - 1) * appGapRatio),
+  );
+  const appGap = appSize * appGapRatio;
+  const appWidth = appCount ? appCount * appSize + (appCount - 1) * appGap : 0;
+  const timeBox =
+    classic && !appCount
+      ? {
+          x: W / 2 - Math.min(60 * k, W * 0.25),
+          width: Math.min(120 * k, W * 0.5),
+        }
+      : {
+          x: edge,
+          width: Math.max(
+            0.1,
+            Math.min(110 * k, leftSpace - appWidth - (appCount ? 4 * s : 0)),
+          ),
+        };
   const icons = statusIcons(phone);
   const iconsMax = Math.max(1, (ear || leftLimit) - edge - 4 * s);
   const iconsWidth = Math.min(
@@ -462,7 +484,7 @@ export function applyPhoneLayers(
             H * phone.coverRatio,
             bar +
               (phone.showDate ? 24 * s : 0) +
-              (android && phone.showCarrier ? 18 * s : 0),
+              (carrierOnExtraRow ? 18 * s : 0),
           ),
         },
         {
@@ -490,7 +512,7 @@ export function applyPhoneLayers(
       phoneDate(phone),
       {
         x: edge,
-        y: bar + (android && phone.showCarrier ? 18 * s : 0),
+        y: bar + (carrierOnExtraRow ? 18 * s : 0),
         width: W - edge * 2,
       },
       12 * k,
@@ -500,7 +522,7 @@ export function applyPhoneLayers(
       "carrier",
       "运营商",
       phone.carrier,
-      android
+      android || (classic && appCount > 0)
         ? { x: edge, y: bar, width: Math.max(1, W - edge * 2) }
         : classic
           ? { x: edge, y: cy - carrierSize * 0.7, width: 90 * k }
@@ -567,6 +589,30 @@ export function applyPhoneLayers(
       ),
     ),
   );
+  for (const app of phone.appIcons) {
+    const index = visibleApps.findIndex((item) => item.id === app.id);
+    const x =
+      index < 0
+        ? edge
+        : timeBox.x + timeBox.width + 4 * s + index * (appSize + appGap);
+    layers.push(
+      layer(
+        `app_${app.id}`,
+        createImageLayer(
+          { x, y: cy - appSize / 2, width: appSize, height: appSize },
+          app.kind === "builtin"
+            ? builtinAppIconSource(app.builtinId, color)
+            : app.src,
+          {
+            name: `APP · ${app.name}`,
+            fit: "contain",
+            lockAspect: true,
+            visible: app.visible,
+          },
+        ),
+      ),
+    );
+  }
   const old = doc.phone ? generatedIds(doc.phone) : new Set<string>();
   if (doc.layers.filter((l) => !old.has(l.id)).length + layers.length > 2000)
     throw new Error("图层数量超过上限，无法添加手机状态栏");

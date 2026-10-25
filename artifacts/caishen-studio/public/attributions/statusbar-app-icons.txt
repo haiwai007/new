@@ -1,0 +1,20 @@
+Status-bar application icon geometry
+
+Kuaishou, TikTok (used as Douyin silhouette), WeChat, Bilibili, Sina Weibo,
+Alipay, Telegram: Simple Icons, distributed by react-icons.
+Source: https://simpleicons.org/ and https://github.com/simple-icons/simple-icons
+License: CC0 1.0 Universal
+https://creativecommons.org/publicdomain/zero/1.0/
+
+QQ: Font Awesome Free, distributed by react-icons.
+Source: https://fontawesome.com/icons/qq and https://github.com/FortAwesome/Font-Awesome
+Copyright Fonticons, Inc.
+Icon license: Creative Commons Attribution 4.0 International
+https://creativecommons.org/licenses/by/4.0/
+
+Geometry copied from the existing react-icons dependency. The QQ icon uses
+its original viewBox. Other silhouettes use 0 0 24 24. Status-bar colour,
+size, positioning and image URL encoding are provided by Haishen Studio.
+No external service or CDN is required to display these built-in icons.
+App names and logos identify their respective brands; inclusion does not
+imply affiliation or endorsement. Uploaded custom icons are supplied by users.

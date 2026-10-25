@@ -439,6 +439,8 @@ test("upload model selection replaces old status icons and switches real brand l
   await page.getByRole("combobox", { name: "手机型号", exact: true }).selectOption("galaxys24ultra");
   await expect(page.getByText(/Samsung One UI 6 · 1440×3120/)).toBeVisible();
   await expect(page.getByRole("img", { name: "手机状态栏适配预览" })).toBeVisible();
+  await page.getByRole("button", { name: "添加微信图标", exact: true }).click();
+  await expect(page.getByRole("button", { name: "移除微信图标", exact: true })).toBeVisible();
   await expect.poll(async () => Number(await page.getByLabel("原状态栏覆盖比例").inputValue())).toBeGreaterThan(6);
   await page.getByRole("button", { name: "生成初始模板并进入编辑器" }).click();
   await expect(page).toHaveURL(/\/editor\//);
@@ -470,4 +472,77 @@ test("upload model selection replaces old status icons and switches real brand l
   await page.setViewportSize({ width: 375, height: 900 });
   await page.goto("/custom");
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+});
+
+test("APP notification icons support custom uploads, visibility, portable templates and batch export", async ({ page, browser }, info) => {
+  await createFromBuiltin(page);
+  await page.getByRole("button", { name: "手机", exact: true }).click();
+  for (const name of ["微信", "快手", "抖音", "QQ"]) await page.getByRole("button", { name: `添加${name}图标`, exact: true }).click();
+  await expect(page.getByRole("list", { name: "已选 APP 图标" }).getByRole("listitem")).toHaveCount(4);
+  await page.getByLabel("上传 APP 图标文件", { exact: true }).setInputFiles({name:"bad.svg",mimeType:"image/svg+xml",buffer:Buffer.from('<svg xmlns="http://www.w3.org/2000/svg"/>')});
+  await expect(page.getByRole("alert")).toContainText("仅支持 PNG");
+  const encoded = await page.evaluate(() => {
+    const canvas = document.createElement("canvas"); canvas.width=64; canvas.height=32;
+    const ctx=canvas.getContext("2d")!; ctx.fillStyle="#00ff00";ctx.fillRect(0,0,64,32);
+    return canvas.toDataURL().split(",")[1];
+  });
+  await page.getByLabel("上传 APP 图标文件", { exact: true }).setInputFiles({name:"自定义通知.png",mimeType:"image/png",buffer:Buffer.from(encoded,"base64")});
+  await expect(page.getByRole("list", { name:"已选 APP 图标" }).getByRole("listitem")).toHaveCount(5);
+  await page.getByRole("button", { name:"上移自定义通知图标", exact:true }).click();
+  await page.getByLabel("APP 图标大小", { exact:true }).fill("20");
+  await page.getByRole("switch", {name:"显示抖音图标",exact:true}).uncheck();
+  await page.getByRole("button", {name:"保存",exact:true}).click();
+  await expect(page.getByText("已保存到本地", {exact:true})).toBeVisible();
+  const greenPixels = async (target: Page, bytes: Buffer) => target.evaluate(async encoded => {
+    const bitmap=await createImageBitmap(new Blob([Uint8Array.from(atob(encoded),c=>c.charCodeAt(0))],{type:"image/png"}));
+    const canvas=document.createElement("canvas");canvas.width=bitmap.width;canvas.height=bitmap.height;
+    const ctx=canvas.getContext("2d")!;ctx.drawImage(bitmap,0,0);bitmap.close();
+    const data=ctx.getImageData(0,0,canvas.width,Math.min(150,canvas.height)).data;
+    let green=0;for(let i=0;i<data.length;i+=4)if(data[i]<50&&data[i+1]>200&&data[i+2]<50&&data[i+3]>200)green++;
+    return green;
+  }, bytes.toString("base64"));
+  const visible = await exportPNG(page,info.outputPath("app-icons-visible.png"));
+  expect(await greenPixels(page,visible)).toBeGreaterThan(10);
+  await page.getByRole("switch", {name:"显示自定义通知图标",exact:true}).uncheck();
+  const hidden = await exportPNG(page,info.outputPath("app-icons-hidden.png"));
+  expect(await greenPixels(page,hidden)).toBe(0);
+  await page.getByRole("button", {name:"保存",exact:true}).click();
+  await page.getByRole("button", {name:"更多",exact:true}).click();
+  const download=page.waitForEvent("download");
+  await page.getByRole("menuitem", {name:"导出模板文件（含图片）",exact:true}).click();
+  const path=info.outputPath("app-template.haishen.json");await(await download).saveAs(path);
+  const packaged=JSON.parse(await readFile(path,"utf8"));
+  expect(packaged.doc.phone.appIcons).toHaveLength(5);
+  const custom=packaged.doc.phone.appIcons.find((icon:{kind:string})=>icon.kind==="custom");
+  expect(custom.visible).toBe(false);
+  const asset=packaged.assets.find((asset:{id:string})=>asset.id===custom.src.assetId);
+  expect(asset).toMatchObject({mime:"image/png",width:128,height:128});
+  // Import in an empty browser context so no source assets can hide broken ID remapping.
+  const fresh=await browser.newContext({viewport:{width:1440,height:1000}});
+  const restored=await fresh.newPage();restored.on("pageerror",error=>errors.push(error.message));
+  try {
+    await restored.goto(new URL("/works",page.url()).href);
+    await restored.locator('input[type="file"]').setInputFiles(path);
+    await expect(restored).toHaveURL(/\/editor\//);
+    await restored.getByRole("button", {name:"手机",exact:true}).click();
+    await expect(restored.getByRole("list", {name:"已选 APP 图标"}).getByRole("listitem")).toHaveCount(5);
+    await expect(restored.getByRole("switch", {name:"显示自定义通知图标",exact:true})).not.toBeChecked();
+    await restored.getByRole("switch", {name:"显示自定义通知图标",exact:true}).check();
+    await restored.getByRole("combobox", {name:"手机品牌",exact:true}).selectOption("Samsung");
+    await restored.getByRole("button", {name:"保存",exact:true}).click();
+    await expect(restored.getByText("已保存到本地", {exact:true})).toBeVisible();
+    await restored.reload();await restored.getByRole("button", {name:"手机",exact:true}).click();
+    await expect(restored.getByRole("switch", {name:"显示自定义通知图标",exact:true})).toBeChecked();
+    expect(await greenPixels(restored,await exportPNG(restored,info.outputPath("app-icons-restored.png")))).toBeGreaterThan(10);
+    await restored.goto(new URL("/batch",page.url()).href);
+    await restored.getByLabel("批量模板",{exact:true}).selectOption({index:1});
+    await restored.getByLabel("生成张数",{exact:true}).fill("1");
+    await restored.getByRole("switch",{name:"随机状态栏",exact:true}).check();
+    await restored.getByRole("button",{name:"生成 1 张图片",exact:true}).click();
+    await expect(restored.getByText("已生成 1 张图片",{exact:true})).toBeVisible();
+    const batch=restored.waitForEvent("download");await restored.getByRole("link",{name:"下载 ZIP",exact:true}).click();
+    const batchPath=info.outputPath("app-batch.zip");await(await batch).saveAs(batchPath);
+    const {unzipSync}=await import("fflate");const files=Object.values(unzipSync(new Uint8Array(await readFile(batchPath))));
+    expect(files).toHaveLength(1);expect(await greenPixels(restored,Buffer.from(files[0]))).toBeGreaterThan(10);
+  } finally { await fresh.close(); }
 });

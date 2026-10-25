@@ -1,3 +1,4 @@
+import AppIconsEditor from "@/components/phone/app-icons-editor";
 import PhoneModelPicker from "@/components/phone/model-picker";
 import { settingsForModel } from "@/lib/phone/profiles";
 import { useState } from "react";
@@ -434,6 +435,13 @@ export default function PhonePanel() {
         )}
       </Section>
 
+      <AppIconsEditor settings={draft} scopeKey={`${useEditor.getState().workId}:${useEditor.getState().loadId}:${draft.groupId}`} onChange={next => {
+        try {
+          edit(current => applyPhoneLayers(current, next));
+          setDraft(next); setError("");
+          return true;
+        } catch (error) { setError(error instanceof Error ? error.message : "无法应用 APP 图标"); return false; }
+      }} />
       <Section title="更多图标">
         {EXTRA_ICONS.map(([key, label]) => (
           <SwitchRow key={key} label={label} checked={draft[key]} onChange={(v) => set(key, v)} />
