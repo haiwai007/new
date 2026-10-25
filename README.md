@@ -1,1 +1,95 @@
-# new
+# 财神作图 · 在线作图平台
+
+本地优先的网页作图工具。无需注册即可编辑图层、从图片重建模板、识别文字、设置参数、管理历史、批量生成和管理素材。账户与云端备份为可选功能，未配置时会明确显示“未启用”。
+
+## 启动
+
+需要 Node.js 24、pnpm 11.25.0，版本已写入 `package.json`。在仓库根目录执行：
+
+```bash
+# 当前受限云环境使用以下三个缓存变量；普通电脑可省略。
+export XDG_DATA_HOME=/workspace/.local/share
+export XDG_CACHE_HOME=/workspace/.cache
+export npm_config_store_dir=/workspace/.pnpm-store
+pnpm install --frozen-lockfile
+pnpm dev
+```
+
+默认端口 5173、站点根路径 `/`。可用 `PORT` 和 `BASE_PATH` 覆盖 Vite 设置；当前路由与部署验证基于根路径。没有配置服务时无需数据库、账户、API 密钥或 PostgreSQL。仓库保留的 Express / Drizzle 示例不参与编辑器的运行。
+
+开发和构建命令都会执行 `scripts/prepare-ocr.mjs`：从锁文件固定并校验完整性的 npm 包复制 OCR Worker、WASM、中英文模型和许可证到生成目录，并校验内置照片的 SHA-256。重复执行会复用未变化的资源。不要手动修改生成资源或关闭安装、证书和文件校验。
+
+所有内置照片、展示字体和 OCR 资源均由本站提供，正常本地流程不请求第三方 CDN。OCR 使用前仍会说明下载量、在浏览器本地处理并征求同意；首次加载约 10–15MB，后续可使用浏览器缓存。应用没有离线 Service Worker，不保证断网后的整个站点可重新加载。
+
+## 功能与数据边界
+
+| 页面 | 行为 |
+| --- | --- |
+| `/templates` | 内置可编辑模板。新建作品时将内置照片保存为本地素材，文件和备份可携带图片 |
+| `/custom` | 图片上传、原图或手动重建、真实本地 OCR、结果校正和本地背景修复 |
+| `/editor/:workId` | 文字、图片、形状、背景、图层、参数、撤销重做、历史版本及 PNG / JPEG 导出 |
+| `/works` | 项目与自定义模板、收藏、复制、导入导出和导出记录 |
+| `/assets` | 本地素材管理、分类、预览及引用检查 |
+| `/batch` | CSV 参数映射、逐行校验、真实 PNG 渲染及 ZIP 下载，最多 200 行 |
+| `/backup` | 完整备份、预览、校验及创建副本恢复，无需登录 |
+| `/account` | 可选真实登录、退出、手动云端上传、下载恢复及删除 |
+| `/admin` | 服务端权限检查、用户和审计分页、上传维护开关及公告 |
+
+作品和历史保存使用同一 IndexedDB 事务；手动保存与自动保存排队执行，防止较慢的预览生成覆盖后来的修改。模板导入、云端副本恢复及整库恢复也以事务提交作品、版本和图片，失败时回滚。恢复和复制使用新的标识，已有记录不会被覆盖。
+
+| 备份方式 | 包含内容 | 上限 |
+| --- | --- | --- |
+| 单个模板文件 `.caishen.json` | 当前文档、参数、引用的本地图片 | 80MB |
+| 整库 `.caishen-backup.json` | 作品与模板、全部保留历史、图片素材库、导出记录、内置模板收藏 | 100MB；不包含登录凭据、服务密钥或已下载的 PNG / JPEG 文件 |
+| 云端单个作品 | 当前文档、参数和引用的本地图片 | 每账户 100 个，每个 8MB；不含历史、导出记录或未引用素材 |
+
+整库恢复先校验格式、图片数据与引用关系，再展示数量；确认后在名称中添加“（备份恢复）”并创建副本。重复恢复会产生另一份副本。图片或历史丢失时拒绝导出完整备份，不产生看似成功但不完整的文件。模板中的自定义外部图片 URL 仍依赖对应站点，不会自动转换为文件；使用本地素材才能得到自包含备份。
+
+云端是手动备份，不是后台自动合并。上传、删除和维护设置均检查版本，拒绝陈旧操作。维护暂停在服务端强制执行，但保留下载、删除自己的备份与本地编辑。新备份正文在 Convex 文件存储中，读取先验证账户归属，不公开永久文件 URL；替换、删除及失败写入会清理对应文件。兼容早期的 900KB 内联备份，重新上传后升级存储。
+
+管理后台只对 `ADMIN_TOKEN_IDENTIFIERS` 中的服务端身份开放。审计记录成功的登录、备份创建/更新/删除和维护设置变更，不包含作品正文、图片或登录令牌。旧数据不会凭空补造审计记录。概览计数超过 100 时显示 `100+`，列表支持继续分页。此版本不提供角色编辑、用户删除或读取其他用户作品内容。
+
+## 验证
+
+在仓库根目录执行：
+
+```bash
+pnpm typecheck
+pnpm exec tsc -p artifacts/caishen-studio/convex/tsconfig.json --noEmit
+pnpm test:studio
+pnpm test:e2e
+pnpm build:studio
+# 对实际生产产物运行相同的浏览器回归（本地模式构建）。
+E2E_PRODUCTION=1 pnpm test:e2e
+```
+
+端到端测试启动独立的 5174 端口，使用新浏览器上下文和本地模式，不连接真实云端账户。支持系统 `/usr/bin/chromium`，或通过 `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH` 指定路径；其他电脑可先执行：
+
+```bash
+pnpm --filter @workspace/caishen-studio exec playwright install chromium
+```
+
+`e2e/workflows.spec.ts` 覆盖新建/保存/刷新/导出、包含图片和历史的整库往返、损坏文件拒绝、真实 OCR 到可编辑模板、CSV 到两个 PNG 的 ZIP，以及移动端导航、未配置服务和 404。单元、组件和 Convex 本地测试覆盖存储回滚、保存顺序、数据隔离、权限、冲突、配额、文件清理、审计和维护设置。CI 工作流已提供；本地验证通过不代表 GitHub CI 已在线执行。
+
+## 部署前端
+
+执行 `pnpm build:studio`，将 `artifacts/caishen-studio/dist/public` 的完整内容部署到支持 HTTPS 的静态站点根目录。必须包含 `assets`、`ocr`、`templates` 和 `licenses`，不能只上传 `index.html`。当前完整产物较大，主要来自中英文字体和 OCR 引擎；浏览器按实际字符和功能加载所需资源。
+
+主机必须将页面路由（例如 `/works`、`/editor/…`）回退到 `index.html`，同时正常提供真实静态文件和 MIME。已附 Netlify 兼容的 `_redirects` 与基本安全响应头；其他主机需配置等效规则。不要把 OCR `.js`、`.wasm`、`.gz` 或字体请求错误地重写为 HTML。部署应使用 HTTPS，以支持 Worker、剪贴板及安全上下文功能。
+
+这份代码不自动发布站点，也不会创建付费服务、账户或凭据。
+
+## 启用真实云端
+
+1. 创建 Convex 部署和 Hercules 兼容的 OIDC 应用，将站点的 `/auth/callback` 注册为允许的回调。
+2. 参照 `artifacts/caishen-studio/.env.example`，设置三个**公开**的构建变量：`VITE_CONVEX_URL`、`VITE_HERCULES_OIDC_AUTHORITY`、`VITE_HERCULES_OIDC_CLIENT_ID`。使用 HTTPS。浏览器构建变量不可存放密钥；修改后重启开发服务或重新构建。
+3. 在 **Convex 服务端**设置匹配的 `HERCULES_OIDC_AUTHORITY` 与 `HERCULES_OIDC_CLIENT_ID`。
+4. 在 `artifacts/caishen-studio` 中使用有部署权限的 Convex CLI 执行 `pnpm exec convex dev`，生产使用 `pnpm exec convex deploy`。需部署新的表、索引、`cloudFiles` actions、内部函数和审计维护逻辑。更新时先部署兼容的新后端，再更新前端。
+5. 登录后打开 `/admin` 获取自己的完整账户标识，将允许访问后台的标识填入 **Convex 服务端**的 `ADMIN_TOKEN_IDENTIFIERS`，多个用英文逗号分隔。默认空值拒绝所有管理员。不要通过前端变量、邮箱匹配或客户端传入的角色授权。
+6. 为实际 Convex 与 OIDC 域名配置必要网络访问。用两个真实账户验证隔离，再以同一账户在两个浏览器验证备份、恢复、冲突与维护暂停。
+
+当前未创建或部署外部服务。真实 OIDC 登录、生产 Convex 网络和跨设备同步仍须配置后联调；本地测试不能代替这些验收。AI 照片级背景修复也未接入服务，现有背景修复为本地算法，不会模拟 AI 成功。
+
+## 数据提醒
+
+浏览器和站点之间的本地数据相互隔离；清理站点数据会删除本地作品，请先导出。退出账户不会删除本地作品，共用设备时请留意隐私。恢复始终创建副本；云端删除只删除指定备份。备份包含完整设计和图片，请妥善保存。
