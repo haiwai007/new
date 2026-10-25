@@ -1,45 +1,50 @@
-# [Project name]
+# 海神作图
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+本地优先的在线作图平台：上传参考图生成可编辑模板，配置图层与参数，自动适配品牌手机状态栏，批量生成图片并下载 ZIP。核心功能无需注册，作品保存在浏览器 IndexedDB。
 
-## Run & Operate
+## 运行与验证
 
-- `pnpm --filter @workspace/api-server run dev` — run the API server (port 5000)
-- `pnpm run typecheck` — full typecheck across all packages
-- `pnpm run build` — typecheck + build all packages
-- `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
-- `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
-- Required env: `DATABASE_URL` — Postgres connection string
+在仓库根目录使用 Node.js 24 和 pnpm 11.25.0：
 
-## Stack
+```bash
+pnpm install --frozen-lockfile
+pnpm dev
+pnpm typecheck
+pnpm test:studio
+pnpm build:studio
+E2E_PRODUCTION=1 pnpm test:e2e
+```
 
-- pnpm workspaces, Node.js 24, TypeScript 5.9
-- API: Express 5
-- DB: PostgreSQL + Drizzle ORM
-- Validation: Zod (`zod/v4`), `drizzle-zod`
-- API codegen: Orval (from OpenAPI spec)
-- Build: esbuild (CJS bundle)
+开发默认端口为 5173，生产浏览器回归使用独立的 5174 端口。开发与构建自动准备同源 OCR 资源并校验内置照片。浏览器测试需要 Chromium，安装及环境说明见 [README](README.md)。
 
-## Where things live
+本地编辑器不依赖 Express、PostgreSQL、账户或 API 密钥。仓库中的 Express / Drizzle / Orval 目录是保留的示例工程，不是作图平台启动入口。云端账户和备份需要单独配置 Convex 与 OIDC，未配置时显示未启用。
 
-_Populate as you build — short repo map plus pointers to the source-of-truth file for DB schema, API contracts, theme files, etc._
+## 代码位置
 
-## Architecture decisions
+| 路径 | 内容 |
+| --- | --- |
+| `artifacts/caishen-studio/src/pages/custom` | 图片上传、模板重建、机型选择与适配预览 |
+| `artifacts/caishen-studio/src/pages/editor` | 图层编辑、参数、历史、预览和导出 |
+| `artifacts/caishen-studio/src/pages/batch` | 正文参数规则及状态栏随机界面 |
+| `artifacts/caishen-studio/src/lib/phone` | 62 个具体型号、品牌系统样式、图片适配及屏幕内容处理 |
+| `artifacts/caishen-studio/src/lib/batch` | 可复现的参数与状态栏随机、PNG 渲染和 ZIP 打包 |
+| `artifacts/caishen-studio/src/lib/storage` | IndexedDB、保存修订号与素材引用管理 |
+| `artifacts/caishen-studio/convex` | 可选云端备份、身份隔离、管理与审计 |
+| `scripts/prepare-ocr.mjs` | OCR 静态资源与许可证准备、完整性校验 |
 
-_Populate as you build — non-obvious choices a reader couldn't infer from the code (3-5 bullets)._
+## 当前产品行为
 
-## Product
+- 导航分为“模板”和“做图”，核心功能无需登录。
+- 图片上传提供 OCR 智能重建、原图背景和手动重建三种方式。
+- 手机型号按品牌细分，选中后立即切换品牌系统参考状态栏；默认保留当前画布尺寸，支持自动取色与旧状态栏覆盖调整。
+- 批量做图每批最多 200 张，可独立随机时间、日期、电量、信号、网络及附加图标；预览与导出使用同一批生成文档，不修改原模板。
+- 图片导出只包含屏幕内容，保留状态栏与手势条，不包含机身外壳和硬件开孔。
+- 保存冲突会另存副本，备份恢复创建新记录；内部存储键保留兼容，不随产品名称重命名。
 
-_Describe the high-level user-facing capabilities of this app once they exist._
+## 文档
 
-## User preferences
+- [项目概念与功能说明](docs/PROJECT_OVERVIEW.zh-CN.md)
+- [具体机型与参考样式](docs/PHONE_MODELS.zh-CN.md)
+- [验收记录和未完成的线上联调](docs/ACCEPTANCE.md)
 
-_Populate as you build — explicit user instructions worth remembering across sessions._
-
-## Gotchas
-
-_Populate as you build — sharp edges, "always run X before Y" rules._
-
-## Pointers
-
-- See the `pnpm-workspace` skill for workspace structure, TypeScript setup, and package details
+状态栏是品牌系统的可编辑参考样式，系统版本和主题可能影响实际外观。真实云端服务尚需配置后联调；本地测试通过不代表已经上线部署。
