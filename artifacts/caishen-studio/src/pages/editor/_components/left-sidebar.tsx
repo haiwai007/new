@@ -1,3 +1,4 @@
+import PhonePanel from "./panels/phone-panel";
 import { useEditor, type LeftPanel } from "@/stores/editor.ts";
 import { cn } from "@/lib/utils.ts";
 import { LEFT_TOOLS } from "../_lib/left-tools.ts";
@@ -24,6 +25,8 @@ export function LeftPanelContent({ panel }: { panel: LeftPanel }) {
       return <BackgroundPanel />;
     case "assets":
       return <AssetsPanel />;
+    case "phone":
+      return <PhonePanel />;
     case "params":
       return <ParamsPanel />;
   }

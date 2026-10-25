@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { phoneSettingsSchema } from "../phone/schema";
 import {
   SCHEMA_VERSION,
   type TemplateDoc,
@@ -157,6 +158,7 @@ const parameter = z.object({
 });
 
 export const templateDocSchema = z.object({
+  phone: phoneSettingsSchema.optional(),
   schemaVersion: z.literal(SCHEMA_VERSION),
   templateId: z.string().min(1),
   name: z.string().default("未命名"),

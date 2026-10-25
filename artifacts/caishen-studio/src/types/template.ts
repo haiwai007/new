@@ -1,11 +1,11 @@
+import type { PhoneSettings } from "@/lib/phone/schema";
 // Core template data model. The template JSON is the single source of truth;
 // the Fabric canvas is only a view rendered from it.
 
 export const SCHEMA_VERSION = 1;
 
 export type ImageSource =
-  | { kind: "asset"; assetId: string }
-  | { kind: "url"; url: string };
+  { kind: "asset"; assetId: string } | { kind: "url"; url: string };
 
 export type LayoutRule = "relative" | "fixed";
 
@@ -170,6 +170,8 @@ export type CanvasSettings = {
 };
 
 export type TemplateDoc = {
+  /** Optional editable phone status-bar preset; rendered as ordinary layers. */
+  phone?: PhoneSettings;
   schemaVersion: typeof SCHEMA_VERSION;
   templateId: string;
   name: string;

@@ -99,13 +99,11 @@ test("complete backup restores photos, works and history without replacing origi
   await copies.first().click();
   await exportPNG(page, info.outputPath("restored.png"));
   await page.goto("/backup");
-  await page
-    .getByLabel("选择完整备份文件")
-    .setInputFiles({
-      name: "broken.json",
-      mimeType: "application/json",
-      buffer: Buffer.from("{}"),
-    });
+  await page.getByLabel("选择完整备份文件").setInputFiles({
+    name: "broken.json",
+    mimeType: "application/json",
+    buffer: Buffer.from("{}"),
+  });
   await expect(page.getByRole("alert")).toContainText("备份文件格式无效");
   await expect(page.getByRole("button", { name: "确认恢复副本" })).toHaveCount(
     0,
@@ -147,13 +145,11 @@ test("batch CSV produces two real PNG files inside a ZIP", async ({
   await expect(page.getByRole("dialog")).toHaveCount(0);
   await page.goto("/batch");
   await page.getByTestId("select-batch-template").selectOption({ index: 1 });
-  await page
-    .getByTestId("input-batch-csv")
-    .setInputFiles({
-      name: "data.csv",
-      mimeType: "text/csv",
-      buffer: Buffer.from("主标题,价格\n新品一,¥28\n新品二,¥38\n"),
-    });
+  await page.getByTestId("input-batch-csv").setInputFiles({
+    name: "data.csv",
+    mimeType: "text/csv",
+    buffer: Buffer.from("主标题,价格\n新品一,¥28\n新品二,¥38\n"),
+  });
   await expect(page.getByTestId("text-batch-validation-summary")).toContainText(
     "2 行可生成",
   );
@@ -204,4 +200,67 @@ test("mobile layouts, local-only service status and 404 recovery", async ({
   await expect(page.getByRole("heading", { name: "页面不存在" })).toBeVisible();
   await page.getByRole("link", { name: "返回首页" }).click();
   await expect(page).toHaveURL(/\/$/);
+});
+
+test("phone model, status icons, date and battery persist and appear in PNG output", async ({
+  page,
+}, info) => {
+  await createFromBuiltin(page);
+  await page.getByRole("button", { name: "手机", exact: true }).click();
+  await page
+    .getByRole("combobox", { name: "手机型号" })
+    .selectOption("iphone16");
+  await page.getByLabel("同时适配机型画布尺寸").check();
+  await page.getByLabel("状态栏时间", { exact: true }).fill("13:08");
+  await page.getByLabel("显示日期", { exact: true }).check();
+  await page.getByLabel("状态栏日期", { exact: true }).fill("2026-10-25");
+  await page.getByLabel("日期格式", { exact: true }).selectOption("iso");
+  await page.getByLabel("电量百分比", { exact: true }).fill("67");
+  await page.getByLabel("正在充电", { exact: true }).check();
+  await page.getByLabel("Wi-Fi 信号", { exact: true }).selectOption("0");
+  await page.getByLabel("蜂窝网络类型", { exact: true }).selectOption("5G");
+  await page.getByRole("button", { name: "应用手机状态栏" }).click();
+  await page.getByRole("button", { name: "保存", exact: true }).click();
+  await expect(page.getByText("已保存到本地", { exact: true })).toBeVisible();
+  await page.reload();
+  await page.getByRole("button", { name: "手机", exact: true }).click();
+  await expect(page.getByLabel("电量百分比", { exact: true })).toHaveValue(
+    "67",
+  );
+  await expect(page.getByLabel("状态栏时间", { exact: true })).toHaveValue(
+    "13:08",
+  );
+  await expect(page.getByLabel("状态栏日期", { exact: true })).toHaveValue(
+    "2026-10-25",
+  );
+  await expect(page.getByLabel("正在充电", { exact: true })).toBeChecked();
+  const png = await exportPNG(page, info.outputPath("phone.png"));
+  expect(png.readUInt32BE(16)).toBe(1179);
+  expect(png.readUInt32BE(20)).toBe(2556);
+  // Decode the real downloaded PNG to verify SVG status icons reached the exported canvas.
+  const darkPixels = await page.evaluate(async (encoded) => {
+    const binary = atob(encoded);
+    const bytes = Uint8Array.from(binary, (c) => c.charCodeAt(0));
+    const bitmap = await createImageBitmap(
+      new Blob([bytes], { type: "image/png" }),
+    );
+    const canvas = document.createElement("canvas");
+    canvas.width = bitmap.width;
+    canvas.height = bitmap.height;
+    const ctx = canvas.getContext("2d")!;
+    ctx.drawImage(bitmap, 0, 0);
+    bitmap.close();
+    const pixels = ctx.getImageData(800, 63, 325, 60).data;
+    let count = 0;
+    for (let i = 0; i < pixels.length; i += 4)
+      if (
+        pixels[i] < 70 &&
+        pixels[i + 1] < 70 &&
+        pixels[i + 2] < 70 &&
+        pixels[i + 3] > 200
+      )
+        count++;
+    return count;
+  }, png.toString("base64"));
+  expect(darkPixels).toBeGreaterThan(100);
 });

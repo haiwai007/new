@@ -18,7 +18,8 @@ export type LeftPanel =
   | "shape"
   | "background"
   | "assets"
-  | "params";
+  | "params"
+  | "phone";
 
 type CommitOptions = {
   /** Consecutive commits with the same key inside a short window merge into one undo step. */
