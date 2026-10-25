@@ -37,7 +37,7 @@ export default function PhoneRandomizer({
   if (!phone)
     return (
       <p className="text-sm text-muted-foreground">
-        当前模板没有手机状态栏。请先在编辑器的「手机」面板添加并另存为模板，再来批量随机。
+        请先选择模板并配置固定手机设置。
       </p>
     );
   const errors = validatePhoneBatchRules(value);
@@ -53,8 +53,8 @@ export default function PhoneRandomizer({
       />
       <p className="text-xs leading-relaxed text-muted-foreground">
         {value.enabled
-          ? "每张图独立随机；未勾选项沿用模板。预览与导出一致，点击「换一批」重新随机。"
-          : "沿用模板中的全部状态栏设置。开启后可分别选择随机项。"}
+          ? "每张图独立随机；未勾选项沿用固定设置。预览与导出一致，点击「换一批」重新随机。"
+          : "使用上方固定状态参数；开启后可分别选择随机项。手机型号与 APP 随机独立配置。"}
       </p>
       {errors.length > 0 && (
         <div role="alert" className="space-y-1 text-xs text-destructive">
@@ -264,7 +264,7 @@ export default function PhoneRandomizer({
               </div>
             )}
             <p className="mt-2 text-xs text-muted-foreground">
-              图标遵循模板的显示规则：有 Wi-Fi 时优先显示
+              图标遵循当前手机的显示规则：有 Wi-Fi 时优先显示
               Wi-Fi，飞行模式下隐藏蜂窝信号和网络文字。
             </p>
           </div>

@@ -167,7 +167,7 @@ function EditorInner({ workId }: { workId: string | undefined }) {
         </div>
       )}
       <div className="flex min-h-0 flex-1">
-        <LeftSidebar />
+        <LeftSidebar isTemplate={state.isTemplate} />
         <div className="relative flex min-w-0 flex-1 flex-col" onDragOver={(e) => e.preventDefault()} onDrop={onDrop}>
           <CanvasStage onReady={(api) => (stageApi.current = api)} />
           <EditorOcrDialog />
@@ -181,7 +181,7 @@ function EditorInner({ workId }: { workId: string | undefined }) {
       {isMobile && (
         <>
           <div className="flex items-stretch md:hidden">
-            <div className="min-w-0 flex-1"><ToolRail vertical={false} onPick={() => setDrawer("tools")} /></div>
+            <div className="min-w-0 flex-1"><ToolRail isTemplate={state.isTemplate} vertical={false} onPick={() => setDrawer("tools")} /></div>
             <button type="button" onClick={() => setDrawer("props")} className={`flex shrink-0 cursor-pointer flex-col items-center justify-center gap-1 border-l border-t px-3 text-[11px] ${hasSel ? "text-primary" : "text-muted-foreground"}`}>
               <SlidersHorizontal className="size-5" />属性
             </button>
@@ -192,7 +192,7 @@ function EditorInner({ workId }: { workId: string | undefined }) {
                 <DrawerTitle className="text-sm">{drawer === "props" ? "属性与参数" : LEFT_TOOLS.find((t) => t.id === leftPanel)?.label}</DrawerTitle>
               </DrawerHeader>
               <div className="overflow-y-auto pb-6">
-                {drawer === "props" ? <RightPanel /> : <LeftPanelContent panel={leftPanel} />}
+                {drawer === "props" ? <RightPanel /> : <LeftPanelContent panel={leftPanel} isTemplate={state.isTemplate} />}
               </div>
             </DrawerContent>
           </Drawer>

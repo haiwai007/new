@@ -42,6 +42,8 @@ export const phoneAppIconSchema = z.discriminatedUnion("kind", [
 ]);
 export type PhoneAppIcon = z.infer<typeof phoneAppIconSchema>;
 export const phoneSettingsSchema = z.object({
+  placement: z.enum(["overlay", "prepend"]).default("overlay"),
+  addedHeight: z.number().int().min(0).max(4000).default(0),
   groupId: z.string().regex(/^phone_[a-z0-9]{10}$/),
   modelId: z.enum(PHONE_MODELS.map((m) => m.id)),
   time: z.string().regex(/^(?:[01]\d|2[0-3]):[0-5]\d$/, "时间须为 00:00–23:59"),

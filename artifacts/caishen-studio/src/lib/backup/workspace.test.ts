@@ -70,12 +70,13 @@ describe("complete workspace backup", () => {
     expect(data.versions).toHaveLength(2);
     expect(data.assets).toHaveLength(2);
     const counts = await restoreWorkspace(data);
-    expect(counts).toEqual({ works: 1, versions: 2, assets: 2, exports: 1 });
+    expect(counts).toEqual({ works: 1, versions: 2, assets: 2, exports: 1, drawingPresets: 0 });
     expect(await workspaceSummary()).toEqual({
       works: 2,
       versions: 4,
       assets: 4,
       exports: 2,
+      drawingPresets: 0,
     });
     const db = await getDb();
     const works = await db.getAll("works");
@@ -207,4 +208,58 @@ it("packages hidden custom APP icon assets and remaps their settings on restore"
   expect(referencedAssetIds(restored.doc)).not.toContain(asset.id);
   const refreshed = applyPhoneLayers(restored.doc, restored.doc.phone!);
   expect(refreshed.layers.find(l => l.id.endsWith(icon.id))).toMatchObject({src:{kind:"asset",assetId:icon.src.assetId},visible:false});
+});
+
+it("backs up drawing presets with candidate-only custom icons and remaps them on repeated restore", async () => {
+  const { saveDrawingPreset, listDrawingPresets } = await import("../storage/drawing-presets");
+  const { drawingRules } = await import("../batch/phone-rules");
+  const { defaultPhoneSettings } = await import("../phone/layers");
+  const { presetAssetIds } = await import("../phone/drawing-preset");
+  const a = await saveAsset(new Blob(["only-preset"], {type: "image/png"}), {name: "候选通知", width: 128, height: 128, scope: "internal"});
+  const rules = drawingRules(defaultPhoneSettings());
+  rules.models = {enabled: true, ids: ["iphone16", "pixel9"], distribution: "balanced"};
+  rules.apps = {mode: "random", fixed: [], candidates: [{id: "app_aaaaaaaaaa", name: "仅预设图标", kind: "custom", src: {kind: "asset", assetId: a.id}, visible: true}], min: 0, max: 1, order: "list"};
+  await saveDrawingPreset("通知预设", rules);
+  const data = await backup();
+  expect(data.drawingPresets).toHaveLength(1);
+  expect(data.works).toHaveLength(0);
+  await restoreWorkspace(data);
+  const presets = await listDrawingPresets();
+  expect(presets).toHaveLength(2);
+  expect(presets[1].rules.models).toEqual(rules.models);
+  const restoredId = presetAssetIds([presets[1]])[0];
+  expect(restoredId).not.toBe(a.id);
+  expect(await (await getDb()).get("assets", restoredId)).toBeDefined();
+  await expect(exportWorkspace()).resolves.toBeInstanceOf(Blob);
+});
+
+it("protects preset-only assets during manual deletion and work cleanup", async () => {
+  const { saveDrawingPreset, deleteDrawingPreset } = await import("../storage/drawing-presets");
+  const { deleteAsset } = await import("../storage/assets");
+  const { deleteWork } = await import("../storage/works");
+  const { drawingRules } = await import("../batch/phone-rules");
+  const { defaultPhoneSettings, applyPhoneLayers } = await import("../phone/layers");
+  const a = await saveAsset(new Blob(["icon"], {type: "image/png"}), {name: "预设图标", width: 128, height: 128, scope: "internal"});
+  const rules = drawingRules({...defaultPhoneSettings(), appIcons: [{id: "app_aaaaaaaaaa", name: "通知", kind: "custom", src: {kind: "asset", assetId: a.id}, visible: true}]});
+  const work = await createWork({kind: "project", name: "共用图标", doc: applyPhoneLayers(BUILTIN_TEMPLATES[0].doc, rules.setup!.settings)});
+  const preset = await saveDrawingPreset("保护", rules);
+  await expect(deleteAsset(a.id)).rejects.toThrow(/使用/);
+  await deleteWork(work.id);
+  expect(await (await getDb()).get("assets", a.id)).toBeDefined();
+  await expect(deleteAsset(a.id)).rejects.toThrow(/使用/);
+  await deleteDrawingPreset(preset.id);
+  await expect(deleteAsset(a.id)).resolves.toBeUndefined();
+});
+
+it("rejects missing preset assets before writing and accepts old backups without presets", async () => {
+  const { saveDrawingPreset, listDrawingPresets } = await import("../storage/drawing-presets");
+  const { drawingRules } = await import("../batch/phone-rules");
+  const { defaultPhoneSettings } = await import("../phone/layers");
+  const rules = drawingRules({...defaultPhoneSettings(), appIcons: [{id: "app_aaaaaaaaaa", name: "丢失", kind: "custom", src: {kind: "asset", assetId: "missing"}, visible: true}]});
+  await expect(saveDrawingPreset("失败", rules)).rejects.toThrow(/丢失/);
+  expect(await listDrawingPresets()).toHaveLength(0);
+  const old = JSON.parse(await (await exportWorkspace()).text()); delete old.drawingPresets;
+  expect(parseWorkspaceBackup(old).drawingPresets).toEqual([]);
+  old.drawingPresets = [{id: "bad-preset", name: "损坏", createdAt: new Date().toISOString(), rules}];
+  expect(() => parseWorkspaceBackup(old)).toThrow(/自定义图标/);
 });

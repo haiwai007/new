@@ -16,6 +16,7 @@ const labels: [keyof Summary, string][] = [
   ["versions", "历史版本"],
   ["assets", "图片素材"],
   ["exports", "导出记录"],
+  ["drawingPresets", "作图预设"],
 ];
 function Counts({ value }: { value: Summary }) {
   return (
@@ -68,7 +69,7 @@ export default function BackupPage() {
         </p>
         <h1 className="mt-2 text-3xl font-bold">备份与恢复</h1>
         <p className="mt-3 text-muted-foreground">
-          完整备份作品、模板、历史版本、素材库、导出记录和内置模板收藏，无需登录。
+          完整备份作品、模板、历史版本、素材库、导出记录、作图预设和内置模板收藏，无需登录。
         </p>
       </div>
       {error && (
@@ -168,7 +169,7 @@ export default function BackupPage() {
                     const result = await restoreWorkspace(preview);
                     setPreview(null);
                     setStatus(
-                      `恢复完成：${result.works} 个作品、${result.versions} 个版本、${result.assets} 张图片。原有数据已保留。`,
+                      `恢复完成：${result.works} 个作品、${result.versions} 个版本、${result.assets} 张图片、${result.drawingPresets} 个作图预设。原有数据已保留。`,
                     );
                     await refresh();
                   })

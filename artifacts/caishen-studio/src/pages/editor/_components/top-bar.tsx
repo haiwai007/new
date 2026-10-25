@@ -1,5 +1,6 @@
+import { startFromDoc } from "@/lib/template/start";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   AlertCircle,
   Check,
@@ -65,6 +66,8 @@ export default function TopBar({
   isTemplate: boolean;
   onOpenHistory: () => void;
 }) {
+  const navigate = useNavigate();
+  const [starting, setStarting] = useState(false);
   const recoveryWorkId = useEditor((s) => s.recoveryWorkId);
   const doc = useEditor((s) => s.doc);
   const canUndo = useEditor((s) => s.past.length > 0);
@@ -107,6 +110,9 @@ export default function TopBar({
         aria-label="项目名称"
       />
       {isTemplate && <span className="hidden rounded bg-accent/30 px-1.5 py-0.5 text-[11px] text-accent-foreground sm:inline dark:text-accent">模板</span>}
+      {isTemplate && <Button size="sm" variant="secondary" disabled={starting} onClick={async () => {
+        setStarting(true); try {const id = await startFromDoc(doc, doc.name, useEditor.getState().workId); navigate(`/editor/${id}`); useEditor.getState().setLeftPanel("phone");} catch (e) {toast.error(e instanceof Error ? e.message : "无法创建作品");} finally {setStarting(false);}
+      }}>进入作图</Button>}
       <SaveIndicator />
       {recoveryWorkId && <Link className="order-last w-full px-1 pb-1 text-xs font-medium text-primary underline" to={`/editor/${recoveryWorkId}`}>打开冲突副本继续编辑</Link>}
 

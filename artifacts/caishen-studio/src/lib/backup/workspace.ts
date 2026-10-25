@@ -1,3 +1,4 @@
+import { DRAWING_PRESETS_KEY, remapPreset, storedPresets } from "../phone/drawing-preset";
 import { getDb, type AssetRecord, type WorkRecord } from "../storage/db";
 import { base64ToBlob, blobToBase64 } from "../storage/encoding";
 import { newId } from "../template/ids";
@@ -15,12 +16,13 @@ export async function exportWorkspace(): Promise<Blob> {
     ["works", "versions", "assets", "exports", "kv"],
     "readonly",
   );
-  const [works, versions, assets, exports, favorites] = await Promise.all([
+  const [works, versions, assets, exports, favorites, presets] = await Promise.all([
     tx.objectStore("works").getAll(),
     tx.objectStore("versions").getAll(),
     tx.objectStore("assets").getAll(),
     tx.objectStore("exports").getAll(),
     tx.objectStore("kv").get("favoriteTemplates"),
+    tx.objectStore("kv").get(DRAWING_PRESETS_KEY),
   ]);
   await tx.done;
   const estimatedImages = assets.reduce(
@@ -45,6 +47,7 @@ export async function exportWorkspace(): Promise<Blob> {
     versions,
     assets: packaged,
     exports,
+    drawingPresets: storedPresets(presets),
     favoriteTemplates: Array.isArray(favorites) ? favorites : [],
   };
   // Never export a backup that would fail to restore.
@@ -117,6 +120,9 @@ export async function restoreWorkspace(input: WorkspaceBackup) {
   const requests: Promise<unknown>[] = [];
   try {
     const oldFavorites = await tx.objectStore("kv").get("favoriteTemplates");
+    const existing = storedPresets(await tx.objectStore("kv").get(DRAWING_PRESETS_KEY));
+    if (existing.length + backup.drawingPresets.length > 100) throw new Error("恢复后作图预设超过 100 个，请先整理已有预设");
+    requests.push(tx.objectStore("kv").put([...existing, ...backup.drawingPresets.map(p => ({...remapPreset(p, assetIds), id: newId("preset"), name: `${p.name.slice(0, 72)}（恢复）`}))], DRAWING_PRESETS_KEY));
     for (const row of assets) requests.push(tx.objectStore("assets").add(row));
     for (const row of works) requests.push(tx.objectStore("works").add(row));
     for (const row of versions)
@@ -152,13 +158,14 @@ export async function restoreWorkspace(input: WorkspaceBackup) {
 }
 export async function workspaceSummary() {
   const db = await getDb();
-  const tx = db.transaction(["works", "versions", "assets", "exports"]);
-  const [works, versions, assets, exports] = await Promise.all([
+  const tx = db.transaction(["works", "versions", "assets", "exports", "kv"]);
+  const [works, versions, assets, exports, presets] = await Promise.all([
     tx.objectStore("works").count(),
     tx.objectStore("versions").count(),
     tx.objectStore("assets").count(),
     tx.objectStore("exports").count(),
+    tx.objectStore("kv").get(DRAWING_PRESETS_KEY),
   ]);
   await tx.done;
-  return { works, versions, assets, exports };
+  return { works, versions, assets, exports, drawingPresets: storedPresets(presets).length };
 }

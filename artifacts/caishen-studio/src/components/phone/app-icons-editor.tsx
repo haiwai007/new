@@ -14,7 +14,7 @@ import { deleteAsset, resolveImageUrl } from "@/lib/storage/assets";
 import { newId } from "@/lib/template/ids";
 import type { PhoneAppIcon, PhoneSettings } from "@/lib/phone/schema";
 import type { ImageSource } from "@/types/template";
-function IconPreview({
+export function IconPreview({
   source,
   name,
   background,
@@ -263,7 +263,7 @@ export default function AppIconsEditor({
           PNG / JPG / WebP，最大 2MB、1024×1024；推荐透明
           PNG。图片仅存于当前浏览器，会随模板和备份携带。
         </p>
-        {settings.appIcons.length > 0 && (
+        {(
           <>
             <div className="grid grid-cols-2 gap-2">
               <label className="space-y-1 text-xs">

@@ -7,7 +7,7 @@ import { BackgroundPanel, ImagePanel, ShapePanel, TextPanel } from "./panels/add
 import { AssetsPanel, CustomTemplatesPanel, TemplatesPanel } from "./panels/library-panels.tsx";
 import ParamsPanel from "./params-panel.tsx";
 
-export function LeftPanelContent({ panel }: { panel: LeftPanel }) {
+export function LeftPanelContent({ panel, isTemplate = false }: { panel: LeftPanel; isTemplate?: boolean }) {
   switch (panel) {
     case "templates":
       return <TemplatesPanel />;
@@ -26,18 +26,18 @@ export function LeftPanelContent({ panel }: { panel: LeftPanel }) {
     case "assets":
       return <AssetsPanel />;
     case "phone":
-      return <PhonePanel />;
+      return isTemplate ? <p className="p-3 text-sm text-muted-foreground">模板专注内容；请使用模板进入作图后设置手机效果。</p> : <PhonePanel />;
     case "params":
       return <ParamsPanel />;
   }
 }
 
-export function ToolRail({ onPick, vertical = true }: { onPick?: (p: LeftPanel) => void; vertical?: boolean }) {
+export function ToolRail({ onPick, vertical = true, isTemplate = false }: { isTemplate?: boolean; onPick?: (p: LeftPanel) => void; vertical?: boolean }) {
   const panel = useEditor((s) => s.leftPanel);
   const setPanel = useEditor((s) => s.setLeftPanel);
   return (
     <nav className={cn("flex shrink-0 gap-0.5 bg-sidebar", vertical ? "w-16 flex-col border-r py-2" : "overflow-x-auto border-t px-1 py-1")}>
-      {LEFT_TOOLS.map((t) => (
+      {LEFT_TOOLS.filter(t => !isTemplate || t.id !== "phone").map((t) => (
         <button
           key={t.id}
           type="button"
@@ -59,16 +59,16 @@ export function ToolRail({ onPick, vertical = true }: { onPick?: (p: LeftPanel) 
   );
 }
 
-export default function LeftSidebar() {
+export default function LeftSidebar({isTemplate = false}: {isTemplate?: boolean}) {
   const panel = useEditor((s) => s.leftPanel);
   const label = LEFT_TOOLS.find((t) => t.id === panel)?.label;
   return (
     <div className="hidden h-full md:flex">
-      <ToolRail />
+      <ToolRail isTemplate={isTemplate} />
       <aside className="flex w-64 flex-col border-r bg-background">
         <p className="border-b px-4 py-3 text-sm font-semibold">{label}</p>
         <div className="flex-1 overflow-y-auto">
-          <LeftPanelContent panel={panel} />
+          <LeftPanelContent panel={panel} isTemplate={isTemplate} />
         </div>
       </aside>
     </div>

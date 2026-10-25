@@ -44,6 +44,8 @@ export function loadTemplateDoc(raw: unknown): LoadResult {
     };
   }
   const doc = parsed.data;
+  if (doc.phone && ((doc.phone.placement !== "prepend" && doc.phone.addedHeight !== 0) || doc.phone.addedHeight > doc.canvas.height - 16))
+    return {ok: false, error: "状态栏添加高度与画布不一致，无法安全恢复正文"};
   const warnings: string[] = [];
 
   const ids = new Set<string>();

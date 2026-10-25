@@ -18,6 +18,8 @@ export function defaultPhoneSettings(): PhoneSettings {
   const now = new Date();
   const date = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
   return {
+    placement: "overlay",
+    addedHeight: 0,
     groupId: newId("phone"),
     modelId: "iphone16",
     time: "09:41",
@@ -320,7 +322,16 @@ export function statusIconsSvg(settings: PhoneSettings): string {
 }
 function generatedIds(settings: PhoneSettings) {
   return new Set(
-    ["background", "time", "date", "carrier", "icons", "cutout", "home"]
+    [
+      "background",
+      "time",
+      "date",
+      "carrier",
+      "icons",
+      "cutout",
+      "home",
+      "content_background",
+    ]
       .map((role) => `${settings.groupId}_${role}`)
       .concat(
         (settings.appIcons ?? []).map(
@@ -333,17 +344,28 @@ export function removePhoneLayers(doc: TemplateDoc): TemplateDoc {
   if (!doc.phone) return doc;
   const ids = generatedIds(doc.phone);
   const { phone: _phone, ...rest } = doc;
+  const background = doc.layers.find(
+    (l) => l.id === `${doc.phone!.groupId}_content_background`,
+  );
   return {
     ...rest,
-    layers: doc.layers.filter((l) => !ids.has(l.id)),
+    canvas: {
+      ...doc.canvas,
+      height: doc.canvas.height - (doc.phone.addedHeight ?? 0),
+      backgroundImage:
+        doc.canvas.backgroundImage ??
+        (background?.type === "image" ? background.src : null),
+    },
+    layers: doc.layers
+      .filter((l) => !ids.has(l.id))
+      .map((l) =>
+        doc.phone!.addedHeight ? { ...l, y: l.y - doc.phone!.addedHeight } : l,
+      ),
     parameters: doc.parameters.filter((p) => !ids.has(p.layerId)),
   };
 }
 /** Ordinary vector/text/image layers make canvas, thumbnails, preview and exports identical. */
-export function applyPhoneLayers(
-  doc: TemplateDoc,
-  raw: PhoneSettings,
-): TemplateDoc {
+function renderPhoneLayers(doc: TemplateDoc, raw: PhoneSettings): TemplateDoc {
   const settings = phoneSettingsSchema.parse(raw);
   // Keep the existing namespace, so external parameters bound to phone layers stay valid.
   const phone = {
@@ -481,7 +503,7 @@ export function applyPhoneLayers(
           y: 0,
           width: W,
           height: Math.max(
-            H * phone.coverRatio,
+            H * (phone.placement === "prepend" ? 0 : phone.coverRatio),
             bar +
               (phone.showDate ? 24 * s : 0) +
               (carrierOnExtraRow ? 18 * s : 0),
@@ -622,6 +644,69 @@ export function applyPhoneLayers(
     layers: [...doc.layers.filter((l) => !old.has(l.id)), ...layers],
   };
 }
+/** Add/remove top space reversibly. Reapplying never shifts the content twice. */
+export function applyPhoneLayers(
+  doc: TemplateDoc,
+  raw: PhoneSettings,
+): TemplateDoc {
+  const parsed = phoneSettingsSchema.parse(raw);
+  const base = removePhoneLayers(doc);
+  const phone = {
+    ...parsed,
+    groupId: doc.phone?.groupId ?? parsed.groupId,
+    addedHeight: 0,
+  };
+  if (phone.placement !== "prepend") {
+    // Keep parameter bindings to stable generated IDs, including legacy templates.
+    return renderPhoneLayers({ ...base, parameters: doc.parameters }, phone);
+  }
+  const model = phoneModel(phone.modelId);
+  const carrierRow =
+    phone.showCarrier &&
+    (model.style === "android" ||
+      (model.style === "classic" && phone.appIcons.some((i) => i.visible)));
+  const scale = Math.min(
+    base.canvas.width / model.points,
+    base.canvas.height / (40 - (carrierRow ? 18 : 0)),
+  );
+  const height = Math.ceil(
+    (model.bar + (phone.showDate ? 24 : 0) + (carrierRow ? 18 : 0)) * scale,
+  );
+  if (base.canvas.height + height > 8000)
+    throw new Error("添加状态栏后高度超过 8000px，请缩小画布或改用覆盖模式");
+  phone.addedHeight = height;
+  const background = base.canvas.backgroundImage;
+  const layers = base.layers.map((l) => ({ ...l, y: l.y + height }));
+  if (background)
+    layers.unshift({
+      ...createImageLayer(
+        {
+          x: 0,
+          y: height,
+          width: base.canvas.width,
+          height: base.canvas.height,
+        },
+        background,
+        { name: "正文背景", fit: "cover" },
+      ),
+      id: `${phone.groupId}_content_background`,
+      locked: true,
+    });
+  return renderPhoneLayers(
+    {
+      ...base,
+      parameters: doc.parameters,
+      canvas: {
+        ...base.canvas,
+        height: base.canvas.height + height,
+        backgroundImage: null,
+      },
+      layers,
+    },
+    phone,
+  );
+}
+
 /** Keep supported manual text edits reflected in the phone settings panel. */
 export function syncPhoneTextSettings(doc: TemplateDoc): TemplateDoc {
   if (!doc.phone) return doc;

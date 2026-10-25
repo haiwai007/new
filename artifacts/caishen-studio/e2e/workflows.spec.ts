@@ -147,6 +147,7 @@ test("batch parameter rules produce two real PNG files inside a ZIP", async ({
   await page.getByLabel("批量模板", { exact: true }).selectOption({ index: 1 });
   await page.getByLabel("生成张数", { exact: true }).fill("2");
   await page.getByRole("button", { name: "自动编号", exact: true }).first().click();
+  await page.getByRole("button", {name: "生成预览", exact: true}).click();
   await page.getByRole("button", { name: "生成 2 张图片", exact: true }).click();
   await expect(page.getByText("已生成 2 张图片", { exact: true })).toBeVisible();
   const downloaded = page.waitForEvent("download");
@@ -367,6 +368,7 @@ test("batch status-bar rules change real exported pixels and keep the source tem
   await page.getByLabel("生成张数", { exact: true }).fill("2");
   await expect(page.getByLabel("第 1 张状态栏", { exact: true })).toContainText("09:41 · 电量 100%");
   const downloadBatch = async (name: string) => {
+    if (await page.getByRole("button", {name: "生成预览", exact: true}).isEnabled()) await page.getByRole("button", {name: "生成预览", exact: true}).click();
     await page.getByRole("button", { name: "生成 2 张图片", exact: true }).click();
     await expect(page.getByText("已生成 2 张图片", { exact: true })).toBeVisible();
     const downloaded = page.waitForEvent("download");
@@ -390,6 +392,7 @@ test("batch status-bar rules change real exported pixels and keep the source tem
   await page.getByRole("switch", { name: "随机日期并显示", exact: true }).check();
   await page.getByLabel("随机开始日期", { exact: true }).fill("2024-02-29");
   await page.getByLabel("随机结束日期", { exact: true }).fill("2024-02-29");
+  await page.getByRole("button", {name: "生成预览", exact: true}).click();
   for (const index of [1, 2]) await expect(page.getByLabel(`第 ${index} 张状态栏`, { exact: true })).toContainText("13:08 · 电量 67% · 2024-02-29");
   const randomized = await downloadBatch("randomized.zip");
   const difference = await page.evaluate(async ([a, b]) => {
@@ -414,11 +417,11 @@ test("batch status-bar rules change real exported pixels and keep the source tem
   }, [Buffer.from(baseline[0]).toString("base64"), Buffer.from(randomized[0]).toString("base64")]);
   expect(difference.top).toBeGreaterThan(100);
   expect(difference.middle).toBe(0);
-  // Switching away and back discards batch-only settings, without changing the saved template.
+  // Switching templates keeps drawing settings, without changing the saved template.
   await page.getByLabel("批量模板", { exact: true }).selectOption("");
   await page.getByLabel("批量模板", { exact: true }).selectOption({ index: 1 });
-  await expect(page.getByRole("switch", { name: "随机状态栏", exact: true })).not.toBeChecked();
-  await expect(page.getByLabel("第 1 张状态栏", { exact: true })).toContainText("09:41 · 电量 100%");
+  await expect(page.getByRole("switch", { name: "随机状态栏", exact: true })).toBeChecked();
+  await expect(page.getByLabel("第 1 张状态栏", { exact: true })).toContainText("13:08 · 电量 67%");
 });
 
 test("upload model selection replaces old status icons and switches real brand layouts automatically", async ({ page }, info) => {
@@ -435,15 +438,17 @@ test("upload model selection replaces old status icons and switches real brand l
   await page.locator('input[type="file"]').setInputFiles({ name: "iphone-reference.png", mimeType: "image/png", buffer: Buffer.from(encoded, "base64") });
   await page.getByText("保持原始尺寸", { exact: true }).click();
   await page.getByRole("button", { name: /原图背景模式/ }).click();
+  await expect(page.getByRole("combobox", {name: "手机品牌", exact: true})).toHaveCount(0);
+  await page.getByRole("button", {name: "生成初始模板并进入编辑器"}).click();
+  await expect(page).toHaveURL(/\/editor\//);
+  await expect(page.getByRole("button", {name: "手机", exact: true})).toHaveCount(0);
+  await page.getByRole("button", {name: "进入作图", exact: true}).click();
+  await expect(page.getByRole("button", {name: "手机", exact: true})).toBeVisible();
   await page.getByRole("combobox", { name: "手机品牌", exact: true }).selectOption("Samsung");
   await page.getByRole("combobox", { name: "手机型号", exact: true }).selectOption("galaxys24ultra");
-  await expect(page.getByText(/Samsung One UI 6 · 1440×3120/)).toBeVisible();
-  await expect(page.getByRole("img", { name: "手机状态栏适配预览" })).toBeVisible();
-  await page.getByRole("button", { name: "添加微信图标", exact: true }).click();
-  await expect(page.getByRole("button", { name: "移除微信图标", exact: true })).toBeVisible();
+  await page.getByRole("button", {name: "智能匹配原图配色", exact: true}).click();
   await expect.poll(async () => Number(await page.getByLabel("原状态栏覆盖比例").inputValue())).toBeGreaterThan(6);
-  await page.getByRole("button", { name: "生成初始模板并进入编辑器" }).click();
-  await expect(page).toHaveURL(/\/editor\//);
+  await page.getByRole("button", { name: "添加微信图标", exact: true }).click();
   const samsung = await exportPNG(page, info.outputPath("samsung-upload.png"));
   expect(samsung.readUInt32BE(16)).toBe(1179);
   expect(samsung.readUInt32BE(20)).toBe(2556);
@@ -524,6 +529,7 @@ test("APP notification icons support custom uploads, visibility, portable templa
     await restored.goto(new URL("/works",page.url()).href);
     await restored.locator('input[type="file"]').setInputFiles(path);
     await expect(restored).toHaveURL(/\/editor\//);
+    await restored.getByRole("button", {name:"进入作图",exact:true}).click();
     await restored.getByRole("button", {name:"手机",exact:true}).click();
     await expect(restored.getByRole("list", {name:"已选 APP 图标"}).getByRole("listitem")).toHaveCount(5);
     await expect(restored.getByRole("switch", {name:"显示自定义通知图标",exact:true})).not.toBeChecked();
@@ -534,10 +540,16 @@ test("APP notification icons support custom uploads, visibility, portable templa
     await restored.reload();await restored.getByRole("button", {name:"手机",exact:true}).click();
     await expect(restored.getByRole("switch", {name:"显示自定义通知图标",exact:true})).toBeChecked();
     expect(await greenPixels(restored,await exportPNG(restored,info.outputPath("app-icons-restored.png")))).toBeGreaterThan(10);
+    await restored.getByLabel("作图预设名称", {exact:true}).fill("导入图标作图设置");
+    await restored.getByRole("button", {name:"保存为新预设",exact:true}).click();
+    await expect(restored.getByLabel("选择作图预设").locator("option").filter({hasText:"导入图标作图设置"})).toHaveCount(1);
     await restored.goto(new URL("/batch",page.url()).href);
     await restored.getByLabel("批量模板",{exact:true}).selectOption({index:1});
+    await restored.getByLabel("选择作图预设",{exact:true}).selectOption({label:"导入图标作图设置"});
+    await restored.getByRole("button",{name:"应用预设",exact:true}).click();
     await restored.getByLabel("生成张数",{exact:true}).fill("1");
     await restored.getByRole("switch",{name:"随机状态栏",exact:true}).check();
+    await restored.getByRole("button", {name: "生成预览", exact: true}).click();
     await restored.getByRole("button",{name:"生成 1 张图片",exact:true}).click();
     await expect(restored.getByText("已生成 1 张图片",{exact:true})).toBeVisible();
     const batch=restored.waitForEvent("download");await restored.getByRole("link",{name:"下载 ZIP",exact:true}).click();
@@ -566,4 +578,116 @@ test("expanded APP library supports search, selection limits, saving and PNG exp
   await expect(page.getByRole("switch",{name:"显示钉钉图标",exact:true})).toBeChecked();
   await expect(page.getByRole("switch",{name:"显示WhatsApp图标",exact:true})).toBeChecked();
   await exportPNG(page,info.outputPath("expanded-app-icons.png"));
+});
+
+test("batch chooses specified models evenly, samples chosen APPs, preserves previews and saves presets", async ({page}, info) => {
+  await page.goto("/batch");
+  await page.getByLabel("批量模板", {exact: true}).selectOption({index: 1});
+  await page.getByLabel("生成张数", {exact: true}).fill("4");
+  await page.getByLabel("批量状态栏处理方式", {exact: true}).selectOption("overlay");
+  await page.getByLabel("手机型号模式", {exact: true}).selectOption("random");
+  await page.getByRole("button", {name: "清空型号", exact: true}).click();
+  await page.getByLabel("候选型号 iPhone 16", {exact: true}).check();
+  await page.getByLabel("候选型号 Google Pixel 9", {exact: true}).check();
+  await page.getByLabel("手机型号分配方式", {exact: true}).selectOption("balanced");
+  await page.getByLabel("APP 图标模式", {exact: true}).selectOption("random");
+  await page.getByLabel("微信批量用途", {exact: true}).selectOption("fixed");
+  await page.getByLabel("QQ批量用途", {exact: true}).selectOption("candidate");
+  await page.getByLabel("抖音批量用途", {exact: true}).selectOption("candidate");
+  await page.getByLabel("随机 APP 最少数量", {exact: true}).fill("1");
+  await page.getByLabel("随机 APP 最多数量", {exact: true}).fill("2");
+  await expect(page.getByRole("button", {name: "生成 4 张图片", exact: true})).toBeDisabled();
+  await page.getByRole("button", {name: "生成预览", exact: true}).click();
+  const summaries = page.locator('[aria-label$="张状态栏"]');
+  const before = await summaries.allTextContents();
+  expect(before.filter(s => s.includes("iPhone 16"))).toHaveLength(2);
+  expect(before.filter(s => s.includes("Pixel 9"))).toHaveLength(2);
+  expect(before.every(s => /APP：微信、(QQ|抖音)/.test(s))).toBe(true);
+  const model = before[0].split(" · ")[0];
+  await page.getByRole("button", {name: "重新随机第 1 张", exact: true}).click();
+  const after = await summaries.allTextContents();
+  expect(after[0].split(" · ")[0]).toBe(model); expect(after.slice(1)).toEqual(before.slice(1));
+  await page.getByRole("button", {name: "生成 4 张图片", exact: true}).click();
+  await expect(page.getByText("已生成 4 张图片", {exact: true})).toBeVisible();
+  const downloading = page.waitForEvent("download");
+  await page.getByRole("link", {name: "下载 ZIP", exact: true}).click();
+  const path = info.outputPath("models-and-apps.zip"); await (await downloading).saveAs(path);
+  const {unzipSync} = await import("fflate");
+  const images = Object.values(unzipSync(new Uint8Array(await readFile(path)))); expect(images).toHaveLength(4);
+  for (const image of images) {const png = Buffer.from(image); expect(png.readUInt32BE(16)).toBe(1080); expect(png.readUInt32BE(20)).toBe(1350);}
+  expect(await summaries.allTextContents()).toEqual(after);
+  await page.getByLabel("作图预设名称", {exact: true}).fill("型号与 APP 随机预设");
+  await page.getByRole("button", {name: "保存为新预设", exact: true}).click();
+  await expect(page.getByLabel("选择作图预设").locator("option").filter({hasText: "型号与 APP 随机预设"})).toHaveCount(1);
+  await page.reload();
+  await page.getByLabel("批量模板", {exact: true}).selectOption({index: 1});
+  await page.getByLabel("选择作图预设", {exact: true}).selectOption({label: "型号与 APP 随机预设"});
+  await page.getByRole("button", {name: "应用预设", exact: true}).click();
+  await expect(page.getByLabel("手机型号分配方式", {exact: true})).toHaveValue("balanced");
+  await expect(page.getByLabel("微信批量用途", {exact: true})).toHaveValue("fixed");
+  await expect(page.getByLabel("随机 APP 最多数量", {exact: true})).toHaveValue("2");
+  await page.setViewportSize({width: 375, height: 900});
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+});
+
+test("candidate-only custom APP preset survives full backup in a fresh browser", async ({page, browser}, info) => {
+  await page.goto("/batch");
+  await page.getByLabel("批量模板", {exact: true}).selectOption({index: 1});
+  await page.getByLabel("批量状态栏处理方式", {exact: true}).selectOption("overlay");
+  await page.getByLabel("APP 图标模式", {exact: true}).selectOption("random");
+  const encoded = await page.evaluate(() => {const c = document.createElement("canvas"); c.width = c.height = 64; const ctx = c.getContext("2d")!; ctx.fillStyle = "#00ff00"; ctx.fillRect(0,0,64,64); return c.toDataURL().split(",")[1];});
+  await page.getByLabel("上传批量 APP 图标文件", {exact: true}).setInputFiles({name: "绿色通知.png", mimeType: "image/png", buffer: Buffer.from(encoded,"base64")});
+  await expect(page.getByLabel("绿色通知批量用途", {exact: true})).toHaveValue("candidate");
+  await page.getByLabel("随机 APP 最少数量", {exact: true}).fill("1");
+  await page.getByLabel("作图预设名称", {exact: true}).fill("自定义候选备份");
+  await page.getByRole("button", {name: "保存为新预设", exact: true}).click();
+  await expect(page.getByLabel("选择作图预设").locator("option").filter({hasText: "自定义候选备份"})).toHaveCount(1);
+  await page.goto("/backup");
+  const downloading = page.waitForEvent("download");
+  await page.getByRole("button", {name: "导出完整备份", exact: true}).click();
+  const path = info.outputPath("preset-backup.json"); await (await downloading).saveAs(path);
+  const backup = JSON.parse(await readFile(path,"utf8")); expect(backup.drawingPresets).toHaveLength(1); expect(backup.assets).toHaveLength(1);
+  const context = await browser.newContext({viewport: {width: 1440, height: 1000}});
+  try {
+    const fresh = await context.newPage(); fresh.on("pageerror", e => errors.push(e.message));
+    await fresh.goto(new URL("/backup",page.url()).href);
+    await fresh.getByLabel("选择完整备份文件", {exact: true}).setInputFiles(path);
+    await fresh.getByRole("button", {name: /确认恢复/}).click();
+    await expect(fresh.getByText(/恢复完成：/)).toBeVisible();
+    await fresh.goto(new URL("/batch",page.url()).href);
+    await fresh.getByLabel("批量模板", {exact: true}).selectOption({index: 1});
+    await fresh.getByLabel("选择作图预设", {exact: true}).selectOption({index: 1});
+    await fresh.getByRole("button", {name: "应用预设", exact: true}).click();
+    await expect(fresh.getByLabel("绿色通知批量用途", {exact: true})).toHaveValue("candidate");
+    await fresh.getByLabel("生成张数", {exact: true}).fill("1");
+    await fresh.getByRole("button", {name: "生成预览", exact: true}).click();
+    await expect(fresh.getByLabel("第 1 张状态栏", {exact: true})).toContainText("APP：绿色通知");
+    await expect(fresh.getByRole("img", {name: "第 1 张预览", exact: true})).toBeVisible();
+    const pixels = await fresh.getByRole("img", {name: "第 1 张预览", exact: true}).evaluate(async el => {const image = el as HTMLImageElement; await image.decode(); const c = document.createElement("canvas"); c.width = image.naturalWidth; c.height = image.naturalHeight; const ctx = c.getContext("2d")!; ctx.drawImage(image,0,0); const d = ctx.getImageData(0,0,c.width,c.height).data; let n=0; for(let i=0;i<d.length;i+=4) if(d[i]<60&&d[i+1]>180&&d[i+2]<60)n++; return n;});
+    expect(pixels).toBeGreaterThan(0);
+  } finally {await context.close();}
+});
+
+test("adding a status bar shifts real background pixels once and restores original on removal", async ({page}, info) => {
+  await createFromBuiltin(page);
+  const original = await exportPNG(page, info.outputPath("body-before.png"));
+  await page.getByRole("button", {name: "手机", exact: true}).click();
+  await page.getByLabel("状态栏处理方式", {exact: true}).selectOption("prepend");
+  const added = await exportPNG(page, info.outputPath("body-added.png"));
+  const offset = added.readUInt32BE(20) - original.readUInt32BE(20);
+  expect(offset).toBeGreaterThan(0); expect(added.readUInt32BE(16)).toBe(original.readUInt32BE(16));
+  await page.getByLabel("电量百分比", {exact: true}).fill("55");
+  const again = await exportPNG(page, info.outputPath("body-added-again.png"));
+  expect(again.readUInt32BE(20)).toBe(added.readUInt32BE(20));
+  const difference = await page.evaluate(async ([a,b,offset]) => {
+    const decode = async (encoded: string) => {const bitmap = await createImageBitmap(new Blob([Uint8Array.from(atob(encoded), c => c.charCodeAt(0))], {type:"image/png"})); const canvas = document.createElement("canvas"); canvas.width=bitmap.width;canvas.height=bitmap.height;const ctx=canvas.getContext("2d")!;ctx.drawImage(bitmap,0,0);bitmap.close();return ctx;};
+    const first = await decode(a as string), second = await decode(b as string);
+    const x = 100, y = 350, w = 500, h = 500;
+    const one = first.getImageData(x,y,w,h).data, two = second.getImageData(x,y+Number(offset),w,h).data;
+    let different = 0; for(let i=0;i<one.length;i++) if(one[i]!==two[i])different++; return different;
+  }, [original.toString("base64"), again.toString("base64"), offset]);
+  expect(difference).toBe(0);
+  await page.getByLabel("状态栏处理方式", {exact: true}).selectOption("keep");
+  const removed = await exportPNG(page, info.outputPath("body-restored.png"));
+  expect(removed.equals(original)).toBe(true);
 });

@@ -1,3 +1,4 @@
+import { DRAWING_PRESETS_KEY, presetAssetIds, storedPresets } from "../phone/drawing-preset";
 import { referencedAssetIds } from "../template/doc-ops";
 import { newId } from "../template/ids.ts";
 import type { ImageSource } from "../../types/template.ts";
@@ -55,12 +56,13 @@ export async function updateAsset(
 
 export async function deleteAsset(id: string) {
   const db = await getDb();
-  const tx = db.transaction(["works", "versions", "assets"], "readwrite");
+  const tx = db.transaction(["works", "versions", "assets", "kv"], "readwrite");
   const rows = [
     ...(await tx.objectStore("works").getAll()),
     ...(await tx.objectStore("versions").getAll()),
   ];
-  if (rows.some((row) => referencedAssetIds(row.doc).includes(id))) {
+  const presetRefs = presetAssetIds(storedPresets(await tx.objectStore("kv").get(DRAWING_PRESETS_KEY)));
+  if (presetRefs.includes(id) || rows.some((row) => referencedAssetIds(row.doc).includes(id))) {
     await tx.done;
     throw new Error("该素材仍被作品或历史版本使用，请先移除引用后再删除");
   }

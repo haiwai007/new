@@ -1,4 +1,4 @@
-import { applyPhoneBatchRules, validatePhoneBatchRules, type PhoneBatchRules } from "./phone-rules";
+import { distributeModels, applyPhoneBatchRules, validatePhoneBatchRules, type PhoneBatchRules } from "./phone-rules";
 import { format as formatDate } from "date-fns";
 import { applyParamValues, getParamValue, validateParamValue } from "../template/params.ts";
 import type { ParamInputType, ParamValue, TemplateDoc, TemplateParameter } from "../../types/template.ts";
@@ -145,8 +145,8 @@ export type GeneratedItem = { index: number; doc: TemplateDoc; errors: string[] 
 export function generateItems(template: TemplateDoc, rules: BatchRules, count: number, seed: number, phoneRules?: PhoneBatchRules): GeneratedItem[] {
   const total = Math.max(1, Math.min(MAX_BATCH_COUNT, Math.floor(count) || 1));
   const rng = createRng(seed);
-  const phoneRng = createRng(seed ^ 0x51f15e);
-  const phoneErrors = template.phone ? validatePhoneBatchRules(phoneRules) : [];
+  const assignedModels = distributeModels(phoneRules, total, createRng(seed ^ 0x6f5271));
+  const phoneErrors = validatePhoneBatchRules(phoneRules);
   return Array.from({ length: total }, (_, index) => {
     const values: Record<string, ParamValue> = {};
     for (const param of template.parameters) {
@@ -155,7 +155,8 @@ export function generateItems(template: TemplateDoc, rules: BatchRules, count: n
       const value = generateValue(param, rule, index, rng);
       if (value !== undefined) values[param.id] = value;
     }
-    const doc = applyPhoneBatchRules(applyParamValues(template, values), phoneRules, phoneRng);
+    let doc: TemplateDoc;
+    try { doc = applyPhoneBatchRules(applyParamValues(template, values), phoneRules, createRng(seed ^ 0x51f15e ^ Math.imul(index + 1, 0x45d9f3b)), assignedModels[index]); } catch (e) {return {index, doc: template, errors: [e instanceof Error ? e.message : "状态栏生成失败"]};}
     const errors = doc.parameters
       .map((p) => validateParamValue(p, getParamValue(doc, p)))
       .filter((m): m is string => m !== null);

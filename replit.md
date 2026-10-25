@@ -44,6 +44,8 @@ E2E_PRODUCTION=1 pnpm test:e2e
 
 ## 文档
 
+- [作图设置、型号及 APP 随机指南](docs/BATCH_DRAWING.zh-CN.md)
+
 - [详细部署、维护与回滚手册](docs/DEPLOYMENT.zh-CN.md)
 
 - [项目概念与功能说明](docs/PROJECT_OVERVIEW.zh-CN.md)
@@ -51,3 +53,5 @@ E2E_PRODUCTION=1 pnpm test:e2e
 - [验收记录和未完成的线上联调](docs/ACCEPTANCE.md)
 
 状态栏是品牌系统的可编辑参考样式，系统版本和主题可能影响实际外观。真实云端服务尚需配置后联调；本地测试通过不代表已经上线部署。
+
+模板制作不再提供手机设置；单张作图和批量作图负责状态栏。批量支持指定型号随机/均衡分配、固定＋随机 APP 数量区间、逐张重抽和作图预设。添加模式可逆地下移正文并增加高度；预设和候选图标纳入完整备份，素材清理保护其引用。

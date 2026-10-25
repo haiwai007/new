@@ -1,3 +1,4 @@
+import { DRAWING_PRESETS_KEY, presetAssetIds, storedPresets } from "../phone/drawing-preset";
 import type { IDBPTransaction } from "idb";
 import { newId } from "../template/ids.ts";
 import { loadTemplateDoc } from "../template/migrate.ts";
@@ -25,12 +26,12 @@ const MAX_VERSIONS = 30;
 
 type WorkTx = IDBPTransaction<
   Schema,
-  ["works", "versions", "assets"],
+  ["works", "versions", "assets", "kv"],
   "readwrite"
 >;
 async function writeWork<T>(fn: (tx: WorkTx) => Promise<T>): Promise<T> {
   const db = await getDb();
-  const tx = db.transaction(["works", "versions", "assets"], "readwrite");
+  const tx = db.transaction(["works", "versions", "assets", "kv"], "readwrite");
   // Observe aborts immediately even when a request rejects before tx.done is awaited.
   void tx.done.catch(() => {});
   try {
@@ -244,7 +245,7 @@ async function cleanupInternalAssets(tx: WorkTx, docs: TemplateDoc[]) {
     ...(await tx.objectStore("works").getAll()),
     ...(await tx.objectStore("versions").getAll()),
   ];
-  const used = new Set(rows.flatMap((row) => referencedAssetIds(row.doc)));
+  const used = new Set([...rows.flatMap((row) => referencedAssetIds(row.doc)), ...presetAssetIds(storedPresets(await tx.objectStore("kv").get(DRAWING_PRESETS_KEY)))]);
   const removed: string[] = [];
   for (const id of candidates) {
     if (used.has(id)) continue;
@@ -293,6 +294,8 @@ export async function assetsInUse(): Promise<Map<string, string[]>> {
     for (const a of referencedAssetIds(v.doc))
       add(a, nameById.get(v.workId) ?? v.name);
   }
+  for (const preset of storedPresets(await db.get("kv", DRAWING_PRESETS_KEY)))
+    for (const id of presetAssetIds([preset])) add(id, `作图预设：${preset.name}`);
   return used;
 }
 

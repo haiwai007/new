@@ -1,3 +1,4 @@
+import { drawingPresetSchema, presetAssetIds } from "../phone/drawing-preset";
 import { z } from "zod";
 import { loadTemplateDoc } from "../template/migrate";
 import { referencedAssetIds } from "../template/doc-ops";
@@ -64,6 +65,7 @@ const archiveSchema = z.object({
   versions: z.array(versionSchema).max(60000),
   assets: z.array(assetSchema).max(5000),
   exports: z.array(exportSchema).max(20000),
+  drawingPresets: z.array(drawingPresetSchema).max(100).default([]),
   favoriteTemplates: z.array(z.string()).max(2000).default([]),
 });
 export type WorkspaceBackup = Omit<
@@ -119,6 +121,9 @@ export function parseWorkspaceBackup(raw: unknown): WorkspaceBackup {
       if (!assetIds.has(assetId))
         throw new Error(`「${row.name}」缺少引用的图片，无法完整恢复`);
   }
+  for (const assetId of presetAssetIds(value.drawingPresets))
+    if (!assetIds.has(assetId)) throw new Error("作图预设缺少自定义图标，无法完整恢复");
+  assertUnique(value.drawingPresets, "作图预设");
   for (const a of value.assets) {
     const size =
       (a.data.length / 4) * 3 -
@@ -130,6 +135,7 @@ export function parseWorkspaceBackup(raw: unknown): WorkspaceBackup {
 }
 export function backupSummary(backup: WorkspaceBackup) {
   return {
+    drawingPresets: backup.drawingPresets.length,
     works: backup.works.length,
     versions: backup.versions.length,
     assets: backup.assets.length,
