@@ -1,5 +1,5 @@
-import { resolveImageUrl } from "@/lib/storage/assets.ts";
-import type { ImageSource } from "@/types/template.ts";
+import { resolveImageUrl } from "../storage/assets.ts";
+import type { ImageSource } from "../../types/template.ts";
 
 const cache = new Map<string, Promise<HTMLImageElement>>();
 

@@ -1,5 +1,5 @@
 import { openDB, type DBSchema, type IDBPDatabase } from "idb";
-import type { TemplateDoc } from "@/types/template.ts";
+import type { TemplateDoc } from "../../types/template.ts";
 
 // Local persistence. Images are stored as Blobs in their own store and
 // referenced by id from template JSON, keeping documents small.

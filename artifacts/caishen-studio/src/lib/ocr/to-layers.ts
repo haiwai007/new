@@ -1,5 +1,5 @@
-import type { Layer, ShapeLayer, TextLayer } from "@/types/template.ts";
-import { createShapeLayer, createTextLayer } from "@/lib/template/layers.ts";
+import type { Layer, ShapeLayer, TextLayer } from "../../types/template.ts";
+import { createShapeLayer, createTextLayer } from "../template/layers.ts";
 import type { AnalyzedLine, Box } from "./types.ts";
 import { hasCjk } from "./text-utils.ts";
 import { maskPad } from "./colors.ts";

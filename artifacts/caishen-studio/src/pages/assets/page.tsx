@@ -70,7 +70,7 @@ export default function AssetsPage() {
       setAssets([]);
     }
   };
-  useEffect(() => { void reload(); }, []);
+  useEffect(() => { queueMicrotask(() => void reload()); }, []);
 
   const categories = useMemo(() => ["全部分类", ...new Set((assets ?? []).map((a) => a.category || "未分类"))], [assets]);
   const filtered = useMemo(() => (assets ?? []).filter((asset) =>

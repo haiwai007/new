@@ -135,7 +135,7 @@ test("OCR loads the pinned engine locally, recognizes real text and creates an e
   await expect(page).toHaveURL(/\/editor\//);
   expect(external).toEqual([]);
 });
-test("batch CSV produces two real PNG files inside a ZIP", async ({
+test("batch parameter rules produce two real PNG files inside a ZIP", async ({
   page,
 }, info) => {
   await createFromBuiltin(page);
@@ -144,21 +144,13 @@ test("batch CSV produces two real PNG files inside a ZIP", async ({
   await page.getByRole("button", { name: "保存模板", exact: true }).click();
   await expect(page.getByRole("dialog")).toHaveCount(0);
   await page.goto("/batch");
-  await page.getByTestId("select-batch-template").selectOption({ index: 1 });
-  await page.getByTestId("input-batch-csv").setInputFiles({
-    name: "data.csv",
-    mimeType: "text/csv",
-    buffer: Buffer.from("主标题,价格\n新品一,¥28\n新品二,¥38\n"),
-  });
-  await expect(page.getByTestId("text-batch-validation-summary")).toContainText(
-    "2 行可生成",
-  );
-  await page.getByTestId("button-generate-batch").click();
-  await expect(page.getByTestId("status-generation-success")).toContainText(
-    "已生成 2 张图片",
-  );
+  await page.getByLabel("批量模板", { exact: true }).selectOption({ index: 1 });
+  await page.getByLabel("生成张数", { exact: true }).fill("2");
+  await page.getByRole("button", { name: "自动编号", exact: true }).first().click();
+  await page.getByRole("button", { name: "生成 2 张图片", exact: true }).click();
+  await expect(page.getByText("已生成 2 张图片", { exact: true })).toBeVisible();
   const downloaded = page.waitForEvent("download");
-  await page.getByTestId("link-download-batch-zip").click();
+  await page.getByRole("link", { name: "下载 ZIP", exact: true }).click();
   const path = info.outputPath("batch.zip");
   await (await downloaded).saveAs(path);
   const { unzipSync } = await import("fflate");
@@ -177,17 +169,13 @@ test("mobile layouts, local-only service status and 404 recovery", async ({
   for (const width of [375, 768, 1024]) {
     await page.setViewportSize({ width, height: 900 });
     await page.goto("/");
-    await expect(page.getByRole("button", { name: "打开菜单" })).toBeVisible();
-    expect(
-      await page.evaluate(
-        () => document.documentElement.scrollWidth <= innerWidth + 1,
-      ),
-    ).toBe(true);
-    await page.getByRole("button", { name: "打开菜单" }).click();
-    await page
-      .getByRole("dialog")
-      .getByRole("link", { name: "我的作品", exact: true })
-      .click();
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+    if (width < 768) {
+      await page.getByRole("button", { name: "打开菜单" }).click();
+      await page.getByRole("dialog").getByRole("link", { name: "我的作品", exact: true }).click();
+    } else {
+      await page.locator("header").getByRole("link", { name: "做图", exact: true }).click();
+    }
     await expect(page).toHaveURL(/\/works$/);
   }
   for (const route of ["/account", "/admin"]) {
@@ -217,7 +205,8 @@ test("phone model, status icons, date and battery persist and appear in PNG outp
   await page.getByLabel("日期格式", { exact: true }).selectOption("iso");
   await page.getByLabel("电量百分比", { exact: true }).fill("67");
   await page.getByLabel("正在充电", { exact: true }).check();
-  await page.getByLabel("Wi-Fi 信号", { exact: true }).selectOption("0");
+  await page.locator("summary").filter({ hasText: "信号与网络" }).click();
+  await page.getByRole("radiogroup", { name: "Wi-Fi", exact: true }).getByRole("radio").first().click();
   await page.getByLabel("蜂窝网络类型", { exact: true }).selectOption("5G");
   await page.getByRole("button", { name: "应用手机状态栏" }).click();
   await page.getByRole("button", { name: "保存", exact: true }).click();

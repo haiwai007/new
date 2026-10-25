@@ -12,7 +12,7 @@ import {
 } from "./doc-ops.ts";
 import { createImageLayer, createShapeLayer, createTextLayer } from "./layers.ts";
 import { createParameter } from "./params.ts";
-import { SCHEMA_VERSION, type TemplateDoc } from "@/types/template.ts";
+import { SCHEMA_VERSION, type TemplateDoc } from "../../types/template.ts";
 
 function doc(): TemplateDoc {
   const a = createShapeLayer("rect", { x: 0, y: 0, width: 100, height: 100 });

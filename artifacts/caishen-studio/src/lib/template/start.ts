@@ -1,10 +1,10 @@
-import { renderThumbnail } from "@/lib/canvas/render.ts";
-import { importWorkFile } from "@/lib/storage/template-package";
-import { blobToBase64 } from "@/lib/storage/encoding";
+import { renderThumbnail } from "../canvas/render.ts";
+import { importWorkFile } from "../storage/template-package";
+import { blobToBase64 } from "../storage/encoding";
 import { buildPackage, mapImageSources, type PackagedAsset } from "./package";
-import { createWork, saveWork } from "@/lib/storage/works.ts";
-import { findBuiltin } from "@/lib/template/builtin.ts";
-import type { TemplateDoc } from "@/types/template.ts";
+import { createWork, saveWork } from "../storage/works.ts";
+import { findBuiltin } from "./builtin.ts";
+import type { TemplateDoc } from "../../types/template.ts";
 
 async function safeThumb(doc: TemplateDoc): Promise<string | null> {
   try {
@@ -67,7 +67,9 @@ export async function startFromBuiltin(builtinId: string): Promise<string> {
   if (thumbnail) {
     try {
       await saveWork(work.id, work.doc, { snapshot: false, thumbnail, expectedRevision: work.revision ?? 0 });
-    } catch {}
+    } catch {
+      // Thumbnail is optional; the new work is already saved.
+    }
   }
 
   return work.id;

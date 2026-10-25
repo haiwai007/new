@@ -1,4 +1,4 @@
-import type { Layer, TemplateDoc } from "@/types/template.ts";
+import type { Layer, TemplateDoc } from "../../types/template.ts";
 import { newId } from "./ids.ts";
 import { resizeDoc } from "./smart-resize.ts";
 

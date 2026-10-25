@@ -9,7 +9,7 @@ import {
   util,
   type FabricObject,
 } from "fabric";
-import type { Layer, Shadow, ShapeLayer, TemplateDoc, TextLayer, ImageLayer } from "@/types/template.ts";
+import type { Layer, Shadow, ShapeLayer, TemplateDoc, TextLayer, ImageLayer } from "../../types/template.ts";
 import { ensureFont, isFontAvailable } from "./fonts.ts";
 import { loadImage } from "./image-cache.ts";
 import { computeImageGeometry } from "./image-geometry.ts";

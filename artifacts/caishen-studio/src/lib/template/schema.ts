@@ -3,7 +3,7 @@ import { phoneSettingsSchema } from "../phone/schema";
 import {
   SCHEMA_VERSION,
   type TemplateDoc,
-} from "@/types/template.ts";
+} from "../../types/template.ts";
 
 // Zod schema with defaults so older / partial documents are upgraded on parse.
 

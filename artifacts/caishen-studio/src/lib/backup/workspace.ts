@@ -1,7 +1,7 @@
-import { getDb, type AssetRecord, type WorkRecord } from "@/lib/storage/db";
-import { base64ToBlob, blobToBase64 } from "@/lib/storage/encoding";
-import { newId } from "@/lib/template/ids";
-import { remapAssetIds } from "@/lib/template/package";
+import { getDb, type AssetRecord, type WorkRecord } from "../storage/db";
+import { base64ToBlob, blobToBase64 } from "../storage/encoding";
+import { newId } from "../template/ids";
+import { remapAssetIds } from "../template/package";
 import {
   BACKUP_FORMAT,
   MAX_BACKUP_BYTES,

@@ -1,5 +1,5 @@
 import { refreshPhoneLayers } from "../phone/layers";
-import type { Layer, Shadow, TemplateDoc } from "@/types/template.ts";
+import type { Layer, Shadow, TemplateDoc } from "../../types/template.ts";
 
 // Canvas resizing strategies. All functions are pure.
 

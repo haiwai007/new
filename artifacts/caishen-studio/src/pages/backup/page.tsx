@@ -40,8 +40,10 @@ export default function BackupPage() {
     setSummary(await workspaceSummary());
   }
   useEffect(() => {
-    void refresh().catch((e) =>
-      setError(e instanceof Error ? e.message : "无法读取本地数据"),
+    queueMicrotask(() =>
+      void refresh().catch((e) =>
+        setError(e instanceof Error ? e.message : "无法读取本地数据"),
+      ),
     );
   }, []);
   async function run(task: () => Promise<void>) {

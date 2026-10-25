@@ -94,7 +94,7 @@ export const savePolicy = mutation({
       updatedBy: identity.tokenIdentifier,
       updatedAt: Date.now(),
     };
-    if (old) await ctx.db.replace(old._id, value);
+    if (old) await ctx.db.replace("cloudPolicy", old._id, value);
     else await ctx.db.insert("cloudPolicy", value);
     await recordAudit(ctx, {
       actor: identity.tokenIdentifier,

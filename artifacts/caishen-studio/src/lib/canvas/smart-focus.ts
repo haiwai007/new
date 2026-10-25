@@ -1,4 +1,4 @@
-import type { Pixels } from "@/lib/repair/inpaint.ts";
+import type { Pixels } from "../repair/inpaint.ts";
 
 // Finds where the "interesting" part of a picture is, so cover-cropping keeps
 // it in frame. Uses local contrast (gradient energy) on a small copy with a

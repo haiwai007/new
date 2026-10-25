@@ -1,6 +1,6 @@
-import { referencedAssetIds } from "@/lib/template/doc-ops";
-import { newId } from "@/lib/template/ids.ts";
-import type { ImageSource } from "@/types/template.ts";
+import { referencedAssetIds } from "../template/doc-ops";
+import { newId } from "../template/ids.ts";
+import type { ImageSource } from "../../types/template.ts";
 import { getDb, type AssetRecord } from "./db.ts";
 
 const urlCache = new Map<string, string>();

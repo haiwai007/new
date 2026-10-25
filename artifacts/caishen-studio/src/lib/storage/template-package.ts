@@ -1,14 +1,14 @@
 import { workName } from "./names";
 import { getAsset } from "./assets.ts";
-import { referencedAssetIds } from "@/lib/template/doc-ops.ts";
+import { referencedAssetIds } from "../template/doc-ops.ts";
 import {
   MAX_PACKAGE_BYTES,
   buildPackage,
   parseTemplateFile,
   remapAssetIds,
   type PackagedAsset,
-} from "@/lib/template/package.ts";
-import type { TemplateDoc } from "@/types/template.ts";
+} from "../template/package.ts";
+import type { TemplateDoc } from "../../types/template.ts";
 
 // Browser side of template packages: reads/writes images in IndexedDB.
 
@@ -154,7 +154,9 @@ export async function importWorkFile(
   } catch (error) {
     try {
       tx.abort();
-    } catch {}
+    } catch {
+      // Best effort: the original error is rethrown below.
+    }
     await Promise.allSettled([...requests, tx.done]);
     throw error;
   }

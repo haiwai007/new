@@ -26,7 +26,7 @@ export const updateCurrentUser = mutation({
       name: identity.name ?? "账户登录",
     });
     if (user !== null) {
-      await ctx.db.patch(user._id, {
+      await ctx.db.patch("users", user._id, {
         name: identity.name ?? user.name,
         email: identity.email ?? user.email,
         lastSeenAt: Date.now(),

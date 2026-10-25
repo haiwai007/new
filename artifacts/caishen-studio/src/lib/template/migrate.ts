@@ -1,4 +1,4 @@
-import { SCHEMA_VERSION, type TemplateDoc } from "@/types/template.ts";
+import { SCHEMA_VERSION, type TemplateDoc } from "../../types/template.ts";
 import { templateDocSchema } from "./schema.ts";
 
 export type LoadResult =

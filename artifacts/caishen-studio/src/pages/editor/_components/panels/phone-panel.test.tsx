@@ -34,6 +34,15 @@ describe("phone settings panel", () => {
     expect(useEditor.getState().doc!.phone).toBeUndefined();
     expect(useEditor.getState().doc!.canvas.height).toBe(2424);
   });
+  it("updates the canvas live once applied, merging rapid edits into one undo step", () => {
+    render(<PhonePanel />);
+    fireEvent.click(screen.getByRole("button", { name: "应用手机状态栏" }));
+    fireEvent.change(screen.getByLabelText("电量百分比"), { target: { value: "42" } });
+    fireEvent.change(screen.getByLabelText("电量百分比"), { target: { value: "43" } });
+    expect(useEditor.getState().doc!.phone!.battery).toBe(43);
+    useEditor.getState().undo();
+    expect(useEditor.getState().doc!.phone!.battery).toBe(100);
+  });
   it("rejects an out-of-range battery without changing the document", () => {
     render(<PhonePanel />);
     fireEvent.change(screen.getByLabelText("电量百分比"), {

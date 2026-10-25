@@ -11,7 +11,8 @@ export default function SiteFooter() {
         </div>
         <div className="flex flex-wrap gap-4">
           <Link className="cursor-pointer hover:text-foreground" to="/backup">备份与恢复</Link>
-          <Link className="cursor-pointer hover:text-foreground" to="/templates">模板中心</Link>
+          <Link className="cursor-pointer hover:text-foreground" to="/templates">模板</Link>
+          <Link className="cursor-pointer hover:text-foreground" to="/works">做图</Link>
           <Link className="cursor-pointer hover:text-foreground" to="/help">帮助中心</Link>
           <Link className="cursor-pointer hover:text-foreground" to="/help#usage">使用规范</Link>
         </div>

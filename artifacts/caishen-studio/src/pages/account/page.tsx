@@ -121,7 +121,8 @@ function SyncPanel() {
     }
   }
   useEffect(() => {
-    void refresh();
+    // Initial load of local works from IndexedDB (external system).
+    queueMicrotask(() => void refresh());
   }, []);
   async function run(task: () => Promise<unknown>, message: string) {
     setBusy(true);

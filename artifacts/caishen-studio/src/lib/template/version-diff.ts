@@ -1,4 +1,4 @@
-import type { Layer, TemplateDoc } from "@/types/template.ts";
+import type { Layer, TemplateDoc } from "../../types/template.ts";
 import { getParamValue } from "./params.ts";
 
 // Human-readable summary of what changed between two versions.

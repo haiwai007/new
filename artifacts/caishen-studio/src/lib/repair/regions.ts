@@ -1,5 +1,5 @@
-import type { Layer, TemplateDoc } from "@/types/template.ts";
-import { coverMapping } from "@/lib/ocr/to-layers.ts";
+import type { Layer, TemplateDoc } from "../../types/template.ts";
+import { coverMapping } from "../ocr/to-layers.ts";
 import type { Rect } from "./inpaint.ts";
 
 // Choosing which canvas areas to repair, and mapping them onto the background image.

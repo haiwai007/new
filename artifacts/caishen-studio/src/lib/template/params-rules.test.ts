@@ -13,8 +13,8 @@ import {
 import { buildPackage, parseTemplateFile, remapAssetIds } from "./package.ts";
 import { describeDiff, diffDocs } from "./version-diff.ts";
 import { loadTemplateDoc } from "./migrate.ts";
-import { versionsToPrune } from "@/lib/storage/works.ts";
-import { SCHEMA_VERSION, type TemplateDoc, type TemplateParameter } from "@/types/template.ts";
+import { versionsToPrune } from "../storage/works.ts";
+import { SCHEMA_VERSION, type TemplateDoc, type TemplateParameter } from "../../types/template.ts";
 
 function docWith(): TemplateDoc {
   const t = createTextLayer({ x: 0, y: 0, width: 100, height: 40 }, { text: "标题" });

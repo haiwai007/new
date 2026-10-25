@@ -1,7 +1,7 @@
-import type { Layer, TemplateDoc, TemplateParameter } from "@/types/template.ts";
+import type { Layer, TemplateDoc, TemplateParameter } from "../../types/template.ts";
 import { createImageLayer, createShapeLayer, createTextLayer } from "./layers.ts";
 import { defaultGroupFor } from "./params.ts";
-import { SCHEMA_VERSION } from "@/types/template.ts";
+import { SCHEMA_VERSION } from "../../types/template.ts";
 
 export type TemplateCategory =
   | "poster"

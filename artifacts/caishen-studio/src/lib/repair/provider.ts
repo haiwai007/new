@@ -1,4 +1,4 @@
-import { canvasToBlob } from "@/lib/canvas/render.ts";
+import { canvasToBlob } from "../canvas/render.ts";
 import { clusterMask, inpaint, planClusters, type Rect } from "./inpaint.ts";
 
 // Background repair is a replaceable provider, like OCR. The default runs in the

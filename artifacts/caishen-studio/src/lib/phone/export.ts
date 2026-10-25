@@ -1,4 +1,4 @@
-import type { TemplateDoc } from "@/types/template";
+import type { TemplateDoc } from "../../types/template";
 
 /** Export the display contents, excluding the device's physical camera cutout.
  * Keep system UI (time, battery, date, home indicator) and leave the editable work intact.

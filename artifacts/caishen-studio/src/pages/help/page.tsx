@@ -69,7 +69,7 @@ const STATUS: { done: boolean; label: string }[] = [
   { done: false, label: "AI 照片背景修复（复杂照片细节还原，需接入云端服务）" },
   {
     done: true,
-    label: "批量生成（CSV 导入、字段映射、逐行校验、PNG 导出与 ZIP 打包）",
+    label: "批量做图（参数面板：张数、随机区间、随机时间段、候选随机、自动编号，PNG 导出与 ZIP 打包）",
   },
   {
     done: true,

@@ -1,4 +1,4 @@
-import type { PhoneSettings } from "@/lib/phone/schema";
+import type { PhoneSettings } from "../lib/phone/schema";
 // Core template data model. The template JSON is the single source of truth;
 // the Fabric canvas is only a view rendered from it.
 

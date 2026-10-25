@@ -1,10 +1,10 @@
-import type { ImageSource, Layer, TemplateDoc } from "@/types/template";
+import type { ImageSource, Layer, TemplateDoc, TextLayer } from "../../types/template";
 import {
   createImageLayer,
   createShapeLayer,
   createTextLayer,
-} from "@/lib/template/layers";
-import { newId } from "@/lib/template/ids";
+} from "../template/layers";
+import { newId } from "../template/ids";
 import { phoneModel } from "./models";
 import { phoneSettingsSchema, type PhoneSettings } from "./schema";
 export function defaultPhoneSettings(): PhoneSettings {
@@ -33,6 +33,20 @@ export function defaultPhoneSettings(): PhoneSettings {
     transparent: false,
     showCutout: true,
     showHomeIndicator: true,
+    customColor: null,
+    scale: 100,
+    offsetY: 0,
+    insetX: 0,
+    timeWeight: "bold",
+    batteryStyle: "outline",
+    lowPower: false,
+    hd: false,
+    dualSim: false,
+    location: false,
+    alarm: false,
+    mute: false,
+    dnd: false,
+    vpn: false,
   };
 }
 export function phoneTime(settings: PhoneSettings): string {
@@ -54,38 +68,137 @@ function svgSource(svg: string): ImageSource {
     url: `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`,
   };
 }
-/** All SVG attributes come from validated values/constants, never user-provided XML. */
-export function statusIconsSvg(settings: PhoneSettings): string {
+/** Icon colour: an explicit custom colour wins over the dark/light theme. */
+export function phoneColor(settings: PhoneSettings): string {
+  return settings.customColor ?? (settings.theme === "dark" ? "#111111" : "#ffffff");
+}
+type IconPart = { width: number; svg: (color: string) => string };
+const DIM = 'opacity=".3"';
+function signalBars(level: number, small = false): IconPart {
+  const k = small ? 0.75 : 1;
+  return {
+    width: 18.5 * k,
+    svg: (c) =>
+      [0, 1, 2, 3]
+        .map(
+          (i) =>
+            `<rect x="${i * 5 * k}" y="${18 - (4 + i * 3) * k}" width="${3.5 * k}" height="${(4 + i * 3) * k}" rx=".7" fill="${c}" ${i < level ? "" : DIM}/>`,
+        )
+        .join(""),
+  };
+}
+function textBadge(label: string, boxed: boolean): IconPart {
+  const width = boxed ? label.length * 5.6 + 6 : label.length * 7 + 1;
+  return {
+    width,
+    svg: (c) =>
+      boxed
+        ? `<rect x=".6" y="4.6" width="${width - 1.2}" height="10.8" rx="2.4" fill="none" stroke="${c}" stroke-width="1.2"/><text x="${width / 2}" y="13" text-anchor="middle" font-family="Arial,sans-serif" font-size="8" font-weight="bold" fill="${c}">${label}</text>`
+        : `<text x="0" y="15" font-family="Arial,sans-serif" font-size="11" font-weight="bold" fill="${c}">${label}</text>`,
+  };
+}
+const SMALL_ICONS = {
+  location: { width: 11, svg: (c: string) => `<path d="M10.5 4L1 8.5L5.5 9.5L6.5 14Z" fill="${c}"/>` },
+  alarm: {
+    width: 14,
+    svg: (c: string) =>
+      `<g fill="none" stroke="${c}" stroke-width="1.6" stroke-linecap="round"><circle cx="7" cy="11" r="5.4"/><path d="M7 8.2V11L8.8 12.4M1.6 5.2L3.6 3.4M12.4 5.2L10.4 3.4"/></g>`,
+  },
+  mute: {
+    width: 14,
+    svg: (c: string) =>
+      `<path d="M2.5 14H11.5L10.2 12.2V8.6A3.2 3.2 0 0 0 3.8 8.6V12.2Z" fill="${c}"/><path d="M1.5 4L12.5 17" stroke="${c}" stroke-width="1.5" stroke-linecap="round"/>`,
+  },
+  dnd: { width: 12, svg: (c: string) => `<path d="M8 4A6.5 6.5 0 1 0 12 15A5.2 5.2 0 0 1 8 4Z" fill="${c}"/>` },
+  bluetooth: {
+    width: 9,
+    svg: (c: string) =>
+      `<path d="M1 6L8 12.5L4.5 16V3L8 6.5L1 13" fill="none" stroke="${c}" stroke-width="1.3" stroke-linejoin="round"/>`,
+  },
+} satisfies Record<string, IconPart>;
+function batteryPart(settings: PhoneSettings, color: string, battery: number): IconPart {
+  const level = settings.charging
+    ? "#22c55e"
+    : settings.lowPower
+      ? "#facc15"
+      : battery <= 20
+        ? "#ef4444"
+        : color;
+  const contrast = settings.theme === "dark" && !settings.customColor ? "#ffffff" : "#111111";
+  const bolt = (x: number) =>
+    `<path d="M${x + 2} 4L${x - 3} 11H${x + 1}L${x - 1} 17L${x + 5} 9H${x + 1}Z" fill="${color}" stroke="${settings.transparent ? contrast : settings.backgroundColor}" stroke-width=".7"/>`;
+  if (settings.batteryStyle === "inside") {
+    // iOS 16+ style: percentage drawn inside a filled battery body.
+    const fill = battery > 0 ? `<rect x="0" y="3.5" width="${(25 * battery) / 100}" height="13" rx="4" fill="${level}"/>` : "";
+    const label = settings.showBatteryPercent
+      ? `<text x="12.5" y="13.6" text-anchor="middle" font-family="Arial,sans-serif" font-size="9.5" font-weight="bold" fill="${battery > 55 ? contrast : color}">${battery}</text>`
+      : "";
+    return {
+      width: settings.charging ? 34 : 28,
+      svg: () =>
+        `<rect x="0" y="3.5" width="25" height="13" rx="4" fill="${color}" ${DIM}/>${fill}${label}<rect x="26" y="8" width="1.6" height="4" rx=".8" fill="${color}" ${DIM}/>${settings.charging ? bolt(30) : ""}`,
+    };
+  }
+  const percent = settings.showBatteryPercent ? battery.toString().length * 6 + 9 : 0;
+  return {
+    width: percent + 26,
+    svg: () => {
+      let out = "";
+      if (percent)
+        out += `<text x="${percent - 3}" y="14" text-anchor="end" font-family="Arial,sans-serif" font-size="10.5" fill="${color}">${battery}%</text>`;
+      out += `<g transform="translate(${percent} 0)"><rect x=".5" y="4" width="23" height="12" rx="3" fill="none" stroke="${color}" stroke-width="1" opacity=".55"/><rect x="24.5" y="8" width="1.5" height="4" rx=".7" fill="${color}" opacity=".55"/>`;
+      if (battery > 0)
+        out += `<rect x="2.5" y="6" width="${(19 * battery) / 100}" height="8" rx="1.2" fill="${level}"/>`;
+      if (settings.charging) out += bolt(12);
+      return out + "</g>";
+    },
+  };
+}
+/** Right-hand status icons. Every attribute comes from validated values/constants, never user XML. */
+export function statusIcons(settings: PhoneSettings): { svg: string; width: number } {
   const battery = Math.max(
     0,
-    Math.min(100, Number.isFinite(settings.battery) ? settings.battery : 0),
+    Math.min(100, Number.isFinite(settings.battery) ? Math.round(settings.battery) : 0),
   );
-  const color = settings.theme === "dark" ? "#111111" : "#ffffff";
-  const faded = settings.theme === "dark" ? "#c8c8c8" : "#666666";
-  let content = "";
+  const color = phoneColor(settings);
+  const parts: IconPart[] = [];
+  for (const key of ["location", "alarm", "mute", "dnd", "bluetooth"] as const)
+    if (settings[key]) parts.push(SMALL_ICONS[key]);
+  if (settings.vpn) parts.push(textBadge("VPN", true));
   if (settings.airplane)
-    content += `<path d="M2 8L9 9L15 2L18 2L14 9L21 11L21 13L13 12L10 17L8 17L9 11L2 10Z" fill="${color}"/>`;
-  else
-    for (let i = 0; i < 4; i++)
-      content += `<rect x="${i * 5}" y="${14 - i * 3}" width="3.5" height="${4 + i * 3}" rx=".7" fill="${i < settings.signal ? color : faded}"/>`;
-  if (settings.wifi > 0) {
-    content += `<g transform="translate(24 0)" fill="none" stroke-width="2.2" stroke-linecap="round"><path d="M0 6Q9 -1 18 6" stroke="${settings.wifi >= 3 ? color : faded}"/><path d="M3 10Q9 5 15 10" stroke="${settings.wifi >= 2 ? color : faded}"/><path d="M6 14Q9 11.5 12 14" stroke="${color}"/><circle cx="9" cy="17" r="1" fill="${color}" stroke="none"/></g>`;
-  } else if (
-    !settings.airplane &&
-    settings.signal > 0 &&
-    settings.network !== "none"
-  )
-    content += `<text x="23" y="15" font-family="Arial,sans-serif" font-size="11" font-weight="bold" fill="${color}">${settings.network}</text>`;
-  if (settings.bluetooth)
-    content += `<path d="M49 4L57 13L53 17L53 1L57 5L49 14" fill="none" stroke="${color}" stroke-width="1.3" stroke-linejoin="round"/>`;
-  if (settings.showBatteryPercent)
-    content += `<text x="85" y="14" text-anchor="end" font-family="Arial,sans-serif" font-size="10" fill="${color}">${battery}%</text>`;
-  content += `<rect x="88" y="4" width="23" height="12" rx="3" fill="none" stroke="${color}" stroke-width="1"/><rect x="112" y="8" width="1.5" height="4" rx=".7" fill="${color}"/>`;
-  if (battery > 0)
-    content += `<rect x="90" y="6" width="${(19 * battery) / 100}" height="8" rx="1" fill="${settings.charging ? "#22c55e" : battery <= 20 ? "#ef4444" : color}"/>`;
-  if (settings.charging)
-    content += `<path d="M101 2L96 10H101L98 18L106 8H101Z" fill="${settings.theme === "dark" ? "#111111" : "#ffffff"}" stroke="${settings.backgroundColor}" stroke-width=".6"/>`;
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="116" height="20" viewBox="0 0 116 20">${content}</svg>`;
+    parts.push({
+      width: 20,
+      svg: (c) => `<path d="M1 8L8 9L14 2L17 2L13 9L20 11L20 13L12 12L9 17L7 17L8 11L1 10Z" fill="${c}"/>`,
+    });
+  else {
+    if (settings.hd) parts.push(textBadge("HD", true));
+    parts.push(signalBars(settings.signal));
+    if (settings.dualSim) parts.push(signalBars(Math.max(0, settings.signal - 1), true));
+    if (settings.wifi === 0 && settings.signal > 0 && settings.network !== "none")
+      parts.push(textBadge(settings.network, false));
+  }
+  if (settings.wifi > 0)
+    parts.push({
+      width: 18,
+      svg: (c) =>
+        `<g fill="none" stroke-width="2.2" stroke-linecap="round"><path d="M1 7Q9 0 17 7" stroke="${c}" ${settings.wifi >= 3 ? "" : DIM}/><path d="M3.8 10.6Q9 6 14.2 10.6" stroke="${c}" ${settings.wifi >= 2 ? "" : DIM}/><path d="M6.6 14Q9 12 11.4 14" stroke="${c}"/></g><circle cx="9" cy="16.6" r="1.3" fill="${c}"/>`,
+    });
+  parts.push(batteryPart(settings, color, battery));
+  const gap = 5;
+  let x = 0;
+  let content = "";
+  for (const part of parts) {
+    content += `<g transform="translate(${x} 0)">${part.svg(color)}</g>`;
+    x += part.width + gap;
+  }
+  const width = Math.ceil(x - gap + 1);
+  return {
+    width,
+    svg: `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="20" viewBox="0 0 ${width} 20">${content}</svg>`,
+  };
+}
+export function statusIconsSvg(settings: PhoneSettings): string {
+  return statusIcons(settings).svg;
 }
 function generatedIds(settings: PhoneSettings) {
   return new Set(
@@ -122,8 +235,15 @@ export function applyPhoneLayers(
     W / model.points,
     H / (model.bar + (phone.showDate ? 24 : 0) + 40),
   );
+  const k = (s * phone.scale) / 100;
   const bar = model.bar * s;
-  const color = phone.theme === "dark" ? "#111111" : "#ffffff";
+  const color = phoneColor(phone);
+  const classic = model.style === "classic";
+  const android = model.style === "android";
+  const cutoutWidth =
+    model.cutout === "island" ? 126 : model.cutout === "notch" ? 160 : 12;
+  const cutoutHeight =
+    model.cutout === "island" ? 35 : model.cutout === "notch" ? 30 : 12;
   const layer = <T extends Layer>(role: string, value: T): T => ({
     ...value,
     id: `${phone.groupId}_${role}`,
@@ -136,16 +256,14 @@ export function applyPhoneLayers(
     role: string,
     name: string,
     value: string,
-    x: number,
-    y: number,
-    width: number,
+    box: { x: number; y: number; width: number },
     fontSize: number,
-    visible = true,
+    extra: Partial<TextLayer> = {},
   ) =>
     layer(
       role,
       createTextLayer(
-        { x, y, width, height: fontSize * 1.4 },
+        { ...box, height: fontSize * 1.4 },
         {
           name,
           text: value,
@@ -155,15 +273,35 @@ export function applyPhoneLayers(
           lineHeight: 1,
           wrap: false,
           fontWeight: "bold",
-          visible,
           verticalAlign: "middle",
+          ...extra,
         },
       ),
     );
-  const classic = model.style === "classic";
-  const android = model.style === "android";
-  const top = android || classic ? 1 * s : (model.bar - 42) * s;
-  const fontSize = (android || classic ? 13 : 17) * s;
+  // Shared vertical centre line for time and icons, so scaling keeps them aligned.
+  const cy =
+    (classic || android ? 10 : model.bar - 30) * s + phone.offsetY * s;
+  const fontSize = (android || classic ? 13 : 17) * k;
+  const inset = phone.insetX * s;
+  const edge = (android || classic ? 16 : 14) * s + inset;
+  // iOS centres the time and icons in the "ears" either side of the island / notch.
+  const ear = model.style === "ios" ? (W - cutoutWidth * s) / 2 : 0;
+  const timeBox = classic
+    ? { x: W / 2 - 60 * k, width: 120 * k }
+    : ear
+      ? { x: edge, width: Math.max(40 * k, ear - edge - 4 * s) }
+      : { x: edge, width: 110 * k };
+  const icons = statusIcons(phone);
+  const iconsMax = ear ? ear - edge - 4 * s : W / 2 - edge;
+  const iconsWidth = Math.min(icons.width * k, iconsMax);
+  const iconsHeight = (iconsWidth / icons.width) * 20;
+  const iconsRight = W - edge;
+  // Centre the icons in the right-hand ear on iOS; right-align elsewhere.
+  const earStart = W - ear + 4 * s;
+  const iconsX = ear
+    ? Math.min(iconsRight - iconsWidth, (earStart + iconsRight - iconsWidth) / 2)
+    : iconsRight - iconsWidth;
+  const carrierSize = (classic ? 11 : android ? 12 : 8) * k;
   const layers: Layer[] = [
     layer(
       "background",
@@ -182,49 +320,46 @@ export function applyPhoneLayers(
       "time",
       "时间",
       phoneTime(phone),
-      classic ? W / 2 - 36 * s : 18 * s,
-      top,
-      (classic ? 72 : 96) * s,
+      { ...timeBox, y: cy - fontSize * 0.7 },
       fontSize,
+      {
+        fontWeight: phone.timeWeight,
+        textAlign: ear || classic ? "center" : "left",
+      },
     ),
     text(
       "date",
       "日期",
       phoneDate(phone),
-      18 * s,
-      bar,
-      W - 36 * s,
-      12 * s,
-      phone.showDate,
+      { x: edge, y: bar, width: W - edge * 2 },
+      12 * k,
+      { visible: phone.showDate, fontWeight: "normal" },
     ),
     text(
       "carrier",
       "运营商",
       phone.carrier,
-      android ? 76 * s : 18 * s,
-      classic || android ? 1 * s : top + 24 * s,
-      (android ? 83 : 95) * s,
-      (classic ? 11 : 8) * s,
-      phone.showCarrier,
+      android
+        ? { x: edge + 52 * k, y: cy - carrierSize * 0.7, width: 90 * k }
+        : classic
+          ? { x: edge, y: cy - carrierSize * 0.7, width: 90 * k }
+          : { x: timeBox.x, y: cy + 12 * k, width: timeBox.width },
+      carrierSize,
+      {
+        visible: phone.showCarrier,
+        fontWeight: "normal",
+        textAlign: ear ? "center" : "left",
+      },
     ),
     layer(
       "icons",
       createImageLayer(
-        {
-          x: W - 14 * s - (model.cutout === "notch" ? 95 : 116) * s,
-          y: classic ? 0 : android ? 4 * s : (model.bar - 38) * s,
-          width: (model.cutout === "notch" ? 95 : 116) * s,
-          height: 20 * s,
-        },
-        svgSource(statusIconsSvg(phone)),
+        { x: iconsX, y: cy - iconsHeight / 2, width: iconsWidth, height: iconsHeight },
+        svgSource(icons.svg),
         { name: "信号、网络与电池", fit: "contain", lockAspect: true },
       ),
     ),
   ];
-  const cutoutWidth =
-    model.cutout === "island" ? 126 : model.cutout === "notch" ? 160 : 12;
-  const cutoutHeight =
-    model.cutout === "island" ? 35 : model.cutout === "notch" ? 30 : 12;
   layers.push(
     layer(
       "cutout",
@@ -260,6 +395,7 @@ export function applyPhoneLayers(
           fill: color,
           strokeWidth: 0,
           radius: 2.25 * s,
+          opacity: 0.9,
           visible: phone.showHomeIndicator && !classic,
         },
       ),

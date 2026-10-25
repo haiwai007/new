@@ -17,6 +17,7 @@ import { useStartTemplate } from "@/hooks/use-start-template.ts";
 import { useTemplateFavorites } from "@/hooks/use-template-favorites.ts";
 import RecentWorks from "./_components/recent-works.tsx";
 import HeroCanvas from "./_components/hero-canvas.tsx";
+import { SECTIONS } from "@/components/site/nav-config.ts";
 
 const STEPS = [
   { icon: Upload, title: "上传参考图", desc: "拖拽、点击或粘贴图片，自动读取尺寸与格式" },
@@ -95,6 +96,40 @@ export default function Index() {
           >
             <HeroCanvas />
           </motion.div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-7xl px-4 pt-10 md:px-6">
+        <div className="grid gap-4 md:grid-cols-2">
+          {SECTIONS.map((s, i) => (
+            <motion.div
+              key={s.id}
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 + i * 0.08, ease }}
+            >
+              <Link
+                to={s.to}
+                className="group flex h-full cursor-pointer items-start gap-4 rounded-2xl border bg-card p-6 transition-all hover:-translate-y-0.5 hover:border-primary/60 hover:shadow-lg"
+              >
+                <span className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground">
+                  <s.icon className="size-6" />
+                </span>
+                <div className="min-w-0 flex-1">
+                  <p className="flex items-center gap-2 font-serif text-2xl font-bold">
+                    {s.label}
+                    <ArrowRight className="size-5 text-primary transition-transform group-hover:translate-x-1" />
+                  </p>
+                  <p className="mt-1 text-sm text-muted-foreground">{s.desc}</p>
+                  <div className="mt-3 flex flex-wrap gap-1.5">
+                    {s.tabs.map((t) => (
+                      <span key={t.to} className="rounded-full bg-muted px-2.5 py-0.5 text-xs text-muted-foreground">{t.label}</span>
+                    ))}
+                  </div>
+                </div>
+              </Link>
+            </motion.div>
+          ))}
         </div>
       </section>
 

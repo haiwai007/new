@@ -1,8 +1,8 @@
 import { z } from "zod";
-import { loadTemplateDoc } from "@/lib/template/migrate";
-import { referencedAssetIds } from "@/lib/template/doc-ops";
-import { isBase64 } from "@/lib/storage/encoding";
-import type { TemplateDoc } from "@/types/template";
+import { loadTemplateDoc } from "../template/migrate";
+import { referencedAssetIds } from "../template/doc-ops";
+import { isBase64 } from "../storage/encoding";
+import type { TemplateDoc } from "../../types/template";
 export const MAX_BACKUP_BYTES = 100 * 1024 * 1024;
 export const BACKUP_FORMAT = "caishen-workspace";
 const id = z.string().min(1).max(200);

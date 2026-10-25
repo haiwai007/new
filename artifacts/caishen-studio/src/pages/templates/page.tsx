@@ -67,7 +67,7 @@ export default function TemplatesPage() {
     <div className="mx-auto max-w-7xl px-4 py-8 md:px-6">
       <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
         <div>
-          <h1 className="font-serif text-3xl font-bold">模板中心</h1>
+          <h1 className="font-serif text-3xl font-bold">{category === "custom" ? "我的模板" : "模板库"}</h1>
           <p className="mt-1 text-muted-foreground">每个模板都由独立图层组成，可直接编辑或通过参数批量改内容。</p>
         </div>
         <Button asChild>

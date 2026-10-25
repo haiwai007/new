@@ -1,4 +1,4 @@
-import type { ImageFit } from "@/types/template.ts";
+import type { ImageFit } from "../../types/template.ts";
 
 export type ImageGeometry = {
   cropX: number;

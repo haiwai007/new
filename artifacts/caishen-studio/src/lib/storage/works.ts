@@ -1,8 +1,8 @@
 import type { IDBPTransaction } from "idb";
-import { newId } from "@/lib/template/ids.ts";
-import { loadTemplateDoc } from "@/lib/template/migrate.ts";
-import { referencedAssetIds } from "@/lib/template/doc-ops.ts";
-import type { TemplateDoc } from "@/types/template.ts";
+import { newId } from "../template/ids.ts";
+import { loadTemplateDoc } from "../template/migrate.ts";
+import { referencedAssetIds } from "../template/doc-ops.ts";
+import type { TemplateDoc } from "../../types/template.ts";
 import {
   getDb,
   type ExportRecord,
@@ -40,7 +40,9 @@ async function writeWork<T>(fn: (tx: WorkTx) => Promise<T>): Promise<T> {
   } catch (error) {
     try {
       tx.abort();
-    } catch {}
+    } catch {
+      // Best effort: the original error is rethrown below.
+    }
     await tx.done.catch(() => {});
     throw error;
   }

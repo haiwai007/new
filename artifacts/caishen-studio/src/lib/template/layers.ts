@@ -5,7 +5,7 @@ import type {
   ShapeKind,
   ShapeLayer,
   TextLayer,
-} from "@/types/template.ts";
+} from "../../types/template.ts";
 import { newId } from "./ids.ts";
 
 type Box = { x: number; y: number; width: number; height: number };

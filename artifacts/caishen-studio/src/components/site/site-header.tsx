@@ -1,46 +1,24 @@
-import { Link, NavLink } from "react-router-dom";
-import { Menu, Sparkles } from "lucide-react";
+import { Link, NavLink, useLocation } from "react-router-dom";
+import { ChevronDown, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button.tsx";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet.tsx";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu.tsx";
+import { Sheet, SheetClose, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet.tsx";
 import { cn } from "@/lib/utils.ts";
 import BrandMark from "./brand-mark.tsx";
+import { MORE_LINKS, SECTIONS, sectionFor } from "./nav-config.ts";
 
-const NAV = [
-  { to: "/", label: "首页", end: true },
-  { to: "/templates", label: "模板中心" },
-  { to: "/custom", label: "自定义模板" },
-  { to: "/works", label: "我的作品" },
-  { to: "/batch", label: "批量生成" },
-  { to: "/assets", label: "素材库" },
-  { to: "/help", label: "帮助中心" },
-  { to: "/account", label: "云端账户" },
-];
-
-function NavItems({ onNavigate }: { onNavigate?: () => void }) {
-  return (
-    <>
-      {NAV.map((n) => (
-        <NavLink
-          key={n.to}
-          to={n.to}
-          end={n.end}
-          onClick={onNavigate}
-          data-testid={`link-nav-${n.to === "/" ? "home" : n.to.slice(1)}`}
-          className={({ isActive }) =>
-            cn(
-              "cursor-pointer rounded-md px-3 py-2 text-sm transition-colors",
-              isActive ? "font-semibold text-primary" : "text-muted-foreground hover:text-foreground",
-            )
-          }
-        >
-          {n.label}
-        </NavLink>
-      ))}
-    </>
-  );
+function useActiveSection() {
+  const { pathname } = useLocation();
+  return sectionFor(pathname)?.id;
 }
 
 export default function SiteHeader() {
+  const active = useActiveSection();
   return (
     <header className="sticky top-0 z-40 border-b bg-background/85 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-7xl items-center gap-4 px-4 md:px-6">
@@ -48,20 +26,42 @@ export default function SiteHeader() {
           <BrandMark />
           <span className="font-serif text-lg font-bold tracking-wide">海神作图</span>
         </Link>
-        <nav className="ml-4 hidden items-center gap-1 xl:flex">
-          <NavItems />
+        <nav className="ml-4 hidden items-center gap-1 md:flex">
+          {SECTIONS.map((s) => (
+            <Link
+              key={s.id}
+              to={s.to}
+              className={cn(
+                "flex cursor-pointer items-center gap-1.5 rounded-md px-4 py-2 text-[15px] transition-colors",
+                active === s.id ? "bg-primary/10 font-semibold text-primary" : "text-muted-foreground hover:text-foreground",
+              )}
+            >
+              <s.icon className="size-4" />
+              {s.label}
+            </Link>
+          ))}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="sm" className="text-muted-foreground">
+                更多 <ChevronDown className="size-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start">
+              {MORE_LINKS.map((l) => (
+                <DropdownMenuItem key={l.to} asChild className="cursor-pointer">
+                  <Link to={l.to}>{l.label}</Link>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
         </nav>
         <div className="ml-auto flex items-center gap-2">
-          <Button asChild variant="ghost" size="sm"><Link to="/account">账户与同步</Link></Button>
-          <Button asChild size="sm" className="hidden sm:inline-flex">
-            <Link to="/custom">
-              <Sparkles className="size-4" />
-              上传生成模板
-            </Link>
+          <Button asChild variant="ghost" size="sm" className="hidden sm:inline-flex">
+            <Link to="/account">账户与同步</Link>
           </Button>
           <Sheet>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="xl:hidden" aria-label="打开菜单">
+              <Button variant="ghost" size="icon" className="md:hidden" aria-label="打开菜单">
                 <Menu className="size-5" />
               </Button>
             </SheetTrigger>
@@ -69,8 +69,30 @@ export default function SiteHeader() {
               <SheetHeader>
                 <SheetTitle>海神作图</SheetTitle>
               </SheetHeader>
-              <nav className="flex flex-col gap-1 px-4">
-                <NavItems />
+              <nav className="flex flex-col gap-4 px-4">
+                {SECTIONS.map((s) => (
+                  <div key={s.id}>
+                    <p className="mb-1 flex items-center gap-1.5 text-sm font-semibold">
+                      <s.icon className="size-4 text-primary" /> {s.label}
+                    </p>
+                    {s.tabs.map((t) => (
+                      <SheetClose asChild key={t.to}>
+                        <Link to={t.to} className="block cursor-pointer rounded-md px-3 py-1.5 text-sm text-muted-foreground hover:bg-muted hover:text-foreground">
+                          {t.label}
+                        </Link>
+                      </SheetClose>
+                    ))}
+                  </div>
+                ))}
+                <div className="border-t pt-3">
+                  {MORE_LINKS.map((l) => (
+                    <SheetClose asChild key={l.to}>
+                      <NavLink to={l.to} className="block cursor-pointer rounded-md px-3 py-1.5 text-sm text-muted-foreground hover:bg-muted hover:text-foreground">
+                        {l.label}
+                      </NavLink>
+                    </SheetClose>
+                  ))}
+                </div>
               </nav>
             </SheetContent>
           </Sheet>

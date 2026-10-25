@@ -1,7 +1,7 @@
 import { useMemo, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { format } from "date-fns";
-import { FileUp, FolderOpen, Search } from "lucide-react";
+import { FileUp, FolderOpen, Layers, Search } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button.tsx";
 import { Input } from "@/components/ui/input.tsx";
@@ -26,7 +26,6 @@ import { listExports } from "@/lib/storage/works.ts";
 import type { ExportRecord } from "@/lib/storage/db.ts";
 import { importWorkFile } from "@/lib/storage/template-package.ts";
 import WorkCard from "./_components/work-card.tsx";
-import { useEffect } from "react";
 
 type Filter =
   "all" | "project" | "template" | "upload" | "favorite" | "exports";
@@ -40,17 +39,17 @@ export default function WorksPage() {
   const fileRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (filter === "exports") {
-      setExports(null);
-      setExportError("");
-      listExports()
-        .then(setExports)
-        .catch((e) =>
-          setExportError(e instanceof Error ? e.message : "读取导出记录失败"),
-        );
-    }
-  }, [filter]);
+  const changeFilter = (next: Filter) => {
+    setFilter(next);
+    if (next !== "exports") return;
+    setExports(null);
+    setExportError("");
+    listExports()
+      .then(setExports)
+      .catch((e) =>
+        setExportError(e instanceof Error ? e.message : "读取导出记录失败"),
+      );
+  };
 
   const works = useMemo(() => {
     if (state.status !== "ready") return [];
@@ -100,7 +99,10 @@ export default function WorksPage() {
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
-          <Button variant="outline" asChild>
+          <Button asChild>
+            <Link to="/batch"><Layers className="size-4" /> 批量做图</Link>
+          </Button>
+          <Button variant="ghost" asChild>
             <Link to="/backup">备份与恢复</Link>
           </Button>
           <Button variant="secondary" onClick={() => fileRef.current?.click()}>
@@ -121,7 +123,7 @@ export default function WorksPage() {
       </div>
 
       <div className="mt-6 flex flex-col gap-3 md:flex-row md:items-center">
-        <Tabs value={filter} onValueChange={(v) => setFilter(v as Filter)}>
+        <Tabs value={filter} onValueChange={(v) => changeFilter(v as Filter)}>
           <TabsList className="flex-wrap">
             <TabsTrigger value="all">全部</TabsTrigger>
             <TabsTrigger value="project">编辑项目</TabsTrigger>

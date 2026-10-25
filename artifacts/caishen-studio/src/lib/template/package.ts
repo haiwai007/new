@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { isBase64 } from "../storage/encoding";
-import type { ImageSource, Layer, TemplateDoc } from "@/types/template.ts";
+import type { ImageSource, Layer, TemplateDoc } from "../../types/template.ts";
 import { loadTemplateDoc } from "./migrate.ts";
 import { referencedAssetIds } from "./doc-ops.ts";
 

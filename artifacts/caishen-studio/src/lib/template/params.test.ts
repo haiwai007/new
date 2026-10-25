@@ -11,7 +11,7 @@ import {
 } from "./params.ts";
 import { moveLayerTo } from "./doc-ops.ts";
 import { createImageLayer, createTextLayer } from "./layers.ts";
-import { SCHEMA_VERSION, type TemplateDoc, type TemplateParameter } from "@/types/template.ts";
+import { SCHEMA_VERSION, type TemplateDoc, type TemplateParameter } from "../../types/template.ts";
 
 const coffee = findBuiltin("bt_coffee")!.doc;
 const param = (id: string): TemplateParameter => coffee.parameters.find((p) => p.id === id)!;

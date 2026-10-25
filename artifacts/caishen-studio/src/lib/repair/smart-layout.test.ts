@@ -1,12 +1,12 @@
 import { describe, expect, it } from "vitest";
-import { anchorFor, resizeDoc } from "@/lib/template/smart-resize.ts";
-import { resizeCanvas } from "@/lib/template/doc-ops.ts";
-import { createImageLayer, createShapeLayer, createTextLayer } from "@/lib/template/layers.ts";
+import { anchorFor, resizeDoc } from "../template/smart-resize.ts";
+import { resizeCanvas } from "../template/doc-ops.ts";
+import { createImageLayer, createShapeLayer, createTextLayer } from "../template/layers.ts";
 import { clusterMask, inpaint, planClusters } from "./inpaint.ts";
 import { canvasBoxesToImage, layerBounds, repairCandidates } from "./regions.ts";
-import { detailCenter, focusForPoint } from "@/lib/canvas/smart-focus.ts";
-import { loadTemplateDoc } from "@/lib/template/migrate.ts";
-import { SCHEMA_VERSION, type Layer, type TemplateDoc } from "@/types/template.ts";
+import { detailCenter, focusForPoint } from "../canvas/smart-focus.ts";
+import { loadTemplateDoc } from "../template/migrate.ts";
+import { SCHEMA_VERSION, type Layer, type TemplateDoc } from "../../types/template.ts";
 
 function docOf(layers: Layer[], w = 1000, h = 1000): TemplateDoc {
   return {

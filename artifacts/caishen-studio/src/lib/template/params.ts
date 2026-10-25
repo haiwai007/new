@@ -7,7 +7,7 @@ import type {
   ParamValue,
   TemplateDoc,
   TemplateParameter,
-} from "@/types/template.ts";
+} from "../../types/template.ts";
 import { newId } from "./ids.ts";
 
 // Parameter binding engine. A parameter's *current* value lives on its bound

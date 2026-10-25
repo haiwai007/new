@@ -101,7 +101,7 @@ export const read = query({
   args: { id: v.id("cloudWorks") },
   handler: async (ctx, { id }) => {
     const identity = await requireIdentity(ctx);
-    const row = await ctx.db.get(id);
+    const row = await ctx.db.get("cloudWorks", id);
     if (!row || row.owner !== identity.tokenIdentifier)
       throw new ConvexError("云端作品不存在");
     if (row.storageId)
@@ -145,7 +145,7 @@ export const save = mutation({
     });
     if (row) {
       if (row.storageId) await ctx.storage.delete(row.storageId);
-      await ctx.db.replace(row._id, value);
+      await ctx.db.replace("cloudWorks", row._id, value);
       return row._id;
     }
     return ctx.db.insert("cloudWorks", value);
@@ -155,7 +155,7 @@ export const remove = mutation({
   args: { id: v.id("cloudWorks"), expectedRevision: v.number() },
   handler: async (ctx, args) => {
     const identity = await requireIdentity(ctx);
-    const row = await ctx.db.get(args.id);
+    const row = await ctx.db.get("cloudWorks", args.id);
     if (!row || row.owner !== identity.tokenIdentifier)
       throw new ConvexError("云端作品不存在");
     if (row.revision !== args.expectedRevision)
@@ -168,7 +168,7 @@ export const remove = mutation({
       bytes: row.bytes,
     });
     if (row.storageId) await ctx.storage.delete(row.storageId);
-    await ctx.db.delete(row._id);
+    await ctx.db.delete("cloudWorks", row._id);
   },
 });
 // Only server actions can pass an owner; the public API always derives it from authentication.
@@ -206,7 +206,7 @@ export const commitFile = internalMutation({
     });
     if (row) {
       if (row.storageId) await ctx.storage.delete(row.storageId);
-      await ctx.db.replace(row._id, value);
+      await ctx.db.replace("cloudWorks", row._id, value);
       return row._id;
     }
     return ctx.db.insert("cloudWorks", value);
@@ -215,7 +215,7 @@ export const commitFile = internalMutation({
 export const getForOwner = internalQuery({
   args: { id: v.id("cloudWorks"), owner: v.string() },
   handler: async (ctx, args) => {
-    const row = await ctx.db.get(args.id);
+    const row = await ctx.db.get("cloudWorks", args.id);
     if (!row || row.owner !== args.owner)
       throw new ConvexError("云端作品不存在");
     return row;
