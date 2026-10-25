@@ -12,12 +12,25 @@ import {
   type Schema,
 } from "./db.ts";
 
+import { notifyWorkChange } from "./work-events";
+import { workName } from "./names";
+import { evictAssetUrl } from "./assets";
+
+export class WorkConflictError extends Error {
+  constructor() {
+    super("作品已在其他标签页修改或删除，本次修改将保存为冲突副本");
+  }
+}
 const MAX_VERSIONS = 30;
 
-type WorkTx = IDBPTransaction<Schema, ["works", "versions"], "readwrite">;
+type WorkTx = IDBPTransaction<
+  Schema,
+  ["works", "versions", "assets"],
+  "readwrite"
+>;
 async function writeWork<T>(fn: (tx: WorkTx) => Promise<T>): Promise<T> {
   const db = await getDb();
-  const tx = db.transaction(["works", "versions"], "readwrite");
+  const tx = db.transaction(["works", "versions", "assets"], "readwrite");
   // Observe aborts immediately even when a request rejects before tx.done is awaited.
   void tx.done.catch(() => {});
   try {
@@ -55,22 +68,25 @@ export async function createWork(input: {
 }): Promise<WorkRecord> {
   const checked = loadTemplateDoc(input.doc);
   if (!checked.ok) throw new Error(checked.error);
+  const name = workName(input.name);
   const now = new Date().toISOString();
   const id = newId(input.kind === "template" ? "tpl" : "work");
   const record: WorkRecord = {
     id,
     kind: input.kind,
-    name: input.name,
-    doc: { ...checked.doc, templateId: id, name: input.name },
+    name,
+    doc: { ...checked.doc, templateId: id, name },
     thumbnail: input.thumbnail ?? null,
     favorite: false,
     version: 1,
+    revision: 0,
     origin: input.origin ?? null,
     fromUpload: input.fromUpload ?? false,
     createdAt: now,
     updatedAt: now,
   };
   return writeWork(async (tx) => {
+    await assertAssets(tx, record.doc);
     await tx.objectStore("works").add(record);
     await addVersion(tx, record, { reason: input.reason ?? "create" });
     return record;
@@ -131,18 +147,31 @@ export async function saveWork(
     snapshot: boolean;
     note?: string;
     reason?: VersionMeta["reason"];
+    expectedRevision?: number;
   },
 ): Promise<WorkRecord> {
   const checked = loadTemplateDoc(doc);
   if (!checked.ok) throw new Error(checked.error);
-  return writeWork(async (tx) => {
+  const saved = await writeWork(async (tx) => {
     const store = tx.objectStore("works");
     const existing = await store.get(id);
+    if (
+      opts.expectedRevision !== undefined &&
+      (!existing || (existing.revision ?? 0) !== opts.expectedRevision)
+    )
+      throw new WorkConflictError();
     if (!existing) throw new Error("作品不存在或已被删除");
+    await assertAssets(tx, checked.doc);
+    // Preserve an unchanged legacy long name; constrain only newly entered names.
+    const name =
+      checked.doc.name === existing.name
+        ? existing.name
+        : workName(checked.doc.name);
     const record: WorkRecord = {
       ...existing,
-      name: checked.doc.name,
-      doc: { ...checked.doc, templateId: id },
+      name,
+      doc: { ...checked.doc, templateId: id, name },
+      revision: (existing.revision ?? 0) + 1,
       thumbnail:
         opts.thumbnail === undefined ? existing.thumbnail : opts.thumbnail,
       version: opts.snapshot ? existing.version + 1 : existing.version,
@@ -156,24 +185,32 @@ export async function saveWork(
       });
     return record;
   });
+  notifyWorkChange(id, saved.revision ?? 0);
+  return saved;
 }
 
 export async function patchWork(
   id: string,
   patch: Partial<Pick<WorkRecord, "name" | "favorite">>,
 ) {
-  return writeWork(async (tx) => {
+  const revision = await writeWork(async (tx) => {
     const store = tx.objectStore("works");
     const existing = await store.get(id);
     if (!existing) throw new Error("作品不存在");
-    const name = patch.name ?? existing.name;
+    const name =
+      patch.name === undefined ? existing.name : workName(patch.name);
+    const revision = (existing.revision ?? 0) + 1;
     await store.put({
       ...existing,
       ...patch,
+      name,
+      revision,
       doc: { ...existing.doc, name },
       updatedAt: new Date().toISOString(),
     });
+    return revision;
   });
+  notifyWorkChange(id, revision);
 }
 
 export async function duplicateWork(
@@ -193,35 +230,47 @@ export async function duplicateWork(
   });
 }
 
-export async function deleteWork(id: string) {
-  const db = await getDb();
-  const versions = await db.getAllFromIndex("versions", "by_work", id);
-  const work = await db.get("works", id);
-  const tx = db.transaction(["works", "versions"], "readwrite");
-  await tx.objectStore("works").delete(id);
-  for (const v of versions) await tx.objectStore("versions").delete(v.id);
-  await tx.done;
-  if (work)
-    await cleanupInternalAssets(
-      work.doc,
-      versions.map((v) => v.doc),
-    );
+/** Writers and collectors lock the same stores. A later writer must reject deleted references. */
+async function assertAssets(tx: WorkTx, doc: TemplateDoc) {
+  for (const id of referencedAssetIds(doc))
+    if (!(await tx.objectStore("assets").get(id)))
+      throw new Error("引用的图片素材已被删除，请重新添加图片后保存");
 }
-
-/** Remove internal (non-library) assets no longer referenced anywhere. */
-async function cleanupInternalAssets(
-  doc: TemplateDoc,
-  extraDocs: TemplateDoc[],
-) {
-  const db = await getDb();
-  const candidates = new Set([doc, ...extraDocs].flatMap(referencedAssetIds));
-  if (candidates.size === 0) return;
-  const stillUsed = await assetsInUse();
+async function cleanupInternalAssets(tx: WorkTx, docs: TemplateDoc[]) {
+  const candidates = new Set(docs.flatMap(referencedAssetIds));
+  const rows = [
+    ...(await tx.objectStore("works").getAll()),
+    ...(await tx.objectStore("versions").getAll()),
+  ];
+  const used = new Set(rows.flatMap((row) => referencedAssetIds(row.doc)));
+  const removed: string[] = [];
   for (const id of candidates) {
-    if (stillUsed.has(id)) continue;
-    const a = await db.get("assets", id);
-    if (a && a.scope === "internal") await db.delete("assets", id);
+    if (used.has(id)) continue;
+    const asset = await tx.objectStore("assets").get(id);
+    if (asset?.scope === "internal") {
+      await tx.objectStore("assets").delete(id);
+      removed.push(id);
+    }
   }
+  return removed;
+}
+export async function deleteWork(id: string) {
+  const removed = await writeWork(async (tx) => {
+    const work = await tx.objectStore("works").get(id);
+    const versions = await tx
+      .objectStore("versions")
+      .index("by_work")
+      .getAll(id);
+    await tx.objectStore("works").delete(id);
+    for (const version of versions)
+      await tx.objectStore("versions").delete(version.id);
+    return cleanupInternalAssets(tx, [
+      ...(work ? [work.doc] : []),
+      ...versions.map((v) => v.doc),
+    ]);
+  });
+  for (const assetId of removed) evictAssetUrl(assetId);
+  notifyWorkChange(id, null);
 }
 
 /** Every asset id referenced by any work or version. */
@@ -256,7 +305,13 @@ export async function restoreVersion(
   versionId: string,
 ): Promise<WorkRecord> {
   const db = await getDb();
-  const v = await db.get("versions", versionId);
+  const tx = db.transaction(["works", "versions"], "readonly");
+  const [v, current] = await Promise.all([
+    tx.objectStore("versions").get(versionId),
+    tx.objectStore("works").get(workId),
+  ]);
+  await tx.done;
+  if (!current) throw new Error("作品不存在");
   if (!v || v.workId !== workId) throw new Error("历史版本不存在");
   // Restoring never overwrites history: it creates a new version on top.
   return saveWork(
@@ -264,6 +319,7 @@ export async function restoreVersion(
     { ...v.doc, name: v.name },
     {
       snapshot: true,
+      expectedRevision: current.revision ?? 0,
       thumbnail: v.thumbnail ?? undefined,
       reason: "restore",
       note: `恢复自 v${v.version}`,
@@ -272,21 +328,29 @@ export async function restoreVersion(
 }
 
 export async function updateVersionNote(versionId: string, note: string) {
-  const db = await getDb();
-  const v = await db.get("versions", versionId);
-  if (!v) throw new Error("历史版本不存在");
-  await db.put("versions", { ...v, note: note.trim() || undefined });
+  await writeWork(async (tx) => {
+    const store = tx.objectStore("versions");
+    const version = await store.get(versionId);
+    if (!version) throw new Error("历史版本不存在");
+    await store.put({ ...version, note: note.trim() || undefined });
+  });
 }
 
-/** Delete one history version. The newest version cannot be deleted. */
+/** Check newest and delete in the same transaction as snapshot writers. */
 export async function deleteVersion(workId: string, versionId: string) {
-  const list = await listVersions(workId);
-  if (list[0]?.id === versionId) throw new Error("最新版本不能删除");
-  const v = list.find((x) => x.id === versionId);
-  if (!v) throw new Error("历史版本不存在");
-  const db = await getDb();
-  await db.delete("versions", versionId);
-  await cleanupInternalAssets(v.doc, []);
+  const removed = await writeWork(async (tx) => {
+    const list = await tx
+      .objectStore("versions")
+      .index("by_work")
+      .getAll(workId);
+    list.sort((a, b) => b.version - a.version);
+    if (list[0]?.id === versionId) throw new Error("最新版本不能删除");
+    const version = list.find((v) => v.id === versionId);
+    if (!version) throw new Error("历史版本不存在");
+    await tx.objectStore("versions").delete(versionId);
+    return cleanupInternalAssets(tx, [version.doc]);
+  });
+  for (const id of removed) evictAssetUrl(id);
 }
 
 /** Copy a version out into a brand-new work (the original keeps its history). */

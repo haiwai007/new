@@ -121,3 +121,25 @@ describe("suggestParameters", () => {
     expect(suggestParameters(doc)).toHaveLength(0);
   });
 });
+
+describe("untrusted parameter patterns", () => {
+  const base = param("p_title");
+  it("handles nested quantifiers without exponential backtracking", () => {
+    const p = { ...base, rules: { pattern: "(a+)+" } };
+    expect(validateParamValue(p, "a".repeat(9000) + "!")).toMatch(/格式不正确/);
+  });
+  it("rejects invalid/unsupported imported rules instead of silently skipping validation", () => {
+    for (const pattern of ["[", "(a)\\1", "(?=a)a", "a".repeat(501)])
+      expect(validateParamValue({ ...base, rules: { pattern } }, "a")).toMatch(/不受支持/);
+  });
+  it("supports full matches, Unicode and the existing phone/email/price presets", async () => {
+    const { PATTERN_PRESETS } = await import("./params");
+    const examples = ["13800138000", "a@example.com", "https://example.com", "123", "¥19.9"];
+    PATTERN_PRESETS.forEach((preset, i) => {
+      const p = { ...base, rules: { pattern: preset.pattern } };
+      expect(validateParamValue(p, examples[i])).toBeNull();
+      expect(validateParamValue(p, examples[i] + "\nINVALID")).not.toBeNull();
+    });
+    expect(validateParamValue({ ...base, rules: { pattern: "[海神]+" } }, "海神")).toBeNull();
+  });
+});

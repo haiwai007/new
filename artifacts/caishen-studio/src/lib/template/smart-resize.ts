@@ -93,10 +93,10 @@ export function resizeDoc(doc: TemplateDoc, width: number, height: number, mode:
   const H2 = Math.round(height);
   const { width: W, height: H } = doc.canvas;
   const canvas = { ...doc.canvas, width: W2, height: H2 };
-  if (mode === "none" || (W === W2 && H === H2)) return refreshPhoneLayers({ ...doc, canvas });
+  if (mode === "none" || (W === W2 && H === H2)) return refreshPhoneLayers({ ...doc, canvas }, doc);
   const layers = doc.layers.map((l) => {
     if (l.layout === "fixed") return l;
     return round(mode === "smart" ? smartLayer(l, W, H, W2, H2) : scaleLayer(l, W2 / W, H2 / H));
   });
-  return refreshPhoneLayers({ ...doc, canvas, layers });
+  return refreshPhoneLayers({ ...doc, canvas, layers }, doc);
 }

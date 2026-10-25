@@ -1,3 +1,4 @@
+import { RE2JS } from "re2js";
 import type {
   BindableProperty,
   ImageSource,
@@ -72,14 +73,21 @@ export const PATTERN_PRESETS: { id: string; label: string; pattern: string; mess
   { id: "price", label: "价格", pattern: "[¥￥$]?\\d+(\\.\\d{1,2})?", message: "价格格式如 ¥19.9" },
 ];
 
-/** Compile a stored pattern as a full-match regex; invalid patterns return null. */
-export function compilePattern(pattern: string | undefined): RegExp | null {
-  if (!pattern) return null;
+// RE2 uses a linear-time automaton: untrusted patterns never run in JS's backtracking engine.
+// Bounded pattern/input sizes also bound compilation and automaton work.
+const patternCache = new Map<string, { test: (value: string) => boolean } | null>();
+export const MAX_PATTERN_INPUT = 10000;
+export function compilePattern(pattern: string | undefined): { test: (value: string) => boolean } | null {
+  if (!pattern || pattern.length > 500) return null;
+  if (patternCache.has(pattern)) return patternCache.get(pattern)!;
+  let compiled = null;
   try {
-    return new RegExp(`^(?:${pattern})$`, "u");
-  } catch {
-    return null;
-  }
+    const re = RE2JS.compile(pattern);
+    compiled = { test: (value: string) => re.matches(value) };
+  } catch { /* Unsupported constructs such as backreferences fail closed. */ }
+  if (patternCache.size >= 100) patternCache.delete(patternCache.keys().next().value!);
+  patternCache.set(pattern, compiled);
+  return compiled;
 }
 
 /** Parameter types allowed for a given layer type. */
@@ -123,6 +131,8 @@ export function validateParamValue(
       return `「${param.name}」最多 ${rules.maxLength} 个字符`;
     }
     const re = compilePattern(rules.pattern);
+    if (rules.pattern && !re) return `「${param.name}」格式规则无效或不受支持，请修改规则（不支持回溯引用和前后查找）`;
+    if (rules.pattern && value.length > MAX_PATTERN_INPUT) return `「${param.name}」格式校验最多支持 ${MAX_PATTERN_INPUT} 个字符`;
     if (re && !re.test(value)) {
       return rules.patternMessage ? `「${param.name}」${rules.patternMessage}` : `「${param.name}」格式不正确`;
     }

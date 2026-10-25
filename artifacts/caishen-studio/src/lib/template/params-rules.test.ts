@@ -53,9 +53,9 @@ describe("parameter rules", () => {
     expect(validateParamValue(textParam({ pattern: email.pattern }), "a@b")).toMatch(/格式不正确/);
   });
 
-  it("ignores invalid stored patterns instead of crashing", () => {
+  it("fails closed on invalid stored patterns instead of crashing", () => {
     expect(compilePattern("(")).toBeNull();
-    expect(validateParamValue(textParam({ pattern: "(" }), "任意")).toBeNull();
+    expect(validateParamValue(textParam({ pattern: "(" }), "任意")).toMatch(/不受支持/);
   });
 
   it("groups parameters in first-seen order and defaults new ones by type", () => {

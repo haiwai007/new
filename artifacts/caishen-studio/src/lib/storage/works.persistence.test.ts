@@ -45,3 +45,55 @@ describe("atomic work persistence", () => {
     expect(await listVersions(work.id)).toHaveLength(1);
   });
 });
+
+describe("concurrent editor and asset integrity", () => {
+  it("rejects stale tabs without overwriting the winning revision", async () => {
+    const work = await createWork({ kind: "project", name: "initial", doc: BUILTIN_TEMPLATES[0].doc });
+    const results = await Promise.allSettled(["tab A", "tab B"].map(name =>
+      saveWork(work.id, { ...work.doc, name }, { snapshot: false, expectedRevision: 0 })));
+    expect(results.filter(r => r.status === "fulfilled")).toHaveLength(1);
+    expect(results.filter(r => r.status === "rejected")).toHaveLength(1);
+    expect((await getWork(work.id))?.revision).toBe(1);
+    expect((await getWork(work.id))?.version).toBe(1);
+  });
+  it("serializes deleting and saving history without orphan versions", async () => {
+    const { deleteWork } = await import("./works");
+    const work = await createWork({ kind: "project", name: "initial", doc: BUILTIN_TEMPLATES[0].doc });
+    await Promise.allSettled([
+      saveWork(work.id, work.doc, { snapshot: true }), deleteWork(work.id),
+      saveWork(work.id, work.doc, { snapshot: true }),
+    ]);
+    expect(await getWork(work.id)).toBeUndefined();
+    expect(await listVersions(work.id)).toEqual([]);
+  });
+  it("retains referenced assets, or rejects a save if collection already won", async () => {
+    const { saveAsset, getAsset, deleteAsset } = await import("./assets");
+    const { deleteWork } = await import("./works");
+    const asset = await saveAsset(new Blob(["x"], { type: "image/png" }), { name: "x", width: 1, height: 1, scope: "internal" });
+    const doc = structuredClone(BUILTIN_TEMPLATES[0].doc);
+    doc.canvas.backgroundImage = { kind: "asset", assetId: asset.id };
+    const first = await createWork({ kind: "project", name: "first", doc });
+    const second = await createWork({ kind: "project", name: "second", doc: BUILTIN_TEMPLATES[0].doc });
+    const results = await Promise.allSettled([
+      deleteWork(first.id), saveWork(second.id, doc, { snapshot: false, expectedRevision: 0 }),
+    ]);
+    const saved = results[1].status === "fulfilled";
+    expect(!!(await getAsset(asset.id))).toBe(saved);
+    expect((await getWork(second.id))?.doc.canvas.backgroundImage?.kind === "asset").toBe(saved);
+    if (saved) await expect(deleteAsset(asset.id)).rejects.toThrow(/使用/);
+  });
+  it("collects internal images only when no work or history references them", async () => {
+    const { saveAsset, getAsset } = await import("./assets");
+    const { deleteWork } = await import("./works");
+    const asset = await saveAsset(new Blob(["x"], { type: "image/png" }), { name: "x", width: 1, height: 1, scope: "internal" });
+    const doc = structuredClone(BUILTIN_TEMPLATES[0].doc);
+    doc.canvas.backgroundImage = { kind: "asset", assetId: asset.id };
+    const first = await createWork({ kind: "project", name: "first", doc });
+    const second = await createWork({ kind: "project", name: "second", doc });
+    await deleteWork(first.id);
+    expect(await getAsset(asset.id)).toBeDefined();
+    await deleteWork(second.id);
+    expect(await getAsset(asset.id)).toBeUndefined();
+    await expect(createWork({ kind: "project", name: "stale copy", doc })).rejects.toThrow(/图片素材已被删除/);
+  });
+});

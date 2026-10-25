@@ -273,3 +273,94 @@ test("phone model, status icons, date and battery persist and appear in PNG outp
     page.getByLabel("显示灵动岛 / 刘海 / 开孔", { exact: true }),
   ).toBeChecked();
 });
+
+test("stale tabs preserve the winning original and create an editable conflict copy", async ({ page, context }) => {
+  await createFromBuiltin(page);
+  const originalUrl = page.url();
+  const other = await context.newPage();
+  await other.goto(originalUrl);
+  await expect(other.getByLabel("项目名称", { exact: true })).toBeVisible();
+  await page.getByLabel("项目名称", { exact: true }).fill("主标签页的新名称");
+  await page.getByRole("button", { name: "保存", exact: true }).click();
+  await expect(page.getByText("已保存到本地", { exact: true })).toBeVisible();
+  await other.getByLabel("项目名称", { exact: true }).fill("旧标签页的修改");
+  await other.getByRole("button", { name: "保存", exact: true }).click();
+  const recovery = other.getByRole("link", { name: "打开冲突副本继续编辑" });
+  await expect(recovery).toBeVisible();
+  await page.reload();
+  await expect(page.getByLabel("项目名称", { exact: true })).toHaveValue("主标签页的新名称");
+  await recovery.click();
+  await expect(other).not.toHaveURL(originalUrl);
+  await expect(other.getByLabel("项目名称", { exact: true })).toHaveValue("旧标签页的修改（冲突副本）");
+  await other.reload();
+  await expect(other.getByLabel("项目名称", { exact: true })).toHaveValue("旧标签页的修改（冲突副本）");
+  await other.close();
+});
+
+test("mobile editor keeps save, export and save status within the viewport", async ({ page }) => {
+  await createFromBuiltin(page);
+  for (const width of [320, 360, 375, 768]) {
+    await page.setViewportSize({ width, height: 900 });
+    const header = page.locator("header");
+    for (const name of ["保存", "导出", "更多"]) {
+      const button = header.getByRole("button", { name, exact: true });
+      await expect(button).toBeVisible();
+      await expect(button).toHaveCSS("height", "44px");
+      const box = (await button.boundingBox())!;
+      expect(box.x).toBeGreaterThanOrEqual(0);
+      expect(box.x + box.width).toBeLessThanOrEqual(width);
+      expect(box.height).toBeGreaterThanOrEqual(44);
+    }
+    await expect(header.getByText("已保存到本地", { exact: true })).toBeVisible();
+    expect(await header.evaluate(el => el.scrollWidth <= el.clientWidth)).toBe(true);
+  }
+  await page.getByRole("button", { name: "更多", exact: true }).click();
+  await expect(page.getByRole("menuitem", { name: "适应屏幕" })).toBeVisible();
+  await page.keyboard.press("Escape");
+  await page.getByRole("button", { name: "导出", exact: true }).click();
+  await expect(page.getByRole("dialog", { name: "导出图片" })).toBeVisible();
+});
+
+test("export log failure does not report a successful PNG download as failed", async ({ page }, info) => {
+  await createFromBuiltin(page);
+  await page.evaluate(() => {
+    const original = IDBObjectStore.prototype.put;
+    IDBObjectStore.prototype.put = function (...args: Parameters<IDBObjectStore["put"]>) {
+      if (this.name === "exports") throw new DOMException("full export log", "QuotaExceededError");
+      return original.apply(this, args);
+    };
+  });
+  await exportPNG(page, info.outputPath("export-without-log.png"));
+  await expect(page.getByText("图片已生成并开始下载，导出记录未保存", { exact: true })).toBeVisible();
+  await expect(page.getByText("导出失败", { exact: true })).toHaveCount(0);
+});
+
+test("transparent PNG omits background images", async ({ page }) => {
+  await page.goto("/custom");
+  const data = await page.evaluate(() => {
+    const canvas = document.createElement("canvas");
+    canvas.width = canvas.height = 100;
+    const ctx = canvas.getContext("2d")!;
+    ctx.fillStyle = "#0000ff";
+    ctx.fillRect(0, 0, 100, 100);
+    return canvas.toDataURL().split(",")[1];
+  });
+  await page.locator('input[type="file"]').setInputFiles({ name: "blue.png", mimeType: "image/png", buffer: Buffer.from(data, "base64") });
+  await page.getByRole("button", { name: /原图背景模式/ }).click();
+  await page.getByRole("button", { name: "生成初始模板并进入编辑器" }).click();
+  await expect(page).toHaveURL(/\/editor\//);
+  await page.getByRole("button", { name: "导出", exact: true }).click();
+  await page.getByRole("dialog").getByRole("switch").click();
+  const downloaded = page.waitForEvent("download");
+  await page.getByRole("dialog").getByRole("button", { name: "导出", exact: true }).click();
+  const bytes = await readFile((await (await downloaded).path())!);
+  const alpha = await page.evaluate(async (base64) => {
+    const bitmap = await createImageBitmap(new Blob([Uint8Array.from(atob(base64), ch => ch.charCodeAt(0))], { type: "image/png" }));
+    const canvas = document.createElement("canvas");
+    canvas.width = canvas.height = 100;
+    const ctx = canvas.getContext("2d")!;
+    ctx.drawImage(bitmap, 0, 0);
+    return ctx.getImageData(50, 50, 1, 1).data[3];
+  }, bytes.toString("base64"));
+  expect(alpha).toBe(0);
+});

@@ -268,10 +268,10 @@ export default function AssetsPage() {
         <DialogContent data-testid="dialog-confirm-delete-asset">
           <DialogHeader><DialogTitle>确认删除这张素材？</DialogTitle>
             <DialogDescription className="leading-6">
-              {pendingDelete?.usedBy.length ? <><span className="font-medium text-foreground">「{pendingDelete.asset.name}」正在被以下作品或历史版本引用：</span><span className="mt-2 block rounded-lg bg-[#fff2ed] p-3 text-[#8e3528]" data-testid="text-asset-usage-warning">{pendingDelete.usedBy.join("、")}</span><span className="mt-2 block">删除后，这些作品及历史版本中的图片将无法显示。此操作无法撤销。</span></> : <>「{pendingDelete?.asset.name}」当前没有被任何作品或历史版本引用。删除后无法恢复。</>}
+              {pendingDelete?.usedBy.length ? <><span className="font-medium text-foreground">「{pendingDelete.asset.name}」正在被以下作品或历史版本引用：</span><span className="mt-2 block rounded-lg bg-[#fff2ed] p-3 text-[#8e3528]" data-testid="text-asset-usage-warning">{pendingDelete.usedBy.join("、")}</span><span className="mt-2 block">为保护作品及历史版本，暂不能删除。请先移除所有引用后重试。</span></> : <>「{pendingDelete?.asset.name}」当前没有被任何作品或历史版本引用。删除后无法恢复。</>}
             </DialogDescription>
           </DialogHeader>
-          <DialogFooter><Button variant="ghost" onClick={() => setPendingDelete(null)} disabled={deleting} data-testid="button-cancel-delete-asset">保留素材</Button><Button variant="destructive" onClick={() => void confirmDelete()} disabled={deleting} data-testid="button-confirm-delete-asset">{deleting && <LoaderCircle className="size-4 animate-spin" />}仍然删除</Button></DialogFooter>
+          <DialogFooter><Button variant="ghost" onClick={() => setPendingDelete(null)} disabled={deleting} data-testid="button-cancel-delete-asset">保留素材</Button><Button variant="destructive" onClick={() => void confirmDelete()} disabled={deleting || !!pendingDelete?.usedBy.length} data-testid="button-confirm-delete-asset">{deleting && <LoaderCircle className="size-4 animate-spin" />}确认删除</Button></DialogFooter>
         </DialogContent>
       </Dialog>
     </main>

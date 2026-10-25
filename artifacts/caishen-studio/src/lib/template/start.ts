@@ -66,7 +66,7 @@ export async function startFromBuiltin(builtinId: string): Promise<string> {
   const thumbnail = await safeThumb(work.doc);
   if (thumbnail) {
     try {
-      await saveWork(work.id, work.doc, { snapshot: false, thumbnail });
+      await saveWork(work.id, work.doc, { snapshot: false, thumbnail, expectedRevision: work.revision ?? 0 });
     } catch {}
   }
 

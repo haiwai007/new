@@ -1,3 +1,4 @@
+import { syncPhoneTextSettings } from "@/lib/phone/layers";
 import { create } from "zustand";
 import type { Layer, TemplateDoc } from "@/types/template.ts";
 import { cloneLayers, addLayers, expandToGroups, removeLayers } from "@/lib/template/doc-ops.ts";
@@ -29,6 +30,9 @@ type CommitOptions = {
 type EditorState = {
   workId: string | null;
   doc: TemplateDoc | null;
+  revision: number;
+  loadId: number;
+  recoveryWorkId: string | null;
   past: TemplateDoc[];
   future: TemplateDoc[];
   lastCommit: { key: string; at: number } | null;
@@ -44,7 +48,7 @@ type EditorState = {
   setOcrRequest: (r: OcrRequest | null) => void;
   repairOpen: boolean;
   setRepairOpen: (o: boolean) => void;
-  load: (workId: string, doc: TemplateDoc) => void;
+  load: (workId: string, doc: TemplateDoc, revision?: number) => void;
   reset: () => void;
   commit: (doc: TemplateDoc, opts?: CommitOptions) => void;
   undo: () => void;
@@ -62,6 +66,9 @@ type EditorState = {
 };
 
 export const useEditor = create<EditorState>((set, get) => ({
+  revision: 0,
+  loadId: 0,
+  recoveryWorkId: null,
   workId: null,
   doc: null,
   past: [],
@@ -80,10 +87,13 @@ export const useEditor = create<EditorState>((set, get) => ({
   repairOpen: false,
   setRepairOpen: (repairOpen) => set({ repairOpen }),
 
-  load: (workId, doc) =>
+  load: (workId, doc, revision = 0) =>
     set({
       workId,
       doc,
+      revision,
+      loadId: get().loadId + 1,
+      recoveryWorkId: null,
       past: [],
       future: [],
       lastCommit: null,
@@ -100,6 +110,7 @@ export const useEditor = create<EditorState>((set, get) => ({
   commit: (doc, opts) => {
     const { doc: prev, past, lastCommit } = get();
     if (!prev || prev === doc) return;
+    doc = syncPhoneTextSettings(doc);
     const now = Date.now();
     const merge =
       opts?.coalesceKey !== undefined &&

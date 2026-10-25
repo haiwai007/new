@@ -13,7 +13,7 @@ const image = z.string().nullable();
 const workSchema = z.object({
   id,
   kind: z.enum(["project", "template"]),
-  name: z.string().min(1).max(1000),
+  name: z.string(),
   doc: z.unknown(),
   thumbnail: image,
   favorite: z.boolean(),

@@ -128,3 +128,13 @@ describe("phone status bar", () => {
     expect(loaded.ok && loaded.doc.phone).toBeUndefined();
   });
 });
+
+it("preserves manually edited phone contents when resizing in every mode", () => {
+  const original = applyPhoneLayers(doc(), { ...defaultPhoneSettings(), showDate: true });
+  original.layers = original.layers.map(l => l.type === "text" && l.id.endsWith("_time") ? { ...l, text: "13:08", locked: false } : l);
+  for (const mode of ["none", "smart", "scale"] as const) {
+    const next = resizeDoc(original, 750, 1600, mode);
+    expect(next.phone?.time).toBe("13:08");
+    expect(next.layers.find(l => l.id.endsWith("_time"))).toMatchObject({ text: "13:08", locked: false });
+  }
+});

@@ -88,6 +88,7 @@ export async function restoreWorkspace(input: WorkspaceBackup) {
     const name = `${w.name}（备份恢复）`;
     return {
       ...w,
+      revision: 0,
       id,
       name,
       origin: w.origin ? (workIds.get(w.origin) ?? w.origin) : null,

@@ -325,7 +325,7 @@ export async function renderDoc(
   });
   try {
     sc.backgroundColor = opts.transparent ? "" : doc.canvas.backgroundColor;
-    if (doc.canvas.backgroundImage) {
+    if (!opts.transparent && doc.canvas.backgroundImage) {
       const bg = await buildBackground(doc);
       if (bg) sc.backgroundImage = bg;
       else warnings.push("画布背景图片加载失败");

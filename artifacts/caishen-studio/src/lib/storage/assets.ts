@@ -1,3 +1,4 @@
+import { referencedAssetIds } from "@/lib/template/doc-ops";
 import { newId } from "@/lib/template/ids.ts";
 import type { ImageSource } from "@/types/template.ts";
 import { getDb, type AssetRecord } from "./db.ts";
@@ -54,7 +55,21 @@ export async function updateAsset(
 
 export async function deleteAsset(id: string) {
   const db = await getDb();
-  await db.delete("assets", id);
+  const tx = db.transaction(["works", "versions", "assets"], "readwrite");
+  const rows = [
+    ...(await tx.objectStore("works").getAll()),
+    ...(await tx.objectStore("versions").getAll()),
+  ];
+  if (rows.some((row) => referencedAssetIds(row.doc).includes(id))) {
+    await tx.done;
+    throw new Error("该素材仍被作品或历史版本使用，请先移除引用后再删除");
+  }
+  await tx.objectStore("assets").delete(id);
+  await tx.done;
+  evictAssetUrl(id);
+}
+
+export function evictAssetUrl(id: string) {
   const url = urlCache.get(id);
   if (url) URL.revokeObjectURL(url);
   urlCache.delete(id);

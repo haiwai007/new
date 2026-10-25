@@ -2,8 +2,8 @@ import { act, renderHook, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { useEditor } from "@/stores/editor";
 import { BUILTIN_TEMPLATES } from "@/lib/template/builtin";
-const mocks = vi.hoisted(() => ({ save: vi.fn(), thumb: vi.fn() }));
-vi.mock("@/lib/storage/works.ts", () => ({ saveWork: mocks.save }));
+const mocks = vi.hoisted(() => ({ save: vi.fn(), thumb: vi.fn(), create: vi.fn() }));
+vi.mock("@/lib/storage/works.ts", async (original) => ({ ...(await original<typeof import("@/lib/storage/works")>()), saveWork: mocks.save, createWork: mocks.create }));
 vi.mock("@/lib/template/start.ts", () => ({ safeThumb: mocks.thumb }));
 import { useAutosave } from "./use-autosave";
 beforeEach(() => {
@@ -78,4 +78,22 @@ describe("autosave ordering", () => {
     expect(useEditor.getState().saveStatus).toBe("dirty");
     result.current.cancelPending();
   });
+});
+
+it("saves stale edits into one durable conflict copy and keeps updating that copy", async () => {
+  const { WorkConflictError } = await import("@/lib/storage/works");
+  mocks.save.mockRejectedValueOnce(new WorkConflictError());
+  mocks.create.mockResolvedValue({ id: "recovery-1", name: "设计（冲突副本）", revision: 0 });
+  const { result } = renderHook(() => useAutosave());
+  await act(async () => { expect(await result.current.saveNow({ silent: true })).toBe(false); });
+  expect(mocks.create).toHaveBeenCalledOnce();
+  expect(useEditor.getState().recoveryWorkId).toBe("recovery-1");
+  expect(useEditor.getState().saveStatus).toBe("error");
+  mocks.save.mockResolvedValue({ id: "recovery-1", name: "设计（冲突副本）", revision: 1 });
+  act(() => useEditor.getState().commit({ ...useEditor.getState().doc!, name: "later edit" }));
+  await act(async () => { await result.current.saveNow({ silent: true }); });
+  expect(mocks.save.mock.calls[1][0]).toBe("recovery-1");
+  expect(mocks.save.mock.calls[1][2].expectedRevision).toBe(0);
+  expect(mocks.create).toHaveBeenCalledOnce();
+  result.current.cancelPending();
 });

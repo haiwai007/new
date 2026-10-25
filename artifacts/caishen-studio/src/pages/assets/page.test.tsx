@@ -129,7 +129,7 @@ describe("AssetsPage", () => {
     expect(screen.queryByTestId(`card-asset-${logo.id}`)).not.toBeInTheDocument();
   });
 
-  it("shows referencing works and waits for explicit delete confirmation", async () => {
+  it("shows referencing works and prevents deleting used assets", async () => {
     vi.mocked(listAssets).mockResolvedValueOnce([asset]).mockResolvedValue([]);
     vi.mocked(assetsInUse).mockResolvedValue(
       new Map([[asset.id, ["春季海报", "商品模板"]]]),
@@ -145,7 +145,7 @@ describe("AssetsPage", () => {
     expect(deleteAsset).not.toHaveBeenCalled();
 
     fireEvent.click(screen.getByTestId("button-confirm-delete-asset"));
-    await waitFor(() => expect(deleteAsset).toHaveBeenCalledWith(asset.id));
-    expect(await screen.findByTestId("state-assets-empty")).toBeInTheDocument();
+    expect(screen.getByTestId("button-confirm-delete-asset")).toBeDisabled();
+    expect(deleteAsset).not.toHaveBeenCalled();
   });
 });

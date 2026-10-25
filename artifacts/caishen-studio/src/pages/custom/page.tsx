@@ -1,3 +1,4 @@
+import { MAX_WORK_NAME } from "@/lib/storage/names";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AlertTriangle, ArrowRight, Check, ClipboardPaste, ImageUp, Loader2, Lock, RefreshCw, ScanText } from "lucide-react";
@@ -250,7 +251,7 @@ export default function CustomTemplatePage() {
         <div className={cn("space-y-6", !img && "pointer-events-none opacity-50")}>
           <div className="space-y-1">
             <Label>模板名称</Label>
-            <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="例如：门店促销海报" />
+            <Input maxLength={MAX_WORK_NAME} value={name} onChange={(e) => setName(e.target.value)} placeholder="例如：门店促销海报" />
           </div>
 
           <div className="space-y-2">

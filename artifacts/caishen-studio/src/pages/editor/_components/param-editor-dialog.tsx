@@ -124,7 +124,7 @@ function Form({ param, layer: newLayer, onDone }: Props & { onDone: () => void }
     }
     const usePattern = supportsPattern && presetId !== NO_PATTERN && pattern.trim() !== "";
     if (usePattern && !compilePattern(pattern.trim())) {
-      toast.error("格式规则不是有效的正则表达式");
+      toast.error("格式规则无效或不受支持（不支持回溯引用和前后查找）");
       return;
     }
     const nStep = num(step);
@@ -248,9 +248,9 @@ function Form({ param, layer: newLayer, onDone }: Props & { onDone: () => void }
             </div>
             {presetId === CUSTOM_PATTERN && (
               <>
-                <Input value={pattern} onChange={(e) => setPattern(e.target.value)} placeholder="例如：[A-Z]{2}\d{4}" className="font-mono text-xs" />
+                <Input value={pattern} onChange={(e) => setPattern(e.target.value)} maxLength={500} placeholder="例如：[A-Z]{2}\d{4}" className="font-mono text-xs" />
                 <Input value={patternMessage} onChange={(e) => setPatternMessage(e.target.value)} placeholder="不符合时的提示，例如：编号格式如 AB1234" />
-                {pattern.trim() !== "" && !compilePattern(pattern.trim()) && <p className="text-xs text-destructive">正则表达式无效</p>}
+                {pattern.trim() !== "" && !compilePattern(pattern.trim()) && <p className="text-xs text-destructive">规则无效或不受支持</p>}
               </>
             )}
           </div>

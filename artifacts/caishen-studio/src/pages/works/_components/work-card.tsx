@@ -1,3 +1,4 @@
+import { MAX_WORK_NAME } from "@/lib/storage/names";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { format } from "date-fns";
@@ -113,7 +114,7 @@ export default function WorkCard({
           {renaming ? (
             <Input
               autoFocus
-              value={name}
+              maxLength={MAX_WORK_NAME} value={name}
               onChange={(e) => setName(e.target.value)}
               onBlur={() => {
                 setRenaming(false);

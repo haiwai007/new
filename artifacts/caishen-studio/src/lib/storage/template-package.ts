@@ -1,3 +1,4 @@
+import { workName } from "./names";
 import { getAsset } from "./assets.ts";
 import { referencedAssetIds } from "@/lib/template/doc-ops.ts";
 import {
@@ -113,7 +114,7 @@ export async function importWorkFile(
     throw new Error(prepared.warnings.join("；"));
   const id = newId(options.kind === "template" ? "tpl" : "work");
   const now = new Date().toISOString();
-  const name = options.name ?? prepared.doc.name;
+  const name = workName(options.name ?? prepared.doc.name);
   const doc = { ...prepared.doc, templateId: id, name };
   const work: WorkRecord = {
     id,
@@ -123,6 +124,7 @@ export async function importWorkFile(
     thumbnail: null,
     favorite: false,
     version: 1,
+    revision: 0,
     origin: options.origin ?? null,
     fromUpload: false,
     createdAt: now,

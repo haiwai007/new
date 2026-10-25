@@ -80,7 +80,7 @@ function EditorInner({ workId }: { workId: string | undefined }) {
       const res = loadTemplateDoc(work.doc);
       if (!res.ok) throw new Error(res.error);
       if (!alive) return;
-      useEditor.getState().load(work.id, res.doc);
+      useEditor.getState().load(work.id, res.doc, work.revision ?? 0);
       setWarnings(res.warnings);
       setState({ status: "ready", isTemplate: work.kind === "template" });
     };

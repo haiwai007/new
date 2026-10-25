@@ -274,6 +274,86 @@ export function applyPhoneLayers(
     layers: [...doc.layers.filter((l) => !old.has(l.id)), ...layers],
   };
 }
-export function refreshPhoneLayers(doc: TemplateDoc) {
-  return doc.phone ? applyPhoneLayers(doc, doc.phone) : doc;
+/** Keep supported manual text edits reflected in the phone settings panel. */
+export function syncPhoneTextSettings(doc: TemplateDoc): TemplateDoc {
+  if (!doc.phone) return doc;
+  const phone = { ...doc.phone };
+  const content = (role: string) => {
+    const layer = doc.layers.find((l) => l.id === `${phone.groupId}_${role}`);
+    return layer?.type === "text" ? layer.text.trim() : undefined;
+  };
+  const time = content("time");
+  if (time && time !== phoneTime(phone)) {
+    const match = /^(\d{1,2}):(\d{2})(?:\s*(AM|PM))?$/i.exec(time);
+    if (match) {
+      let hour = Number(match[1]);
+      if (match[3]) {
+        if (hour < 1 || hour > 12) return doc;
+        hour = (hour % 12) + (match[3].toUpperCase() === "PM" ? 12 : 0);
+      }
+      if (hour <= 23 && Number(match[2]) <= 59)
+        phone.time = `${String(hour).padStart(2, "0")}:${match[2]}`;
+    }
+  }
+  const date = content("date");
+  if (date && date !== phoneDate(phone)) {
+    if (/^\d{4}-\d{2}-\d{2}$/.test(date)) phone.date = date;
+    else {
+      const match = /^(\d{1,2})月(\d{1,2})日/.exec(date);
+      if (match)
+        phone.date = `${phone.date.slice(0, 4)}-${match[1].padStart(2, "0")}-${match[2].padStart(2, "0")}`;
+    }
+  }
+  const carrier = content("carrier");
+  if (carrier !== undefined && carrier.length <= 12) phone.carrier = carrier;
+  if (!phoneSettingsSchema.safeParse(phone).success) return doc;
+  return JSON.stringify(phone) === JSON.stringify(doc.phone)
+    ? doc
+    : { ...doc, phone };
+}
+
+/** Resizing repositions generated layers but preserves manual content/style overrides. */
+export function refreshPhoneLayers(
+  doc: TemplateDoc,
+  previous: TemplateDoc = doc,
+): TemplateDoc {
+  if (!doc.phone || !previous.phone) return doc;
+  const source = syncPhoneTextSettings(previous);
+  const synced = { ...doc, phone: source.phone };
+  const baseline = applyPhoneLayers(
+    { ...previous, layers: [] },
+    previous.phone,
+  ).layers;
+  const generated = applyPhoneLayers(synced, synced.phone!);
+  const geometry = new Set([
+    "x",
+    "y",
+    "width",
+    "height",
+    "rotation",
+    "fontSize",
+    "minFontSize",
+    "letterSpacing",
+    "radius",
+    "strokeWidth",
+    "shadow",
+  ]);
+  return {
+    ...generated,
+    layers: generated.layers.flatMap((layer) => {
+      const base = baseline.find((l) => l.id === layer.id);
+      if (!base) return [layer];
+      const old = previous.layers.find((l) => l.id === layer.id);
+      if (!old) return []; // Respect a deliberately removed generated layer.
+      const overrides: Record<string, unknown> = {};
+      for (const key of Object.keys(old) as (keyof Layer)[]) {
+        if (
+          !geometry.has(key) &&
+          JSON.stringify(old[key]) !== JSON.stringify(base[key])
+        )
+          overrides[key] = old[key];
+      }
+      return [{ ...layer, ...overrides } as Layer];
+    }),
+  };
 }

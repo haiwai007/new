@@ -41,9 +41,15 @@ export default function ExportDialog({ open, onOpenChange }: { open: boolean; on
       const name = `${sanitizeFileName(fileName || doc.name)}.${format === "png" ? "png" : "jpg"}`;
       const res = await exportDoc(doc, { format, width, quality, transparent, fileName: name });
       downloadBlob(res.blob, name);
-      await recordExport({ workId, workName: doc.name, fileName: name, format, width: res.width, height: res.height });
+      let historySaved = true;
+      try {
+        await recordExport({ workId, workName: doc.name, fileName: name, format, width: res.width, height: res.height });
+      } catch {
+        historySaved = false;
+        toast.warning("图片已生成并开始下载，导出记录未保存", { description: "本地存储可能已满，请检查下载文件并清理空间。" });
+      }
       setWarnings(res.warnings);
-      toast.success(`已导出 ${res.width}×${res.height}（${formatBytes(res.blob.size)}）`);
+      if (historySaved) toast.success(`已导出 ${res.width}×${res.height}（${formatBytes(res.blob.size)}）`);
       if (res.warnings.length === 0) onOpenChange(false);
     } catch (e) {
       toast.error("导出失败", { description: e instanceof Error ? e.message : undefined });

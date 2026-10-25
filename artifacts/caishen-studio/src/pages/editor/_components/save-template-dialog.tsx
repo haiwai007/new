@@ -1,3 +1,4 @@
+import { MAX_WORK_NAME } from "@/lib/storage/names";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Loader2 } from "lucide-react";
@@ -43,7 +44,7 @@ export default function SaveTemplateDialog({ open, onOpenChange }: { open: boole
         </DialogHeader>
         <div className="space-y-1">
           <Label>模板名称</Label>
-          <Input value={name} onChange={(e) => setName(e.target.value)} placeholder={`${doc.name} 模板`} autoFocus />
+          <Input maxLength={MAX_WORK_NAME} value={name} onChange={(e) => setName(e.target.value)} placeholder={`${doc.name} 模板`} autoFocus />
         </div>
         <DialogFooter>
           <Button onClick={save} disabled={busy}>

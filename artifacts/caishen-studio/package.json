@@ -96,9 +96,10 @@
     "vite": "catalog:",
     "vitest": "^4.1.12",
     "wouter": "^3.3.5",
-    "zod": "^4.6.5"
+    "zod": "^4.6.6"
   },
   "dependencies": {
+    "re2js": "2.9.0",
     "@usehercules/auth": "^1.2.1",
     "convex": "^1.48.0",
     "fabric": "^7.4.0",

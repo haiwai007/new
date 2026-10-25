@@ -28,6 +28,8 @@ export type WorkRecord = {
   thumbnail: string | null;
   favorite: boolean;
   version: number;
+  /** Local edit revision, independent of named history versions. Legacy records start at 0. */
+  revision?: number;
   /** Where this work came from (built-in template id or custom template id). */
   origin: string | null;
   fromUpload: boolean;

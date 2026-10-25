@@ -173,3 +173,18 @@ describe("complete workspace backup", () => {
     ).toBeNull();
   });
 });
+
+it("limits new names but roundtrips legacy long names through repeated backup/restores", async () => {
+  const created = await createWork({ kind: "project", name: "新".repeat(1001), doc: BUILTIN_TEMPLATES[0].doc });
+  expect(created.name.length).toBe(200);
+  const db = await getDb();
+  const legacyName = "旧".repeat(1001);
+  await db.put("works", { ...created, name: legacyName, doc: { ...created.doc, name: legacyName } });
+  const first = await backup();
+  expect(first.works[0].name).toBe(legacyName);
+  await restoreWorkspace(first);
+  const second = await backup();
+  expect(second.works.some(w => w.name === legacyName + "（备份恢复）")).toBe(true);
+  await restoreWorkspace(second);
+  await expect(exportWorkspace()).resolves.toBeInstanceOf(Blob);
+});
