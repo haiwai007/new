@@ -37,7 +37,7 @@ export default function AccountPage() {
   return (
     <div className="mx-auto max-w-5xl space-y-6 px-4 py-10">
       <div>
-        <p className="text-sm text-primary">财神作图 · 本地优先</p>
+        <p className="text-sm text-primary">海神作图 · 本地优先</p>
         <h1 className="mt-2 text-3xl font-bold">账户与云端同步</h1>
       </div>
       {cloudConfig.enabled ? (

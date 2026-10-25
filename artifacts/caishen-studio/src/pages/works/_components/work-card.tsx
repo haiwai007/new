@@ -70,7 +70,7 @@ export default function WorkCard({
       const { blob, assetCount, missing } = await exportTemplatePackage(
         work.doc,
       );
-      downloadFile(blob, `${sanitizeFileName(work.name)}.caishen.json`);
+      downloadFile(blob, `${sanitizeFileName(work.name)}.haishen.json`);
       toast.success("已导出模板文件", {
         description: `包含 ${assetCount} 张图片${missing ? `，${missing} 张本地图片已丢失未包含` : ""}。可在任意浏览器的「我的作品 → 导入模板」中打开。`,
       });

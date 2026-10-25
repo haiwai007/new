@@ -46,7 +46,7 @@ export default function SiteHeader() {
       <div className="mx-auto flex h-16 max-w-7xl items-center gap-4 px-4 md:px-6">
         <Link to="/" className="flex cursor-pointer items-center gap-2">
           <BrandMark />
-          <span className="font-serif text-lg font-bold tracking-wide">财神作图</span>
+          <span className="font-serif text-lg font-bold tracking-wide">海神作图</span>
         </Link>
         <nav className="ml-4 hidden items-center gap-1 xl:flex">
           <NavItems />
@@ -67,7 +67,7 @@ export default function SiteHeader() {
             </SheetTrigger>
             <SheetContent side="right" className="w-64">
               <SheetHeader>
-                <SheetTitle>财神作图</SheetTitle>
+                <SheetTitle>海神作图</SheetTitle>
               </SheetHeader>
               <nav className="flex flex-col gap-1 px-4">
                 <NavItems />

@@ -14,7 +14,7 @@ export type ExportOptions = {
 
 export function sanitizeFileName(name: string): string {
   const cleaned = name.replace(/[\\/:*?"<>|]+/g, "_").trim();
-  return cleaned.length ? cleaned.slice(0, 80) : "财神作图";
+  return cleaned.length ? cleaned.slice(0, 80) : "海神作图";
 }
 
 /**

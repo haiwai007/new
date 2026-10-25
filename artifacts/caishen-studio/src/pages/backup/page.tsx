@@ -102,7 +102,7 @@ export default function BackupPage() {
               const blob = await exportWorkspace();
               downloadFile(
                 blob,
-                `财神作图-${new Date().toISOString().slice(0, 10)}.caishen-backup.json`,
+                `海神作图-${new Date().toISOString().slice(0, 10)}.haishen-backup.json`,
               );
               setStatus(
                 "备份文件已生成，请确认浏览器下载完成，并妥善保管。备份包含你的作品与图片。",
@@ -117,7 +117,7 @@ export default function BackupPage() {
       <section className="space-y-4 rounded-xl border p-6">
         <h2 className="text-xl font-semibold">从备份恢复</h2>
         <p className="text-sm text-muted-foreground">
-          选择本平台导出的 .caishen-backup.json 文件（不超过
+          选择本平台导出的 .haishen-backup.json 文件（不超过
           100MB）。先校验并预览，确认后创建副本；已有数据不会被覆盖。单个模板文件请在“我的作品”中导入。
         </p>
         <input

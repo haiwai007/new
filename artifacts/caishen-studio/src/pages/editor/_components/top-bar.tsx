@@ -80,7 +80,7 @@ export default function TopBar({
       const current = useEditor.getState().doc;
       if (!current) return;
       const { blob, assetCount, missing } = await exportTemplatePackage(current);
-      downloadFile(blob, `${sanitizeFileName(current.name)}.caishen.json`);
+      downloadFile(blob, `${sanitizeFileName(current.name)}.haishen.json`);
       toast.success("已导出模板文件", {
         description: `包含 ${assetCount} 张图片${missing ? `，${missing} 张图片已丢失未包含` : ""}。可在「我的作品 → 导入模板」中打开。`,
       });
