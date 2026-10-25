@@ -1,3 +1,5 @@
+import PhoneModelPicker from "@/components/phone/model-picker";
+import { settingsForModel } from "@/lib/phone/profiles";
 import { useState } from "react";
 import { Clock, RotateCcw, Smartphone, Trash2, WandSparkles } from "lucide-react";
 import { toast } from "sonner";
@@ -5,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
 import { edit, useEditor } from "@/stores/editor";
-import { PHONE_MODELS, phoneModel } from "@/lib/phone/models";
+import { phoneModel } from "@/lib/phone/models";
 import { PHONE_NETWORKS, phoneSettingsSchema, type PhoneSettings } from "@/lib/phone/schema";
 import {
   applyPhoneLayers,
@@ -190,31 +192,22 @@ export default function PhonePanel() {
       </div>
 
       <Section title="机型" open>
-        <Field label="手机型号">
-          <select
-            aria-label="手机型号"
-            className={selectClass}
-            value={draft.modelId}
-            onChange={(e) => set("modelId", e.target.value as PhoneSettings["modelId"])}
-          >
-            <optgroup label="iPhone">
-              {PHONE_MODELS.filter((m) => m.style !== "android").map((m) => (
-                <option key={m.id} value={m.id}>{m.name}</option>
-              ))}
-            </optgroup>
-            <optgroup label="安卓">
-              {PHONE_MODELS.filter((m) => m.style === "android").map((m) => (
-                <option key={m.id} value={m.id}>{m.name}</option>
-              ))}
-            </optgroup>
-          </select>
-        </Field>
+        <PhoneModelPicker value={draft.modelId} onChange={id => {
+          if (!id) return;
+          const next = settingsForModel(draft, id);
+          setDraft(next);
+          setError("");
+          try {
+            const preset = phoneModel(id);
+            edit(current => applyPhoneLayers(resize ? resizeDoc(current, preset.width, preset.height, "smart") : current, next));
+          } catch (error) { setError(error instanceof Error ? error.message : "切换机型失败"); }
+        }} />
         <p className="text-[11px] text-muted-foreground">
           机型尺寸 {model.width}×{model.height} · 当前画布 {doc.canvas.width}×{doc.canvas.height}
         </p>
         <SwitchRow
           label="同时适配机型画布尺寸"
-          hint={resize ? "点击下方按钮时智能调整内容，可撤销" : undefined}
+          hint={resize ? "切换机型或点击应用时智能调整内容，可撤销" : undefined}
           checked={resize}
           onChange={setResize}
         />

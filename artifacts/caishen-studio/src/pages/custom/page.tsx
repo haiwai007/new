@@ -1,3 +1,5 @@
+import UploadPhone from "./_components/upload-phone";
+import type { PhoneSettings } from "@/lib/phone/schema";
 import { MAX_WORK_NAME } from "@/lib/storage/names";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -36,6 +38,8 @@ const MODES: { id: UploadMode; title: string; desc: string }[] = [
 
 export default function CustomTemplatePage() {
   const navigate = useNavigate();
+  const [phoneReady, setPhoneReady] = useState(true);
+  const [phone, setPhone] = useState<PhoneSettings | undefined>();
   const [img, setImg] = useState<ImportedImage | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -97,7 +101,7 @@ export default function CustomTemplatePage() {
   const sizeValid = target !== null && target.width >= 16 && target.height >= 16 && target.width <= 8000 && target.height <= 8000;
 
   const create = async () => {
-    if (!img || !target || !sizeValid) return;
+    if (!img || !target || !sizeValid || (phone && !phoneReady)) return;
     setCreating(true);
     try {
       const smart =
@@ -110,7 +114,7 @@ export default function CustomTemplatePage() {
               blocks: rebuildBlocks ? ocrResult.blocks : [],
             }
           : undefined;
-      const { workId, stats } = await createUploadTemplate({ image: img, size: target, mode, name: name.trim() || "自定义模板", smart });
+      const { workId, stats } = await createUploadTemplate({ image: img, size: target, mode, name: name.trim() || "自定义模板", smart, phone });
       if (stats) {
         const notes = [
           `${stats.textCount} 个文字图层`,
@@ -279,6 +283,8 @@ export default function CustomTemplatePage() {
             {!sizeValid && img && <p className="text-xs text-destructive">尺寸需在 16 到 8000 像素之间</p>}
           </div>
 
+          <UploadPhone mode={mode} onReadyChange={setPhoneReady} image={img} size={sizeValid ? target : null} phone={phone} onChange={setPhone} disabled={creating || running} />
+
           <div className="space-y-2">
             <Label>处理方式</Label>
             <div className="space-y-2">
@@ -314,7 +320,7 @@ export default function CustomTemplatePage() {
             </p>
           )}
 
-          <Button size="lg" className="w-full" onClick={primary} disabled={!img || !sizeValid || creating || running}>
+          <Button size="lg" className="w-full" onClick={primary} disabled={!img || !sizeValid || creating || running || (!!phone && !phoneReady)}>
             {creating || running ? <Loader2 className="size-4 animate-spin" /> : mode === "smart" ? <ScanText className="size-4" /> : <ArrowRight className="size-4" />}
             {mode === "smart" ? "开始识别文字" : "生成初始模板并进入编辑器"}
           </Button>

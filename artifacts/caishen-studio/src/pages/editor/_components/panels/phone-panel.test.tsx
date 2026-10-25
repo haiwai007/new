@@ -21,11 +21,12 @@ describe("phone settings panel", () => {
   });
   it("applies model dimensions only on request and removes the status bar without resizing back", () => {
     render(<PhonePanel />);
+    fireEvent.change(screen.getByRole("combobox", { name: "手机品牌" }), { target: { value: "Google" } });
     fireEvent.change(screen.getByRole("combobox", { name: "手机型号" }), {
       target: { value: "pixel9" },
     });
     fireEvent.click(screen.getByLabelText("同时适配机型画布尺寸"));
-    fireEvent.click(screen.getByRole("button", { name: "应用手机状态栏" }));
+    fireEvent.click(screen.getByRole("button", { name: /应用.*状态栏/ }));
     expect(useEditor.getState().doc!.canvas).toMatchObject({
       width: 1080,
       height: 2424,
@@ -52,4 +53,13 @@ describe("phone settings panel", () => {
     expect(screen.getByRole("alert")).toBeInTheDocument();
     expect(useEditor.getState().doc!.phone).toBeUndefined();
   });
+});
+
+it("applies the selected brand system immediately without requiring the Apply button", () => {
+  render(<PhonePanel />);
+  fireEvent.change(screen.getByRole("combobox", { name: "手机品牌" }), { target: { value: "Samsung" } });
+  fireEvent.change(screen.getByRole("combobox", { name: "手机型号" }), { target: { value: "galaxys24ultra" } });
+  expect(useEditor.getState().doc!.phone).toMatchObject({ modelId: "galaxys24ultra", timeWeight: "normal", batteryStyle: "outline" });
+  expect(useEditor.getState().doc!.canvas).toMatchObject({ width: 1080, height: 1350 });
+  expect(useEditor.getState().doc!.layers.find(l => l.id.endsWith("_icons"))).toBeDefined();
 });

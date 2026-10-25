@@ -46,6 +46,8 @@ export const phoneSettingsSchema = z.object({
   offsetY: z.number().int().min(-30).max(30).default(0),
   /** Extra horizontal inset in device points. */
   insetX: z.number().int().min(-12).max(30).default(0),
+  /** Optional upload replacement coverage, relative to canvas height. */
+  coverRatio: z.number().min(0).max(0.25).default(0),
   timeWeight: z.enum(["bold", "normal"]).default("bold"),
   batteryStyle: z.enum(["outline", "inside"]).default("outline"),
   lowPower: z.boolean().default(false),

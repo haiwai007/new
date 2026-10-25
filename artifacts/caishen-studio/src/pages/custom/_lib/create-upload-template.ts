@@ -1,3 +1,5 @@
+import { applyPhoneLayers } from "@/lib/phone/layers";
+import type { PhoneSettings } from "@/lib/phone/schema";
 import { saveAsset } from "@/lib/storage/assets.ts";
 import { createWork } from "@/lib/storage/works.ts";
 import { createImageLayer } from "@/lib/template/layers.ts";
@@ -69,6 +71,7 @@ export async function createUploadTemplate(input: {
   mode: UploadMode;
   name: string;
   smart?: SmartInput;
+  phone?: PhoneSettings;
 }): Promise<{ workId: string; stats: { textCount: number; maskCount: number; shapeCount: number; maskSkipped: number; outside: number; repaired: number } | null }> {
   const { image, size, mode } = input;
   if (mode === "smart" && !input.smart) throw new Error("请先完成文字识别");
@@ -127,7 +130,8 @@ export async function createUploadTemplate(input: {
     },
   };
   // Recognized text becomes parameters right away so the template is reusable immediately.
-  const doc = mode === "smart" ? { ...base, parameters: suggestParameters(base) } : base;
+  const content = mode === "smart" ? { ...base, parameters: suggestParameters(base) } : base;
+  const doc = input.phone ? applyPhoneLayers(content, input.phone) : content;
   const work = await createWork({
     kind: "template",
     name: input.name,

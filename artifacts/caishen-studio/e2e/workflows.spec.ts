@@ -208,7 +208,7 @@ test("phone model, status icons, date and battery persist and appear in PNG outp
   await page.locator("summary").filter({ hasText: "信号与网络" }).click();
   await page.getByRole("radiogroup", { name: "Wi-Fi", exact: true }).getByRole("radio").first().click();
   await page.getByLabel("蜂窝网络类型", { exact: true }).selectOption("5G");
-  await page.getByRole("button", { name: "应用手机状态栏" }).click();
+  await page.getByRole("button", { name: /应用.*状态栏/ }).click();
   await page.getByRole("button", { name: "保存", exact: true }).click();
   await expect(page.getByText("已保存到本地", { exact: true })).toBeVisible();
   await page.reload();
@@ -419,4 +419,55 @@ test("batch status-bar rules change real exported pixels and keep the source tem
   await page.getByLabel("批量模板", { exact: true }).selectOption({ index: 1 });
   await expect(page.getByRole("switch", { name: "随机状态栏", exact: true })).not.toBeChecked();
   await expect(page.getByLabel("第 1 张状态栏", { exact: true })).toContainText("09:41 · 电量 100%");
+});
+
+test("upload model selection replaces old status icons and switches real brand layouts automatically", async ({ page }, info) => {
+  await page.goto("/custom");
+  const encoded = await page.evaluate(() => {
+    const canvas = document.createElement("canvas"); canvas.width = 1179; canvas.height = 2556;
+    const ctx = canvas.getContext("2d")!;
+    ctx.fillStyle = "#6a97bb"; ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "#f8f8f8"; ctx.fillRect(0, 0, canvas.width, 180);
+    // Old iPhone status information below a normal Android bar must also be covered.
+    ctx.fillStyle = "#ff0000"; ctx.fillRect(900, 140, 150, 25);
+    return canvas.toDataURL().split(",")[1];
+  });
+  await page.locator('input[type="file"]').setInputFiles({ name: "iphone-reference.png", mimeType: "image/png", buffer: Buffer.from(encoded, "base64") });
+  await page.getByText("保持原始尺寸", { exact: true }).click();
+  await page.getByRole("button", { name: /原图背景模式/ }).click();
+  await page.getByRole("combobox", { name: "手机品牌", exact: true }).selectOption("Samsung");
+  await page.getByRole("combobox", { name: "手机型号", exact: true }).selectOption("galaxys24ultra");
+  await expect(page.getByText(/Samsung One UI 6 · 1440×3120/)).toBeVisible();
+  await expect(page.getByRole("img", { name: "手机状态栏适配预览" })).toBeVisible();
+  await expect.poll(async () => Number(await page.getByLabel("原状态栏覆盖比例").inputValue())).toBeGreaterThan(6);
+  await page.getByRole("button", { name: "生成初始模板并进入编辑器" }).click();
+  await expect(page).toHaveURL(/\/editor\//);
+  const samsung = await exportPNG(page, info.outputPath("samsung-upload.png"));
+  expect(samsung.readUInt32BE(16)).toBe(1179);
+  expect(samsung.readUInt32BE(20)).toBe(2556);
+  const rgba = await page.evaluate(async base64 => {
+    const bitmap = await createImageBitmap(new Blob([Uint8Array.from(atob(base64), c => c.charCodeAt(0))], { type: "image/png" }));
+    const canvas = document.createElement("canvas"); canvas.width = bitmap.width; canvas.height = bitmap.height;
+    const ctx = canvas.getContext("2d")!; ctx.drawImage(bitmap, 0, 0); bitmap.close();
+    return { oldIcon: [...ctx.getImageData(1000, 150, 1, 1).data], body: [...ctx.getImageData(500, 1000, 1, 1).data] };
+  }, samsung.toString("base64"));
+  expect(rgba.oldIcon).toEqual([248, 248, 248, 255]);
+  expect(rgba.body).toEqual([106, 151, 187, 255]);
+  await page.getByRole("button", { name: "手机", exact: true }).click();
+  await expect(page.getByRole("combobox", { name: "手机型号", exact: true })).toHaveValue("galaxys24ultra");
+  await page.getByRole("combobox", { name: "手机品牌", exact: true }).selectOption("Google");
+  await page.getByRole("combobox", { name: "手机型号", exact: true }).selectOption("pixel9");
+  // No Apply click: the selected profile must already be in the saved/exported document.
+  await page.getByRole("button", { name: "保存", exact: true }).click();
+  await expect(page.getByText("已保存到本地", { exact: true })).toBeVisible();
+  await page.reload();
+  await page.getByRole("button", { name: "手机", exact: true }).click();
+  await expect(page.getByRole("combobox", { name: "手机型号", exact: true })).toHaveValue("pixel9");
+  const pixel = await exportPNG(page, info.outputPath("pixel-upload.png"));
+  expect(pixel.readUInt32BE(16)).toBe(1179);
+  expect(pixel.readUInt32BE(20)).toBe(2556);
+  expect(pixel.equals(samsung)).toBe(false);
+  await page.setViewportSize({ width: 375, height: 900 });
+  await page.goto("/custom");
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
 });
