@@ -6,6 +6,7 @@
 
 文档更新日期：2026-10-25。
 
+- [详细部署手册](docs/DEPLOYMENT.zh-CN.md)：静态托管、Docker、Nginx、云服务、验收、备份迁移与回滚。
 - [项目概念与完整功能](docs/PROJECT_OVERVIEW.zh-CN.md)：产品定位、使用流程和数据边界。
 - [手机机型与状态栏目录](docs/PHONE_MODELS.zh-CN.md)：62 个具体型号、品牌系统参考样式及图片适配说明。
 - [验收范围与验证记录](docs/ACCEPTANCE.md)：已执行检查、回归覆盖和待联调项目。
@@ -133,6 +134,8 @@ pnpm --filter @workspace/caishen-studio exec playwright install chromium
 最近一次代码验收通过 32 个测试文件、213 项单元 / 组件 / 本地 Convex 测试、14 项生产浏览器回归、类型检查及生产构建。覆盖模板生成与导出、真实 OCR、整库恢复、参数批量 ZIP、状态栏随机像素比较、品牌切换与旧图标覆盖、移动端、存储冲突，以及本地模拟的云端权限、配额和审计。具体记录见 [验收说明](docs/ACCEPTANCE.md)。CI 工作流已提供；本地验证通过不代表 GitHub CI 已在线执行。
 
 ## 部署前端
+
+完整操作步骤见[详细部署手册](docs/DEPLOYMENT.zh-CN.md)。可复制配置位于 [deploy](deploy/)，发布后运行 `node scripts/check-deployment.mjs https://你的域名 --full` 检查路由、资源类型及 OCR 摘要；这不替代浏览器验收或真实云服务联调。
 
 执行 `pnpm build:studio`，将 `artifacts/caishen-studio/dist/public` 的完整内容部署到支持 HTTPS 的静态站点根目录。必须包含 `assets`、`ocr`、`templates` 和 `licenses`，不能只上传 `index.html`。当前完整产物较大，主要来自中英文字体和 OCR 引擎；浏览器按实际字符和功能加载所需资源。
 

@@ -1,0 +1,13 @@
+.git
+**/node_modules
+**/dist
+**/test-results
+**/playwright-report
+**/*.tsbuildinfo
+**/.env
+**/.env.*
+.pnpm-store
+.cache
+.local
+artifacts/caishen-studio/public/ocr
+artifacts/caishen-studio/public/licenses

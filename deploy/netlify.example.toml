@@ -1,0 +1,13 @@
+# Optional template. Copy to repository-root netlify.toml only when using Netlify.
+[build]
+  base = "."
+  command = "pnpm build:studio"
+  publish = "artifacts/caishen-studio/dist/public"
+
+[build.environment]
+  NODE_VERSION = "24"
+  PNPM_VERSION = "11.25.0"
+  PNPM_FLAGS = "--frozen-lockfile --prod=false"
+
+# SPA fallback and basic response headers are already emitted from public/.
+# VITE_* cloud settings, when needed, belong in the site's build environment.

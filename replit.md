@@ -44,6 +44,8 @@ E2E_PRODUCTION=1 pnpm test:e2e
 
 ## 文档
 
+- [详细部署、维护与回滚手册](docs/DEPLOYMENT.zh-CN.md)
+
 - [项目概念与功能说明](docs/PROJECT_OVERVIEW.zh-CN.md)
 - [具体机型与参考样式](docs/PHONE_MODELS.zh-CN.md)
 - [验收记录和未完成的线上联调](docs/ACCEPTANCE.md)
