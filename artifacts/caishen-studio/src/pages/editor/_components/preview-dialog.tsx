@@ -1,3 +1,4 @@
+import { phoneScreenContent } from "@/lib/phone/export";
 import { useEffect, useState } from "react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog.tsx";
 import { Skeleton } from "@/components/ui/skeleton.tsx";
@@ -21,7 +22,7 @@ export default function PreviewDialog({ open, onOpenChange }: { open: boolean; o
     setUrl(null);
     setError(null);
     const mult = Math.min(1, 1600 / Math.max(doc.canvas.width, doc.canvas.height));
-    renderDoc(doc, { multiplier: mult })
+    renderDoc(phoneScreenContent(doc), { multiplier: mult })
       .then(({ canvas }) => alive && setUrl(canvas.toDataURL("image/png")))
       .catch((e: unknown) => alive && setError(e instanceof Error ? e.message : "预览失败"));
     if (doc.source) {

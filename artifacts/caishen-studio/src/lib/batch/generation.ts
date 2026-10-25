@@ -1,3 +1,4 @@
+import { phoneScreenContent } from "@/lib/phone/export";
 import { Zip, ZipPassThrough } from "fflate";
 import Papa from "papaparse";
 import { applyParamValues, getParamValue, validateParamValue } from "@/lib/template/params.ts";
@@ -302,7 +303,7 @@ export async function createBatchArchive(
       failed += 1;
     } else {
       try {
-        const { canvas, warnings } = await renderDoc(prepared.doc, { multiplier: 1 });
+        const { canvas, warnings } = await renderDoc(phoneScreenContent(prepared.doc), { multiplier: 1 });
         const image = await canvasToBlob(canvas, "image/png");
         const filenameValue = options.filenameColumn
           ? row.cells[options.filenameColumn]

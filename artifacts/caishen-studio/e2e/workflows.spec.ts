@@ -260,7 +260,16 @@ test("phone model, status icons, date and battery persist and appear in PNG outp
         pixels[i + 3] > 200
       )
         count++;
-    return count;
+    const hardware = ctx.getImageData(430, 50, 300, 70).data;
+    let hardwareDark = 0;
+    for (let i = 0; i < hardware.length; i += 4)
+      if (hardware[i] < 70 && hardware[i + 1] < 70 && hardware[i + 2] < 70)
+        hardwareDark++;
+    return { icons: count, hardwareDark };
   }, png.toString("base64"));
-  expect(darkPixels).toBeGreaterThan(100);
+  expect(darkPixels.icons).toBeGreaterThan(100);
+  expect(darkPixels.hardwareDark).toBe(0);
+  await expect(
+    page.getByLabel("显示灵动岛 / 刘海 / 开孔", { exact: true }),
+  ).toBeChecked();
 });

@@ -86,7 +86,7 @@ export default function PhonePanel() {
         手机型号与状态栏
       </p>
       <p className="text-[11px] leading-relaxed text-muted-foreground">
-        用于界面展示与设计。机型为尺寸和外观参考，不读取或改变设备实际状态。修改后点击应用。
+        用于界面展示与设计。机型为尺寸和外观参考，不读取或改变设备实际状态。修改后点击应用。保存图片只导出屏幕内容，不包含硬件开孔。
       </p>
       <div
         className="overflow-hidden rounded-lg border"

@@ -57,7 +57,7 @@ export default function ExportDialog({ open, onOpenChange }: { open: boolean; on
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>导出图片</DialogTitle>
-          <DialogDescription>按原始设计尺寸重新渲染，不受编辑器缩放影响。</DialogDescription>
+          <DialogDescription>{doc.phone ? "仅导出屏幕内容，保留状态栏，不包含灵动岛、刘海或摄像头开孔。" : "按原始设计尺寸重新渲染，不受编辑器缩放影响。"}</DialogDescription>
         </DialogHeader>
         <div className="space-y-4">
           <div className="space-y-1">

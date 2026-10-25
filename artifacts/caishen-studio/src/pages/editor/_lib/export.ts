@@ -1,3 +1,4 @@
+import { phoneScreenContent } from "@/lib/phone/export";
 import { renderDoc, canvasToBlob } from "@/lib/canvas/render.ts";
 import type { TemplateDoc } from "@/types/template.ts";
 
@@ -23,7 +24,7 @@ export function sanitizeFileName(name: string): string {
 export async function exportDoc(doc: TemplateDoc, opts: ExportOptions) {
   const multiplier = opts.width / doc.canvas.width;
   const transparent = opts.format === "png" && opts.transparent;
-  const { canvas, warnings } = await renderDoc(doc, { multiplier, transparent });
+  const { canvas, warnings } = await renderDoc(phoneScreenContent(doc), { multiplier, transparent });
   let source = canvas;
   if (opts.format === "jpeg") {
     // JPEG has no alpha; flatten onto the background color (white if transparent).
