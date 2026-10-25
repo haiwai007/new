@@ -74,6 +74,7 @@ export default function AppIconsEditor({
   onBusyChange?: (busy: boolean) => void;
 }) {
   const [error, setError] = useState("");
+  const [query, setQuery] = useState("");
   const [busy, setBusy] = useState(false);
   const input = useRef<HTMLInputElement>(null);
   const alive = useRef(true);
@@ -89,6 +90,11 @@ export default function AppIconsEditor({
   }, [onBusyChange]);
   const color = phoneColor(settings);
   const background = settings.backgroundColor;
+  const keyword = query.trim().toLowerCase();
+  const choices = APP_ICONS.filter(
+    (app) =>
+      app.name.toLowerCase().includes(keyword) || app.id.includes(keyword),
+  );
   function change(next: PhoneSettings) {
     setError("");
     try {
@@ -155,8 +161,22 @@ export default function AppIconsEditor({
         个，空间不足时自动缩小。内置图标跟随状态栏颜色，自定义图标保留上传颜色。
       </p>
       <fieldset disabled={disabled} className="min-w-0 space-y-3">
-        <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-          {APP_ICONS.map((app) => {
+        <Input
+          aria-label="搜索 APP 图标"
+          placeholder="搜索 APP，如小红书、QQ、WhatsApp"
+          value={query}
+          onChange={(event) => setQuery(event.target.value)}
+        />
+        <p className="text-xs text-muted-foreground">
+          内置 {APP_ICONS.length} 种 · 已选 {settings.appIcons.length}/
+          {MAX_APP_ICONS}
+        </p>
+        <div
+          role="group"
+          aria-label="内置 APP 图标"
+          className="grid max-h-64 grid-cols-2 gap-2 overflow-y-auto pr-1"
+        >
+          {choices.map((app) => {
             const selected = settings.appIcons.some(
               (icon) => icon.kind === "builtin" && icon.builtinId === app.id,
             );
@@ -166,7 +186,7 @@ export default function AppIconsEditor({
                 type="button"
                 variant={selected ? "secondary" : "outline"}
                 size="sm"
-                className="h-auto min-h-10 justify-start px-2 text-xs"
+                className="h-auto min-h-10 w-full min-w-0 justify-start overflow-hidden px-2 text-xs"
                 aria-label={`${selected ? "移除" : "添加"}${app.name}图标`}
                 aria-pressed={selected}
                 disabled={
@@ -199,13 +219,18 @@ export default function AppIconsEditor({
                 <img
                   src={builtinAppIconSource(app.id, "#111111").url}
                   alt=""
-                  className="size-4 dark:invert"
+                  className="size-4 shrink-0 dark:invert"
                 />
-                {app.name}
+                <span className="min-w-0 truncate">{app.name}</span>
               </Button>
             );
           })}
         </div>
+        {choices.length === 0 && (
+          <p className="text-xs text-muted-foreground">
+            未找到匹配的 APP，可上传自定义图标。
+          </p>
+        )}
         <Button
           type="button"
           size="sm"

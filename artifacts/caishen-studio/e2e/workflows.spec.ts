@@ -546,3 +546,24 @@ test("APP notification icons support custom uploads, visibility, portable templa
     expect(files).toHaveLength(1);expect(await greenPixels(restored,Buffer.from(files[0]))).toBeGreaterThan(10);
   } finally { await fresh.close(); }
 });
+
+test("expanded APP library supports search, selection limits, saving and PNG export", async ({page},info) => {
+  await createFromBuiltin(page);
+  await page.getByRole("button",{name:"手机",exact:true}).click();
+  const choices=page.getByRole("group",{name:"内置 APP 图标",exact:true});
+  await expect(choices.getByRole("button")).toHaveCount(28);
+  for (const name of ["小红书","淘宝","美团","知乎","豆瓣","百度","钉钉","WhatsApp"]) {
+    await page.getByLabel("搜索 APP 图标",{exact:true}).fill(name);
+    await page.getByRole("button",{name:`添加${name}图标`,exact:true}).click();
+  }
+  await expect(page.getByRole("list",{name:"已选 APP 图标",exact:true}).getByRole("listitem")).toHaveCount(8);
+  await page.getByLabel("搜索 APP 图标",{exact:true}).fill("Zoom");
+  await expect(page.getByRole("button",{name:"添加Zoom图标",exact:true})).toBeDisabled();
+  await page.getByRole("button",{name:"保存",exact:true}).click();
+  await expect(page.getByText("已保存到本地",{exact:true})).toBeVisible();
+  await page.reload();await page.getByRole("button",{name:"手机",exact:true}).click();
+  await expect(page.getByRole("switch",{name:"显示小红书图标",exact:true})).toBeChecked();
+  await expect(page.getByRole("switch",{name:"显示钉钉图标",exact:true})).toBeChecked();
+  await expect(page.getByRole("switch",{name:"显示WhatsApp图标",exact:true})).toBeChecked();
+  await exportPNG(page,info.outputPath("expanded-app-icons.png"));
+});

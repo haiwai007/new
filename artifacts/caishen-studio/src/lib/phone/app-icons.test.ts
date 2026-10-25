@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { APP_ICONS, builtinAppIconSource } from "./app-icon-catalog";
+import {
+  APP_ICONS,
+  MAX_APP_ICONS,
+  builtinAppIconSource,
+} from "./app-icon-catalog";
 import {
   defaultPhoneSettings,
   applyPhoneLayers,
@@ -15,7 +19,7 @@ import { resizeDoc } from "../template/smart-resize";
 import { mapImageSources, remapAssetIds } from "../template/package";
 import { referencedAssetIds } from "../template/doc-ops";
 const builtins = (): PhoneAppIcon[] =>
-  APP_ICONS.map((icon, i) => ({
+  APP_ICONS.slice(0, MAX_APP_ICONS).map((icon, i) => ({
     id: `app_aaaaaaaaa${i}`,
     kind: "builtin",
     name: icon.name,
@@ -169,4 +173,46 @@ it("can randomize a legacy IndexedDB work before its missing APP defaults have b
         item.errors.length === 0 && item.doc.phone!.appIcons.length === 0,
     ),
   ).toBe(true);
+});
+
+it("keeps the original eight IDs and persists all twenty new icons in portable templates", async () => {
+  const { buildPackage, parseTemplateFile } =
+    await import("../template/package");
+  expect(APP_ICONS).toHaveLength(28);
+  expect(APP_ICONS.slice(0, 8).map((icon) => icon.id)).toEqual([
+    "kuaishou",
+    "douyin",
+    "wechat",
+    "qq",
+    "bilibili",
+    "weibo",
+    "alipay",
+    "telegram",
+  ]);
+  expect(new Set(APP_ICONS.map((icon) => icon.id)).size).toBe(28);
+  expect(new Set(APP_ICONS.map((icon) => icon.name)).size).toBe(28);
+  const added = APP_ICONS.slice(8);
+  expect(added).toHaveLength(20);
+  for (let index = 0; index < added.length; index += MAX_APP_ICONS) {
+    const icons = added
+      .slice(index, index + MAX_APP_ICONS)
+      .map((icon, i) => ({
+        id: `app_${i.toString(36).padStart(10, "a")}`,
+        kind: "builtin" as const,
+        builtinId: icon.id,
+        name: icon.name,
+        visible: true,
+      }));
+    const doc = applyPhoneLayers(template(), {
+      ...defaultPhoneSettings(),
+      appIcons: icons,
+    });
+    const imported = parseTemplateFile(buildPackage(doc, []));
+    expect(imported.ok).toBe(true);
+    if (!imported.ok) throw new Error(imported.error);
+    expect(imported.doc.phone!.appIcons).toEqual(icons);
+    expect(
+      imported.doc.layers.filter((layer) => layer.id.includes("_app_")),
+    ).toHaveLength(icons.length);
+  }
 });

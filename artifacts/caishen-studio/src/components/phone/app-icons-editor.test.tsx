@@ -123,3 +123,41 @@ it("merges a pending upload with the latest icon settings instead of reverting c
   );
   expect(mocks.remove).not.toHaveBeenCalled();
 });
+
+it("offers 28 built-ins and searches Chinese names or case-insensitive English IDs", () => {
+  const onChange = vi.fn();
+  render(
+    <AppIconsEditor
+      settings={defaultPhoneSettings()}
+      onChange={onChange}
+      scopeKey="catalog"
+    />,
+  );
+  const choices = screen.getByRole("group", { name: "内置 APP 图标" });
+  expect(choices.querySelectorAll("button")).toHaveLength(28);
+  fireEvent.change(screen.getByLabelText("搜索 APP 图标"), {
+    target: { value: "小红书" },
+  });
+  expect(choices.querySelectorAll("button")).toHaveLength(1);
+  fireEvent.click(screen.getByRole("button", { name: "添加小红书图标" }));
+  expect(onChange).toHaveBeenLastCalledWith(
+    expect.objectContaining({
+      appIcons: [
+        expect.objectContaining({ kind: "builtin", builtinId: "xiaohongshu" }),
+      ],
+    }),
+  );
+  fireEvent.change(screen.getByLabelText("搜索 APP 图标"), {
+    target: { value: "WHATSAPP" },
+  });
+  expect(
+    screen.getByRole("button", { name: "添加WhatsApp图标" }),
+  ).toBeInTheDocument();
+  fireEvent.change(screen.getByLabelText("搜索 APP 图标"), {
+    target: { value: "不存在的APP" },
+  });
+  expect(choices.querySelectorAll("button")).toHaveLength(0);
+  expect(
+    screen.getByText("未找到匹配的 APP，可上传自定义图标。"),
+  ).toBeInTheDocument();
+});
