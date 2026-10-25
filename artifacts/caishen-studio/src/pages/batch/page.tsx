@@ -1,3 +1,6 @@
+import PhoneRandomizer from "./_components/phone-randomizer";
+import { defaultPhoneBatchRules, type PhoneBatchRules } from "@/lib/batch/phone-rules";
+import { phoneTime } from "@/lib/phone/layers";
 import { useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { Check, Dices, Download, LayoutTemplate, LoaderCircle, WandSparkles } from "lucide-react";
@@ -30,6 +33,7 @@ export default function BatchPage() {
   const [templateId, setTemplateId] = useState(() => params.get("template") ?? "");
   const [count, setCount] = useState(20);
   const [rules, setRules] = useState<BatchRules>({});
+  const [phoneRules, setPhoneRules] = useState<PhoneBatchRules>(() => defaultPhoneBatchRules());
   const [seed, setSeed] = useState(newSeed);
   const [working, setWorking] = useState(false);
   const [progress, setProgress] = useState<BatchProgress | null>(null);
@@ -43,15 +47,15 @@ export default function BatchPage() {
   useEffect(() => () => { if (zip) URL.revokeObjectURL(zip.url); }, [zip]);
 
   const options = useMemo<Option[]>(() => {
-    const builtin = BUILTIN_TEMPLATES.filter((t) => t.doc.parameters.length > 0).map((t) => ({ id: `b:${t.id}`, name: t.name, doc: t.doc, group: "builtin" as const }));
+    const builtin = BUILTIN_TEMPLATES.filter((t) => (t.doc.parameters.length > 0 || !!t.doc.phone)).map((t) => ({ id: `b:${t.id}`, name: t.name, doc: t.doc, group: "builtin" as const }));
     const mine = state.status === "ready"
-      ? state.works.filter((w) => w.kind === "template" && w.doc.parameters.length > 0).map((w) => ({ id: `w:${w.id}`, name: w.name, doc: w.doc, group: "mine" as const }))
+      ? state.works.filter((w) => w.kind === "template" && (w.doc.parameters.length > 0 || !!w.doc.phone)).map((w) => ({ id: `w:${w.id}`, name: w.name, doc: w.doc, group: "mine" as const }))
       : [];
     return [...mine, ...builtin];
   }, [state]);
   const selected = options.find((o) => o.id === templateId) ?? null;
 
-  const items = useMemo(() => (selected ? generateItems(selected.doc, rules, count, seed) : []), [selected, rules, count, seed]);
+  const items = useMemo(() => (selected ? generateItems(selected.doc, rules, count, seed, phoneRules) : []), [selected, rules, count, seed, phoneRules]);
   const invalid = items.filter((i) => i.errors.length > 0);
 
   const resetOutput = () => {
@@ -63,6 +67,7 @@ export default function BatchPage() {
   const selectTemplate = (id: string) => {
     setTemplateId(id);
     setRules({});
+    setPhoneRules(defaultPhoneBatchRules(options.find(o => o.id === id)?.doc.phone));
     resetOutput();
   };
   const setRule = (paramId: string, rule: ParamRule) => {
@@ -106,7 +111,7 @@ export default function BatchPage() {
       </div>
 
       <div className="mt-6 grid gap-6 lg:grid-cols-[minmax(0,1.35fr)_minmax(340px,1fr)]">
-        <div className="space-y-5">
+        <fieldset disabled={working} className="min-w-0 space-y-5 disabled:opacity-70">
           <Step n="01" title="选择模板">
             {state.status === "loading" ? <Skeleton className="h-10 w-full" /> : (
               <div className="[&>[data-slot=native-select-wrapper]]:w-full"><NativeSelect aria-label="批量模板" className="w-full" value={templateId} onChange={(e) => selectTemplate(e.target.value)}>
@@ -145,6 +150,7 @@ export default function BatchPage() {
               </Empty>
             ) : (
               <div className="-mx-5 divide-y border-y">
+                {selected.doc.parameters.length === 0 && <p className="px-5 py-4 text-sm text-muted-foreground">此模板没有内容参数，可直接在下方设置状态栏随机。</p>}
                 {selected.doc.parameters.map((p) => (
                   <RuleEditor key={p.id} param={p} rule={rules[p.id] ?? { mode: "keep" }} locked={isLockedParam(selected.doc, p)} assets={assets}
                     onModeChange={(m) => setMode(p.id, m)} onChange={(r) => setRule(p.id, r)} />
@@ -152,7 +158,10 @@ export default function BatchPage() {
               </div>
             )}
           </Step>
-        </div>
+          <Step n="04" title="状态栏随机">
+            <PhoneRandomizer phone={selected?.doc.phone} value={phoneRules} disabled={working} onChange={next => { setPhoneRules(next); resetOutput(); }} />
+          </Step>
+        </fieldset>
 
         <aside className="space-y-5 lg:sticky lg:top-24 lg:self-start">
           <section className="rounded-xl border bg-card p-5">
@@ -167,7 +176,10 @@ export default function BatchPage() {
             </div>
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
               {selected
-                ? items.slice(0, PREVIEW_COUNT).map((i) => <BatchPreview key={i.index} doc={i.doc} label={String(i.index + 1)} invalid={i.errors.length > 0} maxSize={160} />)
+                ? items.slice(0, PREVIEW_COUNT).map((i) => <div key={i.index} className="min-w-0 space-y-1">
+                    <BatchPreview doc={i.doc} label={String(i.index + 1)} invalid={i.errors.length > 0} maxSize={160} />
+                    {i.doc.phone && <p aria-label={`第 ${i.index + 1} 张状态栏`} className="break-words text-[11px] text-muted-foreground">{phoneTime(i.doc.phone)} · 电量 {i.doc.phone.battery}%{i.doc.phone.showDate ? ` · ${i.doc.phone.date}` : ""} · 信号 {i.doc.phone.signal} 格 · Wi-Fi {i.doc.phone.wifi} 格 · {i.doc.phone.network}</p>}
+                  </div>)
                 : <div className="col-span-full"><BatchPreview doc={null} /></div>}
             </div>
             {invalid.length > 0 && (
@@ -183,7 +195,7 @@ export default function BatchPage() {
           <section className="rounded-xl border bg-card p-5">
             <h2 className="font-semibold">生成与下载</h2>
             <p className="mt-1 text-sm text-muted-foreground">按模板原始尺寸导出 PNG，打包成 ZIP。</p>
-            <Button className="mt-4 w-full" onClick={generate} disabled={!selected || working}>
+            <Button className="mt-4 w-full" onClick={generate} disabled={!selected || working || invalid.length === items.length}>
               {working ? <><LoaderCircle className="size-4 animate-spin" /> 正在生成 {progress?.completed ?? 0}/{items.length}</> : <><WandSparkles className="size-4" /> 生成 {items.length - invalid.length} 张图片</>}
             </Button>
             {working && <Progress className="mt-3" value={progress ? (progress.completed / progress.total) * 100 : 0} />}
@@ -199,7 +211,7 @@ export default function BatchPage() {
             {error && <p role="alert" className="mt-3 text-sm text-destructive">{error}</p>}
           </section>
           <p className="rounded-lg border bg-muted/40 p-3 text-xs leading-relaxed text-muted-foreground">
-            手机状态栏（时间、信号、WiFi、电量）沿用模板设置，不参与随机。请勿用生成的图片冒充真实截图或凭证。
+            手机状态栏默认沿用模板，也可在「状态栏随机」中单独开启随机项。请勿用生成的图片冒充真实截图或凭证。
           </p>
         </aside>
       </div>

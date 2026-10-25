@@ -1,3 +1,4 @@
+import { phoneScreenContent } from "@/lib/phone/export";
 import { useEffect, useState } from "react";
 import { Image as ImageIcon, LoaderCircle } from "lucide-react";
 import { renderDoc } from "@/lib/canvas/render.ts";
@@ -20,7 +21,7 @@ export default function BatchPreview({ doc, label, invalid, maxSize = 300 }: Pro
       setError("");
     });
     const multiplier = Math.min((maxSize * 1.5) / doc.canvas.width, (maxSize * 1.5) / doc.canvas.height, 1);
-    renderDoc(doc, { multiplier })
+    renderDoc(phoneScreenContent(doc), { multiplier })
       .then(({ canvas }) => {
         if (alive) setImage(canvas.toDataURL("image/png"));
       })

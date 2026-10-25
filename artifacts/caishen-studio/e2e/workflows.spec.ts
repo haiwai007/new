@@ -353,3 +353,70 @@ test("transparent PNG omits background images", async ({ page }) => {
   }, bytes.toString("base64"));
   expect(alpha).toBe(0);
 });
+
+test("batch status-bar rules change real exported pixels and keep the source template intact", async ({ page }, info) => {
+  await createFromBuiltin(page);
+  await page.getByRole("button", { name: "手机", exact: true }).click();
+  await page.getByRole("button", { name: "应用手机状态栏", exact: true }).click();
+  await page.getByRole("button", { name: "另存为模板", exact: true }).click();
+  await page.getByRole("dialog").getByRole("textbox").fill("状态栏随机回归");
+  await page.getByRole("button", { name: "保存模板", exact: true }).click();
+  await expect(page.getByRole("dialog")).toHaveCount(0);
+  await page.goto("/batch");
+  await page.getByLabel("批量模板", { exact: true }).selectOption({ index: 1 });
+  await page.getByLabel("生成张数", { exact: true }).fill("2");
+  await expect(page.getByLabel("第 1 张状态栏", { exact: true })).toContainText("09:41 · 电量 100%");
+  const downloadBatch = async (name: string) => {
+    await page.getByRole("button", { name: "生成 2 张图片", exact: true }).click();
+    await expect(page.getByText("已生成 2 张图片", { exact: true })).toBeVisible();
+    const downloaded = page.waitForEvent("download");
+    await page.getByRole("link", { name: "下载 ZIP", exact: true }).click();
+    const path = info.outputPath(name);
+    await (await downloaded).saveAs(path);
+    const { unzipSync } = await import("fflate");
+    const files = Object.values(unzipSync(new Uint8Array(await readFile(path))));
+    expect(files).toHaveLength(2);
+    return files;
+  };
+  const baseline = await downloadBatch("baseline.zip");
+  await page.getByRole("switch", { name: "随机状态栏", exact: true }).check();
+  await expect(page.getByRole("link", { name: "下载 ZIP", exact: true })).toHaveCount(0);
+  await page.getByLabel("随机开始时间", { exact: true }).fill("13:08");
+  await page.getByLabel("随机结束时间", { exact: true }).fill("13:08");
+  await page.getByLabel("随机最低电量", { exact: true }).fill("67");
+  await page.getByLabel("随机最高电量", { exact: true }).fill("20");
+  await expect(page.getByRole("button", { name: "生成 0 张图片", exact: true })).toBeDisabled();
+  await page.getByLabel("随机最高电量", { exact: true }).fill("67");
+  await page.getByRole("switch", { name: "随机日期并显示", exact: true }).check();
+  await page.getByLabel("随机开始日期", { exact: true }).fill("2024-02-29");
+  await page.getByLabel("随机结束日期", { exact: true }).fill("2024-02-29");
+  for (const index of [1, 2]) await expect(page.getByLabel(`第 ${index} 张状态栏`, { exact: true })).toContainText("13:08 · 电量 67% · 2024-02-29");
+  const randomized = await downloadBatch("randomized.zip");
+  const difference = await page.evaluate(async ([a, b]) => {
+    const pixels = async (encoded: string) => {
+      const bitmap = await createImageBitmap(new Blob([Uint8Array.from(atob(encoded), c => c.charCodeAt(0))], { type: "image/png" }));
+      const canvas = document.createElement("canvas");
+      canvas.width = bitmap.width; canvas.height = bitmap.height;
+      const ctx = canvas.getContext("2d")!;
+      ctx.drawImage(bitmap, 0, 0); bitmap.close();
+      return { width: canvas.width, data: ctx.getImageData(0, 0, canvas.width, canvas.height).data };
+    };
+    const original = await pixels(a), changed = await pixels(b);
+    let top = 0, middle = 0;
+    for (let i = 0; i < original.data.length; i += 4) {
+      const y = Math.floor(i / 4 / original.width);
+      if ([0, 1, 2, 3].some(channel => original.data[i + channel] !== changed.data[i + channel])) {
+        if (y < 260) top++;
+        if (y >= 300 && y < 1000) middle++;
+      }
+    }
+    return { top, middle };
+  }, [Buffer.from(baseline[0]).toString("base64"), Buffer.from(randomized[0]).toString("base64")]);
+  expect(difference.top).toBeGreaterThan(100);
+  expect(difference.middle).toBe(0);
+  // Switching away and back discards batch-only settings, without changing the saved template.
+  await page.getByLabel("批量模板", { exact: true }).selectOption("");
+  await page.getByLabel("批量模板", { exact: true }).selectOption({ index: 1 });
+  await expect(page.getByRole("switch", { name: "随机状态栏", exact: true })).not.toBeChecked();
+  await expect(page.getByLabel("第 1 张状态栏", { exact: true })).toContainText("09:41 · 电量 100%");
+});

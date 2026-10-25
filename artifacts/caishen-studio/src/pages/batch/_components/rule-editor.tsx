@@ -42,7 +42,7 @@ export default function RuleEditor({ param, rule, locked, assets, onModeChange, 
         <p className="mt-0.5 text-xs text-muted-foreground">{PARAM_TYPE_LABEL[param.type]}</p>
       </div>
       {locked ? (
-        <p className="flex items-center gap-1.5 text-xs text-muted-foreground"><Lock className="size-3.5" /> 状态栏和锁定参数沿用模板设置</p>
+        <p className="flex items-center gap-1.5 text-xs text-muted-foreground"><Lock className="size-3.5" /> 此参数不单独修改；状态栏随机请使用下方设置</p>
       ) : (
         <div className="min-w-0 space-y-3">
           <div className="flex flex-wrap gap-1.5">

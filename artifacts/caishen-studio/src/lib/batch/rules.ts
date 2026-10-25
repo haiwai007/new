@@ -1,3 +1,4 @@
+import { applyPhoneBatchRules, validatePhoneBatchRules, type PhoneBatchRules } from "./phone-rules";
 import { format as formatDate } from "date-fns";
 import { applyParamValues, getParamValue, validateParamValue } from "../template/params.ts";
 import type { ParamInputType, ParamValue, TemplateDoc, TemplateParameter } from "../../types/template.ts";
@@ -45,7 +46,7 @@ export function modesFor(type: ParamInputType): RuleMode[] {
   return ["keep", "fixed"];
 }
 
-/** Parameters bound to the phone status bar keep the template's own settings. */
+/** Phone layers are managed by dedicated status-bar rules, never general parameter rules. */
 export function isLockedParam(doc: TemplateDoc, param: TemplateParameter): boolean {
   return !param.editable || (!!doc.phone && param.layerId.startsWith(`${doc.phone.groupId}_`));
 }
@@ -141,9 +142,11 @@ export function generateValue(param: TemplateParameter, rule: ParamRule, index: 
 
 export type GeneratedItem = { index: number; doc: TemplateDoc; errors: string[] };
 
-export function generateItems(template: TemplateDoc, rules: BatchRules, count: number, seed: number): GeneratedItem[] {
+export function generateItems(template: TemplateDoc, rules: BatchRules, count: number, seed: number, phoneRules?: PhoneBatchRules): GeneratedItem[] {
   const total = Math.max(1, Math.min(MAX_BATCH_COUNT, Math.floor(count) || 1));
   const rng = createRng(seed);
+  const phoneRng = createRng(seed ^ 0x51f15e);
+  const phoneErrors = template.phone ? validatePhoneBatchRules(phoneRules) : [];
   return Array.from({ length: total }, (_, index) => {
     const values: Record<string, ParamValue> = {};
     for (const param of template.parameters) {
@@ -152,10 +155,10 @@ export function generateItems(template: TemplateDoc, rules: BatchRules, count: n
       const value = generateValue(param, rule, index, rng);
       if (value !== undefined) values[param.id] = value;
     }
-    const doc = applyParamValues(template, values);
+    const doc = applyPhoneBatchRules(applyParamValues(template, values), phoneRules, phoneRng);
     const errors = doc.parameters
       .map((p) => validateParamValue(p, getParamValue(doc, p)))
       .filter((m): m is string => m !== null);
-    return { index, doc, errors: [...new Set(errors)] };
+    return { index, doc, errors: [...new Set([...phoneErrors, ...errors])] };
   });
 }
