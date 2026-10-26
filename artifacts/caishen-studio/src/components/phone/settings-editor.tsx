@@ -1,3 +1,12 @@
+import { applyLocationToWork } from "@/lib/status-location/apply";
+import StatusLocationControl from "./status-location-control";
+import {
+  isLocationConfirmed,
+  locationRenderKey,
+  requireStatusLocation,
+  locationAppCapacity,
+} from "@/lib/status-location/model";
+import { SYSTEM_STYLES, compatibleStyle } from "@/lib/phone/system-styles";
 import { resolveFusionSettings } from "@/lib/phone/fusion-metrics";
 import FusionPanel from "./fusion-panel";
 import { FUSION_LOCKS } from "@/lib/phone/fusion-schema";
@@ -26,7 +35,7 @@ import {
   type PhoneSettings,
 } from "@/lib/phone/schema";
 import {
-  applyPhoneLayers,
+  applyPhoneLayers as applyPhoneLayersCore,
   defaultPhoneSettings,
   naturalPhoneSettings,
   phoneColor,
@@ -46,6 +55,16 @@ import {
   SliderRow,
   SwitchRow,
 } from "@/pages/editor/_components/panels/phone-controls";
+
+const applyPhoneLayers = (doc: TemplateDoc, settings: PhoneSettings) =>
+  applyPhoneLayersCore(
+    settings.rendering === "natural" &&
+      settings.fusion.enabled &&
+      settings.placement === "overlay"
+      ? requireStatusLocation(doc)
+      : doc,
+    settings,
+  );
 
 const LOOKS = [
   {
@@ -120,12 +139,16 @@ export default function PhoneSettingsEditor({
   scopeKey,
   onBusyChange,
   advancedOnly = false,
+  onStatusLocationChange,
 }: {
   doc: TemplateDoc;
   onApply: (next: TemplateDoc, options?: { coalesceKey?: string }) => void;
   scopeKey: string;
   onBusyChange?: (busy: boolean) => void;
   advancedOnly?: boolean;
+  onStatusLocationChange?: (
+    location: NonNullable<TemplateDoc["statusLocation"]>,
+  ) => void;
 }) {
   const alive = useRef(true);
   const latest = useRef({ doc, scopeKey });
@@ -155,6 +178,28 @@ export default function PhoneSettingsEditor({
     setDraft(doc?.phone ?? naturalPhoneSettings());
     setError("");
   }
+  useEffect(() => {
+    if (
+      !doc?.phone ||
+      doc.phone.rendering !== "natural" ||
+      !doc.phone.fusion.enabled ||
+      doc.phone.placement !== "overlay" ||
+      !isLocationConfirmed(doc) ||
+      doc.phone.locationKey === locationRenderKey(doc)
+    )
+      return;
+    try {
+      onApply(
+        applyPhoneLayersCore(doc, {
+          ...doc.phone,
+          rendering: "natural",
+          fusion: { ...doc.phone.fusion, enabled: true },
+        }),
+      );
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "请调整状态栏设置后重新应用");
+    }
+  }, [doc, onApply]);
   if (!doc) return null;
   const applied = Boolean(doc.phone);
   const model = phoneModel(draft.modelId);
@@ -201,6 +246,21 @@ export default function PhoneSettingsEditor({
       return;
     }
     try {
+      if (
+        resize &&
+        draft.rendering === "natural" &&
+        draft.placement === "overlay"
+      ) {
+        const resized = resizeDoc(doc, model.width, model.height, "smart");
+        if (!isLocationConfirmed(resized)) {
+          onApply({
+            ...removePhoneLayers(resized),
+            phone: { ...checked.data, addedHeight: 0, placement: "overlay" },
+          });
+          setError("画布尺寸已调整，请重新确认状态栏定位后再替换");
+          return;
+        }
+      }
       edit((current) =>
         applyPhoneLayers(
           resize
@@ -368,13 +428,99 @@ export default function PhoneSettingsEditor({
             </p>
           </div>
 
-          <FusionPanel
-            doc={doc}
-            settings={draft}
-            onChange={(next) => update(next)}
-            onMode={chooseMode}
-            onBusyChange={onBusyChange}
-          />
+          {draft.placement === "overlay" && draft.rendering === "natural" ? (
+            <>
+              <StatusLocationControl
+                doc={doc}
+                onChange={(location) => {
+                  if (onStatusLocationChange) {
+                    onStatusLocationChange(location);
+                    return;
+                  }
+                  const current = applyLocationToWork(doc, location);
+                  onApply(current);
+                }}
+              />
+              <details>
+                <summary className="cursor-pointer text-xs text-muted-foreground">
+                  布局兼容选项
+                </summary>
+                <select
+                  aria-label="状态栏布局版本"
+                  className={selectClass}
+                  value={draft.rendering}
+                  onChange={(e) =>
+                    update({
+                      rendering: e.target.value as PhoneSettings["rendering"],
+                      fusion: {
+                        ...draft.fusion,
+                        enabled: e.target.value === "natural",
+                      },
+                    })
+                  }
+                >
+                  <option value="natural">自然布局</option>
+                  <option value="legacy">旧版参考布局</option>
+                </select>
+              </details>
+              <label className="block space-y-1 text-xs">
+                自定义 APP 颜色
+                <select
+                  aria-label="自定义 APP 颜色"
+                  className={selectClass}
+                  value={draft.customAppStyle}
+                  onChange={(e) =>
+                    set(
+                      "customAppStyle",
+                      e.target.value as PhoneSettings["customAppStyle"],
+                    )
+                  }
+                >
+                  <option value="original">保留上传颜色</option>
+                  <option value="mono">
+                    按透明度染为状态栏颜色（推荐透明 PNG）
+                  </option>
+                </select>
+              </label>
+              {isLocationConfirmed(doc) && (
+                <label className="block space-y-1 text-xs">
+                  系统参考样式
+                  <select
+                    aria-label="系统参考样式"
+                    className={selectClass}
+                    value={draft.styleId}
+                    onChange={(e) =>
+                      update({
+                        styleId: e.target.value as PhoneSettings["styleId"],
+                      })
+                    }
+                  >
+                    <option value="auto">跟随型号</option>
+                    {SYSTEM_STYLES.filter((style) =>
+                      compatibleStyle(
+                        style.id,
+                        phoneModel(draft.modelId).system,
+                        draft.modelId,
+                      ),
+                    ).map((style) => (
+                      <option key={style.id} value={style.id}>
+                        {style.label}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              )}
+            </>
+          ) : (
+            <FusionPanel
+              doc={doc}
+              settings={draft}
+              onChange={(next) => update(next)}
+              onMode={chooseMode}
+              onBusyChange={onBusyChange}
+            />
+          )}
+
           <div
             className="overflow-hidden rounded-lg border"
             style={{
@@ -489,12 +635,12 @@ export default function PhoneSettingsEditor({
         </>
       )}
       {advancedOnly && (
-        <FusionPanel
+        <StatusLocationControl
           doc={doc}
-          settings={draft}
-          onChange={(next) => update(next)}
-          onMode={chooseMode}
-          onBusyChange={onBusyChange}
+          onChange={(location) => {
+            if (onStatusLocationChange) onStatusLocationChange(location);
+            else onApply(applyLocationToWork(doc, location));
+          }}
         />
       )}
       <details className="rounded-lg border">
@@ -558,57 +704,68 @@ export default function PhoneSettingsEditor({
               </span>
             </label>
           )}
-          <label className="block space-y-1 text-xs">
-            原状态栏覆盖比例 %
-            <Input
-              aria-label="原状态栏覆盖比例"
-              type="number"
-              min={0}
-              max={25}
-              step={0.1}
-              value={Number((draft.coverRatio * 100).toFixed(2))}
-              onChange={(e) =>
-                set(
-                  "coverRatio",
-                  Math.max(0, Math.min(0.25, Number(e.target.value) / 100)),
-                )
-              }
-            />
-          </label>
-          <SliderRow
-            label="整体大小"
-            unit="%"
-            min={70}
-            max={150}
-            value={draft.scale}
-            onChange={(v) => set("scale", v)}
-          />
-          <SliderRow
-            label="上下位置"
-            min={-30}
-            max={30}
-            value={draft.offsetY}
-            onChange={(v) => set("offsetY", v)}
-          />
-          <SliderRow
-            label="左右边距"
-            min={-12}
-            max={30}
-            value={draft.insetX}
-            onChange={(v) => set("insetX", v)}
-          />
-          {(draft.scale !== 100 ||
-            draft.offsetY !== 0 ||
-            draft.insetX !== 0) && (
-            <Button
-              variant="ghost"
-              size="sm"
-              className="h-7 w-full text-[11px]"
-              onClick={() => update({ scale: 100, offsetY: 0, insetX: 0 })}
-            >
-              <RotateCcw className="size-3" />
-              恢复默认大小与位置
-            </Button>
+          {!doc.statusLocation && (
+            <label className="block space-y-1 text-xs">
+              原状态栏覆盖比例 %
+              <Input
+                aria-label="原状态栏覆盖比例"
+                type="number"
+                min={0}
+                max={25}
+                step={0.1}
+                value={Number((draft.coverRatio * 100).toFixed(2))}
+                onChange={(e) =>
+                  set(
+                    "coverRatio",
+                    Math.max(0, Math.min(0.25, Number(e.target.value) / 100)),
+                  )
+                }
+              />
+            </label>
+          )}
+          {doc.statusLocation && (
+            <p className="text-xs text-muted-foreground">
+              替换位置和清理范围由模板定位决定，调整请打开“状态栏定位”。
+            </p>
+          )}
+          {!doc.statusLocation && (
+            <>
+              <SliderRow
+                label="整体大小"
+                unit="%"
+                min={70}
+                max={150}
+                value={draft.scale}
+                onChange={(v) => set("scale", v)}
+              />
+              <SliderRow
+                label="上下位置"
+                min={-30}
+                max={30}
+                value={draft.offsetY}
+                onChange={(v) => set("offsetY", v)}
+              />
+              <SliderRow
+                label="左右边距"
+                min={-12}
+                max={30}
+                value={draft.insetX}
+                onChange={(v) => set("insetX", v)}
+              />
+              {(draft.scale !== 100 ||
+                draft.offsetY !== 0 ||
+                draft.insetX !== 0) && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-7 w-full text-[11px]"
+                  onClick={() => update({ scale: 100, offsetY: 0, insetX: 0 })}
+                >
+                  <RotateCcw className="size-3" />
+                  恢复默认大小与位置
+                </Button>
+              )}
+            </>
           )}
         </Section>
       </details>
@@ -812,6 +969,18 @@ export default function PhoneSettingsEditor({
       {!advancedOnly && (
         <AppIconsEditor
           settings={draft}
+          capacity={
+            doc.statusLocation &&
+            draft.placement === "overlay" &&
+            draft.rendering === "natural"
+              ? locationAppCapacity(
+                  doc,
+                  draft.scale,
+                  draft.appIconGap / draft.appIconSize,
+                  draft.appIconSize / 12,
+                )
+              : undefined
+          }
           scopeKey={`${scopeKey}:${draft.groupId}`}
           onBusyChange={onBusyChange}
           onChange={(next) => {

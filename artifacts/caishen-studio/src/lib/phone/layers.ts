@@ -1,3 +1,5 @@
+import { isLocationConfirmed } from "../status-location/model";
+import { renderLocatedPhone } from "../status-location/render";
 import { builtinAppIconSource } from "./app-icon-catalog";
 import { effectiveProfile } from "./profiles";
 import {
@@ -810,6 +812,22 @@ export function applyPhoneLayers(
 ): TemplateDoc {
   const parsed = phoneSettingsSchema.parse(raw);
   const base = removePhoneLayers(doc);
+  if (
+    parsed.placement === "overlay" &&
+    base.statusLocation &&
+    parsed.rendering === "natural" &&
+    parsed.fusion.enabled
+  )
+    return renderLocatedPhone(
+      base,
+      { ...parsed, groupId: doc.phone?.groupId ?? parsed.groupId },
+      {
+        time: phoneTime,
+        date: phoneDate,
+        icons: statusIconsSvg,
+        color: phoneColor,
+      },
+    );
   const phone = resolveFusionSettings(
     {
       ...parsed,
@@ -924,6 +942,23 @@ export function refreshPhoneLayers(
   previous: TemplateDoc = doc,
 ): TemplateDoc {
   if (!doc.phone || !previous.phone) return doc;
+  if (
+    doc.statusLocation &&
+    doc.phone.rendering === "natural" &&
+    doc.phone.placement === "overlay"
+  ) {
+    const base = removePhoneLayers(doc);
+    if (isLocationConfirmed(base))
+      return applyPhoneLayers(base, syncPhoneTextSettings(previous).phone!);
+    return {
+      ...base,
+      phone: {
+        ...syncPhoneTextSettings(previous).phone!,
+        placement: "overlay",
+        addedHeight: 0,
+      },
+    };
+  }
   const source = syncPhoneTextSettings(previous);
   const synced = { ...doc, phone: source.phone };
   const baseline = applyPhoneLayers(

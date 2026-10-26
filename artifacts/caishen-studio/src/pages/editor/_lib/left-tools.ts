@@ -9,6 +9,7 @@ import {
   Type,
   FolderOpen,
   Smartphone,
+  ScanLine,
 } from "lucide-react";
 import type { LeftPanel } from "@/stores/editor.ts";
 
@@ -22,6 +23,7 @@ export const LEFT_TOOLS: { id: LeftPanel; label: string; icon: typeof Type }[] =
     { id: "shape", label: "形状", icon: Shapes },
     { id: "background", label: "背景", icon: Palette },
     { id: "assets", label: "素材", icon: FolderOpen },
+    { id: "status-location", label: "状态栏定位", icon: ScanLine },
     { id: "phone", label: "手机", icon: Smartphone },
     { id: "params", label: "参数", icon: SlidersHorizontal },
   ];

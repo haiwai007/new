@@ -1,3 +1,5 @@
+import StatusLocationControl from "@/components/phone/status-location-control";
+import type { StatusLocation } from "@/lib/status-location/schema";
 import { useMemo, useState } from "react";
 import PhoneSettingsEditor from "@/components/phone/settings-editor";
 import { applyPhoneLayers } from "@/lib/phone/layers";
@@ -18,12 +20,14 @@ export default function PhoneSetup({
   onChange,
   disabled,
   onBusyChange,
+  onLocationChange,
 }: {
   doc: TemplateDoc;
   value: PhoneBatchRules;
   onChange: (rules: PhoneBatchRules) => void;
   disabled: boolean;
   onBusyChange: (busy: boolean) => void;
+  onLocationChange?: (location: StatusLocation) => void;
 }) {
   const setup = value.setup!;
   const modifying = setup.mode !== "keep";
@@ -44,7 +48,7 @@ export default function PhoneSetup({
       return doc;
     }
   }, [doc, setup]);
-  const errors = validatePhoneBatchRules(value);
+  const errors = validatePhoneBatchRules(value, doc);
   const lowPower =
     setup.settings.lowPower || (value.enabled && value.icons.lowPower);
   const number = (n: number) => (Number.isFinite(n) ? String(n) : "待填写");
@@ -107,9 +111,17 @@ export default function PhoneSetup({
           <p className="text-xs text-muted-foreground">
             自动按模板匹配高度、文字大小、背景和明暗；型号跟随系统样式，默认保持模板图片尺寸。
           </p>
+          {setup.mode !== "prepend" && onLocationChange && (
+            <StatusLocationControl
+              doc={doc}
+              disabled={disabled}
+              onChange={onLocationChange}
+            />
+          )}
           <ModelOptions value={value} onChange={onChange} />
           <PhoneValueRules value={value} onChange={onChange} />
           <AppOptions
+            doc={doc}
             value={value}
             onChange={onChange}
             onBusyChange={onBusyChange}
@@ -165,6 +177,7 @@ export default function PhoneSetup({
                   {appearanceOpen && (
                     <PhoneSettingsEditor
                       advancedOnly
+                      onStatusLocationChange={onLocationChange}
                       doc={preview}
                       scopeKey={`batch:${doc.templateId}`}
                       onBusyChange={onBusyChange}

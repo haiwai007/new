@@ -1,3 +1,4 @@
+import { rebindLocation } from "../status-location/model";
 import { z } from "zod";
 import { isBase64 } from "../storage/encoding";
 import type { ImageSource, Layer, TemplateDoc } from "../../types/template.ts";
@@ -100,7 +101,7 @@ export function remapAssetIds(
     s && s.kind === "asset" && map.has(s.assetId)
       ? ({ ...s, assetId: map.get(s.assetId)! } as T)
       : s;
-  return {
+  const result: TemplateDoc = {
     ...doc,
     ...(doc.phone
       ? {
@@ -130,6 +131,7 @@ export function remapAssetIds(
         : p;
     }),
   };
+  return rebindLocation(result, doc);
 }
 
 export function buildPackage(

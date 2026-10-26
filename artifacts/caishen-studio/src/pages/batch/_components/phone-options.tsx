@@ -1,3 +1,4 @@
+import type { TemplateDoc } from "@/types/template";
 import PhoneModeSwitch from "./phone-mode-switch";
 import PhoneModelPicker from "@/components/phone/model-picker";
 import { settingsForModel } from "@/lib/phone/profiles";
@@ -206,6 +207,7 @@ export function ModelOptions({
   );
 }
 export function AppOptions({
+  doc,
   value,
   onChange,
   onBusyChange,
@@ -213,6 +215,7 @@ export function AppOptions({
   value: PhoneBatchRules;
   onChange: (v: PhoneBatchRules) => void;
   onBusyChange: (busy: boolean) => void;
+  doc?: TemplateDoc;
 }) {
   const [query, setQuery] = useState(""),
     [selectedOnly, setSelectedOnly] = useState(false),
@@ -294,7 +297,7 @@ export function AppOptions({
     [next[index], next[target]] = [next[target], next[index]];
     patch({ [key]: next });
   }
-  const capacity = minimumAppCapacity(value, settings);
+  const capacity = minimumAppCapacity(value, settings, doc);
   const random = apps.mode === "random";
   const picked = random
     ? apps.candidates

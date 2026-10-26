@@ -7,7 +7,11 @@ import { handleDrawnBox } from "../_lib/actions.ts";
 
 export type StageApi = { fit: () => void };
 
-export default function CanvasStage({ onReady }: { onReady: (api: StageApi) => void }) {
+export default function CanvasStage({
+  onReady,
+}: {
+  onReady: (api: StageApi) => void;
+}) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const ctrlRef = useRef<CanvasController | null>(null);
@@ -15,6 +19,7 @@ export default function CanvasStage({ onReady }: { onReady: (api: StageApi) => v
   const selectedIds = useEditor((s) => s.selectedIds);
   const zoom = useEditor((s) => s.zoom);
   const tool = useEditor((s) => s.tool);
+  const locating = useEditor((s) => s.leftPanel === "status-location");
   const [overflow, setOverflow] = useState<string[]>([]);
   const [missing, setMissing] = useState<string[]>([]);
 
@@ -52,7 +57,10 @@ export default function CanvasStage({ onReady }: { onReady: (api: StageApi) => v
       const d = useEditor.getState().doc;
       if (!el || !d) return;
       const pad = 48;
-      const z = Math.min((el.clientWidth - pad) / d.canvas.width, (el.clientHeight - pad) / d.canvas.height);
+      const z = Math.min(
+        (el.clientWidth - pad) / d.canvas.width,
+        (el.clientHeight - pad) / d.canvas.height,
+      );
       useEditor.getState().setZoom(Math.max(0.05, Math.min(2, z)));
     };
     onReady({ fit });
@@ -66,7 +74,8 @@ export default function CanvasStage({ onReady }: { onReady: (api: StageApi) => v
   }, [doc?.canvas.width, doc?.canvas.height, zoom, doc]);
 
   useEffect(() => {
-    if (ctrlRef.current && doc) void ctrlRef.current.sync(doc, useEditor.getState().selectedIds);
+    if (ctrlRef.current && doc)
+      void ctrlRef.current.sync(doc, useEditor.getState().selectedIds);
   }, [doc]);
 
   useEffect(() => {
@@ -92,7 +101,10 @@ export default function CanvasStage({ onReady }: { onReady: (api: StageApi) => v
   }, []);
 
   const names = (ids: string[]) =>
-    ids.map((id) => doc?.layers.find((l) => l.id === id)?.name).filter(Boolean).join("、");
+    ids
+      .map((id) => doc?.layers.find((l) => l.id === id)?.name)
+      .filter(Boolean)
+      .join("、");
 
   const toolHint: Record<string, string> = {
     "draw-text": "在画布上拖拽框出文字区域",
@@ -110,9 +122,69 @@ export default function CanvasStage({ onReady }: { onReady: (api: StageApi) => v
         if (e.target === wrapRef.current) useEditor.getState().select([]);
       }}
     >
-      <div className="flex min-h-full min-w-full items-center justify-center p-6" style={{ width: "max-content", height: "max-content", minWidth: "100%", minHeight: "100%" }}>
-        <div className="shadow-[0_10px_40px_-10px_rgba(0,0,0,0.35)] [&_.canvas-container]:touch-none" style={{ backgroundImage: "repeating-conic-gradient(#e6e6e6 0 25%, #fff 0 50%)", backgroundSize: "16px 16px" }}>
+      <div
+        className="flex min-h-full min-w-full items-center justify-center p-6"
+        style={{
+          width: "max-content",
+          height: "max-content",
+          minWidth: "100%",
+          minHeight: "100%",
+        }}
+      >
+        <div
+          className="relative shadow-[0_10px_40px_-10px_rgba(0,0,0,0.35)] [&_.canvas-container]:touch-none"
+          style={{
+            backgroundImage:
+              "repeating-conic-gradient(#e6e6e6 0 25%, #fff 0 50%)",
+            backgroundSize: "16px 16px",
+          }}
+        >
           <canvas ref={canvasRef} />
+          {locating &&
+            doc?.statusLocation &&
+            doc.statusLocation.state !== "skipped" && (
+              <svg
+                className="pointer-events-none absolute inset-0"
+                width={doc.canvas.width * zoom}
+                height={doc.canvas.height * zoom}
+                viewBox={`0 0 ${doc.canvas.width} ${doc.canvas.height}`}
+                aria-label="状态栏候选框"
+              >
+                {[
+                  doc.statusLocation.bounds,
+                  doc.statusLocation.time,
+                  doc.statusLocation.apps,
+                  doc.statusLocation.system,
+                  ...doc.statusLocation.protected,
+                ].map(
+                  (r, i) =>
+                    r && (
+                      <rect
+                        key={i}
+                        x={r.x * doc.canvas.width}
+                        y={
+                          r.y *
+                            (doc.canvas.height -
+                              (doc.phone?.addedHeight ?? 0)) +
+                          (doc.phone?.addedHeight ?? 0)
+                        }
+                        width={r.width * doc.canvas.width}
+                        height={
+                          r.height *
+                          (doc.canvas.height - (doc.phone?.addedHeight ?? 0))
+                        }
+                        fill="none"
+                        stroke={
+                          i === 0 ? "#ef4444" : i >= 4 ? "#d97706" : "#2563eb"
+                        }
+                        strokeWidth={1.5}
+                        vectorEffect="non-scaling-stroke"
+                        strokeDasharray={i === 0 ? "5 3" : undefined}
+                      />
+                    ),
+                )}
+              </svg>
+            )}
         </div>
       </div>
       {tool !== "select" && (
@@ -124,12 +196,14 @@ export default function CanvasStage({ onReady }: { onReady: (api: StageApi) => v
         <div className="absolute bottom-3 left-3 flex max-w-md flex-col gap-1">
           {overflow.length > 0 && (
             <p className="flex items-center gap-1.5 rounded-md bg-amber-100 px-2.5 py-1 text-xs text-amber-900 shadow dark:bg-amber-900/70 dark:text-amber-100">
-              <AlertTriangle className="size-3.5 shrink-0" /> 文字超出文本框：{names(overflow)}
+              <AlertTriangle className="size-3.5 shrink-0" /> 文字超出文本框：
+              {names(overflow)}
             </p>
           )}
           {missing.length > 0 && (
             <p className="flex items-center gap-1.5 rounded-md bg-red-100 px-2.5 py-1 text-xs text-red-900 shadow dark:bg-red-900/70 dark:text-red-100">
-              <ImageOff className="size-3.5 shrink-0" /> 图片加载失败：{names(missing)}
+              <ImageOff className="size-3.5 shrink-0" /> 图片加载失败：
+              {names(missing)}
             </p>
           )}
         </div>

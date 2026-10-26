@@ -66,12 +66,14 @@ export default function AppIconsEditor({
   onChange,
   scopeKey,
   disabled = false,
+  capacity,
   onBusyChange,
 }: {
   settings: PhoneSettings;
   onChange: (settings: PhoneSettings) => boolean | void;
   scopeKey: string;
   disabled?: boolean;
+  capacity?: number;
   onBusyChange?: (busy: boolean) => void;
 }) {
   const [error, setError] = useState("");
@@ -89,7 +91,11 @@ export default function AppIconsEditor({
       onBusyChange?.(false);
     };
   }, [onBusyChange]);
-  const limit = settings.rendering === "natural" ? naturalAppCapacity(settings) : MAX_APP_ICONS;
+  const limit =
+    capacity ??
+    (settings.rendering === "natural"
+      ? naturalAppCapacity(settings)
+      : MAX_APP_ICONS);
   const color = phoneColor(settings);
   const background = settings.backgroundColor;
   const keyword = query.trim().toLowerCase();
@@ -127,7 +133,12 @@ export default function AppIconsEditor({
       assetId = asset.id;
       if (!alive.current || latest.current.scopeKey !== scope) return;
       const current = latest.current;
-      if (current.settings.appIcons.length >= (current.settings.rendering === "natural" ? naturalAppCapacity(current.settings) : MAX_APP_ICONS))
+      if (
+        current.settings.appIcons.length >=
+        (current.settings.rendering === "natural"
+          ? naturalAppCapacity(current.settings)
+          : MAX_APP_ICONS)
+      )
         throw new Error(`最多添加 ${MAX_APP_ICONS} 个 APP 图标，请先移除一个`);
       const icon: PhoneAppIcon = {
         id: newId("app"),
@@ -159,8 +170,11 @@ export default function AppIconsEditor({
     <section className="space-y-3 rounded-lg border p-3">
       <h3 className="text-sm font-semibold">APP 通知图标</h3>
       <p className="text-xs leading-relaxed text-muted-foreground">
-        显示在时间旁，当前机型最多 {limit}{" "}
-        个。{settings.rendering === "natural" ? "空间不足时请调整大小或数量。" : "旧版布局空间不足时自动缩小。"}内置图标跟随状态栏颜色，自定义图标保留上传颜色。
+        显示在时间旁，当前机型最多 {limit} 个。
+        {settings.rendering === "natural"
+          ? "空间不足时请调整大小或数量。"
+          : "旧版布局空间不足时自动缩小。"}
+        内置图标跟随状态栏颜色，自定义图标保留上传颜色。
       </p>
       <fieldset disabled={disabled} className="min-w-0 space-y-3">
         <Input
@@ -170,8 +184,7 @@ export default function AppIconsEditor({
           onChange={(event) => setQuery(event.target.value)}
         />
         <p className="text-xs text-muted-foreground">
-          内置 {APP_ICONS.length} 种 · 已选 {settings.appIcons.length}/
-          {limit}
+          内置 {APP_ICONS.length} 种 · 已选 {settings.appIcons.length}/{limit}
         </p>
         <div
           role="group"
@@ -191,9 +204,7 @@ export default function AppIconsEditor({
                 className="h-auto min-h-10 w-full min-w-0 justify-start overflow-hidden px-2 text-xs"
                 aria-label={`${selected ? "移除" : "添加"}${app.name}图标`}
                 aria-pressed={selected}
-                disabled={
-                  !selected && settings.appIcons.length >= limit
-                }
+                disabled={!selected && settings.appIcons.length >= limit}
                 onClick={() =>
                   change({
                     ...settings,
@@ -265,7 +276,7 @@ export default function AppIconsEditor({
           PNG / JPG / WebP，最大 2MB、1024×1024；推荐透明
           PNG。图片仅存于当前浏览器，会随模板和备份携带。
         </p>
-        {(
+        {
           <>
             <div className="grid grid-cols-2 gap-2">
               <label className="space-y-1 text-xs">
@@ -382,7 +393,7 @@ export default function AppIconsEditor({
               ))}
             </ol>
           </>
-        )}
+        }
       </fieldset>
       {error && (
         <p role="alert" className="text-xs text-destructive">

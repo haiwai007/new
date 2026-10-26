@@ -146,7 +146,7 @@ export function generateItems(template: TemplateDoc, rules: BatchRules, count: n
   const total = Math.max(1, Math.min(MAX_BATCH_COUNT, Math.floor(count) || 1));
   const rng = createRng(seed);
   const assignedModels = distributeModels(phoneRules, total, createRng(seed ^ 0x6f5271));
-  const phoneErrors = validatePhoneBatchRules(phoneRules);
+  const phoneErrors = validatePhoneBatchRules(phoneRules, template);
   return Array.from({ length: total }, (_, index) => {
     const values: Record<string, ParamValue> = {};
     for (const param of template.parameters) {

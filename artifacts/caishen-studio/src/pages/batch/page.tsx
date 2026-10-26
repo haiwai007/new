@@ -1,3 +1,8 @@
+import {
+  requireStatusLocation,
+  isLocationConfirmed,
+} from "@/lib/status-location/model";
+import type { StatusLocation } from "@/lib/status-location/schema";
 import { prepareFusionItems } from "@/lib/batch/fusion";
 import { fusionReady } from "@/lib/phone/fusion";
 import { fusionWarnings } from "@/lib/phone/fusion-metrics";
@@ -93,6 +98,9 @@ export default function BatchPage() {
       order: "list",
     },
   }));
+  const [locationOverrides, setLocationOverrides] = useState<
+    Record<string, StatusLocation>
+  >({});
   const [configured, setConfigured] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [preview, setPreview] = useState<GeneratedItem[] | null>(null);
@@ -143,12 +151,43 @@ export default function BatchPage() {
         : [];
     return [...mine, ...builtin];
   }, [state]);
-  const selected = options.find((o) => o.id === templateId) ?? null;
+  const selectedOption = options.find((o) => o.id === templateId) ?? null;
+  const selected = useMemo(
+    () =>
+      selectedOption
+        ? {
+            ...selectedOption,
+            doc: {
+              ...selectedOption.doc,
+              statusLocation:
+                locationOverrides[templateId] ??
+                selectedOption.doc.statusLocation,
+            },
+          }
+        : null,
+    [selectedOption, locationOverrides, templateId],
+  );
+  const needsLocation =
+    !!selected &&
+    phoneRules.setup?.mode !== "keep" &&
+    phoneRules.setup?.mode !== "prepend" &&
+    phoneRules.setup?.settings.rendering === "natural" &&
+    !isLocationConfirmed(selected.doc);
 
   const computedItems = useMemo(
     () =>
       selected
-        ? generateItems(selected.doc, rules, count, seed, phoneRules)
+        ? generateItems(
+            phoneRules.setup?.mode !== "keep" &&
+              phoneRules.setup?.mode !== "prepend" &&
+              phoneRules.setup?.settings.rendering === "natural"
+              ? requireStatusLocation(selected.doc)
+              : selected.doc,
+            rules,
+            count,
+            seed,
+            phoneRules,
+          )
         : [],
     [selected, rules, count, seed, phoneRules],
   );
@@ -373,6 +412,39 @@ export default function BatchPage() {
               <PhoneSetup
                 doc={selected.doc}
                 value={phoneRules}
+                onLocationChange={(location) => {
+                  setLocationOverrides((old) => ({
+                    ...old,
+                    [templateId]: location,
+                  }));
+                  setPhoneRules((old) =>
+                    !old.setup
+                      ? old
+                      : {
+                          ...old,
+                          setup: {
+                            ...old.setup,
+                            mode:
+                              location.state === "skipped"
+                                ? "keep"
+                                : old.setup.mode,
+                            settings: {
+                              ...old.setup.settings,
+                              scale: 100,
+                              offsetY: 0,
+                              insetX: 0,
+                              fusion: {
+                                ...old.setup.settings.fusion,
+                                locks: old.setup.settings.fusion.locks.filter(
+                                  (k) => k !== "geometry" && k !== "coverage",
+                                ),
+                              },
+                            },
+                          },
+                        },
+                  );
+                  resetOutput();
+                }}
                 disabled={working || uploading}
                 onBusyChange={setUploading}
                 onChange={(next) => {
@@ -427,6 +499,7 @@ export default function BatchPage() {
               variant="outline"
               disabled={
                 !selected ||
+                needsLocation ||
                 working ||
                 uploading ||
                 (!needsPreview && preview !== null)

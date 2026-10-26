@@ -1,3 +1,7 @@
+import {
+  isLocationConfirmed,
+  locationRenderKey,
+} from "../status-location/model";
 import { detectContentTop, detectStatusGeometry } from "./geometry-detection";
 import { renderDoc } from "../canvas/render";
 import type { TemplateDoc } from "../../types/template";
@@ -149,6 +153,17 @@ export function analysePhoneBackground(
   return promise;
 }
 export function fusionReady(doc: TemplateDoc) {
+  if (
+    doc.phone?.rendering === "natural" &&
+    doc.phone.fusion.enabled &&
+    doc.phone.placement === "overlay" &&
+    doc.statusLocation
+  )
+    return (
+      isLocationConfirmed(removePhoneLayers(doc)) &&
+      doc.phone.locationKey === locationRenderKey(doc) &&
+      doc.layers.some((l) => l.id === `${doc.phone!.groupId}_time`)
+    );
   return (
     !doc.phone?.fusion.enabled ||
     doc.phone.rendering !== "natural" ||
@@ -161,6 +176,13 @@ export async function fitPhoneToImage(
 ): Promise<TemplateDoc> {
   if (!settings.fusion.enabled || settings.rendering !== "natural")
     return applyPhoneLayers(doc, settings);
+  if (settings.placement === "overlay") {
+    if (!isLocationConfirmed(removePhoneLayers(doc)))
+      throw new Error(
+        "请先确认模板的状态栏定位，再执行替换；未定位时可保留原图或顶部新增",
+      );
+    return applyPhoneLayers(doc, settings);
+  }
   const analysis = await analysePhoneBackground(doc);
   return applyPhoneLayers(
     doc,

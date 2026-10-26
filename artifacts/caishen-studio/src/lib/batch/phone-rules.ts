@@ -1,3 +1,4 @@
+import { locationAppCapacity } from "../status-location/model";
 import { naturalAppCapacity } from "../phone/fusion-metrics";
 import { z } from "zod";
 import { PHONE_MODELS, phoneModel } from "../phone/models";
@@ -80,7 +81,10 @@ const timeValue = (value: string) =>
     ? Number(value.slice(0, 2)) * 60 + Number(value.slice(3))
     : NaN;
 const dateValue = (value: string) => Date.parse(`${value}T00:00:00Z`);
-export function validatePhoneBatchRules(rules?: PhoneBatchRules): string[] {
+export function validatePhoneBatchRules(
+  rules?: PhoneBatchRules,
+  doc?: TemplateDoc,
+): string[] {
   if (!rules || rules.setup?.mode === "keep") return [];
   if (rules.setup?.mode === "auto")
     return ["请确认自动判断的处理方式：覆盖、添加或保留原图"];
@@ -160,9 +164,9 @@ export function validatePhoneBatchRules(rules?: PhoneBatchRules): string[] {
       errors.push("随机 APP 须选择候选，数量区间为不超过候选数的非负整数");
     const total = apps.fixed.length + (apps.mode === "random" ? apps.max : 0);
     const settings = rules.setup?.settings;
-    if (settings && total > minimumAppCapacity(rules, settings))
+    if (settings && total > minimumAppCapacity(rules, settings, doc))
       errors.push(
-        `所选型号最多共同容纳 ${minimumAppCapacity(rules, settings)} 个 APP 图标，请调整数量、大小、间距或机型`,
+        `所选型号最多共同容纳 ${minimumAppCapacity(rules, settings, doc)} 个 APP 图标，请调整数量、大小、间距或机型`,
       );
     else if (total > MAX_APP_ICONS)
       errors.push(`最多显示 ${MAX_APP_ICONS} 个 APP 图标`);
@@ -178,7 +182,7 @@ export function applyPhoneBatchRules(
   rng: () => number,
   assignedModel?: PhoneSettings["modelId"],
 ): TemplateDoc {
-  if (!rules || validatePhoneBatchRules(rules).length) return doc;
+  if (!rules || validatePhoneBatchRules(rules, doc).length) return doc;
   if (rules.setup?.mode === "keep") return doc;
   const source = rules.setup?.settings ?? doc.phone;
   if (!source || (!rules.enabled && !rules.setup)) return doc;
@@ -289,7 +293,15 @@ export function appIconCapacity(settings: PhoneSettings): number {
 export function minimumAppCapacity(
   rules: PhoneBatchRules,
   settings: PhoneSettings,
+  doc?: TemplateDoc,
 ): number {
+  if (doc?.statusLocation && rules.setup?.mode !== "prepend")
+    return locationAppCapacity(
+      doc,
+      settings.scale,
+      settings.appIconGap / settings.appIconSize,
+      settings.appIconSize / 12,
+    );
   const ids = rules.models?.enabled ? rules.models.ids : [settings.modelId];
   return ids.length
     ? Math.min(

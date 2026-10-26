@@ -1,3 +1,4 @@
+import { invalidateLocation } from "@/lib/status-location/model";
 import { syncPhoneTextSettings } from "@/lib/phone/layers";
 import { create } from "zustand";
 import type { Layer, TemplateDoc } from "@/types/template.ts";
@@ -20,7 +21,8 @@ export type LeftPanel =
   | "background"
   | "assets"
   | "params"
-  | "phone";
+  | "phone"
+  | "status-location";
 
 type CommitOptions = {
   /** Consecutive commits with the same key inside a short window merge into one undo step. */
@@ -110,7 +112,7 @@ export const useEditor = create<EditorState>((set, get) => ({
   commit: (doc, opts) => {
     const { doc: prev, past, lastCommit } = get();
     if (!prev || prev === doc) return;
-    doc = syncPhoneTextSettings(doc);
+    doc = invalidateLocation(syncPhoneTextSettings(doc));
     const now = Date.now();
     const merge =
       opts?.coalesceKey !== undefined &&

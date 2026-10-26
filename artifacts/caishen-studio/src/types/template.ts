@@ -1,3 +1,4 @@
+import type { StatusLocation } from "../lib/status-location/schema";
 import type { PhoneSettings } from "../lib/phone/schema";
 // Core template data model. The template JSON is the single source of truth;
 // the Fabric canvas is only a view rendered from it.
@@ -172,6 +173,7 @@ export type CanvasSettings = {
 };
 
 export type TemplateDoc = {
+  statusLocation?: StatusLocation;
   /** Optional editable phone status-bar preset; rendered as ordinary layers. */
   phone?: PhoneSettings;
   schemaVersion: typeof SCHEMA_VERSION;

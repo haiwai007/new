@@ -1,9 +1,7 @@
+import { statusLocationSchema } from "../status-location/schema";
 import { z } from "zod";
 import { phoneSettingsSchema } from "../phone/schema";
-import {
-  SCHEMA_VERSION,
-  type TemplateDoc,
-} from "../../types/template.ts";
+import { SCHEMA_VERSION, type TemplateDoc } from "../../types/template.ts";
 
 // Zod schema with defaults so older / partial documents are upgraded on parse.
 
@@ -71,7 +69,10 @@ const imageLayer = z.object({
   lockAspect: z.boolean().default(false),
   // Off for documents saved before this option existed, so their crops don't shift.
   autoFocus: z.boolean().default(false),
-  tint: z.string().regex(/^#[0-9a-fA-F]{6}$/).optional(),
+  tint: z
+    .string()
+    .regex(/^#[0-9a-fA-F]{6}$/)
+    .optional(),
 });
 
 const shapeFields = {
@@ -159,6 +160,7 @@ const parameter = z.object({
 });
 
 export const templateDocSchema = z.object({
+  statusLocation: statusLocationSchema.optional(),
   phone: phoneSettingsSchema.optional(),
   schemaVersion: z.literal(SCHEMA_VERSION),
   templateId: z.string().min(1),
