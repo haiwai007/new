@@ -1,3 +1,4 @@
+import FusionPanel from "@/components/phone/fusion-panel";
 import { useMemo } from "react";
 import PhoneSettingsEditor from "@/components/phone/settings-editor";
 import DrawingPresets from "@/components/phone/drawing-presets";
@@ -46,16 +47,18 @@ export default function PhoneSetup({
           onChange={(e) =>
             onChange({
               ...value,
-              setup: { ...setup, mode: e.target.value as typeof setup.mode },
+              setup: { ...setup, mode: e.target.value as typeof setup.mode, settings: e.target.value === "auto" ? {...setup.settings, rendering: "natural", fusion: {...setup.settings.fusion, enabled: true, handling: "auto"}} : {...setup.settings, fusion: {...setup.settings.fusion, handling: "manual"}} },
             })
           }
         >
+          <option value="auto">自动判断（分析后确认）</option>
           <option value="keep">保留原图（不生成新状态栏）</option>
           <option value="overlay">覆盖原图状态栏（保持尺寸）</option>
           <option value="prepend">添加状态栏（正文下移、增加高度）</option>
         </select>
       </label>
-      {setup.mode !== "keep" && (
+      {setup.mode === "auto" && <FusionPanel doc={doc} settings={setup.settings} onBusyChange={onBusyChange} onChange={settings => onChange({...value, setup: {...setup,settings}})} onMode={mode => onChange({...value,setup:{...setup,mode,settings:{...setup.settings,fusion:{...setup.settings.fusion,handling:"manual"}}}})} />}
+      {setup.mode !== "keep" && setup.mode !== "auto" && (
         <>
           <details className="rounded-lg border">
             <summary className="cursor-pointer p-3 text-sm font-medium">

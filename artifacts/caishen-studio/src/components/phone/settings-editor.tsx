@@ -1,3 +1,7 @@
+import { resolveFusionSettings } from "@/lib/phone/fusion-metrics";
+import FusionPanel from "./fusion-panel";
+import { FUSION_LOCKS } from "@/lib/phone/fusion-schema";
+import { fitPhoneToImage } from "@/lib/phone/fusion";
 import { uploadCoverRatio } from "@/lib/phone/upload-fit";
 import AppIconsEditor from "@/components/phone/app-icons-editor";
 import PhoneModelPicker from "@/components/phone/model-picker";
@@ -24,6 +28,7 @@ import {
 import {
   applyPhoneLayers,
   defaultPhoneSettings,
+  naturalPhoneSettings,
   phoneColor,
   phoneDate,
   phoneTime,
@@ -134,7 +139,7 @@ export default function PhoneSettingsEditor({
     options?: { coalesceKey?: string },
   ) => onApply(fn(doc), options);
   const [draft, setDraft] = useState<PhoneSettings>(
-    () => doc?.phone ?? defaultPhoneSettings(),
+    () => doc?.phone ?? naturalPhoneSettings(),
   );
   const latestDraft = useRef(draft);
   latestDraft.current = draft;
@@ -145,7 +150,7 @@ export default function PhoneSettingsEditor({
   const [syncedPhone, setSyncedPhone] = useState(doc?.phone);
   if (syncedPhone !== doc?.phone) {
     setSyncedPhone(doc?.phone);
-    setDraft(doc?.phone ?? defaultPhoneSettings());
+    setDraft(doc?.phone ?? naturalPhoneSettings());
     setError("");
   }
   if (!doc) return null;
@@ -155,15 +160,32 @@ export default function PhoneSettingsEditor({
 
   /** Once the bar exists, every change shows on the canvas immediately (one undo step per burst). */
   function update(patch: Partial<PhoneSettings>) {
-    const next = { ...draft, ...patch };
+    const locks = new Set(draft.fusion.locks);
+    if (draft.fusion.enabled && !patch.fusion) {
+      if (["theme", "customColor"].some((k) => k in patch)) locks.add("color");
+      if (["backgroundColor", "transparent"].some((k) => k in patch))
+        locks.add("background");
+      if ("coverRatio" in patch) locks.add("coverage");
+      if (["scale", "offsetY", "insetX"].some((k) => k in patch))
+        locks.add("geometry");
+    }
+    const next = {
+      ...draft,
+      ...patch,
+      fusion: patch.fusion ?? { ...draft.fusion, locks: [...locks] },
+    };
     setDraft(next);
     setError("");
     if (!applied) return;
     const checked = phoneSettingsSchema.safeParse(next);
     if (!checked.success) return;
-    edit((current) => applyPhoneLayers(current, checked.data), {
-      coalesceKey: "phone-live",
-    });
+    try {
+      edit((current) => applyPhoneLayers(current, checked.data), {
+        coalesceKey: "phone-live",
+      });
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "无法应用设置");
+    }
   }
   const set = <K extends keyof PhoneSettings>(
     key: K,
@@ -199,6 +221,26 @@ export default function PhoneSettingsEditor({
     setMatching(true);
     onBusyChange?.(true);
     try {
+      if (draft.rendering === "natural") {
+        const next = await fitPhoneToImage(doc, {
+          ...draft,
+          fusion: {
+            ...draft.fusion,
+            locks: draft.fusion.locks.filter(
+              (k) => k !== "color" && k !== "background" && k !== "coverage",
+            ),
+          },
+        });
+        if (
+          alive.current &&
+          latest.current.doc === doc &&
+          latestDraft.current === draft
+        ) {
+          update(next.phone!);
+          toast.success("已根据原图重新匹配，请检查顶部放大预览");
+        }
+        return;
+      }
       const base = removePhoneLayers(doc);
       const W = base.canvas.width;
       const H = base.canvas.height;
@@ -211,7 +253,8 @@ export default function PhoneSettingsEditor({
       if (
         !alive.current ||
         latest.current.scopeKey !== scopeKey ||
-        latest.current.doc !== doc || latestDraft.current !== draft
+        latest.current.doc !== doc ||
+        latestDraft.current !== draft
       )
         return;
       if (!sample) {
@@ -248,7 +291,30 @@ export default function PhoneSettingsEditor({
     }
   }
 
-  const iconColor = phoneColor(draft);
+  function chooseMode(mode: "keep" | "overlay" | "prepend") {
+    if (mode === "keep") {
+      setDraft({ ...draft, fusion: { ...draft.fusion, handling: "manual" } });
+      edit(removePhoneLayers);
+      return;
+    }
+    const next = {
+      ...draft,
+      placement: mode,
+      fusion: { ...draft.fusion, handling: "manual" as const },
+    };
+    setDraft(next);
+    try {
+      edit((current) => applyPhoneLayers(current, next));
+      setError("");
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "无法应用状态栏");
+    }
+  }
+  const previewSettings = resolveFusionSettings(
+    draft,
+    removePhoneLayers(doc).canvas,
+  );
+  const iconColor = phoneColor(previewSettings);
   return (
     <div className="space-y-3 p-3">
       <label className="block space-y-1 text-xs">
@@ -256,25 +322,25 @@ export default function PhoneSettingsEditor({
         <select
           aria-label="状态栏处理方式"
           className={selectClass}
-          value={applied ? draft.placement : "keep"}
+          value={
+            draft.fusion.handling === "auto"
+              ? "auto"
+              : applied
+                ? draft.placement
+                : "keep"
+          }
           onChange={(e) => {
-            if (e.target.value === "keep") {
-              edit(removePhoneLayers);
+            if (e.target.value === "auto") {
+              update({
+                rendering: "natural",
+                fusion: { ...draft.fusion, enabled: true, handling: "auto" },
+              });
               return;
             }
-            const next = {
-              ...draft,
-              placement: e.target.value as PhoneSettings["placement"],
-            };
-            setDraft(next);
-            try {
-              edit((current) => applyPhoneLayers(current, next));
-              setError("");
-            } catch (e) {
-              setError(e instanceof Error ? e.message : "无法应用状态栏");
-            }
+            chooseMode(e.target.value as "keep" | "overlay" | "prepend");
           }}
         >
+          <option value="auto">自动判断（分析后确认）</option>
           <option value="keep">保留原图（不生成新状态栏）</option>
           <option value="overlay">覆盖原图状态栏（保持尺寸）</option>
           <option value="prepend">添加状态栏（正文下移）</option>
@@ -294,6 +360,13 @@ export default function PhoneSettingsEditor({
         </p>
       </div>
 
+      <FusionPanel
+        doc={doc}
+        settings={draft}
+        onChange={(next) => update(next)}
+        onMode={chooseMode}
+        onBusyChange={onBusyChange}
+      />
       <div
         className="overflow-hidden rounded-lg border"
         style={{
@@ -318,7 +391,7 @@ export default function PhoneSettingsEditor({
           <img
             alt="状态图标预览"
             className="h-4 max-w-[70%]"
-            src={`data:image/svg+xml;charset=utf-8,${encodeURIComponent(statusIconsSvg(draft))}`}
+            src={`data:image/svg+xml;charset=utf-8,${encodeURIComponent(statusIconsSvg(previewSettings))}`}
           />
         </div>
         {draft.showDate && (
@@ -397,115 +470,121 @@ export default function PhoneSettingsEditor({
         />
       </Section>
 
-      <Section title="配色与位置" open>
-        <Segmented
-          label="图标颜色"
-          value={draft.customColor ? "custom" : draft.theme}
-          options={[
-            { value: "dark", label: "黑色" },
-            { value: "light", label: "白色" },
-            { value: "custom", label: "自定义" },
-          ]}
-          onChange={(v) =>
-            v === "custom"
-              ? set("customColor", draft.customColor ?? "#333333")
-              : update({ theme: v, customColor: null })
-          }
-        />
-        {draft.customColor && (
-          <label className="flex items-center justify-between text-xs">
-            <span className="text-muted-foreground">自定义图标颜色</span>
-            <input
-              aria-label="自定义图标颜色"
-              type="color"
-              className="h-7 w-12 cursor-pointer"
-              value={draft.customColor}
-              onChange={(e) => set("customColor", e.target.value)}
-            />
-          </label>
-        )}
-        <SwitchRow
-          label="透明背景"
-          hint="让原图透出来；需要盖住原图状态栏时请关闭"
-          checked={draft.transparent}
-          onChange={(v) => set("transparent", v)}
-        />
-        {!draft.transparent && (
-          <label className="flex items-center justify-between text-xs">
-            <span className="text-muted-foreground">背景颜色</span>
-            <span className="flex items-center gap-2">
-              <Input
-                aria-label="背景颜色色值"
-                className="h-7 w-20 px-1.5 font-mono text-[11px]"
-                value={draft.backgroundColor}
-                onChange={(e) => {
-                  const value = e.target.value.trim();
-                  if (/^#[0-9a-fA-F]{6}$/.test(value))
-                    set("backgroundColor", value);
-                }}
-              />
-              <input
-                aria-label="状态栏背景颜色"
-                type="color"
-                className="h-7 w-10 cursor-pointer"
-                value={draft.backgroundColor}
-                onChange={(e) => set("backgroundColor", e.target.value)}
-              />
-            </span>
-          </label>
-        )}
-        <label className="block space-y-1 text-xs">
-          原状态栏覆盖比例 %
-          <Input
-            aria-label="原状态栏覆盖比例"
-            type="number"
-            min={0}
-            max={25}
-            step={0.1}
-            value={Number((draft.coverRatio * 100).toFixed(2))}
-            onChange={(e) =>
-              set(
-                "coverRatio",
-                Math.max(0, Math.min(0.25, Number(e.target.value) / 100)),
-              )
+      <details className="rounded-lg border">
+        <summary className="cursor-pointer p-2 text-xs font-medium">
+          高级微调（颜色、位置与覆盖高度）
+        </summary>
+        <Section title="配色与位置" open>
+          <Segmented
+            label="图标颜色"
+            value={draft.customColor ? "custom" : draft.theme}
+            options={[
+              { value: "dark", label: "黑色" },
+              { value: "light", label: "白色" },
+              { value: "custom", label: "自定义" },
+            ]}
+            onChange={(v) =>
+              v === "custom"
+                ? set("customColor", draft.customColor ?? "#333333")
+                : update({ theme: v, customColor: null })
             }
           />
-        </label>
-        <SliderRow
-          label="整体大小"
-          unit="%"
-          min={70}
-          max={150}
-          value={draft.scale}
-          onChange={(v) => set("scale", v)}
-        />
-        <SliderRow
-          label="上下位置"
-          min={-30}
-          max={30}
-          value={draft.offsetY}
-          onChange={(v) => set("offsetY", v)}
-        />
-        <SliderRow
-          label="左右边距"
-          min={-12}
-          max={30}
-          value={draft.insetX}
-          onChange={(v) => set("insetX", v)}
-        />
-        {(draft.scale !== 100 || draft.offsetY !== 0 || draft.insetX !== 0) && (
-          <Button
-            variant="ghost"
-            size="sm"
-            className="h-7 w-full text-[11px]"
-            onClick={() => update({ scale: 100, offsetY: 0, insetX: 0 })}
-          >
-            <RotateCcw className="size-3" />
-            恢复默认大小与位置
-          </Button>
-        )}
-      </Section>
-
+          {draft.customColor && (
+            <label className="flex items-center justify-between text-xs">
+              <span className="text-muted-foreground">自定义图标颜色</span>
+              <input
+                aria-label="自定义图标颜色"
+                type="color"
+                className="h-7 w-12 cursor-pointer"
+                value={draft.customColor}
+                onChange={(e) => set("customColor", e.target.value)}
+              />
+            </label>
+          )}
+          <SwitchRow
+            label="透明背景"
+            hint="让原图透出来；需要盖住原图状态栏时请关闭"
+            checked={draft.transparent}
+            onChange={(v) => set("transparent", v)}
+          />
+          {!draft.transparent && (
+            <label className="flex items-center justify-between text-xs">
+              <span className="text-muted-foreground">背景颜色</span>
+              <span className="flex items-center gap-2">
+                <Input
+                  aria-label="背景颜色色值"
+                  className="h-7 w-20 px-1.5 font-mono text-[11px]"
+                  value={draft.backgroundColor}
+                  onChange={(e) => {
+                    const value = e.target.value.trim();
+                    if (/^#[0-9a-fA-F]{6}$/.test(value))
+                      set("backgroundColor", value);
+                  }}
+                />
+                <input
+                  aria-label="状态栏背景颜色"
+                  type="color"
+                  className="h-7 w-10 cursor-pointer"
+                  value={draft.backgroundColor}
+                  onChange={(e) => set("backgroundColor", e.target.value)}
+                />
+              </span>
+            </label>
+          )}
+          <label className="block space-y-1 text-xs">
+            原状态栏覆盖比例 %
+            <Input
+              aria-label="原状态栏覆盖比例"
+              type="number"
+              min={0}
+              max={25}
+              step={0.1}
+              value={Number((draft.coverRatio * 100).toFixed(2))}
+              onChange={(e) =>
+                set(
+                  "coverRatio",
+                  Math.max(0, Math.min(0.25, Number(e.target.value) / 100)),
+                )
+              }
+            />
+          </label>
+          <SliderRow
+            label="整体大小"
+            unit="%"
+            min={70}
+            max={150}
+            value={draft.scale}
+            onChange={(v) => set("scale", v)}
+          />
+          <SliderRow
+            label="上下位置"
+            min={-30}
+            max={30}
+            value={draft.offsetY}
+            onChange={(v) => set("offsetY", v)}
+          />
+          <SliderRow
+            label="左右边距"
+            min={-12}
+            max={30}
+            value={draft.insetX}
+            onChange={(v) => set("insetX", v)}
+          />
+          {(draft.scale !== 100 ||
+            draft.offsetY !== 0 ||
+            draft.insetX !== 0) && (
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-7 w-full text-[11px]"
+              onClick={() => update({ scale: 100, offsetY: 0, insetX: 0 })}
+            >
+              <RotateCcw className="size-3" />
+              恢复默认大小与位置
+            </Button>
+          )}
+        </Section>
+      </details>
       <Section title="时间与日期" open>
         <div className="grid grid-cols-2 gap-2">
           <Field label="时间">
@@ -706,10 +785,11 @@ export default function PhoneSettingsEditor({
             setError("");
             return true;
           } catch (error) {
+            setDraft(next);
             setError(
               error instanceof Error ? error.message : "无法应用 APP 图标",
             );
-            return false;
+            return phoneSettingsSchema.safeParse(next).success;
           }
         }}
       />

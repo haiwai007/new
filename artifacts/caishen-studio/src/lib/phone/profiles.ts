@@ -1,7 +1,12 @@
+import {
+  SYSTEM_STYLES,
+  compatibleStyle,
+  defaultSystemStyle,
+} from "./system-styles";
 import { phoneModel, type PhoneSystem } from "./models";
 import type { PhoneSettings } from "./schema";
 
-type StatusProfile = {
+export type StatusProfile = {
   label: string;
   fontSize: number;
   weight: "normal" | "bold";
@@ -136,20 +141,56 @@ export const STATUS_PROFILES: Record<PhoneSystem, StatusProfile> = {
 export function statusProfile(modelId: PhoneSettings["modelId"]) {
   return STATUS_PROFILES[phoneModel(modelId).system];
 }
+export function resolvedStyle(settings: PhoneSettings) {
+  const system = phoneModel(settings.modelId).system;
+  const id =
+    settings.styleId === "auto"
+      ? defaultSystemStyle(system, settings.modelId)
+      : settings.styleId;
+  return SYSTEM_STYLES.find(
+    (style) =>
+      style.id === id && compatibleStyle(style.id, system, settings.modelId),
+  );
+}
+export function effectiveProfile(settings: PhoneSettings): StatusProfile {
+  const base = statusProfile(settings.modelId);
+  if (settings.rendering !== "natural") return base;
+  const variant = resolvedStyle(settings);
+  return {
+    ...base,
+    ...(variant ?? {}),
+    battery:
+      variant?.id === "oneui6"
+        ? "vertical"
+        : variant?.id === "oneui7"
+          ? "horizontal"
+          : base.battery,
+  };
+}
+export function systemStyleLabel(settings: PhoneSettings) {
+  return (
+    resolvedStyle(settings)?.label ?? statusProfile(settings.modelId).label
+  );
+}
 /** Apply model typography and icon defaults, retaining content, theme and stable layer IDs. */
 export function settingsForModel(
   settings: PhoneSettings,
   modelId: PhoneSettings["modelId"],
 ): PhoneSettings {
-  const profile = statusProfile(modelId);
+  const system = phoneModel(modelId).system;
+  const styleId = compatibleStyle(settings.styleId, system, modelId)
+    ? settings.styleId
+    : "auto";
+  const profile = effectiveProfile({ ...settings, modelId, styleId });
   return {
     ...settings,
     modelId,
+    styleId,
     timeWeight: profile.weight,
     batteryStyle: profile.batteryStyle,
-    scale: 100,
-    offsetY: 0,
-    insetX: 0,
+    scale: settings.fusion?.locks.includes("geometry") ? settings.scale : 100,
+    offsetY: settings.fusion?.locks.includes("geometry") ? settings.offsetY : 0,
+    insetX: settings.fusion?.locks.includes("geometry") ? settings.insetX : 0,
     showHomeIndicator: phoneModel(modelId).style !== "classic",
   };
 }

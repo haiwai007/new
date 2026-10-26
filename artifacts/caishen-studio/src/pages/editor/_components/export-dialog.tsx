@@ -1,3 +1,4 @@
+import { fusionReady } from "@/lib/phone/fusion";
 import { useState } from "react";
 import { AlertTriangle, Download, Loader2 } from "lucide-react";
 import { toast } from "sonner";
@@ -34,7 +35,9 @@ export default function ExportDialog({ open, onOpenChange }: { open: boolean; on
     .map((p) => validateParamValue(p, getParamValue(doc, p)))
     .filter((x): x is string => x !== null);
 
+  const ready = fusionReady(doc);
   const run = async () => {
+    if(!ready) return;
     setBusy(true);
     setWarnings([]);
     try {
@@ -98,6 +101,7 @@ export default function ExportDialog({ open, onOpenChange }: { open: boolean; on
               <Switch checked={transparent} onCheckedChange={setTransparent} />
             </div>
           )}
+          {!ready && <p role="status" className="text-xs text-destructive">自然融合尚未完成，请在手机面板重新自动适配并确认预览后导出。</p>}
           {paramErrors.length > 0 && (
             <div className="rounded-md border border-amber-400/60 bg-amber-50 p-2 text-xs text-amber-900 dark:bg-amber-900/30 dark:text-amber-100">
               参数未通过校验：{paramErrors.join("；")}
@@ -112,7 +116,7 @@ export default function ExportDialog({ open, onOpenChange }: { open: boolean; on
           {tooBig && <p className="text-xs text-destructive">尺寸过大，浏览器可能无法生成，请减小宽度。</p>}
         </div>
         <DialogFooter>
-          <Button onClick={run} disabled={busy || tooBig || width < 1}>
+          <Button onClick={run} disabled={busy || tooBig || width < 1 || !ready}>
             {busy ? <Loader2 className="size-4 animate-spin" /> : <Download className="size-4" />}
             导出
           </Button>

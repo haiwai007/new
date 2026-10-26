@@ -1,3 +1,4 @@
+import { fusionReady } from "../phone/fusion";
 import { phoneScreenContent } from "../phone/export";
 import { Zip, ZipPassThrough } from "fflate";
 import { canvasToBlob, renderDoc } from "../canvas/render.ts";
@@ -83,6 +84,7 @@ export async function createBatchArchive(options: BatchGenerationOptions): Promi
       failed += 1;
     } else {
       try {
+        if (!item.preservePhone && !fusionReady(item.doc)) throw new Error("自然融合尚未准备，请重新生成预览");
         const { canvas, warnings } = await renderDoc(phoneScreenContent(item.doc), { multiplier: 1 });
         const image = await canvasToBlob(canvas, "image/png");
         const fileName = `${base}-${String(item.index + 1).padStart(width, "0")}.png`;

@@ -71,6 +71,7 @@ const imageLayer = z.object({
   lockAspect: z.boolean().default(false),
   // Off for documents saved before this option existed, so their crops don't shift.
   autoFocus: z.boolean().default(false),
+  tint: z.string().regex(/^#[0-9a-fA-F]{6}$/).optional(),
 });
 
 const shapeFields = {

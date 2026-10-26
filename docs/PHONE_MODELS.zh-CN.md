@@ -103,3 +103,7 @@
 - [荣耀 Magic6 Pro](https://www.honor.com/global/phones/honor-magic6-pro/spec/)
 
 已有型号标识保持兼容；原先“OPPO / vivo / 荣耀（通用安卓）”改为具体的 OPPO Find X7。Mate 60 的参考尺寸修正为 1212×2616，1260×2720 对应新增的 Mate 60 Pro。历史作品的画布尺寸不会因此自动变化。
+
+## 自然布局与系统版本
+
+自然布局新增 iOS 17 / 18 / 26、One UI 6 / 7、HarmonyOS 4 / 5、HyperOS 1 / 2 参考选择。默认版本按型号选择，不识别设备实际系统，选项过滤明显不适用的机型组合。其他品牌保留现有系统参考。旧版图层保持原貌，主动开启自然融合才更新。字体使用本地替代，不承诺所有版本与主题像素一致；见[自然融合指南](STATUS_BAR_FUSION.zh-CN.md)。

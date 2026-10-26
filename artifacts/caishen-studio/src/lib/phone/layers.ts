@@ -1,5 +1,12 @@
 import { builtinAppIconSource } from "./app-icon-catalog";
-import { statusProfile } from "./profiles";
+import { effectiveProfile } from "./profiles";
+import {
+  gradientStops,
+  naturalAppCapacity,
+  naturalBarRatio,
+  regionBackground,
+  resolveFusionSettings,
+} from "./fusion-metrics";
 import type {
   ImageSource,
   Layer,
@@ -18,6 +25,16 @@ export function defaultPhoneSettings(): PhoneSettings {
   const now = new Date();
   const date = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
   return {
+    rendering: "legacy",
+    styleId: "auto",
+    customAppStyle: "original",
+    fusion: {
+      enabled: false,
+      background: "auto",
+      handling: "manual",
+      locks: [],
+      analysis: null,
+    },
     placement: "overlay",
     addedHeight: 0,
     groupId: newId("phone"),
@@ -60,6 +77,20 @@ export function defaultPhoneSettings(): PhoneSettings {
     appIcons: [],
     appIconSize: 12,
     appIconGap: 3,
+  };
+}
+/** New UI presets opt in; old documents parse with legacy rendering and fusion off. */
+export function naturalPhoneSettings(): PhoneSettings {
+  return {
+    ...defaultPhoneSettings(),
+    rendering: "natural",
+    fusion: {
+      enabled: true,
+      background: "auto",
+      handling: "manual",
+      locks: [],
+      analysis: null,
+    },
   };
 }
 export function phoneTime(settings: PhoneSettings): string {
@@ -151,7 +182,7 @@ function androidBatteryPart(
   color: string,
   battery: number,
 ): IconPart {
-  const profile = statusProfile(settings.modelId);
+  const profile = effectiveProfile(settings);
   const vertical = profile.battery === "vertical";
   const w = vertical ? 10 : 25,
     h = vertical ? 16 : 12;
@@ -256,7 +287,7 @@ export function statusIcons(settings: PhoneSettings): {
     ),
   );
   const color = phoneColor(settings);
-  const profile = statusProfile(settings.modelId);
+  const profile = effectiveProfile(settings);
   const parts: IconPart[] = [];
   for (const key of ["location", "alarm", "mute", "dnd", "bluetooth"] as const)
     if (settings[key]) parts.push(SMALL_ICONS[key]);
@@ -373,7 +404,7 @@ function renderPhoneLayers(doc: TemplateDoc, raw: PhoneSettings): TemplateDoc {
     groupId: doc.phone?.groupId ?? settings.groupId,
   };
   const model = phoneModel(phone.modelId);
-  const profile = statusProfile(phone.modelId);
+  const profile = effectiveProfile(phone);
   const W = doc.canvas.width;
   const H = doc.canvas.height;
   const s = Math.min(
@@ -381,7 +412,10 @@ function renderPhoneLayers(doc: TemplateDoc, raw: PhoneSettings): TemplateDoc {
     H / (model.bar + (phone.showDate ? 24 : 0) + 40),
   );
   const k = (s * phone.scale) / 100;
-  const bar = model.bar * s;
+  const bar =
+    phone.rendering === "natural" && phone.placement === "overlay"
+      ? Math.max(model.bar * s, Math.min(H * 0.25, H * phone.coverRatio))
+      : model.bar * s;
   const color = phoneColor(phone);
   const classic = model.style === "classic";
   const android = model.style === "android";
@@ -404,7 +438,19 @@ function renderPhoneLayers(doc: TemplateDoc, raw: PhoneSettings): TemplateDoc {
     extra: Partial<TextLayer> = {},
   ) => {
     const units = [...value].reduce(
-      (n, ch) => n + (/[^\x00-\xff]/.test(ch) ? 1.1 : ch === " " ? 0.4 : 0.75),
+      (n, ch) =>
+        n +
+        (phone.rendering === "natural" && role === "time"
+          ? /\d/.test(ch)
+            ? 0.56
+            : ch === ":" || ch === " "
+              ? 0.28
+              : 0.68
+          : /[^\x00-\xff]/.test(ch)
+            ? 1.1
+            : ch === " "
+              ? 0.4
+              : 0.75),
       0,
     );
     const fittedFont = Math.min(fontSize, box.width / Math.max(1, units));
@@ -419,7 +465,10 @@ function renderPhoneLayers(doc: TemplateDoc, raw: PhoneSettings): TemplateDoc {
         {
           name,
           text: value,
-          fontFamily: "Noto Sans SC",
+          fontFamily:
+            phone.rendering === "natural" && role === "time"
+              ? "Arial"
+              : "Noto Sans SC",
           fontSize: fittedFont,
           minFontSize: Math.min(12, fittedFont),
           fill: color,
@@ -451,7 +500,10 @@ function renderPhoneLayers(doc: TemplateDoc, raw: PhoneSettings): TemplateDoc {
   const appSize = Math.min(
     phone.appIconSize * k,
     bar * 0.65,
-    (leftSpace * 0.52) / Math.max(1, appCount + (appCount - 1) * appGapRatio),
+    phone.rendering === "natural"
+      ? Infinity
+      : (leftSpace * 0.52) /
+          Math.max(1, appCount + (appCount - 1) * appGapRatio),
   );
   const appGap = appSize * appGapRatio;
   const appWidth = appCount ? appCount * appSize + (appCount - 1) * appGap : 0;
@@ -465,7 +517,14 @@ function renderPhoneLayers(doc: TemplateDoc, raw: PhoneSettings): TemplateDoc {
           x: edge,
           width: Math.max(
             0.1,
-            Math.min(110 * k, leftSpace - appWidth - (appCount ? 4 * s : 0)),
+            Math.min(
+              (phone.rendering === "natural"
+                ? phone.timeFormat === "12h"
+                  ? 84
+                  : 46
+                : 110) * k,
+              leftSpace - appWidth - (appCount ? 4 * s : 0),
+            ),
           ),
         };
   const icons = statusIcons(phone);
@@ -486,7 +545,14 @@ function renderPhoneLayers(doc: TemplateDoc, raw: PhoneSettings): TemplateDoc {
     : iconsRight - iconsWidth;
   const halfHeight = Math.max(fontSize * 0.7, iconsHeight / 2);
   const requestedCy =
-    (classic ? 10 : android ? model.bar / 2 : model.bar - 30) * s +
+    (phone.rendering === "natural"
+      ? bar / (2 * s)
+      : classic
+        ? 10
+        : android
+          ? model.bar / 2
+          : model.bar - 30) *
+      s +
     phone.offsetY * s;
   const cy = Math.max(halfHeight, Math.min(bar - halfHeight, requestedCy));
   const carrierSize = Math.min(
@@ -570,6 +636,38 @@ function renderPhoneLayers(doc: TemplateDoc, raw: PhoneSettings): TemplateDoc {
       ),
     ),
   ];
+  // A generated gradient is self-contained; never blur or fade the original image.
+  const analysis = phone.fusion.analysis;
+  if (
+    phone.rendering === "natural" &&
+    phone.fusion.enabled &&
+    analysis &&
+    phone.fusion.background === "auto" &&
+    !phone.fusion.locks.includes("background")
+  ) {
+    const region = regionBackground(
+      analysis,
+      naturalBarRatio(phone, { width: W, height: H - phone.addedHeight }),
+    );
+    if (region.kind === "gradient") {
+      const bg = layers[0];
+      const stops = gradientStops(
+        analysis,
+        naturalBarRatio(phone, { width: W, height: H - phone.addedHeight }),
+        phone.placement,
+      );
+      layers[0] = layer(
+        "background",
+        createImageLayer(
+          { x: 0, y: 0, width: W, height: bg.height },
+          svgSource(
+            `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${bg.height}" viewBox="0 0 ${W} ${bg.height}"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${stops.top}"/><stop offset="1" stop-color="${stops.bottom}"/></linearGradient></defs><rect width="100%" height="100%" fill="url(#g)"/></svg>`,
+          ),
+          { name: "融合背景", fit: "stretch" },
+        ),
+      );
+    }
+  }
   layers.push(
     layer(
       "cutout",
@@ -630,6 +728,9 @@ function renderPhoneLayers(doc: TemplateDoc, raw: PhoneSettings): TemplateDoc {
             fit: "contain",
             lockAspect: true,
             visible: app.visible,
+            ...(app.kind === "custom" && phone.customAppStyle === "mono"
+              ? { tint: color }
+              : {}),
           },
         ),
       ),
@@ -651,11 +752,21 @@ export function applyPhoneLayers(
 ): TemplateDoc {
   const parsed = phoneSettingsSchema.parse(raw);
   const base = removePhoneLayers(doc);
-  const phone = {
-    ...parsed,
-    groupId: doc.phone?.groupId ?? parsed.groupId,
-    addedHeight: 0,
-  };
+  const phone = resolveFusionSettings(
+    {
+      ...parsed,
+      groupId: doc.phone?.groupId ?? parsed.groupId,
+      addedHeight: 0,
+    },
+    base.canvas,
+  );
+  if (
+    phone.rendering === "natural" &&
+    phone.appIcons.filter((i) => i.visible).length > naturalAppCapacity(phone)
+  )
+    throw new Error(
+      `当前机型最多容纳 ${naturalAppCapacity(phone)} 个 APP 图标，请减少数量或调整大小与间距`,
+    );
   if (phone.placement !== "prepend") {
     // Keep parameter bindings to stable generated IDs, including legacy templates.
     return renderPhoneLayers({ ...base, parameters: doc.parameters }, phone);
@@ -687,7 +798,7 @@ export function applyPhoneLayers(
           height: base.canvas.height,
         },
         background,
-        { name: "正文背景", fit: "cover" },
+        { name: "正文背景", fit: "cover", autoFocus: false },
       ),
       id: `${phone.groupId}_content_background`,
       locked: true,

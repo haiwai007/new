@@ -59,7 +59,7 @@ export default function PhoneModelPicker({
       </label>
       {value && (
         <p className="text-xs text-muted-foreground">
-          {statusProfile(value).label} · {phoneModel(value).width}×
+          机型默认：{statusProfile(value).label} · {phoneModel(value).width}×
           {phoneModel(value).height} 参考分辨率
         </p>
       )}

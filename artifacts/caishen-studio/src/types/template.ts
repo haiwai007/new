@@ -59,6 +59,8 @@ export type TextLayer = BaseLayer & {
 export type ImageFit = "cover" | "contain" | "stretch";
 
 export type ImageLayer = BaseLayer & {
+  /** Optional alpha-preserving tint for custom notification icons. */
+  tint?: string;
   type: "image";
   src: ImageSource | null;
   fit: ImageFit;

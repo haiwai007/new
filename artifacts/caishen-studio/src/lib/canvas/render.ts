@@ -175,7 +175,13 @@ async function buildImage(layer: ImageLayer, interactive: boolean): Promise<Buil
   const offX = (layer.width - dispW) / 2;
   const offY = (layer.height - dispH) / 2;
   const p = rot(offX, offY, layer.rotation);
-  const img = new FabricImage(el, {
+  let displayed: HTMLImageElement | HTMLCanvasElement = el;
+  if (layer.tint) {
+    const tint = document.createElement("canvas"); tint.width = natW; tint.height = natH;
+    const ctx = tint.getContext("2d");
+    if (ctx) {ctx.drawImage(el,0,0); ctx.globalCompositeOperation = "source-in"; ctx.fillStyle = layer.tint; ctx.fillRect(0,0,natW,natH); displayed = tint;}
+  }
+  const img = new FabricImage(displayed, {
     ...commonProps(layer, interactive),
     left: layer.x + p.x,
     top: layer.y + p.y,

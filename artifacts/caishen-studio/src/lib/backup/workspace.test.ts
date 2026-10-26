@@ -263,3 +263,18 @@ it("rejects missing preset assets before writing and accepts old backups without
   old.drawingPresets = [{id: "bad-preset", name: "损坏", createdAt: new Date().toISOString(), rules}];
   expect(() => parseWorkspaceBackup(old)).toThrow(/自定义图标/);
 });
+
+it("roundtrips natural layout versions, analysis and manual locks in drawing presets",async()=>{
+  const {saveDrawingPreset,listDrawingPresets}=await import("../storage/drawing-presets");
+  const {drawingRules}=await import("../batch/phone-rules");
+  const {naturalPhoneSettings}=await import("../phone/layers");
+  const {analyseTopPixels}=await import("../phone/fusion");
+  const p=naturalPhoneSettings();p.modelId="galaxys24";p.styleId="oneui7";p.customAppStyle="mono";p.scale=110;
+  const pixels=new Uint8ClampedArray(160*320*4).fill(255);
+  p.fusion={...p.fusion,locks:["geometry","color"],analysis:analyseTopPixels(pixels,160,320,{width:600,height:1280,sourceKey:"preset-analysis"})};
+  await saveDrawingPreset("自然融合设置",drawingRules(p));
+  const data=await backup();await restoreWorkspace(data);
+  const restored=(await listDrawingPresets())[1].rules.setup!.settings;
+  expect(restored).toMatchObject({rendering:"natural",styleId:"oneui7",customAppStyle:"mono",scale:110,fusion:{locks:["geometry","color"],analysis:{sourceKey:"preset-analysis",kind:"flat"}}});
+  await expect(exportWorkspace()).resolves.toBeInstanceOf(Blob);
+});

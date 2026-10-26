@@ -482,6 +482,8 @@ test("upload model selection replaces old status icons and switches real brand l
 test("APP notification icons support custom uploads, visibility, portable templates and batch export", async ({ page, browser }, info) => {
   await createFromBuiltin(page);
   await page.getByRole("button", { name: "手机", exact: true }).click();
+  await page.getByText("布局兼容选项",{exact:true}).click();
+  await page.getByLabel("状态栏布局版本",{exact:true}).selectOption("legacy");
   for (const name of ["微信", "快手", "抖音", "QQ"]) await page.getByRole("button", { name: `添加${name}图标`, exact: true }).click();
   await expect(page.getByRole("list", { name: "已选 APP 图标" }).getByRole("listitem")).toHaveCount(4);
   await page.getByLabel("上传 APP 图标文件", { exact: true }).setInputFiles({name:"bad.svg",mimeType:"image/svg+xml",buffer:Buffer.from('<svg xmlns="http://www.w3.org/2000/svg"/>')});
@@ -562,6 +564,8 @@ test("APP notification icons support custom uploads, visibility, portable templa
 test("expanded APP library supports search, selection limits, saving and PNG export", async ({page},info) => {
   await createFromBuiltin(page);
   await page.getByRole("button",{name:"手机",exact:true}).click();
+  await page.getByText("布局兼容选项",{exact:true}).click();
+  await page.getByLabel("状态栏布局版本",{exact:true}).selectOption("legacy");
   const choices=page.getByRole("group",{name:"内置 APP 图标",exact:true});
   await expect(choices.getByRole("button")).toHaveCount(28);
   for (const name of ["小红书","淘宝","美团","知乎","豆瓣","百度","钉钉","WhatsApp"]) {
@@ -804,4 +808,83 @@ test("manual region editing preserves source colors, cancels cleanly and repairs
   expect(await pixels(await exportPNG(page,info.outputPath("legacy-reference-repaired.png")))).toEqual(blue);
   const retained = await page.evaluate(async () => {const db=await new Promise<IDBDatabase>(resolve=>{const request=indexedDB.open("caishen-studio");request.onsuccess=()=>resolve(request.result);});try {return await new Promise<number>(resolve=>{const r=db.transaction("works").objectStore("works").get(location.pathname.split("/").pop()!);r.onsuccess=()=>resolve(r.result.doc.layers.find((l: any)=>l.id==="intentional-tint").opacity);});}finally{db.close();}});
   expect(retained).toBe(.2);
+});
+
+test("natural fusion matches gradient backgrounds, keeps manual overrides and tints custom icons", async ({page},info)=>{
+  await page.goto("/custom");
+  const encoded=await page.evaluate(()=>{const c=document.createElement("canvas");c.width=600;c.height=1200;const ctx=c.getContext("2d")!;const g=ctx.createLinearGradient(0,0,0,140);g.addColorStop(0,"#203040");g.addColorStop(1,"#a0c0e0");ctx.fillStyle=g;ctx.fillRect(0,0,600,140);ctx.fillStyle="#a0c0e0";ctx.fillRect(0,140,600,1060);return c.toDataURL().split(",")[1];});
+  await page.locator('input[type="file"]').setInputFiles({name:"gradient.png",mimeType:"image/png",buffer:Buffer.from(encoded,"base64")});
+  await page.getByRole("button",{name:/原图背景模式/}).click();
+  await page.getByRole("button",{name:"生成初始模板并进入编辑器",exact:true}).click();
+  await expect(page).toHaveURL(/\/editor\//);
+  await page.getByRole("button",{name:"进入作图",exact:true}).click();
+  await page.getByLabel("手机品牌",{exact:true}).selectOption("Samsung");
+  await page.getByLabel("手机型号",{exact:true}).selectOption("galaxys24ultra");
+  await expect(page.getByText(/顶部分析：/)).toBeVisible();
+  await expect(page.getByRole("img",{name:"融合状态栏顶部放大",exact:true})).toBeVisible();
+  await page.getByLabel("系统参考样式",{exact:true}).selectOption("oneui7");
+  await page.getByRole("button",{name:"查看原图",exact:true}).click();
+  await expect(page.getByRole("img",{name:"原图顶部放大",exact:true})).toBeVisible();
+  await page.getByRole("button",{name:"查看融合效果",exact:true}).click();
+  await page.getByRole("button",{name:"放大检查顶部",exact:true}).click();
+  await expect(page.getByRole("dialog").getByRole("img",{name:"融合顶部细节",exact:true})).toBeVisible();
+  await page.getByRole("dialog").getByLabel("顶部预览放大倍率",{exact:true}).focus();
+  await page.getByRole("dialog").getByLabel("顶部预览放大倍率",{exact:true}).press("ArrowRight");
+  await expect(page.getByRole("dialog").getByLabel("顶部预览放大倍率",{exact:true})).toHaveValue("2");
+  await page.getByRole("dialog").getByRole("button",{name:"Close",exact:true}).click();
+  const countGreen=(image:Buffer)=>page.evaluate(async encoded=>{const b=await createImageBitmap(new Blob([Uint8Array.from(atob(encoded),c=>c.charCodeAt(0))],{type:"image/png"}));const c=document.createElement("canvas");c.width=b.width;c.height=b.height;const ctx=c.getContext("2d")!;ctx.drawImage(b,0,0);b.close();const d=ctx.getImageData(0,0,c.width,Math.min(140,c.height)).data;let n=0;for(let i=0;i<d.length;i+=4)if(d[i]<60&&d[i+1]>180&&d[i+2]<60)n++;return n;},image.toString("base64"));
+  const icon=await page.evaluate(()=>{const c=document.createElement("canvas");c.width=c.height=64;const ctx=c.getContext("2d")!;ctx.fillStyle="#00ff00";ctx.beginPath();ctx.arc(32,32,25,0,Math.PI*2);ctx.fill();return c.toDataURL().split(",")[1];});
+  await page.getByLabel("上传 APP 图标文件",{exact:true}).setInputFiles({name:"圆形通知.png",mimeType:"image/png",buffer:Buffer.from(icon,"base64")});
+  await expect(page.getByLabel("显示圆形通知图标",{exact:true})).toBeChecked();
+  const original=await exportPNG(page,info.outputPath("fusion-color.png"));expect(await countGreen(original)).toBeGreaterThan(10);
+  await page.getByLabel("自定义 APP 颜色",{exact:true}).selectOption("mono");
+  const mono=await exportPNG(page,info.outputPath("fusion-mono.png"));expect(await countGreen(mono)).toBe(0);
+  const body=await page.evaluate(async encoded=>{const b=await createImageBitmap(new Blob([Uint8Array.from(atob(encoded),c=>c.charCodeAt(0))],{type:"image/png"}));const c=document.createElement("canvas");c.width=b.width;c.height=b.height;const ctx=c.getContext("2d")!;ctx.drawImage(b,0,0);b.close();return [...ctx.getImageData(500,500,1,1).data];},mono.toString("base64"));
+  expect(body).toEqual([160,192,224,255]);
+  await page.getByRole("button",{name:"浅底黑字",exact:true}).click();
+  await expect(page.getByText(/已保留手动调整：/)).toContainText("颜色");
+  await page.getByLabel("电量百分比",{exact:true}).fill("57");
+  await page.getByRole("button",{name:"重新自动适配",exact:true}).click();
+  await expect(page.getByText(/已保留手动调整：/)).toContainText("背景");
+  await page.getByRole("button",{name:"恢复自动适配（清除手动锁定）",exact:true}).click();
+  await expect(page.getByText(/已保留手动调整：/)).toHaveCount(0);
+  await page.getByRole("button",{name:"保存",exact:true}).click();
+  await expect(page.getByText("已保存到本地",{exact:true})).toBeVisible();
+  await page.getByRole("button",{name:"更多",exact:true}).click();
+  const downloading=page.waitForEvent("download");await page.getByRole("menuitem",{name:"导出模板文件（含图片）",exact:true}).click();
+  const path=info.outputPath("fusion-template.json");await(await downloading).saveAs(path);
+  const saved=JSON.parse(await readFile(path,"utf8"));
+  expect(saved.doc.phone).toMatchObject({rendering:"natural",styleId:"oneui7",customAppStyle:"mono",battery:57});
+  expect(saved.doc.phone.fusion.analysis.kind).toBe("gradient");
+  expect(saved.doc.layers.find((l:any)=>l.id===`${saved.doc.phone.groupId}_background`).type).toBe("image");
+  await page.setViewportSize({width:375,height:900});
+  await page.reload();
+  await page.getByRole("button",{name:"手机",exact:true}).click();
+  await expect(page.getByRole("img",{name:"融合状态栏顶部放大",exact:true})).toBeVisible();
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
+});
+
+test("automatic handling requires confirmation and batch fusion prepares stable per-model results",async({page},info)=>{
+  await page.goto("/batch");
+  await page.getByLabel("批量模板",{exact:true}).selectOption({index:1});
+  await page.getByLabel("生成张数",{exact:true}).fill("4");
+  await page.getByLabel("批量状态栏处理方式",{exact:true}).selectOption("auto");
+  await expect(page.getByText("请确认自动判断的处理方式：覆盖、添加或保留原图",{exact:true})).toBeVisible();
+  await expect(page.getByText(/顶部分析：/)).toBeVisible();
+  await page.getByRole("button",{name:"确认覆盖",exact:true}).click();
+  await page.getByLabel("手机型号模式",{exact:true}).selectOption("random");
+  await page.getByRole("button",{name:"清空型号",exact:true}).click();
+  await page.getByLabel("候选型号 iPhone 16",{exact:true}).check();
+  await page.getByLabel("候选型号 Google Pixel 9",{exact:true}).check();
+  await page.getByLabel("手机型号分配方式",{exact:true}).selectOption("balanced");
+  await page.getByRole("button",{name:"生成预览",exact:true}).click();
+  await expect(page.getByRole("button",{name:"生成 4 张图片",exact:true})).toBeEnabled();
+  const summaries=page.locator('[aria-label$="张状态栏"]');const before=await summaries.allTextContents();
+  expect(before.filter(s=>s.includes("iPhone 16"))).toHaveLength(2);expect(before.filter(s=>s.includes("Pixel 9"))).toHaveLength(2);
+  await page.getByRole("button",{name:"重新随机第 1 张",exact:true}).click();
+  await expect(page.getByRole("button",{name:"生成 4 张图片",exact:true})).toBeEnabled();
+  expect((await summaries.allTextContents()).slice(1)).toEqual(before.slice(1));
+  await page.getByRole("button",{name:"生成 4 张图片",exact:true}).click();await expect(page.getByText("已生成 4 张图片",{exact:true})).toBeVisible();
+  const downloading=page.waitForEvent("download");await page.getByRole("link",{name:"下载 ZIP",exact:true}).click();const path=info.outputPath("fused-batch.zip");await(await downloading).saveAs(path);
+  const {unzipSync}=await import("fflate");expect(Object.keys(unzipSync(new Uint8Array(await readFile(path))))).toHaveLength(4);
 });

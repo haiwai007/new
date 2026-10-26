@@ -1,3 +1,4 @@
+import { naturalAppCapacity } from "../phone/fusion-metrics";
 import { z } from "zod";
 import { PHONE_MODELS, phoneModel } from "../phone/models";
 import { settingsForModel, statusProfile } from "../phone/profiles";
@@ -30,7 +31,7 @@ export const RANDOM_PHONE_ICONS = [
 ] as const;
 export type RandomPhoneIcon = (typeof RANDOM_PHONE_ICONS)[number][0];
 export type PhoneBatchRules = {
-  setup?: { mode: "keep" | "overlay" | "prepend"; settings: PhoneSettings };
+  setup?: { mode: "keep" | "overlay" | "prepend" | "auto"; settings: PhoneSettings };
   models?: {
     enabled: boolean;
     ids: PhoneSettings["modelId"][];
@@ -78,6 +79,7 @@ const timeValue = (value: string) =>
 const dateValue = (value: string) => Date.parse(`${value}T00:00:00Z`);
 export function validatePhoneBatchRules(rules?: PhoneBatchRules): string[] {
   if (!rules || rules.setup?.mode === "keep") return [];
+  if (rules.setup?.mode === "auto") return ["请确认自动判断的处理方式：覆盖、添加或保留原图"];
   if (!rules.enabled && !rules.setup) return [];
   const errors: string[] = [];
   if (
@@ -165,7 +167,7 @@ export function applyPhoneBatchRules(
   if (rules.setup?.mode === "keep") return doc;
   const source = rules.setup?.settings ?? doc.phone;
   if (!source || (!rules.enabled && !rules.setup)) return doc;
-  let phone = { ...source, placement: rules.setup?.mode ?? source.placement };
+  let phone = { ...source, placement: rules.setup?.mode === "auto" ? source.placement : rules.setup?.mode ?? source.placement };
   if (assignedModel) phone = settingsForModel(phone, assignedModel);
   else if (rules.models?.enabled && rules.models.ids.length)
     phone = settingsForModel(
@@ -239,6 +241,7 @@ export function shuffled<T>(values: readonly T[], rng: () => number): T[] {
 }
 /** Capacity at the requested icon size; never rely on silently shrinking the preview. */
 export function appIconCapacity(settings: PhoneSettings): number {
+  if(settings.rendering === "natural") return naturalAppCapacity(settings);
   const model = phoneModel(settings.modelId),
     profile = statusProfile(settings.modelId);
   const left =
@@ -304,7 +307,7 @@ const appList = z.array(phoneAppIconSchema).max(128);
 export const phoneBatchRulesSchema = z.object({
   setup: z
     .object({
-      mode: z.enum(["keep", "overlay", "prepend"]),
+      mode: z.enum(["keep", "overlay", "prepend", "auto"]),
       settings: phoneSettingsSchema,
     })
     .optional(),

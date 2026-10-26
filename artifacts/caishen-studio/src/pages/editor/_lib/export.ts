@@ -1,3 +1,4 @@
+import { fusionReady } from "@/lib/phone/fusion";
 import { phoneScreenContent } from "@/lib/phone/export";
 import { renderDoc, canvasToBlob } from "@/lib/canvas/render.ts";
 import type { TemplateDoc } from "@/types/template.ts";
@@ -22,6 +23,7 @@ export function sanitizeFileName(name: string): string {
  * zoomed editor canvas), so exports stay sharp at any editor zoom.
  */
 export async function exportDoc(doc: TemplateDoc, opts: ExportOptions) {
+  if(!fusionReady(doc)) throw new Error("自然融合尚未完成，请先重新自动适配并预览");
   const multiplier = opts.width / doc.canvas.width;
   const transparent = opts.format === "png" && opts.transparent;
   const { canvas, warnings } = await renderDoc(phoneScreenContent(doc), { multiplier, transparent });

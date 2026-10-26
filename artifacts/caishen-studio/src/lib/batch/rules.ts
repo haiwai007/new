@@ -140,7 +140,7 @@ export function generateValue(param: TemplateParameter, rule: ParamRule, index: 
   }
 }
 
-export type GeneratedItem = { index: number; doc: TemplateDoc; errors: string[] };
+export type GeneratedItem = { index: number; doc: TemplateDoc; errors: string[]; preservePhone?: boolean };
 
 export function generateItems(template: TemplateDoc, rules: BatchRules, count: number, seed: number, phoneRules?: PhoneBatchRules): GeneratedItem[] {
   const total = Math.max(1, Math.min(MAX_BATCH_COUNT, Math.floor(count) || 1));
@@ -160,6 +160,6 @@ export function generateItems(template: TemplateDoc, rules: BatchRules, count: n
     const errors = doc.parameters
       .map((p) => validateParamValue(p, getParamValue(doc, p)))
       .filter((m): m is string => m !== null);
-    return { index, doc, errors: [...new Set([...phoneErrors, ...errors])] };
+    return { index, doc, errors: [...new Set([...phoneErrors, ...errors])], ...(phoneRules?.setup?.mode === "keep" ? {preservePhone: true} : {}) };
   });
 }

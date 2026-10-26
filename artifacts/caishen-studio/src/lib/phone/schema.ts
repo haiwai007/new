@@ -1,3 +1,4 @@
+import { fusionSchema, SYSTEM_STYLE_IDS } from "./fusion-schema";
 import { APP_ICON_IDS, MAX_APP_ICONS } from "./app-icon-catalog";
 import { z } from "zod";
 import { PHONE_MODELS } from "./models";
@@ -42,6 +43,10 @@ export const phoneAppIconSchema = z.discriminatedUnion("kind", [
 ]);
 export type PhoneAppIcon = z.infer<typeof phoneAppIconSchema>;
 export const phoneSettingsSchema = z.object({
+  rendering: z.enum(["legacy", "natural"]).default("legacy"),
+  styleId: z.enum(SYSTEM_STYLE_IDS).default("auto"),
+  customAppStyle: z.enum(["original", "mono"]).default("original"),
+  fusion: fusionSchema.default({enabled: false, background: "auto", handling: "manual", locks: [], analysis: null}),
   placement: z.enum(["overlay", "prepend"]).default("overlay"),
   addedHeight: z.number().int().min(0).max(4000).default(0),
   groupId: z.string().regex(/^phone_[a-z0-9]{10}$/),

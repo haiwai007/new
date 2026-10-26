@@ -1,3 +1,4 @@
+import { naturalAppCapacity } from "@/lib/phone/fusion-metrics";
 import { useEffect, useRef, useState } from "react";
 import { ArrowDown, ArrowUp, Loader2, Trash2, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -88,6 +89,7 @@ export default function AppIconsEditor({
       onBusyChange?.(false);
     };
   }, [onBusyChange]);
+  const limit = settings.rendering === "natural" ? naturalAppCapacity(settings) : MAX_APP_ICONS;
   const color = phoneColor(settings);
   const background = settings.backgroundColor;
   const keyword = query.trim().toLowerCase();
@@ -125,7 +127,7 @@ export default function AppIconsEditor({
       assetId = asset.id;
       if (!alive.current || latest.current.scopeKey !== scope) return;
       const current = latest.current;
-      if (current.settings.appIcons.length >= MAX_APP_ICONS)
+      if (current.settings.appIcons.length >= (current.settings.rendering === "natural" ? naturalAppCapacity(current.settings) : MAX_APP_ICONS))
         throw new Error(`最多添加 ${MAX_APP_ICONS} 个 APP 图标，请先移除一个`);
       const icon: PhoneAppIcon = {
         id: newId("app"),
@@ -157,8 +159,8 @@ export default function AppIconsEditor({
     <section className="space-y-3 rounded-lg border p-3">
       <h3 className="text-sm font-semibold">APP 通知图标</h3>
       <p className="text-xs leading-relaxed text-muted-foreground">
-        显示在时间旁，最多 {MAX_APP_ICONS}{" "}
-        个，空间不足时自动缩小。内置图标跟随状态栏颜色，自定义图标保留上传颜色。
+        显示在时间旁，当前机型最多 {limit}{" "}
+        个。{settings.rendering === "natural" ? "空间不足时请调整大小或数量。" : "旧版布局空间不足时自动缩小。"}内置图标跟随状态栏颜色，自定义图标保留上传颜色。
       </p>
       <fieldset disabled={disabled} className="min-w-0 space-y-3">
         <Input
@@ -169,7 +171,7 @@ export default function AppIconsEditor({
         />
         <p className="text-xs text-muted-foreground">
           内置 {APP_ICONS.length} 种 · 已选 {settings.appIcons.length}/
-          {MAX_APP_ICONS}
+          {limit}
         </p>
         <div
           role="group"
@@ -190,7 +192,7 @@ export default function AppIconsEditor({
                 aria-label={`${selected ? "移除" : "添加"}${app.name}图标`}
                 aria-pressed={selected}
                 disabled={
-                  !selected && settings.appIcons.length >= MAX_APP_ICONS
+                  !selected && settings.appIcons.length >= limit
                 }
                 onClick={() =>
                   change({
@@ -236,7 +238,7 @@ export default function AppIconsEditor({
           size="sm"
           variant="outline"
           className="w-full"
-          disabled={busy || settings.appIcons.length >= MAX_APP_ICONS}
+          disabled={busy || settings.appIcons.length >= limit}
           onClick={() => input.current?.click()}
         >
           {busy ? (
@@ -252,7 +254,7 @@ export default function AppIconsEditor({
           className="hidden"
           type="file"
           accept="image/png,image/jpeg,image/webp"
-          disabled={busy || settings.appIcons.length >= MAX_APP_ICONS}
+          disabled={busy || settings.appIcons.length >= limit}
           onChange={(e) => {
             const file = e.target.files?.[0];
             e.target.value = "";
