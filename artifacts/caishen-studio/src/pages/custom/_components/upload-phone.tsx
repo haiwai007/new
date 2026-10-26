@@ -35,7 +35,7 @@ function previewDoc(
             createImageLayer(
               { x: 0, y: 0, ...size },
               { kind: "url", url: image.previewUrl },
-              { opacity: 0.35, fit: "cover" },
+              { opacity: 1, fit: "cover" },
             ),
           ]
         : [],

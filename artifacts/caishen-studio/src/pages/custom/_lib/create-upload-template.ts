@@ -1,3 +1,4 @@
+import { MANUAL_REFERENCE_NAME } from "@/lib/template/manual-reference";
 import { applyPhoneLayers } from "@/lib/phone/layers";
 import type { PhoneSettings } from "@/lib/phone/schema";
 import { saveAsset } from "@/lib/storage/assets.ts";
@@ -90,8 +91,8 @@ export async function createUploadTemplate(input: {
   if (mode === "manual") {
     layers = [
       createImageLayer({ x: 0, y: 0, width: size.width, height: size.height }, src, {
-        name: "原图参考（可隐藏或删除）",
-        opacity: 0.35,
+        name: MANUAL_REFERENCE_NAME,
+        opacity: 1,
         locked: true,
         editable: false,
         fit: "cover",

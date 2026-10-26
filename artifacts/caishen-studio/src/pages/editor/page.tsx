@@ -1,3 +1,4 @@
+import ManualReferenceNotice from "./_components/manual-reference-notice";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { AlertTriangle, SlidersHorizontal, X } from "lucide-react";
@@ -150,6 +151,7 @@ function EditorInner({ workId }: { workId: string | undefined }) {
   return (
     <div className="flex h-[100dvh] flex-col overflow-hidden bg-background">
       <TopBar onSave={onSave} onFit={() => stageApi.current?.fit()} isTemplate={state.isTemplate} onOpenHistory={() => setHistoryOpen(true)} />
+      <ManualReferenceNotice />
       {workId && (
         <VersionsDialog
           workId={workId}

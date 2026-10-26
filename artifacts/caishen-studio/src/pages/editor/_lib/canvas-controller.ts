@@ -139,6 +139,8 @@ export class CanvasController {
   // ----- drawing a box (frame / mask / text area) -----
 
   setDrawMode(on: boolean) {
+    // Cancelling or switching tools must not leave a preview rectangle behind.
+    if (this.drawing) {this.canvas.remove(this.drawing.rect); this.drawing = null;}
     this.drawMode = on;
     this.canvas.selection = !on;
     this.canvas.skipTargetFind = on;
@@ -162,7 +164,7 @@ export class CanvasController {
       height: 1,
       originX: "left",
       originY: "top",
-      fill: "rgba(200,16,46,0.12)",
+      fill: "transparent",
       stroke: "#c8102e",
       strokeWidth: 2 / this.zoom,
       strokeDashArray: [8 / this.zoom, 6 / this.zoom],
