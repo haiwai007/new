@@ -56,7 +56,7 @@ describe("natural status-bar fitting", () => {
     expect(pixels("flat", true).suspectedOldBar).toBe(true);
     expect(pixels("flat", true).suggestedCover).toBeLessThanOrEqual(0.1);
   });
-  it("retains manual color, background, coverage and geometry during automatic fitting", () => {
+  it("retains manual appearance while bounding coverage to protect application content", () => {
     const settings = {
       ...naturalPhoneSettings(),
       theme: "light" as const,
@@ -75,13 +75,23 @@ describe("natural status-bar fitting", () => {
       theme: "light",
       customColor: "#ff0000",
       backgroundColor: "#332211",
-      coverRatio: 0.12,
+      coverRatio: 36 / 1280,
       scale: 110,
     });
     expect(settingsForModel(next, "pixel9").scale).toBe(110);
-    expect(fusionWarnings({...next,customColor:"#332211",backgroundColor:"#332211",transparent:false}).join()).toContain("清晰度");
-    const uncertain=naturalPhoneSettings();uncertain.fusion.analysis={...pixels("flat",true),confidence:"low"};
-    expect(resolveFusionSettings(uncertain,{width:600,height:1280}).coverRatio).toBe(0);
+    expect(
+      fusionWarnings({
+        ...next,
+        customColor: "#332211",
+        backgroundColor: "#332211",
+        transparent: false,
+      }).join(),
+    ).toContain("清晰度");
+    const uncertain = naturalPhoneSettings();
+    uncertain.fusion.analysis = { ...pixels("flat", true), confidence: "low" };
+    expect(
+      resolveFusionSettings(uncertain, { width: 600, height: 1280 }).coverRatio,
+    ).toBeLessThanOrEqual(36 / 1280);
   });
   it("uses distinct version profiles, constrains incompatible versions and retains original entered values", () => {
     const p = naturalPhoneSettings();

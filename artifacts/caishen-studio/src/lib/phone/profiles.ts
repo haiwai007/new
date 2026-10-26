@@ -191,6 +191,7 @@ export function settingsForModel(
     scale: settings.fusion?.locks.includes("geometry") ? settings.scale : 100,
     offsetY: settings.fusion?.locks.includes("geometry") ? settings.offsetY : 0,
     insetX: settings.fusion?.locks.includes("geometry") ? settings.insetX : 0,
-    showHomeIndicator: phoneModel(modelId).style !== "classic",
+    showHomeIndicator:
+      phoneModel(modelId).style !== "classic" && settings.showHomeIndicator,
   };
 }

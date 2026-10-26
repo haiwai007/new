@@ -1,3 +1,4 @@
+import { removePhoneLayers } from "../phone/layers";
 import { fitPhoneToImage } from "../phone/fusion";
 import type { GeneratedItem } from "./rules";
 export async function prepareFusionItems(
@@ -8,13 +9,16 @@ export async function prepareFusionItems(
   for (const [index, item] of items.entries()) {
     try {
       result.push(
-        item.preservePhone || item.errors.length || !item.doc.phone?.fusion.enabled
+        item.preservePhone ||
+          item.errors.length ||
+          !item.doc.phone?.fusion.enabled
           ? item
           : { ...item, doc: await fitPhoneToImage(item.doc, item.doc.phone) },
       );
     } catch (e) {
       result.push({
         ...item,
+        doc: removePhoneLayers(item.doc),
         errors: [
           ...item.errors,
           e instanceof Error

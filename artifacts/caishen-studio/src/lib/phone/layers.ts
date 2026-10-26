@@ -84,6 +84,7 @@ export function defaultPhoneSettings(): PhoneSettings {
 export function naturalPhoneSettings(): PhoneSettings {
   return {
     ...defaultPhoneSettings(),
+    showHomeIndicator: false,
     rendering: "natural",
     fusion: {
       enabled: true,
@@ -416,8 +417,23 @@ function renderPhoneLayers(doc: TemplateDoc, raw: PhoneSettings): TemplateDoc {
     width: W,
     height: H - (phone.addedHeight ?? 0),
   });
-  const k = (s * phone.scale * geometry.contentScale) / 100;
+  const bounded =
+    phone.rendering === "natural" &&
+    phone.fusion.enabled &&
+    phone.placement === "overlay";
   const bar = phone.rendering === "natural" ? geometry.bar : model.bar * s;
+  if (bounded && bar < Math.max(2, W * 0.012))
+    throw new Error(
+      "顶部没有可确认的安全状态栏区域，已保留原图。请选择顶部新增，或使用包含完整状态栏的模板",
+    );
+  const extraRows = bounded
+    ? Number(phone.showDate) + Number(phone.showCarrier)
+    : 0;
+  const primaryBar = bar / (1 + extraRows * 0.7);
+  const extraRow = primaryBar * 0.7;
+  const k =
+    ((s * phone.scale * geometry.contentScale) / 100) *
+    (bounded ? primaryBar / bar : 1);
   const color = phoneColor(phone);
   const classic = model.style === "classic";
   const android = model.style === "android";
@@ -455,13 +471,21 @@ function renderPhoneLayers(doc: TemplateDoc, raw: PhoneSettings): TemplateDoc {
               : 0.75),
       0,
     );
-    const fittedFont = Math.min(fontSize, box.width / Math.max(1, units));
+    const fittedFont = Math.min(
+      fontSize,
+      box.width / Math.max(1, units),
+      bounded ? bar / 1.4 : Infinity,
+    );
+    const textY = box.y + (fontSize - fittedFont) * 0.7;
+
     return layer(
       role,
       createTextLayer(
         {
           ...box,
-          y: box.y + (fontSize - fittedFont) * 0.7,
+          y: bounded
+            ? Math.max(0, Math.min(textY, bar - fittedFont * 1.4))
+            : textY,
           height: fittedFont * 1.4,
         },
         {
@@ -484,7 +508,7 @@ function renderPhoneLayers(doc: TemplateDoc, raw: PhoneSettings): TemplateDoc {
     );
   };
   // Fit both the image dimensions and the physical cutout exclusion zone.
-  const fontSize = Math.min(profile.fontSize * k, bar / 1.6);
+  const fontSize = Math.min(profile.fontSize * k, primaryBar / 1.6);
   const edge = Math.max(
     s,
     Math.min((profile.inset + phone.insetX) * s, W * 0.2),
@@ -496,12 +520,17 @@ function renderPhoneLayers(doc: TemplateDoc, raw: PhoneSettings): TemplateDoc {
   const visibleApps = phone.appIcons.filter((icon) => icon.visible);
   const appCount = visibleApps.length;
   const carrierOnExtraRow =
-    (android || (classic && appCount > 0)) && phone.showCarrier;
+    (android ||
+      (classic && appCount > 0) ||
+      (phone.rendering === "natural" &&
+        phone.fusion.enabled &&
+        phone.placement === "prepend")) &&
+    phone.showCarrier;
   const leftSpace = Math.max(1, (ear || leftLimit) - edge - 4 * s);
   const appGapRatio = phone.appIconGap / phone.appIconSize;
   const appSize = Math.min(
     phone.appIconSize * k,
-    bar * 0.65,
+    primaryBar * 0.65,
     phone.rendering === "natural"
       ? Infinity
       : (leftSpace * 0.52) /
@@ -534,7 +563,7 @@ function renderPhoneLayers(doc: TemplateDoc, raw: PhoneSettings): TemplateDoc {
   const iconsWidth = Math.min(
     icons.width * k,
     iconsMax,
-    (bar * 0.65 * icons.width) / 20,
+    (primaryBar * 0.65 * icons.width) / 20,
   );
   const iconsHeight = (iconsWidth / icons.width) * 20;
   const iconsRight = W - edge;
@@ -548,7 +577,7 @@ function renderPhoneLayers(doc: TemplateDoc, raw: PhoneSettings): TemplateDoc {
   const halfHeight = Math.max(fontSize * 0.7, iconsHeight / 2);
   const requestedCy =
     (phone.rendering === "natural"
-      ? geometry.center / s
+      ? (geometry.center * (bounded ? primaryBar / bar : 1)) / s
       : classic
         ? 10
         : android
@@ -556,7 +585,10 @@ function renderPhoneLayers(doc: TemplateDoc, raw: PhoneSettings): TemplateDoc {
           : model.bar - 30) *
       s +
     phone.offsetY * s;
-  const cy = Math.max(halfHeight, Math.min(bar - halfHeight, requestedCy));
+  const cy = Math.max(
+    halfHeight,
+    Math.min(primaryBar - halfHeight, requestedCy),
+  );
   const carrierSize = Math.min(
     (classic ? 11 : android ? 12 : 8) * k,
     bar / 1.6,
@@ -570,12 +602,14 @@ function renderPhoneLayers(doc: TemplateDoc, raw: PhoneSettings): TemplateDoc {
           x: 0,
           y: 0,
           width: W,
-          height: Math.max(
-            H * (phone.placement === "prepend" ? 0 : phone.coverRatio),
-            bar +
-              (phone.showDate ? 24 * s : 0) +
-              (carrierOnExtraRow ? 18 * s : 0),
-          ),
+          height: bounded
+            ? bar
+            : Math.max(
+                H * (phone.placement === "prepend" ? 0 : phone.coverRatio),
+                bar +
+                  (phone.showDate ? 24 * s : 0) +
+                  (carrierOnExtraRow ? 18 * s : 0),
+              ),
         },
         {
           name: "状态栏背景",
@@ -602,22 +636,44 @@ function renderPhoneLayers(doc: TemplateDoc, raw: PhoneSettings): TemplateDoc {
       phoneDate(phone),
       {
         x: edge,
-        y: bar + (carrierOnExtraRow ? 18 * s : 0),
+        y: bounded
+          ? primaryBar + (phone.showCarrier ? extraRow : 0)
+          : bar + (carrierOnExtraRow ? 18 * s : 0),
         width: W - edge * 2,
       },
-      12 * k,
+      Math.min(
+        12 * k,
+        bounded
+          ? extraRow / 1.4
+          : phone.rendering === "natural" &&
+              phone.fusion.enabled &&
+              phone.placement === "prepend"
+            ? (24 * s) / 1.4
+            : Infinity,
+      ),
       { visible: phone.showDate, fontWeight: "normal" },
     ),
     text(
       "carrier",
       "运营商",
       phone.carrier,
-      android || (classic && appCount > 0)
-        ? { x: edge, y: bar, width: Math.max(1, W - edge * 2) }
-        : classic
-          ? { x: edge, y: cy - carrierSize * 0.7, width: 90 * k }
-          : { x: timeBox.x, y: cy + 12 * k, width: timeBox.width },
-      carrierSize,
+      bounded
+        ? { x: edge, y: primaryBar, width: Math.max(1, W - edge * 2) }
+        : carrierOnExtraRow || android || (classic && appCount > 0)
+          ? { x: edge, y: bar, width: Math.max(1, W - edge * 2) }
+          : classic
+            ? { x: edge, y: cy - carrierSize * 0.7, width: 90 * k }
+            : { x: timeBox.x, y: cy + 12 * k, width: timeBox.width },
+      Math.min(
+        carrierSize,
+        bounded
+          ? extraRow / 1.4
+          : phone.rendering === "natural" &&
+              phone.fusion.enabled &&
+              phone.placement === "prepend"
+            ? (18 * s) / 1.4
+            : Infinity,
+      ),
       {
         visible: phone.showCarrier,
         fontWeight: "normal",
@@ -777,7 +833,8 @@ export function applyPhoneLayers(
   const carrierRow =
     phone.showCarrier &&
     (model.style === "android" ||
-      (model.style === "classic" && phone.appIcons.some((i) => i.visible)));
+      (model.style === "classic" && phone.appIcons.some((i) => i.visible)) ||
+      (phone.rendering === "natural" && phone.fusion.enabled));
   const scale = Math.min(
     base.canvas.width / model.points,
     base.canvas.height / (40 - (carrierRow ? 18 : 0)),

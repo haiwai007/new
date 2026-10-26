@@ -12,8 +12,9 @@ test.beforeEach(async ({ page, context }) => {
 test.afterEach(() => {
   expect(errors, "No browser runtime exceptions").toEqual([]);
 });
-async function createFromBuiltin(page: Page) {
+async function createFromBuiltin(page: Page, query?: string) {
   await page.goto("/templates");
+  if(query)await page.getByPlaceholder("搜索模板，例如：海报、价格").fill(query);
   await page
     .getByRole("button", { name: "使用模板", exact: true })
     .first()
@@ -198,7 +199,7 @@ test("mobile layouts, local-only service status and 404 recovery", async ({
 test("phone model, status icons, date and battery persist and appear in PNG output", async ({
   page,
 }, info) => {
-  await createFromBuiltin(page);
+  await createFromBuiltin(page,"空白 竖版");
   await page.getByRole("button", { name: "手机", exact: true }).click();
   await page
     .getByRole("combobox", { name: "手机型号" })
@@ -244,7 +245,7 @@ test("phone model, status icons, date and battery persist and appear in PNG outp
     const ctx = canvas.getContext("2d")!;
     ctx.drawImage(bitmap, 0, 0);
     bitmap.close();
-    const pixels = ctx.getImageData(800, 63, 325, 60).data;
+    const pixels = ctx.getImageData(800, 0, 325, 50).data;
     let count = 0;
     for (let i = 0; i < pixels.length; i += 4)
       if (
@@ -360,7 +361,7 @@ test("transparent PNG omits background images", async ({ page }) => {
 });
 
 test("batch status-bar rules change real exported pixels and keep the source template intact", async ({ page }, info) => {
-  await createFromBuiltin(page);
+  await createFromBuiltin(page,"空白 竖版");
   await page.getByRole("button", { name: "手机", exact: true }).click();
   await page.getByRole("button", { name: "应用手机状态栏", exact: true }).click();
   await page.getByRole("button", { name: "另存为模板", exact: true }).click();
@@ -431,14 +432,14 @@ test("batch status-bar rules change real exported pixels and keep the source tem
   await expect(page.getByLabel("第 1 张状态栏", { exact: true })).toContainText("13:08 · 电量 67%");
 });
 
-test("upload model selection replaces old status icons and switches real brand layouts automatically", async ({ page }, info) => {
+test("upload model selection protects unrelated top controls and switches brand layouts automatically", async ({ page }, info) => {
   await page.goto("/custom");
   const encoded = await page.evaluate(() => {
     const canvas = document.createElement("canvas"); canvas.width = 1179; canvas.height = 2556;
     const ctx = canvas.getContext("2d")!;
     ctx.fillStyle = "#6a97bb"; ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.fillStyle = "#f8f8f8"; ctx.fillRect(0, 0, canvas.width, 180);
-    // Old iPhone status information below a normal Android bar must also be covered.
+    // A right-only control is not evidence of a status bar and must be preserved.
     ctx.fillStyle = "#ff0000"; ctx.fillRect(900, 140, 150, 25);
     return canvas.toDataURL().split(",")[1];
   });
@@ -454,7 +455,7 @@ test("upload model selection replaces old status icons and switches real brand l
   await page.getByRole("combobox", { name: "手机品牌", exact: true }).selectOption("Samsung");
   await page.getByRole("combobox", { name: "手机型号", exact: true }).selectOption("galaxys24ultra");
   await page.getByRole("button", {name: "智能匹配原图配色", exact: true}).click();
-  await expect.poll(async () => Number(await page.getByLabel("原状态栏覆盖比例").inputValue())).toBeGreaterThan(6);
+  await expect.poll(async () => Number(await page.getByLabel("原状态栏覆盖比例").inputValue())).toBeLessThanOrEqual(3);
   await page.getByRole("button", { name: "添加微信图标", exact: true }).click();
   const samsung = await exportPNG(page, info.outputPath("samsung-upload.png"));
   expect(samsung.readUInt32BE(16)).toBe(1179);
@@ -465,7 +466,7 @@ test("upload model selection replaces old status icons and switches real brand l
     const ctx = canvas.getContext("2d")!; ctx.drawImage(bitmap, 0, 0); bitmap.close();
     return { oldIcon: [...ctx.getImageData(1000, 150, 1, 1).data], body: [...ctx.getImageData(500, 1000, 1, 1).data] };
   }, samsung.toString("base64"));
-  expect(rgba.oldIcon).toEqual([248, 248, 248, 255]);
+  expect(rgba.oldIcon).toEqual([255, 0, 0, 255]);
   expect(rgba.body).toEqual([106, 151, 187, 255]);
   await page.getByRole("button", { name: "手机", exact: true }).click();
   await expect(page.getByRole("combobox", { name: "手机型号", exact: true })).toHaveValue("galaxys24ultra");
@@ -598,7 +599,7 @@ test("expanded APP library supports search, selection limits, saving and PNG exp
 
 test("batch chooses specified models evenly, samples checked APPs and preserves preview results", async ({page}, info) => {
   await page.goto("/batch");
-  await page.getByLabel("批量模板", {exact: true}).selectOption({index: 1});
+  await page.getByLabel("批量模板", {exact: true}).selectOption("b:blank_portrait");
   await page.getByLabel("生成张数", {exact: true}).fill("4");
   await page.getByRole("button", {name:"状态栏修改状态栏",exact:true}).click();
   await page.getByRole("button", {name:"手机型号随机",exact:true}).click();
@@ -640,7 +641,7 @@ test("batch chooses specified models evenly, samples checked APPs and preserves 
 });
 
 test("single-drawing custom APP preset survives full backup in a fresh browser",async({page,browser},info)=>{
-  await createFromBuiltin(page);
+  await createFromBuiltin(page,"空白 竖版");
   await page.getByRole("button",{name:"手机",exact:true}).click();
   const encoded=await page.evaluate(()=>{const c=document.createElement("canvas");c.width=c.height=64;const ctx=c.getContext("2d")!;ctx.fillStyle="#00ff00";ctx.fillRect(0,0,64,64);return c.toDataURL().split(",")[1];});
   await page.getByLabel("上传 APP 图标文件",{exact:true}).setInputFiles({name:"绿色通知.png",mimeType:"image/png",buffer:Buffer.from(encoded,"base64")});
@@ -651,13 +652,13 @@ test("single-drawing custom APP preset survives full backup in a fresh browser",
   await expect(page.getByLabel("选择作图预设").locator("option").filter({hasText:"自定义图标备份"})).toHaveCount(1);
   await page.goto("/backup");const downloading=page.waitForEvent("download");await page.getByRole("button",{name:"导出完整备份",exact:true}).click();
   const path=info.outputPath("preset-backup.json");await(await downloading).saveAs(path);
-  const backup=JSON.parse(await readFile(path,"utf8"));expect(backup.drawingPresets).toHaveLength(1);expect(backup.assets.length).toBeGreaterThanOrEqual(2);
+  const backup=JSON.parse(await readFile(path,"utf8"));expect(backup.drawingPresets).toHaveLength(1);expect(backup.assets).toHaveLength(1);
   const context=await browser.newContext({baseURL:new URL("/",page.url()).href,viewport:{width:1440,height:1000}});await confirmSession(context);
   try {
     const fresh=await context.newPage();fresh.on("pageerror",e=>errors.push(e.message));
     await fresh.goto(new URL("/backup",page.url()).href);await fresh.getByLabel("选择完整备份文件",{exact:true}).setInputFiles(path);
     await fresh.getByRole("button",{name:/确认恢复/}).click();await expect(fresh.getByText(/恢复完成：/)).toBeVisible();
-    await createFromBuiltin(fresh);await fresh.getByRole("button",{name:"手机",exact:true}).click();
+    await createFromBuiltin(fresh,"空白 竖版");await fresh.getByRole("button",{name:"手机",exact:true}).click();
     const restoredPreset=fresh.getByLabel("选择作图预设",{exact:true}).locator("option").filter({hasText:"自定义图标备份"});await expect(restoredPreset).toHaveCount(1);
     await fresh.getByLabel("选择作图预设",{exact:true}).selectOption((await restoredPreset.getAttribute("value"))!);await fresh.getByRole("button",{name:"应用预设",exact:true}).click();
     await expect(fresh.getByRole("switch",{name:"显示绿色通知图标",exact:true})).toBeChecked();
@@ -860,7 +861,7 @@ test("natural fusion matches gradient backgrounds, keeps manual overrides and ti
 
 test("batch automatically fits per-model results without a separate apply step",async({page},info)=>{
   await page.goto("/batch");
-  await page.getByLabel("批量模板",{exact:true}).selectOption({index:1});
+  await page.getByLabel("批量模板",{exact:true}).selectOption("b:blank_portrait");
   await page.getByLabel("生成张数",{exact:true}).fill("4");
   await expect(page.getByRole("button",{name:"状态栏保留原图",exact:true})).toHaveAttribute("aria-pressed","true");
   await page.getByRole("button",{name:"状态栏修改状态栏",exact:true}).click();
@@ -916,7 +917,7 @@ test("uploaded compact status bar controls actual layer and exported image sizes
 });
 
 test("step 04 keeps fixed and cross-midnight values, enforces low-power battery and exports the frozen preview",async({page},info)=>{
-  await page.goto("/batch");await page.getByLabel("批量模板",{exact:true}).selectOption({index:1});
+  await page.goto("/batch");await page.getByLabel("批量模板",{exact:true}).selectOption("b:blank_portrait");
   await page.getByLabel("生成张数",{exact:true}).fill("6");
   await expect(page.getByRole("button",{name:"状态栏保留原图",exact:true})).toHaveAttribute("aria-pressed","true");
   await expect(page.getByRole("group",{name:"时间模式",exact:true})).toHaveCount(0);
@@ -946,7 +947,7 @@ test("step 04 keeps fixed and cross-midnight values, enforces low-power battery 
 });
 
 test("batch custom APP candidate can be unchecked, reselected and exported as real pixels",async({page},info)=>{
-  await page.goto("/batch");await page.getByLabel("批量模板",{exact:true}).selectOption({index:1});await page.getByLabel("生成张数",{exact:true}).fill("1");
+  await page.goto("/batch");await page.getByLabel("批量模板",{exact:true}).selectOption("b:blank_portrait");await page.getByLabel("生成张数",{exact:true}).fill("1");
   await page.getByRole("button",{name:"状态栏修改状态栏",exact:true}).click();await page.getByRole("button",{name:"APP 图标随机",exact:true}).click();
   const encoded=await page.evaluate(()=>{const c=document.createElement("canvas");c.width=c.height=64;const ctx=c.getContext("2d")!;ctx.fillStyle="#00ff00";ctx.fillRect(0,0,64,64);return c.toDataURL().split(",")[1];});
   await page.getByLabel("上传批量 APP 图标文件",{exact:true}).setInputFiles({name:"批量绿色通知.png",mimeType:"image/png",buffer:Buffer.from(encoded,"base64")});
@@ -957,4 +958,58 @@ test("batch custom APP candidate can be unchecked, reselected and exported as re
   const downloading=page.waitForEvent("download");await page.getByRole("link",{name:"下载 ZIP",exact:true}).click();const path=info.outputPath("custom-app.zip");await(await downloading).saveAs(path);
   const {unzipSync}=await import("fflate");const images=Object.values(unzipSync(new Uint8Array(await readFile(path))));expect(images).toHaveLength(1);
   const green=await page.evaluate(async base64=>{const b=await createImageBitmap(new Blob([Uint8Array.from(atob(base64),c=>c.charCodeAt(0))],{type:"image/png"}));const c=document.createElement("canvas");c.width=b.width;c.height=b.height;const ctx=c.getContext("2d")!;ctx.drawImage(b,0,0);b.close();const d=ctx.getImageData(0,0,c.width,Math.min(150,c.height)).data;let n=0;for(let i=0;i<d.length;i+=4)if(d[i]<60&&d[i+1]>180&&d[i+2]<60)n++;return n;},Buffer.from(images[0]).toString("base64"));expect(green).toBeGreaterThan(10);
+});
+
+test("status-bar replacement preserves every navigation and body pixel in single and batch exports",async({page},info)=>{
+  await page.goto("/custom");
+  const encoded=await page.evaluate(()=>{
+    const c=document.createElement("canvas");c.width=400;c.height=860;const ctx=c.getContext("2d")!;
+    ctx.fillStyle="#f7f7f7";ctx.fillRect(0,0,400,860);
+    ctx.fillStyle="#141414";ctx.font="14px Arial";ctx.fillText("20:06",14,18);ctx.font="12px Arial";ctx.fillText("HD HD 65",288,18);
+    ctx.fillStyle="#55bbee";ctx.fillRect(62,6,12,14);ctx.fillStyle="#2388dd";ctx.fillRect(79,6,12,14);
+    ctx.fillStyle="#ffffff";ctx.beginPath();ctx.roundRect(300,32,90,32,16);ctx.fill();ctx.strokeStyle="#dddddd";ctx.stroke();
+    ctx.fillStyle="#111111";ctx.beginPath();ctx.arc(322,48,3,0,Math.PI*2);ctx.arc(330,48,3,0,Math.PI*2);ctx.fill();ctx.strokeStyle="#111111";ctx.beginPath();ctx.arc(374,48,8,0,Math.PI*2);ctx.stroke();
+    ctx.font="bold 19px sans-serif";ctx.fillText("收款小账本",148,55);
+    ctx.font="bold 18px sans-serif";ctx.fillText("补充经营信息，开启更多服务",12,110);
+    ctx.fillStyle="#ffffff";ctx.fillRect(12,145,376,350);ctx.fillStyle="#222222";ctx.font="bold 30px Arial";ctx.fillText("¥18.80",140,245);
+    return c.toDataURL().split(",")[1];
+  });
+  await page.locator('input[type="file"]').setInputFiles({name:"receipt-navigation.png",mimeType:"image/png",buffer:Buffer.from(encoded,"base64")});
+  await page.getByText("保持原始尺寸",{exact:true}).click();await page.getByRole("button",{name:/原图背景模式/}).click();await page.getByRole("button",{name:"生成初始模板并进入编辑器",exact:true}).click();
+  await page.getByRole("button",{name:"进入作图",exact:true}).click();await page.getByLabel("手机品牌",{exact:true}).selectOption("Samsung");
+  await expect(page.getByTestId("status-bar-sizing")).toContainText("已按模板原状态栏适配");
+  await expect(page.getByRole("switch",{name:"显示底部手势条",exact:true})).not.toBeChecked();
+  await page.getByText("高级微调（颜色、位置与覆盖高度）",{exact:true}).click();await page.getByLabel("原状态栏覆盖比例",{exact:true}).fill("25");
+  await expect.poll(async()=>Number(await page.getByLabel("原状态栏覆盖比例",{exact:true}).inputValue())).toBeLessThan(4);
+  await page.getByRole("switch",{name:"显示日期",exact:true}).check();
+  await page.locator("summary").filter({hasText:"信号与网络"}).click();await page.getByRole("switch",{name:"显示运营商",exact:true}).check();
+  const diff=async(png:Buffer)=>page.evaluate(async([original,output])=>{
+    const pixels=async(base64:string)=>{const b=await createImageBitmap(new Blob([Uint8Array.from(atob(base64),c=>c.charCodeAt(0))],{type:"image/png"}));const c=document.createElement("canvas");c.width=b.width;c.height=b.height;const ctx=c.getContext("2d")!;ctx.drawImage(b,0,0);b.close();return {w:c.width,h:c.height,data:ctx.getImageData(0,0,c.width,c.height).data};};
+    const a=await pixels(original),b=await pixels(output);let top=0,outside=0;
+    for(let i=0;i<a.data.length;i+=4)if([0,1,2,3].some(k=>a.data[i+k]!==b.data[i+k])){if(i/4/a.w>=32)outside++;else top++;}
+    return {outside,top,w:b.w,h:b.h};
+  },[encoded,png.toString("base64")]);
+  const single=await exportPNG(page,info.outputPath("protected-single.png"));const singleDiff=await diff(single);expect(singleDiff).toMatchObject({outside:0,w:400,h:860});expect(singleDiff.top).toBeGreaterThan(0);
+  await page.getByRole("button",{name:"另存为模板",exact:true}).click();await page.getByRole("dialog").getByRole("textbox").fill("状态栏边界保护模板");await page.getByRole("button",{name:"保存模板",exact:true}).click();await expect(page.getByRole("dialog")).toHaveCount(0);
+  await page.goto("/batch");const option=page.getByLabel("批量模板",{exact:true}).locator("option").filter({hasText:"状态栏边界保护模板"});await expect(option).toHaveCount(1);await page.getByLabel("批量模板",{exact:true}).selectOption((await option.getAttribute("value"))!);
+  await page.getByLabel("生成张数",{exact:true}).fill("2");await page.getByRole("button",{name:"状态栏修改状态栏",exact:true}).click();await page.getByRole("button",{name:"时间区间随机",exact:true}).click();await page.getByRole("button",{name:"生成预览",exact:true}).click();
+  await page.getByRole("button",{name:"生成 2 张图片",exact:true}).click();await expect(page.getByText("已生成 2 张图片",{exact:true})).toBeVisible();
+  const downloading=page.waitForEvent("download");await page.getByRole("link",{name:"下载 ZIP",exact:true}).click();const path=info.outputPath("protected-batch.zip");await(await downloading).saveAs(path);
+  const {unzipSync}=await import("fflate");const images=Object.values(unzipSync(new Uint8Array(await readFile(path))));expect(images).toHaveLength(2);
+  for(const image of images)expect(await diff(Buffer.from(image))).toMatchObject({outside:0,w:400,h:860});
+});
+
+
+test("a poster without a safe status area is preserved until prepend is explicitly selected",async({page})=>{
+  await page.goto("/batch");await page.getByLabel("批量模板",{exact:true}).selectOption("b:bt_coffee");await page.getByLabel("生成张数",{exact:true}).fill("1");
+  await page.getByRole("button",{name:"状态栏修改状态栏",exact:true}).click();await page.getByRole("button",{name:"生成预览",exact:true}).click();
+  await page.locator("summary").filter({hasText:"1 张不符合模板规则"}).click();
+  await expect(page.getByText(/顶部没有可确认的安全状态栏区域/)).toBeVisible();
+  await expect(page.getByRole("button",{name:"生成 0 张图片",exact:true})).toBeDisabled();
+  await expect(page.getByLabel("第 1 张状态栏",{exact:true})).toHaveCount(0);
+  await page.getByText("更多设置",{exact:true}).click();await page.getByLabel("批量状态栏添加方式",{exact:true}).selectOption("prepend");
+  await page.getByRole("button",{name:"生成预览",exact:true}).click();await expect(page.getByRole("button",{name:"生成 1 张图片",exact:true})).toBeEnabled();
+  await expect(page.getByLabel("第 1 张状态栏",{exact:true})).toBeVisible();
+  const dimensions=await page.getByRole("img",{name:"第 1 张预览",exact:true}).evaluate(async el=>{const image=el as HTMLImageElement;await image.decode();return {w:image.naturalWidth,h:image.naturalHeight};});
+  expect(dimensions.w).toBeGreaterThan(0);expect(dimensions.h).toBeGreaterThan(0);expect(dimensions.w/dimensions.h).toBeLessThan(1080/1350);
 });

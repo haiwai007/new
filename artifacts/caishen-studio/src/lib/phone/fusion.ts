@@ -1,4 +1,4 @@
-import { detectStatusGeometry } from "./geometry-detection";
+import { detectContentTop, detectStatusGeometry } from "./geometry-detection";
 import { renderDoc } from "../canvas/render";
 import type { TemplateDoc } from "../../types/template";
 import type { FusionAnalysis } from "./fusion-schema";
@@ -7,6 +7,7 @@ import { applyPhoneLayers, removePhoneLayers } from "./layers";
 import {
   designKey,
   regionBackground,
+  naturalBarRatio,
   rgb,
   resolveFusionSettings,
 } from "./fusion-metrics";
@@ -53,25 +54,17 @@ export function analyseTopPixels(
   const probable =
     bands.slice(0, 11).filter((b) => b.noise > 0.003 && b.noise < 0.25)
       .length >= 2;
-  let last = 0;
-  bands.slice(0, 14).forEach((b, i) => {
-    if (b.noise > 0.003 && b.noise < 0.25) last = i + 1;
-  });
-  const origin = rgb(bands[0].color);
-  const boundary = bands.findIndex((band, i) => {
-    const c = rgb(band.color);
-    return (
-      i > 2 && Math.hypot(c.r - origin.r, c.g - origin.g, c.b - origin.b) > 35
-    );
-  });
-  const cover = Math.min(
-    0.1,
-    ((last + 0.5) / 32) * 0.25,
-    boundary > 2 ? (boundary / 32) * 0.25 : 0.1,
-  );
   const geometry = detectStatusGeometry(data, width, height, source, bands);
   const result: FusionAnalysis = {
     geometry,
+    contentTopRatio: detectContentTop(
+      data,
+      width,
+      height,
+      source,
+      bands,
+      geometry,
+    ),
     ...source,
     kind: "flat",
     top: bands[0].color,
@@ -79,14 +72,13 @@ export function analyseTopPixels(
     lightIcons: false,
     contrast: 1,
     suspectedOldBar: !!geometry || probable,
-    suggestedCover:
-      geometry?.barRatio ?? (probable ? Math.max(0.025, cover) : 0),
+    suggestedCover: geometry?.barRatio ?? 0,
     confidence: portrait < 1.5 || portrait > 2.6 ? "low" : "medium",
     bands,
   };
   const region = regionBackground(
     result,
-    probable && boundary > 2 ? (boundary / 32) * 0.25 : 0.08,
+    geometry?.barRatio ?? Math.min((0.06 * source.width) / source.height, 0.25),
   );
   result.kind = region.kind;
   result.bottom = region.bottom;
@@ -109,7 +101,10 @@ export function analyseTopPixels(
           ),
     ),
   );
-  if (region.kind === "flat" && portrait >= 1.5 && portrait <= 2.6)
+  if (
+    region.kind === "flat" &&
+    (geometry || (portrait >= 1.5 && portrait <= 2.6))
+  )
     result.confidence = "high";
   return result;
 }
@@ -216,7 +211,15 @@ export async function topPreview(doc: TemplateDoc, settings: PhoneSettings) {
     return {
       original: crop(original.canvas),
       result: crop(rendered.canvas),
-      ratio: Math.min(0.25, Math.max(settings.coverRatio, 0.02)) / 0.16,
+      ratio: Math.min(
+        1,
+        ((doc.phone?.placement === "prepend"
+          ? doc.phone.addedHeight
+          : naturalBarRatio(settings, source.canvas) * source.canvas.height) *
+          rendered.canvas.width) /
+          source.canvas.width /
+          height,
+      ),
     };
   } finally {
     original.canvas.width =

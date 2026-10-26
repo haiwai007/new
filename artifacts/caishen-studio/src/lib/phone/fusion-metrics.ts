@@ -44,7 +44,7 @@ export function designKey(base: TemplateDoc): string {
     a = Math.imul(a ^ source.charCodeAt(i), 16777619);
     b = Math.imul(b ^ source.charCodeAt(i), 2246822519);
   }
-  return `fusion-2:${source.length}:${a >>> 0}:${b >>> 0}`;
+  return `fusion-3:${source.length}:${a >>> 0}:${b >>> 0}`;
 }
 export function regionBackground(analysis: FusionAnalysis, ratio: number) {
   const n = Math.max(
@@ -102,13 +102,19 @@ export function phoneGeometry(
     settings.rendering === "natural" &&
     settings.fusion.enabled &&
     !settings.fusion.locks.includes("geometry");
-  const measured = automatic ? settings.fusion.analysis?.geometry : undefined;
+  const fused = settings.rendering === "natural" && settings.fusion.enabled;
+  const measured = fused ? settings.fusion.analysis?.geometry : undefined;
   // Uncertain screenshots use a compact fallback instead of a large physical safe area.
-  const bar = measured
+  const desiredBar = measured
     ? measured.barRatio * canvas.height
-    : automatic && settings.fusion.analysis
-      ? Math.min(nativeBar, canvas.width * 0.085)
+    : fused
+      ? Math.min(nativeBar, canvas.width * 0.06, canvas.height * 0.25)
       : nativeBar;
+  const contentTop = settings.fusion.analysis?.contentTopRatio;
+  const bar =
+    fused && settings.placement === "overlay" && contentTop !== undefined
+      ? Math.min(desiredBar, contentTop * canvas.height)
+      : desiredBar;
   const glyphScale = measured
     ? (measured.glyphRatio * canvas.height) /
       (effectiveProfile(settings).fontSize * 0.74 * unit)
@@ -133,6 +139,12 @@ export function naturalBarRatio(
   settings: PhoneSettings,
   canvas: { width: number; height: number },
 ) {
+  if (
+    settings.rendering === "natural" &&
+    settings.fusion.enabled &&
+    settings.placement === "overlay"
+  )
+    return Math.min(0.25, phoneGeometry(settings, canvas).bar / canvas.height);
   return Math.min(
     0.25,
     Math.max(
@@ -151,8 +163,12 @@ export function resolveFusionSettings(
   const data = next.fusion.analysis;
   if (!data) return next;
   const locked = new Set(next.fusion.locks);
-  if (data.geometry && !locked.has("coverage") && next.placement === "overlay")
-    next.coverRatio = data.geometry.barRatio;
+  if (next.placement === "overlay") {
+    const safeRatio = phoneGeometry(next, canvas).bar / canvas.height;
+    next.coverRatio = locked.has("coverage")
+      ? Math.min(next.coverRatio, safeRatio)
+      : safeRatio;
+  }
   const region = regionBackground(data, naturalBarRatio(next, canvas));
   if (!locked.has("color")) {
     const light =
@@ -167,14 +183,6 @@ export function resolveFusionSettings(
       next.fusion.background === "preserve" ||
       (next.fusion.background === "auto" && region.kind === "complex");
   }
-  if (
-    !locked.has("coverage") &&
-    next.placement === "overlay" &&
-    data.suspectedOldBar &&
-    data.confidence === "high" &&
-    region.kind !== "complex"
-  )
-    next.coverRatio = Math.max(next.coverRatio, data.suggestedCover);
   return next;
 }
 /** Requested-size capacity; natural mode reserves real time width instead of scaling every icon down. */
@@ -205,6 +213,10 @@ export function fusionWarnings(settings: PhoneSettings): string[] {
   const warnings: string[] = [];
   const data = settings.fusion.analysis;
   if (!data) warnings.push("尚未分析原图，请重新自动适配");
+  if (data && !data.geometry && settings.placement === "overlay")
+    warnings.push(
+      "未可靠识别原状态栏，仅使用顶部安全范围；请检查预览，或选择顶部新增，避免覆盖标题和按钮",
+    );
   if (data) {
     const region = regionBackground(data, naturalBarRatio(settings, data));
     if (region.kind === "complex" && settings.placement === "overlay")

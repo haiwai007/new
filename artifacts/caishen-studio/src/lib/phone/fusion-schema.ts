@@ -30,6 +30,7 @@ export const fusionAnalysisSchema = z.object({
   suspectedOldBar: z.boolean(),
   suggestedCover: z.number().min(0).max(0.25),
   confidence: z.enum(["high", "medium", "low"]),
+  contentTopRatio: z.number().min(0).max(0.25).optional(),
   geometry: z
     .object({
       barRatio: z.number().positive().max(0.25),

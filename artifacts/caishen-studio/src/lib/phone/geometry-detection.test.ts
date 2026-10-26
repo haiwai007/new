@@ -83,7 +83,7 @@ describe("uploaded screenshot status-bar sizing", () => {
     expect(coveredTime?.y).toBe(time?.y);
     expect(
       extendedCoverage.layers.find((l) => l.id.endsWith("_background"))?.height,
-    ).toBe(96);
+    ).toBe(24);
 
     const doubled = applyPhoneLayers(
       { ...doc, canvas: { ...doc.canvas, width: 720, height: 1600 } },
@@ -93,7 +93,7 @@ describe("uploaded screenshot status-bar sizing", () => {
       doubled.layers.find((l) => l.id.endsWith("_background"))?.height,
     ).toBe(48);
   });
-  it("preserves manual geometry and coverage locks, and does not mistake textured pixels for icons", () => {
+  it("preserves manual sizes but caps coverage at the status boundary, rejecting textured pixels as icons", () => {
     const settings = naturalPhoneSettings();
     settings.fusion.analysis = screenshot();
     settings.fusion.locks = ["geometry", "coverage"];
@@ -104,7 +104,7 @@ describe("uploaded screenshot status-bar sizing", () => {
       height: 800,
     });
     expect(resolved.scale).toBe(110);
-    expect(resolved.coverRatio).toBe(0.12);
+    expect(resolved.coverRatio).toBe(0.03);
     expect(
       phoneGeometry(resolved, { width: 360, height: 800 }).contentScale,
     ).toBe(1);

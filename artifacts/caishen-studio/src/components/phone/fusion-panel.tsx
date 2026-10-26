@@ -296,6 +296,9 @@ export default function FusionPanel({
               。更改时间、电量或 APP 不会重置这些调整。
             </p>
           )}
+          <p className="text-xs text-muted-foreground">
+            替换范围受状态栏边界保护，不自动扩大到标题、按钮或正文；需要额外空间请选择顶部新增。
+          </p>
           {data && (
             <p role="status" className="text-xs text-muted-foreground">
               顶部分析：
