@@ -1,3 +1,4 @@
+import { designKey } from "../phone/fusion-metrics";
 import { fusionReady } from "../phone/fusion";
 import { describe, it, expect } from "vitest";
 import { BUILTIN_TEMPLATES } from "../template/builtin";
@@ -243,6 +244,27 @@ it("rejects exports when phone settings or generated pixels no longer match the 
   ).toBe(false);
   const restored = remapAssetIds(located, new Map([["original", "fresh-id"]]));
   expect(fusionReady(restored)).toBe(true);
+  const old = structuredClone(located);
+  delete old.statusLocation;
+  old.phone!.fusion.analysis = {
+    sourceKey: designKey(removePhoneLayers(old)),
+    width: 400,
+    height: 800,
+    kind: "flat",
+    top: "#f7f7f7",
+    bottom: "#f7f7f7",
+    lightIcons: false,
+    contrast: 18,
+    suspectedOldBar: true,
+    suggestedCover: 0.08,
+    confidence: "high",
+    bands: Array.from({ length: 4 }, () => ({
+      color: "#f7f7f7",
+      uniformity: 1,
+      noise: 0,
+    })),
+  };
+  expect(fusionReady(old)).toBe(false);
 });
 
 it("rejects enlarged APP icons that would leave their authorized small region", () => {

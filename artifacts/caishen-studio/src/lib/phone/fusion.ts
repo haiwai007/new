@@ -156,8 +156,7 @@ export function fusionReady(doc: TemplateDoc) {
   if (
     doc.phone?.rendering === "natural" &&
     doc.phone.fusion.enabled &&
-    doc.phone.placement === "overlay" &&
-    doc.statusLocation
+    doc.phone.placement === "overlay"
   )
     return (
       isLocationConfirmed(removePhoneLayers(doc)) &&

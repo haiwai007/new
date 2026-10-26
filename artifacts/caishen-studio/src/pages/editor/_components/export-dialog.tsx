@@ -101,7 +101,7 @@ export default function ExportDialog({ open, onOpenChange }: { open: boolean; on
               <Switch checked={transparent} onCheckedChange={setTransparent} />
             </div>
           )}
-          {!ready && <p role="status" className="text-xs text-destructive">自然融合尚未完成，请在手机面板重新自动适配并确认预览后导出。</p>}
+          {!ready && <p role="status" className="text-xs text-destructive">状态栏尚未准备完成。原位替换请先在“状态栏定位”中测试并确认，并检查手机设置后重新生成；顶部新增请重新自动适配。</p>}
           {paramErrors.length > 0 && (
             <div className="rounded-md border border-amber-400/60 bg-amber-50 p-2 text-xs text-amber-900 dark:bg-amber-900/30 dark:text-amber-100">
               参数未通过校验：{paramErrors.join("；")}
