@@ -5,44 +5,54 @@ test.beforeEach(async ({ context }) => {
     sessionStorage.setItem("haishen.entry-confirmed.v1", "yes"),
   );
 });
-async function sourceImage(page: Page) {
-  return page.evaluate(() => {
-    const c = document.createElement("canvas");
-    c.width = 400;
-    c.height = 860;
-    const ctx = c.getContext("2d")!;
-    ctx.fillStyle = "#f7f7f7";
-    ctx.fillRect(0, 0, 400, 860);
-    ctx.fillStyle = "#111111";
-    ctx.font = "14px Arial";
-    ctx.fillText("20:06", 14, 24);
-    ctx.font = "12px Arial";
-    ctx.fillText("HD HD 65", 288, 24);
-    ctx.fillStyle = "#55bbee";
-    ctx.fillRect(65, 12, 12, 14);
-    ctx.fillStyle = "#2288dd";
-    ctx.fillRect(82, 12, 12, 14);
-    ctx.fillStyle = "white";
-    ctx.beginPath();
-    ctx.roundRect(300, 40, 90, 30, 15);
-    ctx.fill();
-    ctx.strokeStyle = "#dddddd";
-    ctx.stroke();
-    ctx.fillStyle = "#111111";
-    ctx.font = "bold 18px sans-serif";
-    ctx.fillText("收款小账本", 145, 63);
-    ctx.fillText("补充经营信息，开启更多服务", 12, 115);
-    ctx.fillStyle = "white";
-    ctx.fillRect(12, 155, 376, 350);
-    ctx.fillStyle = "#222222";
-    ctx.font = "bold 30px Arial";
-    ctx.fillText("¥18.80", 140, 245);
-    return c.toDataURL().split(",")[1];
-  });
+async function sourceImage(page: Page, width = 400, gradient = false) {
+  return page.evaluate(
+    ({ width, gradient }) => {
+      const c = document.createElement("canvas");
+      c.width = width;
+      c.height = Math.round((width * 860) / 400);
+      const ctx = c.getContext("2d")!;
+      ctx.scale(c.width / 400, c.height / 860);
+      ctx.fillStyle = "#f7f7f7";
+      if (gradient) {
+        const g = ctx.createLinearGradient(0, 0, 400, 0);
+        g.addColorStop(0, "#f7f7f7");
+        g.addColorStop(1, "#d0d0d0");
+        ctx.fillStyle = g;
+      }
+      ctx.fillRect(0, 0, 400, 860);
+      ctx.fillStyle = "#111111";
+      ctx.font = "14px Arial";
+      ctx.fillText("20:06", 14, 24);
+      ctx.font = "12px Arial";
+      ctx.fillText("HD HD 65", 288, 24);
+      ctx.fillStyle = "#55bbee";
+      ctx.fillRect(65, 12, 12, 14);
+      ctx.fillStyle = "#2288dd";
+      ctx.fillRect(82, 12, 12, 14);
+      ctx.fillStyle = "white";
+      ctx.beginPath();
+      ctx.roundRect(300, 40, 90, 30, 15);
+      ctx.fill();
+      ctx.strokeStyle = "#dddddd";
+      ctx.stroke();
+      ctx.fillStyle = "#111111";
+      ctx.font = "bold 18px sans-serif";
+      ctx.fillText("收款小账本", 145, 63);
+      ctx.fillText("补充经营信息，开启更多服务", 12, 115);
+      ctx.fillStyle = "white";
+      ctx.fillRect(12, 155, 376, 350);
+      ctx.fillStyle = "#222222";
+      ctx.font = "bold 30px Arial";
+      ctx.fillText("¥18.80", 140, 245);
+      return c.toDataURL().split(",")[1];
+    },
+    { width, gradient },
+  );
 }
-async function upload(page: Page) {
+async function upload(page: Page, width = 400, gradient = false) {
   await page.goto("/custom");
-  const encoded = await sourceImage(page);
+  const encoded = await sourceImage(page, width, gradient);
   await page.locator('input[type="file"]').setInputFiles({
     name: "location-source.png",
     mimeType: "image/png",
@@ -355,3 +365,133 @@ test("pointer adjustments support undo and overlapping protection blocks confirm
   await d.getByRole("button", { name: "Close", exact: true }).click();
   await expect(page.getByTestId("status-location-state")).toHaveText("待确认");
 });
+
+for (const width of [400, 1080, 1179]) {
+  test(`fractional manual regions confirm and preserve every outside export pixel at ${width}px`, async ({
+    page,
+  }, info) => {
+    const source = await upload(page, width, true);
+    await page.getByRole("button", { name: "状态栏定位", exact: true }).click();
+    await page
+      .getByRole("button", { name: "定位原状态栏", exact: true })
+      .click();
+    const dialog = page.getByRole("dialog", {
+      name: "模板状态栏定位",
+      exact: true,
+    });
+    await dialog.getByRole("button", { name: "自动定位", exact: true }).click();
+    await expect(
+      dialog.getByRole("button", { name: "自动定位", exact: true }),
+    ).toBeEnabled();
+    await dialog.getByLabel("定位区域", { exact: true }).selectOption("time");
+    const x = dialog.getByLabel("定位区域 X", { exact: true });
+    const w = dialog.getByLabel("定位区域宽度", { exact: true });
+    const originalX = Number(await x.inputValue()),
+      originalWidth = Number(await w.inputValue());
+    await x.fill(String(originalX - 0.27));
+    await w.fill(String(originalWidth + 0.54));
+    await dialog.getByLabel("定位区域", { exact: true }).selectOption("apps");
+    const y = dialog.getByLabel("定位区域 Y", { exact: true });
+    const h = dialog.getByLabel("定位区域高度", { exact: true });
+    const originalY = Number(await y.inputValue()),
+      originalHeight = Number(await h.inputValue());
+    await y.fill(String(originalY + 0.23));
+    await h.fill(String(originalHeight - 0.46));
+    await dialog
+      .getByRole("button", { name: "添加保护区", exact: true })
+      .click();
+    // Keep the central blank region protected; it must survive raster rounding too.
+    await dialog.getByRole("button", { name: "测试替换", exact: true }).click();
+    await expect(dialog.getByText(/测试通过：/)).toBeVisible();
+    await expect(
+      dialog.getByRole("button", { name: "确认并保存定位", exact: true }),
+    ).toBeEnabled();
+    await dialog
+      .getByRole("button", { name: "确认并保存定位", exact: true })
+      .click();
+    await page.getByRole("button", { name: "进入作图", exact: true }).click();
+    await page.getByLabel("手机品牌", { exact: true }).selectOption("Samsung");
+    await page.getByLabel("状态栏时间", { exact: true }).fill("13:08");
+    await page.getByRole("button", { name: "更多", exact: true }).click();
+    const metadataDownload = page.waitForEvent("download");
+    await page
+      .getByRole("menuitem", { name: "导出模板文件（含图片）", exact: true })
+      .click();
+    const jsonPath = info.outputPath("fractional.json");
+    await (await metadataDownload).saveAs(jsonPath);
+    const { doc } = JSON.parse(await readFile(jsonPath, "utf8"));
+    await page.getByRole("button", { name: "导出", exact: true }).click();
+    const outputWidth=width===400?width*3:width;
+    if(outputWidth!==width) await page.getByPlaceholder("自定义宽度 px",{exact:true}).fill(String(outputWidth));
+    const imageDownload = page.waitForEvent("download");
+    await page
+      .getByRole("dialog")
+      .getByRole("button", { name: "导出", exact: true })
+      .click();
+    const imagePath = info.outputPath("fractional.png");
+    await (await imageDownload).saveAs(imagePath);
+    const bytes = await readFile(imagePath);
+    expect(bytes.readUInt32BE(16)).toBe(outputWidth);
+    const diff = await page.evaluate(
+      async ({ source, result, location, outputWidth }) => {
+        const read = async (s: string) => {
+          const image = await createImageBitmap(
+            new Blob([Uint8Array.from(atob(s), (c) => c.charCodeAt(0))], {
+              type: "image/png",
+            }),
+          );
+          const c = document.createElement("canvas");
+          c.width = outputWidth;
+          c.height = Math.round(image.height*outputWidth/image.width);
+          const ctx = c.getContext("2d")!;
+          ctx.drawImage(image, 0, 0, c.width, c.height);
+          image.close();
+          return {
+            w: c.width,
+            h: c.height,
+            data: ctx.getImageData(0, 0, c.width, c.height).data,
+          };
+        };
+        const a = await read(source),
+          b = await read(result);
+        const roles = [
+          location.time,
+          location.apps,
+          location.system,
+          location.date,
+          location.carrier,
+        ].filter(Boolean);
+        const contains = (r: any, x: number, y: number) =>
+          x >= r.x - 1e-7 &&
+          y >= r.y - 1e-7 &&
+          x <= r.x + r.width + 1e-7 &&
+          y <= r.y + r.height + 1e-7;
+        let outside = 0,
+          protectedChanges = 0,
+          inside = 0;
+        for (let yy = 0; yy < a.h; yy++)
+          for (let xx = 0; xx < a.w; xx++) {
+            const i = (yy * a.w + xx) * 4;
+            if (![0, 1, 2, 3].some((k) => a.data[i + k] !== b.data[i + k]))
+              continue;
+            const x = (xx + 0.5) / a.w,
+              y = (yy + 0.5) / a.h;
+            if (!roles.some((r) => contains(r, x, y))) outside++;
+            else inside++;
+            if (location.protected.some((r: any) => contains(r, x, y)))
+              protectedChanges++;
+          }
+        return { outside, protectedChanges, inside };
+      },
+      {
+        source,
+        outputWidth,
+        result: bytes.toString("base64"),
+        location: doc.statusLocation,
+      },
+    );
+    expect(diff.outside).toBe(0);
+    expect(diff.protectedChanges).toBe(0);
+    expect(diff.inside).toBeGreaterThan(0);
+  });
+}

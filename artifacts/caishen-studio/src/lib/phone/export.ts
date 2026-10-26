@@ -1,3 +1,4 @@
+import { locationRenderKey } from "../status-location/model";
 import type { TemplateDoc } from "../../types/template";
 
 /** Export the display contents, excluding the device's physical camera cutout.
@@ -6,7 +7,7 @@ import type { TemplateDoc } from "../../types/template";
 export function phoneScreenContent(doc: TemplateDoc): TemplateDoc {
   if (!doc.phone) return doc;
   const cutoutId = `${doc.phone.groupId}_cutout`;
-  return {
+  const next: TemplateDoc = {
     ...doc,
     phone: { ...doc.phone, showCutout: false },
     layers: doc.layers.filter((layer) => layer.id !== cutoutId),
@@ -14,4 +15,9 @@ export function phoneScreenContent(doc: TemplateDoc): TemplateDoc {
       (parameter) => parameter.layerId !== cutoutId,
     ),
   };
+  // Removing the physical cutout is a trusted export-only transform. Keep the
+  // validated status mask bound to the actual export document as well.
+  if (doc.phone.locationKey && doc.phone.locationKey === locationRenderKey(doc))
+    next.phone = { ...next.phone!, locationKey: locationRenderKey(next) };
+  return next;
 }

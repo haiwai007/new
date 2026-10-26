@@ -1,3 +1,4 @@
+import { hasLocationPixelMask, locationPixelMask, restoreOutsideLocation, type LocationPixelMask } from "../status-location/pixel-mask";
 import {
   FabricImage,
   Rect,
@@ -349,8 +350,35 @@ export async function renderDoc(
       }
       sc.add(b.obj);
     }
+    let original: { mask: LocationPixelMask; pixels: ImageData }[] = [];
+    if (hasLocationPixelMask(doc)) {
+      const generated = built.filter(b => {
+        const layer = doc.layers.find(l => l.id === b.meta.layerId)!;
+        return layer.groupId === doc.phone!.groupId && layer.id.startsWith(`${doc.phone!.groupId}_`);
+      });
+      for (const b of generated) b.obj.visible = false;
+      let baseline: HTMLCanvasElement | undefined;
+      try {
+        sc.renderAll();
+        baseline = sc.toCanvasElement(opts.multiplier);
+        const mask = locationPixelMask(doc, baseline.width, baseline.height);
+        original = mask.tiles.map(tile => ({
+          mask: { ...mask, ...tile },
+          pixels: baseline!.getContext("2d")!.getImageData(tile.x, tile.y, tile.width, tile.height),
+        }));
+      } finally {
+        if (baseline) baseline.width = baseline.height = 0;
+        for (const b of generated) b.obj.visible = true;
+      }
+    }
     sc.renderAll();
     const out = sc.toCanvasElement(opts.multiplier);
+    for (const { mask, pixels } of original) {
+      const ctx = out.getContext("2d")!;
+      const result = ctx.getImageData(mask.x, mask.y, mask.width, mask.height);
+      restoreOutsideLocation(pixels.data, result.data, mask);
+      ctx.putImageData(result, mask.x, mask.y);
+    }
     return { canvas: out, warnings: [...new Set(warnings)] };
   } finally {
     sc.dispose();

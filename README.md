@@ -147,7 +147,7 @@ PORT=4173 pnpm --filter @workspace/caishen-studio serve
 pnpm --filter @workspace/caishen-studio exec playwright install chromium
 ```
 
-最近一次功能版本验收：**40 个测试文件、272 项自动化测试、33 项生产预览浏览器用例已回归验证**，并通过类型检查、生产构建和公网资源检查。覆盖实际 OCR、PNG / ZIP 导出、备份恢复、保存冲突、手机适配、批量随机及移动端。具体范围见[验收记录](docs/ACCEPTANCE.md)。
+最近一次功能版本验收：**41 个测试文件、275 项自动化测试、36 项生产预览浏览器用例已回归验证**，并通过类型检查、生产构建和公网资源检查。覆盖实际 OCR、PNG / ZIP 导出、备份恢复、保存冲突、手机适配、批量随机及移动端。具体范围见[验收记录](docs/ACCEPTANCE.md)。
 
 ## Cloudflare Pages 部署
 

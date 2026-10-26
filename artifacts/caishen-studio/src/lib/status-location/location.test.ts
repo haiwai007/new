@@ -1,3 +1,4 @@
+import { phoneScreenContent } from "../phone/export";
 import { designKey } from "../phone/fusion-metrics";
 import { fusionReady } from "../phone/fusion";
 import { describe, it, expect } from "vitest";
@@ -231,6 +232,7 @@ it("keeps confirmations after schema field reordering for image and text source 
 it("rejects exports when phone settings or generated pixels no longer match the confirmed render", () => {
   const located = applyPhoneLayers(confirmed(), naturalPhoneSettings());
   expect(fusionReady(located)).toBe(true);
+  expect(fusionReady(phoneScreenContent(located))).toBe(true);
   expect(
     fusionReady({ ...located, phone: { ...located.phone!, time: "23:59" } }),
   ).toBe(false);
