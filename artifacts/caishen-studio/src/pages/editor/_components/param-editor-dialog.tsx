@@ -8,6 +8,8 @@ import { Switch } from "@/components/ui/switch.tsx";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select.tsx";
 import { edit, useEditor } from "@/stores/editor.ts";
 import {
+  MAX_PARAMETER_NAME,
+  parameterNameError,
   DEFAULT_GROUPS,
   PARAM_TYPE_LABEL,
   PATTERN_PRESETS,
@@ -55,6 +57,7 @@ function Form({ param, layer: newLayer, onDone }: Props & { onDone: () => void }
   const types = layer ? allowedParamTypes(layer) : [];
   const [type, setType] = useState<ParamInputType>(param?.type ?? types[0] ?? "text");
   const [name, setName] = useState(param?.name ?? "");
+  const [nameError, setNameError] = useState("");
   const [group, setGroup] = useState(param?.group ?? defaultGroupFor(param?.type ?? types[0] ?? "text"));
   const [description, setDescription] = useState(param?.description ?? "");
   const [placeholder, setPlaceholder] = useState(param?.placeholder ?? "");
@@ -130,9 +133,13 @@ function Form({ param, layer: newLayer, onDone }: Props & { onDone: () => void }
     const nStep = num(step);
 
     const base = param ?? createParameter(doc, layer, type);
+    const displayName = name.trim() || (param ? "" : base.name);
+    // Legacy long names remain valid when editing other parameter settings.
+    const error = displayName === param?.name ? null : parameterNameError(displayName);
+    if (error) {setNameError(error); return;}
     const next: TemplateParameter = {
       ...base,
-      name: name.trim() || base.name,
+      name: displayName,
       type,
       layerId: layer.id,
       property: PROPERTY_FOR_TYPE[type],
@@ -179,7 +186,8 @@ function Form({ param, layer: newLayer, onDone }: Props & { onDone: () => void }
         <div className="grid grid-cols-2 gap-3">
           <div className="space-y-1">
             <Label>参数名称</Label>
-            <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="例如：主标题" />
+            <Input aria-label="参数名称" maxLength={MAX_PARAMETER_NAME} value={name} onChange={(e) => {setName(e.target.value); setNameError("");}} placeholder="例如：活动标题、商品价格" aria-invalid={!!nameError} />
+            {nameError && <p role="alert" className="text-xs text-destructive">{nameError}</p>}
           </div>
           <div className="space-y-1">
             <Label>所属分组</Label>

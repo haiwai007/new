@@ -1,8 +1,8 @@
+import ParameterNameEditor from "./parameter-name-editor";
 import { ChevronDown, ChevronUp, ImagePlus, Lock, Plus, RotateCcw, Settings2, SlidersHorizontal, Sparkles, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button.tsx";
 import { Input } from "@/components/ui/input.tsx";
-import { Label } from "@/components/ui/label.tsx";
 import { Switch } from "@/components/ui/switch.tsx";
 import { Textarea } from "@/components/ui/textarea.tsx";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select.tsx";
@@ -150,11 +150,11 @@ function ParamInput({ doc, param, first, last }: { doc: TemplateDoc; param: Temp
   return (
     <div className="space-y-1.5">
       <div className="flex items-center justify-between gap-2">
-        <Label className="min-w-0 truncate text-xs">
-          {param.name}
+        <div className="flex min-w-0 flex-1 items-start gap-1 text-xs">
+          <ParameterNameEditor param={param} />
           {param.required && <span className="text-primary"> *</span>}
           {!param.editable && <Lock className="ml-1 inline size-3 text-muted-foreground" />}
-        </Label>
+        </div>
         <div className="flex shrink-0 items-center gap-1">
           {param.rules.maxLength && typeof value === "string" && (
             <span className="text-[10px] text-muted-foreground">{[...value].length}/{param.rules.maxLength}</span>
@@ -192,7 +192,7 @@ export default function ParamsPanel() {
       return;
     }
     edit((d) => ({ ...d, parameters: [...d.parameters, ...s] }));
-    toast.success(`已生成 ${s.length} 个参数，可点击齿轮图标修改名称和类型`);
+    toast.success(`已生成 ${s.length} 个参数，点击名称可重命名，齿轮可调整类型和规则`);
   };
 
   const selected = doc.layers.find((l) => l.id === selectedIds[0]);
@@ -247,6 +247,7 @@ export default function ParamsPanel() {
       ) : (
         <p className="text-[11px] text-muted-foreground">全部 {doc.parameters.length} 个参数校验通过</p>
       )}
+      <p className="text-[11px] text-muted-foreground">点击参数名称旁的铅笔自定义名称，例如“活动标题”“商品价格”。名称用于填写表单与批量规则，不改变画面内容。</p>
       <div className="space-y-5">
         {groups.map((g) => (
           <section key={g.group} className="space-y-3">

@@ -14,6 +14,21 @@ import { newId } from "./ids.ts";
 // layer (so undo/redo and canvas edits stay consistent). The parameter keeps
 // the default value and validation rules. Binding uses the stable layer id.
 
+/** Display names are independent of parameter IDs and layer bindings. */
+export const MAX_PARAMETER_NAME = 80;
+export function parameterNameError(value: string): string | null {
+  const name = value.trim();
+  if (!name) return "参数名称不能为空";
+  if (name.length > MAX_PARAMETER_NAME) return `参数名称最多 ${MAX_PARAMETER_NAME} 个字符`;
+  return null;
+}
+export function renameParameter(doc: TemplateDoc, id: string, raw: string): TemplateDoc {
+  const error = parameterNameError(raw);
+  if (error) throw new Error(error);
+  const name = raw.trim();
+  return {...doc, parameters: doc.parameters.map(p => p.id === id ? {...p, name} : p)};
+}
+
 export const PARAM_TYPE_LABEL: Record<ParamInputType, string> = {
   text: "单行文本",
   multiline: "多行文本",

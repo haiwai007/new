@@ -35,7 +35,7 @@ export default function RuleEditor({ param, rule, locked, assets, onModeChange, 
   return (
     <div className="grid gap-3 px-4 py-4 md:grid-cols-[180px_minmax(0,1fr)]">
       <div className="min-w-0">
-        <p className="truncate text-sm font-medium">
+        <p className="break-words text-sm font-medium" title={param.name}>
           {param.name}
           {param.required && <span className="ml-1 text-primary">*</span>}
         </p>
