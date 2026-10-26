@@ -31,7 +31,10 @@ export const RANDOM_PHONE_ICONS = [
 ] as const;
 export type RandomPhoneIcon = (typeof RANDOM_PHONE_ICONS)[number][0];
 export type PhoneBatchRules = {
-  setup?: { mode: "keep" | "overlay" | "prepend" | "auto"; settings: PhoneSettings };
+  setup?: {
+    mode: "keep" | "overlay" | "prepend" | "auto";
+    settings: PhoneSettings;
+  };
   models?: {
     enabled: boolean;
     ids: PhoneSettings["modelId"][];
@@ -79,7 +82,8 @@ const timeValue = (value: string) =>
 const dateValue = (value: string) => Date.parse(`${value}T00:00:00Z`);
 export function validatePhoneBatchRules(rules?: PhoneBatchRules): string[] {
   if (!rules || rules.setup?.mode === "keep") return [];
-  if (rules.setup?.mode === "auto") return ["请确认自动判断的处理方式：覆盖、添加或保留原图"];
+  if (rules.setup?.mode === "auto")
+    return ["请确认自动判断的处理方式：覆盖、添加或保留原图"];
   if (!rules.enabled && !rules.setup) return [];
   const errors: string[] = [];
   if (
@@ -122,7 +126,18 @@ export function validatePhoneBatchRules(rules?: PhoneBatchRules): string[] {
     errors.push("请至少选择一个有效且不重复的随机手机型号");
   if (
     rules.setup &&
-    !phoneSettingsSchema.safeParse(rules.setup.settings).success
+    !phoneSettingsSchema.safeParse({
+      ...rules.setup.settings,
+      ...(rules.enabled && rules.time.enabled
+        ? { time: rules.time.start }
+        : {}),
+      ...(rules.enabled && rules.battery.enabled
+        ? { battery: rules.battery.min }
+        : {}),
+      ...(rules.enabled && rules.date.enabled
+        ? { date: rules.date.start }
+        : {}),
+    }).success
   )
     errors.push("请检查固定状态栏设置");
   const apps = rules.apps;
@@ -167,7 +182,13 @@ export function applyPhoneBatchRules(
   if (rules.setup?.mode === "keep") return doc;
   const source = rules.setup?.settings ?? doc.phone;
   if (!source || (!rules.enabled && !rules.setup)) return doc;
-  let phone = { ...source, placement: rules.setup?.mode === "auto" ? source.placement : rules.setup?.mode ?? source.placement };
+  let phone = {
+    ...source,
+    placement:
+      rules.setup?.mode === "auto"
+        ? source.placement
+        : (rules.setup?.mode ?? source.placement),
+  };
   if (assignedModel) phone = settingsForModel(phone, assignedModel);
   else if (rules.models?.enabled && rules.models.ids.length)
     phone = settingsForModel(
@@ -201,6 +222,9 @@ export function applyPhoneBatchRules(
       rules.network.options[integer(0, rules.network.options.length - 1, rng)];
   for (const [key] of RANDOM_PHONE_ICONS)
     if (rules.enabled && rules.icons[key]) phone[key] = rng() < 0.5;
+  if (rules.enabled && phone.lowPower && phone.battery > 20)
+    phone.battery =
+      rules.enabled && rules.battery.enabled ? integer(0, 20, rng) : 20;
   const apps = rules.apps;
   if (apps?.mode === "none") phone.appIcons = [];
   if (apps?.mode === "fixed" || apps?.mode === "random") {
@@ -241,7 +265,7 @@ export function shuffled<T>(values: readonly T[], rng: () => number): T[] {
 }
 /** Capacity at the requested icon size; never rely on silently shrinking the preview. */
 export function appIconCapacity(settings: PhoneSettings): number {
-  if(settings.rendering === "natural") return naturalAppCapacity(settings);
+  if (settings.rendering === "natural") return naturalAppCapacity(settings);
   const model = phoneModel(settings.modelId),
     profile = statusProfile(settings.modelId);
   const left =

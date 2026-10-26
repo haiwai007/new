@@ -8,6 +8,7 @@ import { phoneSettingsSchema } from "../phone/schema";
 import { BUILTIN_TEMPLATES } from "../template/builtin";
 import {
   applyPhoneBatchRules,
+  drawingRules,
   defaultPhoneBatchRules,
   RANDOM_PHONE_ICONS,
   validatePhoneBatchRules,
@@ -113,7 +114,11 @@ describe("batch status-bar randomization", () => {
     for (const { doc: item } of items) {
       expect(["4G", "5G"]).toContain(item.phone!.network);
       expect(item.phone!.time).toBe(doc.phone!.time);
-      expect(item.phone!.battery).toBe(doc.phone!.battery);
+      expect(item.phone!.battery).toBe(
+        item.phone!.lowPower
+          ? Math.min(20, doc.phone!.battery)
+          : doc.phone!.battery,
+      );
       expect(phoneSettingsSchema.safeParse(item.phone).success).toBe(true);
     }
     for (const [key] of RANDOM_PHONE_ICONS)
@@ -159,10 +164,93 @@ describe("batch status-bar randomization", () => {
   });
 });
 
-
 it("generates phone-only templates without requiring content parameters", () => {
   const doc = { ...template(), parameters: [] };
   const items = generateItems(doc, {}, 3, 9, enabled());
   expect(items).toHaveLength(3);
-  expect(items.every(item => item.errors.length === 0 && item.doc.phone)).toBe(true);
+  expect(
+    items.every((item) => item.errors.length === 0 && item.doc.phone),
+  ).toBe(true);
+});
+
+describe("low power batch constraints", () => {
+  it("caps fixed battery only on pictures whose low-power state is enabled", () => {
+    const doc = template();
+    const rules = enabled();
+    rules.time.enabled = rules.battery.enabled = false;
+    rules.icons = { lowPower: true };
+    const items = generateItems(doc, {}, 80, 985, rules);
+    expect(items.some((i) => i.doc.phone!.lowPower)).toBe(true);
+    expect(items.some((i) => !i.doc.phone!.lowPower)).toBe(true);
+    for (const item of items)
+      expect(item.doc.phone!.battery).toBe(item.doc.phone!.lowPower ? 20 : 100);
+    expect(doc.phone!.battery).toBe(100);
+  });
+  it("samples 0–20 for low-power outcomes and retains the selected range for other outcomes", () => {
+    const doc = template();
+    const rules = enabled();
+    rules.battery = { enabled: true, min: 80, max: 100 };
+    rules.icons = { lowPower: true };
+    const items = generateItems(doc, {}, 100, 177, rules);
+    const low = items
+      .filter((i) => i.doc.phone!.lowPower)
+      .map((i) => i.doc.phone!.battery);
+    expect(new Set(low).size).toBeGreaterThan(5);
+    expect(low.every((n) => n >= 0 && n <= 20)).toBe(true);
+    expect(
+      items
+        .filter((i) => !i.doc.phone!.lowPower)
+        .every(
+          (i) => i.doc.phone!.battery >= 80 && i.doc.phone!.battery <= 100,
+        ),
+    ).toBe(true);
+    expect(generateItems(doc, {}, 100, 177, rules)).toEqual(items);
+  });
+  it("keeps chosen battery values already within the low-power limit", () => {
+    const doc = template();
+    doc.phone!.lowPower = true;
+    const rules = enabled();
+    rules.battery = { enabled: true, min: 7, max: 12 };
+    const items = generateItems(doc, {}, 40, 5, rules);
+    expect(
+      items.every(
+        (i) =>
+          i.doc.phone!.lowPower &&
+          i.doc.phone!.battery >= 7 &&
+          i.doc.phone!.battery <= 12,
+      ),
+    ).toBe(true);
+  });
+});
+
+it("ignores inactive blank fixed values when valid random rules are selected", () => {
+  const doc = template();
+  const settings = { ...doc.phone!, time: "", battery: NaN };
+  const rules = {
+    ...enabled(),
+    setup: { mode: "overlay" as const, settings },
+    time: { enabled: true, start: "22:00", end: "02:00" },
+    battery: { enabled: true, min: 30, max: 90 },
+  };
+  expect(validatePhoneBatchRules(rules)).toEqual([]);
+  const next = applyPhoneBatchRules(doc, rules, createRng(7));
+  expect(phoneSettingsSchema.safeParse(next.phone).success).toBe(true);
+  expect(next.phone!.battery).toBeGreaterThanOrEqual(30);
+  expect(
+    validatePhoneBatchRules({
+      ...rules,
+      time: { ...rules.time, enabled: false },
+    }),
+  ).toContain("请检查固定状态栏设置");
+});
+
+it("retains existing single-drawing fixed preset values when batch rules are disabled", () => {
+  const doc = template();
+  doc.phone!.lowPower = true;
+  doc.phone!.battery = 80;
+  const rules = drawingRules(doc.phone!);
+  expect(rules.enabled).toBe(false);
+  const next = applyPhoneBatchRules(doc, rules, createRng(7));
+  expect(next.phone!.battery).toBe(80);
+  expect(next.phone!.lowPower).toBe(true);
 });

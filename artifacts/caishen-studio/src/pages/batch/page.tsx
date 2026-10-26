@@ -82,6 +82,16 @@ export default function BatchPage() {
   const [phoneRules, setPhoneRules] = useState<PhoneBatchRules>(() => ({
     ...drawingRules(defaultPhoneSettings()),
     setup: { mode: "keep", settings: defaultPhoneSettings() },
+    time: { enabled: false, start: "08:00", end: "23:59" },
+    battery: { enabled: false, min: 20, max: 100 },
+    apps: {
+      mode: "fixed",
+      fixed: [],
+      candidates: [],
+      min: 0,
+      max: 1,
+      order: "list",
+    },
   }));
   const [configured, setConfigured] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -160,7 +170,13 @@ export default function BatchPage() {
     if (!configured) {
       const saved = options.find((o) => o.id === id)?.doc.phone;
       const next = drawingRules(saved ?? defaultPhoneSettings());
-      if (!saved) next.setup!.mode = "keep";
+      next.setup!.mode = "keep";
+      next.time.enabled = next.battery.enabled = false;
+      next.apps = {
+        ...next.apps!,
+        mode: "fixed",
+        fixed: saved?.appIcons.filter((icon) => icon.visible) ?? [],
+      };
       setPhoneRules(next);
     }
     setPreview(null);
@@ -187,7 +203,14 @@ export default function BatchPage() {
   };
 
   const generate = async () => {
-    if (!selected || working || uploading || needsPreview || items.some(i => !i.preservePhone && !fusionReady(i.doc))) return;
+    if (
+      !selected ||
+      working ||
+      uploading ||
+      needsPreview ||
+      items.some((i) => !i.preservePhone && !fusionReady(i.doc))
+    )
+      return;
     resetOutput(false);
     setWorking(true);
     try {
@@ -409,13 +432,27 @@ export default function BatchPage() {
                 (!needsPreview && preview !== null)
               }
               onClick={async () => {
-                resetOutput(false); setWorking(true); setPreparing(true); setAdapted(0);
-                try {setPreview(await prepareFusionItems(computedItems,setAdapted)); setPreviewPage(0); setNeedsPreview(false);}
-                catch(e) {setError(e instanceof Error ? e.message : "预览适配失败");}
-                finally {setWorking(false);setPreparing(false);}
+                resetOutput(false);
+                setWorking(true);
+                setPreparing(true);
+                setAdapted(0);
+                try {
+                  setPreview(
+                    await prepareFusionItems(computedItems, setAdapted),
+                  );
+                  setPreviewPage(0);
+                  setNeedsPreview(false);
+                } catch (e) {
+                  setError(e instanceof Error ? e.message : "预览适配失败");
+                } finally {
+                  setWorking(false);
+                  setPreparing(false);
+                }
               }}
             >
-              {preparing ? `正在自动适配 ${adapted}/${computedItems.length}` : "生成预览"}
+              {preparing
+                ? `正在自动适配 ${adapted}/${computedItems.length}`
+                : "生成预览"}
             </Button>
             <div
               className={`grid grid-cols-2 gap-2 sm:grid-cols-3 ${needsPreview ? "opacity-50" : ""}`}
@@ -450,7 +487,15 @@ export default function BatchPage() {
                             .join("、") || "无"}
                         </p>
                       )}
-                      {i.doc.phone && fusionWarnings(i.doc.phone).map(w => <p key={w} className="text-[10px] text-amber-800 dark:text-amber-300">{w}</p>)}
+                      {i.doc.phone &&
+                        fusionWarnings(i.doc.phone).map((w) => (
+                          <p
+                            key={w}
+                            className="text-[10px] text-amber-800 dark:text-amber-300"
+                          >
+                            {w}
+                          </p>
+                        ))}
                       <p className="text-[10px] text-muted-foreground">
                         {i.doc.canvas.width} × {i.doc.canvas.height}
                       </p>
@@ -492,10 +537,27 @@ export default function BatchPage() {
                               return;
                             }
                           }
-                          setWorking(true);setPreparing(true);setAdapted(0);
-                          try {const [ready] = await prepareFusionItems([replacement]); setPreview(items.map(item => item.index === i.index ? ready : item)); resetOutput(false);}
-                          catch(e) {setError(e instanceof Error ? e.message : "单张适配失败");}
-                          finally {setWorking(false);setPreparing(false);}
+                          setWorking(true);
+                          setPreparing(true);
+                          setAdapted(0);
+                          try {
+                            const [ready] = await prepareFusionItems([
+                              replacement,
+                            ]);
+                            setPreview(
+                              items.map((item) =>
+                                item.index === i.index ? ready : item,
+                              ),
+                            );
+                            resetOutput(false);
+                          } catch (e) {
+                            setError(
+                              e instanceof Error ? e.message : "单张适配失败",
+                            );
+                          } finally {
+                            setWorking(false);
+                            setPreparing(false);
+                          }
                         }}
                       >
                         重新随机第 {i.index + 1} 张
@@ -561,7 +623,8 @@ export default function BatchPage() {
                 !selected ||
                 working ||
                 uploading ||
-                needsPreview || items.some(i => !i.preservePhone && !fusionReady(i.doc)) ||
+                needsPreview ||
+                items.some((i) => !i.preservePhone && !fusionReady(i.doc)) ||
                 invalid.length === items.length
               }
             >

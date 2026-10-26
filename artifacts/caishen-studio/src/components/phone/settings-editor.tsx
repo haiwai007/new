@@ -119,11 +119,13 @@ export default function PhoneSettingsEditor({
   onApply,
   scopeKey,
   onBusyChange,
+  advancedOnly = false,
 }: {
   doc: TemplateDoc;
   onApply: (next: TemplateDoc, options?: { coalesceKey?: string }) => void;
   scopeKey: string;
   onBusyChange?: (busy: boolean) => void;
+  advancedOnly?: boolean;
 }) {
   const alive = useRef(true);
   const latest = useRef({ doc, scopeKey });
@@ -317,159 +319,184 @@ export default function PhoneSettingsEditor({
   const iconColor = phoneColor(previewSettings);
   return (
     <div className="space-y-3 p-3">
-      <label className="block space-y-1 text-xs">
-        状态栏处理方式
-        <select
-          aria-label="状态栏处理方式"
-          className={selectClass}
-          value={
-            draft.fusion.handling === "auto"
-              ? "auto"
-              : applied
-                ? draft.placement
-                : "keep"
-          }
-          onChange={(e) => {
-            if (e.target.value === "auto") {
-              update({
-                rendering: "natural",
-                fusion: { ...draft.fusion, enabled: true, handling: "auto" },
-              });
-              return;
-            }
-            chooseMode(e.target.value as "keep" | "overlay" | "prepend");
-          }}
-        >
-          <option value="auto">自动判断（分析后确认）</option>
-          <option value="keep">保留原图（不生成新状态栏）</option>
-          <option value="overlay">覆盖原图状态栏（保持尺寸）</option>
-          <option value="prepend">添加状态栏（正文下移）</option>
-        </select>
-      </label>
-      <p className="text-[11px] text-muted-foreground">
-        当前导出尺寸 {doc.canvas.width} × {doc.canvas.height}
-        ；移除状态栏可恢复原图内容。添加模式会增加高度，不拉伸正文。
-      </p>
-      <div className="space-y-1">
-        <p className="flex items-center gap-2 text-xs font-semibold">
-          <Smartphone className="size-4" />
-          手机状态栏
-        </p>
-        <p className="text-[11px] leading-relaxed text-muted-foreground">
-          给截图或设计稿加上逼真的手机顶部状态栏。仅用于展示，不读取设备真实状态。
-        </p>
-      </div>
-
-      <FusionPanel
-        doc={doc}
-        settings={draft}
-        onChange={(next) => update(next)}
-        onMode={chooseMode}
-        onBusyChange={onBusyChange}
-      />
-      <div
-        className="overflow-hidden rounded-lg border"
-        style={{
-          backgroundColor: draft.transparent
-            ? undefined
-            : draft.backgroundColor,
-          backgroundImage: draft.transparent
-            ? "repeating-conic-gradient(#d4d4d4 0% 25%, #f4f4f4 0% 50%)"
-            : undefined,
-          backgroundSize: "12px 12px",
-          color: iconColor,
-        }}
-        data-testid="phone-panel-preview"
-      >
-        <div className="flex h-11 items-center justify-between gap-2 px-3">
-          <span
-            className="text-[13px] tabular-nums"
-            style={{ fontWeight: draft.timeWeight === "bold" ? 700 : 400 }}
-          >
-            {valid.success ? phoneTime(draft) : "--:--"}
-          </span>
-          <img
-            alt="状态图标预览"
-            className="h-4 max-w-[70%]"
-            src={`data:image/svg+xml;charset=utf-8,${encodeURIComponent(statusIconsSvg(previewSettings))}`}
-          />
-        </div>
-        {draft.showDate && (
-          <p className="px-3 pb-2 text-[11px]">
-            {valid.success ? phoneDate(draft) : "请选择有效日期"}
+      {!advancedOnly && (
+        <>
+          <label className="block space-y-1 text-xs">
+            状态栏处理方式
+            <select
+              aria-label="状态栏处理方式"
+              className={selectClass}
+              value={
+                draft.fusion.handling === "auto"
+                  ? "auto"
+                  : applied
+                    ? draft.placement
+                    : "keep"
+              }
+              onChange={(e) => {
+                if (e.target.value === "auto") {
+                  update({
+                    rendering: "natural",
+                    fusion: {
+                      ...draft.fusion,
+                      enabled: true,
+                      handling: "auto",
+                    },
+                  });
+                  return;
+                }
+                chooseMode(e.target.value as "keep" | "overlay" | "prepend");
+              }}
+            >
+              <option value="auto">自动判断（分析后确认）</option>
+              <option value="keep">保留原图（不生成新状态栏）</option>
+              <option value="overlay">覆盖原图状态栏（保持尺寸）</option>
+              <option value="prepend">添加状态栏（正文下移）</option>
+            </select>
+          </label>
+          <p className="text-[11px] text-muted-foreground">
+            当前导出尺寸 {doc.canvas.width} × {doc.canvas.height}
+            ；移除状态栏可恢复原图内容。添加模式会增加高度，不拉伸正文。
           </p>
-        )}
-      </div>
+          <div className="space-y-1">
+            <p className="flex items-center gap-2 text-xs font-semibold">
+              <Smartphone className="size-4" />
+              手机状态栏
+            </p>
+            <p className="text-[11px] leading-relaxed text-muted-foreground">
+              给截图或设计稿加上逼真的手机顶部状态栏。仅用于展示，不读取设备真实状态。
+            </p>
+          </div>
 
-      <Button
-        variant="secondary"
-        size="sm"
-        className="w-full"
-        onClick={autoMatch}
-        disabled={matching}
-      >
-        {matching ? <Spinner /> : <WandSparkles className="size-3.5" />}
-        智能匹配原图配色
-      </Button>
-      <div className="flex flex-wrap gap-1">
-        {LOOKS.map((look) => (
-          <button
-            key={look.id}
-            type="button"
-            onClick={() => update(look.patch)}
-            className="cursor-pointer rounded-full border bg-background px-2 py-0.5 text-[11px] hover:border-primary hover:text-primary"
+          <FusionPanel
+            doc={doc}
+            settings={draft}
+            onChange={(next) => update(next)}
+            onMode={chooseMode}
+            onBusyChange={onBusyChange}
+          />
+          <div
+            className="overflow-hidden rounded-lg border"
+            style={{
+              backgroundColor: draft.transparent
+                ? undefined
+                : draft.backgroundColor,
+              backgroundImage: draft.transparent
+                ? "repeating-conic-gradient(#d4d4d4 0% 25%, #f4f4f4 0% 50%)"
+                : undefined,
+              backgroundSize: "12px 12px",
+              color: iconColor,
+            }}
+            data-testid="phone-panel-preview"
           >
-            {look.label}
-          </button>
-        ))}
-      </div>
+            <div className="flex h-11 items-center justify-between gap-2 px-3">
+              <span
+                className="text-[13px] tabular-nums"
+                style={{ fontWeight: draft.timeWeight === "bold" ? 700 : 400 }}
+              >
+                {valid.success ? phoneTime(draft) : "--:--"}
+              </span>
+              <img
+                alt="状态图标预览"
+                className="h-4 max-w-[70%]"
+                src={`data:image/svg+xml;charset=utf-8,${encodeURIComponent(statusIconsSvg(previewSettings))}`}
+              />
+            </div>
+            {draft.showDate && (
+              <p className="px-3 pb-2 text-[11px]">
+                {valid.success ? phoneDate(draft) : "请选择有效日期"}
+              </p>
+            )}
+          </div>
 
-      <Section title="机型" open>
-        <PhoneModelPicker
-          value={draft.modelId}
-          onChange={(id) => {
-            if (!id) return;
-            const next = settingsForModel(draft, id);
-            setDraft(next);
-            setError("");
-            try {
-              const preset = phoneModel(id);
-              edit((current) =>
-                applyPhoneLayers(
-                  resize
-                    ? resizeDoc(current, preset.width, preset.height, "smart")
-                    : current,
-                  next,
-                ),
-              );
-            } catch (error) {
-              setError(error instanceof Error ? error.message : "切换机型失败");
-            }
-          }}
-        />
-        <p className="text-[11px] text-muted-foreground">
-          机型尺寸 {model.width}×{model.height} · 当前画布 {doc.canvas.width}×
-          {doc.canvas.height}
-        </p>
-        <SwitchRow
-          label="同时适配机型画布尺寸"
-          hint={resize ? "切换机型或点击应用时智能调整内容，可撤销" : undefined}
-          checked={resize}
-          onChange={setResize}
-        />
-        <SwitchRow
-          label="显示灵动岛 / 刘海 / 开孔"
-          hint="仅编辑时参考，保存图片不包含"
-          checked={draft.showCutout}
-          onChange={(v) => set("showCutout", v)}
-        />
-        <SwitchRow
-          label="显示底部手势条"
-          checked={draft.showHomeIndicator}
-          onChange={(v) => set("showHomeIndicator", v)}
-        />
-      </Section>
+          <Button
+            variant="secondary"
+            size="sm"
+            className="w-full"
+            onClick={autoMatch}
+            disabled={matching}
+          >
+            {matching ? <Spinner /> : <WandSparkles className="size-3.5" />}
+            智能匹配原图配色
+          </Button>
+          <div className="flex flex-wrap gap-1">
+            {LOOKS.map((look) => (
+              <button
+                key={look.id}
+                type="button"
+                onClick={() => update(look.patch)}
+                className="cursor-pointer rounded-full border bg-background px-2 py-0.5 text-[11px] hover:border-primary hover:text-primary"
+              >
+                {look.label}
+              </button>
+            ))}
+          </div>
 
+          <Section title="机型" open>
+            <PhoneModelPicker
+              value={draft.modelId}
+              onChange={(id) => {
+                if (!id) return;
+                const next = settingsForModel(draft, id);
+                setDraft(next);
+                setError("");
+                try {
+                  const preset = phoneModel(id);
+                  edit((current) =>
+                    applyPhoneLayers(
+                      resize
+                        ? resizeDoc(
+                            current,
+                            preset.width,
+                            preset.height,
+                            "smart",
+                          )
+                        : current,
+                      next,
+                    ),
+                  );
+                } catch (error) {
+                  setError(
+                    error instanceof Error ? error.message : "切换机型失败",
+                  );
+                }
+              }}
+            />
+            <p className="text-[11px] text-muted-foreground">
+              机型尺寸 {model.width}×{model.height} · 当前画布{" "}
+              {doc.canvas.width}×{doc.canvas.height}
+            </p>
+            <SwitchRow
+              label="同时适配机型画布尺寸"
+              hint={
+                resize ? "切换机型或点击应用时智能调整内容，可撤销" : undefined
+              }
+              checked={resize}
+              onChange={setResize}
+            />
+            <SwitchRow
+              label="显示灵动岛 / 刘海 / 开孔"
+              hint="仅编辑时参考，保存图片不包含"
+              checked={draft.showCutout}
+              onChange={(v) => set("showCutout", v)}
+            />
+            <SwitchRow
+              label="显示底部手势条"
+              checked={draft.showHomeIndicator}
+              onChange={(v) => set("showHomeIndicator", v)}
+            />
+          </Section>
+        </>
+      )}
+      {advancedOnly && (
+        <FusionPanel
+          doc={doc}
+          settings={draft}
+          onChange={(next) => update(next)}
+          onMode={chooseMode}
+          onBusyChange={onBusyChange}
+        />
+      )}
       <details className="rounded-lg border">
         <summary className="cursor-pointer p-2 text-xs font-medium">
           高级微调（颜色、位置与覆盖高度）
@@ -587,15 +614,17 @@ export default function PhoneSettingsEditor({
       </details>
       <Section title="时间与日期" open>
         <div className="grid grid-cols-2 gap-2">
-          <Field label="时间">
-            <Input
-              aria-label="状态栏时间"
-              type="time"
-              className="h-8 text-xs"
-              value={draft.time}
-              onChange={(e) => set("time", e.target.value)}
-            />
-          </Field>
+          {!advancedOnly && (
+            <Field label="时间">
+              <Input
+                aria-label="状态栏时间"
+                type="time"
+                className="h-8 text-xs"
+                value={draft.time}
+                onChange={(e) => set("time", e.target.value)}
+              />
+            </Field>
+          )}
           <Field label="格式">
             <select
               aria-label="时间格式"
@@ -619,15 +648,17 @@ export default function PhoneSettingsEditor({
           ]}
           onChange={(v) => set("timeWeight", v)}
         />
-        <Button
-          variant="secondary"
-          size="sm"
-          className="h-8 w-full text-xs"
-          onClick={() => update(today())}
-        >
-          <Clock className="size-3" />
-          使用当前时间
-        </Button>
+        {!advancedOnly && (
+          <Button
+            variant="secondary"
+            size="sm"
+            className="h-8 w-full text-xs"
+            onClick={() => update(today())}
+          >
+            <Clock className="size-3" />
+            使用当前时间
+          </Button>
+        )}
         <SwitchRow
           label="显示日期"
           checked={draft.showDate}
@@ -668,29 +699,33 @@ export default function PhoneSettingsEditor({
       </Section>
 
       <Section title="电池" open>
-        <SliderRow
-          label="电量"
-          unit="%"
-          min={0}
-          max={100}
-          value={Number.isFinite(draft.battery) ? draft.battery : 0}
-          onChange={(v) => set("battery", v)}
-        />
-        <Input
-          aria-label="电量百分比"
-          type="number"
-          min={0}
-          max={100}
-          step={1}
-          className="h-8 text-xs"
-          value={Number.isFinite(draft.battery) ? draft.battery : ""}
-          onChange={(e) =>
-            set(
-              "battery",
-              e.target.value === "" ? Number.NaN : Number(e.target.value),
-            )
-          }
-        />
+        {!advancedOnly && (
+          <>
+            <SliderRow
+              label="电量"
+              unit="%"
+              min={0}
+              max={100}
+              value={Number.isFinite(draft.battery) ? draft.battery : 0}
+              onChange={(v) => set("battery", v)}
+            />
+            <Input
+              aria-label="电量百分比"
+              type="number"
+              min={0}
+              max={100}
+              step={1}
+              className="h-8 text-xs"
+              value={Number.isFinite(draft.battery) ? draft.battery : ""}
+              onChange={(e) =>
+                set(
+                  "battery",
+                  e.target.value === "" ? Number.NaN : Number(e.target.value),
+                )
+              }
+            />
+          </>
+        )}
         <Segmented
           label="电池样式"
           value={draft.batteryStyle}
@@ -774,25 +809,27 @@ export default function PhoneSettingsEditor({
         )}
       </Section>
 
-      <AppIconsEditor
-        settings={draft}
-        scopeKey={`${scopeKey}:${draft.groupId}`}
-        onBusyChange={onBusyChange}
-        onChange={(next) => {
-          try {
-            edit((current) => applyPhoneLayers(current, next));
-            setDraft(next);
-            setError("");
-            return true;
-          } catch (error) {
-            setDraft(next);
-            setError(
-              error instanceof Error ? error.message : "无法应用 APP 图标",
-            );
-            return phoneSettingsSchema.safeParse(next).success;
-          }
-        }}
-      />
+      {!advancedOnly && (
+        <AppIconsEditor
+          settings={draft}
+          scopeKey={`${scopeKey}:${draft.groupId}`}
+          onBusyChange={onBusyChange}
+          onChange={(next) => {
+            try {
+              edit((current) => applyPhoneLayers(current, next));
+              setDraft(next);
+              setError("");
+              return true;
+            } catch (error) {
+              setDraft(next);
+              setError(
+                error instanceof Error ? error.message : "无法应用 APP 图标",
+              );
+              return phoneSettingsSchema.safeParse(next).success;
+            }
+          }}
+        />
+      )}
       <Section title="更多图标">
         {EXTRA_ICONS.map(([key, label]) => (
           <SwitchRow
@@ -809,23 +846,25 @@ export default function PhoneSettingsEditor({
           {error}
         </p>
       )}
-      <div className="sticky bottom-0 space-y-2 border-t bg-sidebar pt-3 pb-1">
-        <Button className="w-full" onClick={apply}>
-          {applied ? "重新应用（置顶状态栏）" : "应用手机状态栏"}
-        </Button>
-        {applied && (
-          <Button
-            variant="ghost"
-            className="w-full text-destructive hover:text-destructive"
-            onClick={() => {
-              edit(removePhoneLayers);
-            }}
-          >
-            <Trash2 className="size-3.5" />
-            移除手机状态栏
+      {!advancedOnly && (
+        <div className="sticky bottom-0 space-y-2 border-t bg-sidebar pt-3 pb-1">
+          <Button className="w-full" onClick={apply}>
+            {applied ? "重新应用（置顶状态栏）" : "应用手机状态栏"}
           </Button>
-        )}
-      </div>
+          {applied && (
+            <Button
+              variant="ghost"
+              className="w-full text-destructive hover:text-destructive"
+              onClick={() => {
+                edit(removePhoneLayers);
+              }}
+            >
+              <Trash2 className="size-3.5" />
+              移除手机状态栏
+            </Button>
+          )}
+        </div>
+      )}
     </div>
   );
 }

@@ -3,10 +3,8 @@ import { Switch } from "@/components/ui/switch";
 import { PHONE_NETWORKS, type PhoneSettings } from "@/lib/phone/schema";
 import {
   RANDOM_PHONE_ICONS,
-  validatePhoneBatchRules,
   type PhoneBatchRules,
 } from "@/lib/batch/phone-rules";
-
 function Toggle({
   label,
   checked,
@@ -34,265 +32,104 @@ export default function PhoneRandomizer({
   onChange: (rules: PhoneBatchRules) => void;
   disabled: boolean;
 }) {
-  if (!phone)
-    return (
-      <p className="text-sm text-muted-foreground">
-        请先选择模板并配置固定手机设置。
-      </p>
-    );
-  const errors = validatePhoneBatchRules(value);
+  if (!phone) return null;
+  const change = (patch: Partial<PhoneBatchRules>) =>
+    onChange({ ...value, ...patch, enabled: true });
   return (
-    <fieldset
-      disabled={disabled}
-      className="min-w-0 space-y-3 disabled:opacity-60"
-    >
+    <fieldset disabled={disabled} className="min-w-0 space-y-3">
       <Toggle
-        label="随机状态栏"
-        checked={value.enabled}
-        onChange={(enabled) => onChange({ ...value, enabled })}
+        label="随机日期并显示"
+        checked={value.enabled && value.date.enabled}
+        onChange={(enabled) => change({ date: { ...value.date, enabled } })}
       />
-      <p className="text-xs leading-relaxed text-muted-foreground">
-        {value.enabled
-          ? "每张图独立随机；未勾选项沿用固定设置。预览与导出一致，点击「换一批」重新随机。"
-          : "使用上方固定状态参数；开启后可分别选择随机项。手机型号与 APP 随机独立配置。"}
-      </p>
-      {errors.length > 0 && (
-        <div role="alert" className="space-y-1 text-xs text-destructive">
-          {errors.map((error) => (
-            <p key={error}>{error}</p>
+      {value.date.enabled && (
+        <div className="grid grid-cols-2 gap-2">
+          <label className="space-y-1 text-xs">
+            开始日期
+            <Input
+              aria-label="随机开始日期"
+              type="date"
+              min="1900-01-01"
+              max="9999-12-31"
+              value={value.date.start}
+              onChange={(e) =>
+                change({ date: { ...value.date, start: e.target.value } })
+              }
+            />
+          </label>
+          <label className="space-y-1 text-xs">
+            结束日期
+            <Input
+              aria-label="随机结束日期"
+              type="date"
+              min="1900-01-01"
+              max="9999-12-31"
+              value={value.date.end}
+              onChange={(e) =>
+                change({ date: { ...value.date, end: e.target.value } })
+              }
+            />
+          </label>
+        </div>
+      )}
+      <Toggle
+        label="随机蜂窝信号（0–4 格）"
+        checked={value.enabled && value.signal}
+        onChange={(signal) => change({ signal })}
+      />
+      <Toggle
+        label="随机 Wi-Fi（关闭或 1–3 格）"
+        checked={value.enabled && value.wifi}
+        onChange={(wifi) => change({ wifi })}
+      />
+      <Toggle
+        label="随机网络类型"
+        checked={value.enabled && value.network.enabled}
+        onChange={(enabled) =>
+          change({ network: { ...value.network, enabled } })
+        }
+      />
+      {value.network.enabled && (
+        <div className="flex flex-wrap gap-3">
+          {PHONE_NETWORKS.map((network) => (
+            <label key={network} className="flex items-center gap-1 text-xs">
+              <input
+                type="checkbox"
+                aria-label={`候选网络 ${network}`}
+                checked={value.network.options.includes(network)}
+                onChange={(e) =>
+                  change({
+                    network: {
+                      ...value.network,
+                      options: e.target.checked
+                        ? [...value.network.options, network]
+                        : value.network.options.filter((n) => n !== network),
+                    },
+                  })
+                }
+              />
+              {network === "none" ? "不显示" : network}
+            </label>
           ))}
         </div>
       )}
-      {value.enabled && (
-        <>
-          <div className="rounded-lg border p-3">
-            <Toggle
-              label="随机时间"
-              checked={value.time.enabled}
-              onChange={(enabled) =>
-                onChange({ ...value, time: { ...value.time, enabled } })
-              }
-            />
-            {value.time.enabled && (
-              <>
-                <div className="mt-2 grid grid-cols-2 gap-2">
-                  <label className="space-y-1 text-xs">
-                    开始时间
-                    <Input
-                      aria-label="随机开始时间"
-                      type="time"
-                      value={value.time.start}
-                      onChange={(e) =>
-                        onChange({
-                          ...value,
-                          time: { ...value.time, start: e.target.value },
-                        })
-                      }
-                    />
-                  </label>
-                  <label className="space-y-1 text-xs">
-                    结束时间
-                    <Input
-                      aria-label="随机结束时间"
-                      type="time"
-                      value={value.time.end}
-                      onChange={(e) =>
-                        onChange({
-                          ...value,
-                          time: { ...value.time, end: e.target.value },
-                        })
-                      }
-                    />
-                  </label>
-                </div>
-                <p className="mt-2 text-xs text-muted-foreground">
-                  结束早于开始时跨午夜随机；两者相同则固定该时间。
-                </p>
-              </>
-            )}
-          </div>
-          <div className="rounded-lg border p-3">
-            <Toggle
-              label="随机日期并显示"
-              checked={value.date.enabled}
-              onChange={(enabled) =>
-                onChange({ ...value, date: { ...value.date, enabled } })
-              }
-            />
-            {value.date.enabled && (
-              <div className="mt-2 grid grid-cols-2 gap-2">
-                <label className="space-y-1 text-xs">
-                  开始日期
-                  <Input
-                    aria-label="随机开始日期"
-                    type="date"
-                    value={value.date.start}
-                    onChange={(e) =>
-                      onChange({
-                        ...value,
-                        date: { ...value.date, start: e.target.value },
-                      })
-                    }
-                  />
-                </label>
-                <label className="space-y-1 text-xs">
-                  结束日期
-                  <Input
-                    aria-label="随机结束日期"
-                    type="date"
-                    value={value.date.end}
-                    onChange={(e) =>
-                      onChange({
-                        ...value,
-                        date: { ...value.date, end: e.target.value },
-                      })
-                    }
-                  />
-                </label>
-              </div>
-            )}
-          </div>
-          <div className="rounded-lg border p-3">
-            <Toggle
-              label="随机电量"
-              checked={value.battery.enabled}
-              onChange={(enabled) =>
-                onChange({ ...value, battery: { ...value.battery, enabled } })
-              }
-            />
-            {value.battery.enabled && (
-              <div className="mt-2 grid grid-cols-2 gap-2">
-                <label className="space-y-1 text-xs">
-                  最低电量 %
-                  <Input
-                    aria-label="随机最低电量"
-                    type="number"
-                    min={0}
-                    max={100}
-                    step={1}
-                    value={
-                      Number.isNaN(value.battery.min) ? "" : value.battery.min
-                    }
-                    onChange={(e) =>
-                      onChange({
-                        ...value,
-                        battery: {
-                          ...value.battery,
-                          min:
-                            e.target.value === ""
-                              ? NaN
-                              : Number(e.target.value),
-                        },
-                      })
-                    }
-                  />
-                </label>
-                <label className="space-y-1 text-xs">
-                  最高电量 %
-                  <Input
-                    aria-label="随机最高电量"
-                    type="number"
-                    min={0}
-                    max={100}
-                    step={1}
-                    value={
-                      Number.isNaN(value.battery.max) ? "" : value.battery.max
-                    }
-                    onChange={(e) =>
-                      onChange({
-                        ...value,
-                        battery: {
-                          ...value.battery,
-                          max:
-                            e.target.value === ""
-                              ? NaN
-                              : Number(e.target.value),
-                        },
-                      })
-                    }
-                  />
-                </label>
-              </div>
-            )}
-          </div>
-          <div className="rounded-lg border p-3">
-            <Toggle
-              label="随机蜂窝信号（0–4 格）"
-              checked={value.signal}
-              onChange={(signal) => onChange({ ...value, signal })}
-            />
-            <Toggle
-              label="随机 Wi-Fi（关闭或 1–3 格）"
-              checked={value.wifi}
-              onChange={(wifi) => onChange({ ...value, wifi })}
-            />
-            <Toggle
-              label="随机网络类型"
-              checked={value.network.enabled}
-              onChange={(enabled) =>
-                onChange({ ...value, network: { ...value.network, enabled } })
-              }
-            />
-            {value.network.enabled && (
-              <div className="mt-2 flex flex-wrap gap-3">
-                {PHONE_NETWORKS.map((network) => (
-                  <label
-                    key={network}
-                    className="flex items-center gap-1 text-xs"
-                  >
-                    <input
-                      type="checkbox"
-                      aria-label={`候选网络 ${network}`}
-                      checked={value.network.options.includes(network)}
-                      onChange={(e) =>
-                        onChange({
-                          ...value,
-                          network: {
-                            ...value.network,
-                            options: e.target.checked
-                              ? [...value.network.options, network]
-                              : value.network.options.filter(
-                                  (n) => n !== network,
-                                ),
-                          },
-                        })
-                      }
-                    />
-                    {network === "none" ? "不显示" : network}
-                  </label>
-                ))}
-              </div>
-            )}
-            <p className="mt-2 text-xs text-muted-foreground">
-              图标遵循当前手机的显示规则：有 Wi-Fi 时优先显示
-              Wi-Fi，飞行模式下隐藏蜂窝信号和网络文字。
-            </p>
-          </div>
-          <details className="rounded-lg border p-3">
-            <summary className="cursor-pointer text-sm font-medium">
-              更多随机图标
-            </summary>
-            <p className="my-2 text-xs text-muted-foreground">
-              勾选后，每张图片以 50% 概率显示或关闭该状态。
-            </p>
-            <div className="grid gap-x-4 sm:grid-cols-2">
-              {RANDOM_PHONE_ICONS.map(([key, label]) => (
-                <Toggle
-                  key={key}
-                  label={`随机${label}`}
-                  checked={!!value.icons[key]}
-                  onChange={(enabled) =>
-                    onChange({
-                      ...value,
-                      icons: { ...value.icons, [key]: enabled },
-                    })
-                  }
-                />
-              ))}
-            </div>
-          </details>
-        </>
-      )}
+      <div className="grid gap-x-4 sm:grid-cols-2">
+        {RANDOM_PHONE_ICONS.map(([key, label]) => (
+          <Toggle
+            key={key}
+            label={`随机${label}`}
+            checked={value.enabled && !!value.icons[key]}
+            onChange={(enabled) =>
+              change({ icons: { ...value.icons, [key]: enabled } })
+            }
+          />
+        ))}
+      </div>
+      <p className="text-xs leading-relaxed text-muted-foreground">
+        随机状态每张以 50% 概率开启；未开启随机的项目沿用固定设置。有 Wi-Fi
+        时优先显示
+        Wi-Fi，飞行模式隐藏蜂窝信号和网络文字。低电量模式开启时，电量最多 20%。
+      </p>
     </fieldset>
   );
 }
