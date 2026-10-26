@@ -81,7 +81,7 @@ async function confirm(page: Page) {
     dialog.getByRole("button", { name: "自动定位", exact: true }),
   ).toBeEnabled();
   await dialog.getByRole("button", { name: "测试替换", exact: true }).click();
-  await expect(dialog.getByText(/测试通过：/)).toBeVisible();
+  await expect(dialog.getByText(/预览已生成：/)).toBeVisible();
   await dialog
     .getByRole("button", { name: "确认并保存定位", exact: true })
     .click();
@@ -156,7 +156,7 @@ test("template automatically proposes a location, confirms by pixel test and rep
   expect(errors).toEqual([]);
 });
 
-test("manual edits invalidate test approval and blank time areas cannot be confirmed", async ({
+test("manual selections can be saved without preview even when the time region is blank", async ({
   page,
 }) => {
   await upload(page);
@@ -170,15 +170,16 @@ test("manual edits invalidate test approval and blank time areas cannot be confi
   await expect(
     dialog.getByRole("button", { name: "自动定位", exact: true }),
   ).toBeEnabled();
-  await dialog.getByRole("button", { name: "测试替换", exact: true }).click();
-  await expect(dialog.getByText(/测试通过：/)).toBeVisible();
   await dialog.getByLabel("定位区域", { exact: true }).selectOption("time");
   await dialog.getByLabel("定位区域 X", { exact: true }).fill("180");
   await expect(
     dialog.getByRole("button", { name: "确认并保存定位", exact: true }),
-  ).toBeDisabled();
-  await dialog.getByRole("button", { name: "测试替换", exact: true }).click();
-  await expect(dialog.getByRole("alert")).toContainText(/空白|未指定|区域/);
+  ).toBeEnabled();
+  await dialog
+    .getByRole("button", { name: "确认并保存定位", exact: true })
+    .click();
+  await expect(dialog).toHaveCount(0);
+  await expect(page.getByTestId("status-location-state")).toHaveText("已确认");
   await page.setViewportSize({ width: 375, height: 900 });
   expect(
     await page.evaluate(
@@ -322,7 +323,7 @@ test("batch reuses a confirmed template location and freezes exported results", 
   }
 });
 
-test("pointer adjustments support undo and overlapping protection blocks confirmation", async ({
+test("pointer adjustments support undo and overlapping protection does not block confirmation", async ({
   page,
 }) => {
   await upload(page);
@@ -357,13 +358,15 @@ test("pointer adjustments support undo and overlapping protection blocks confirm
   await d.getByLabel("定位区域 Y", { exact: true }).fill("12");
   await d.getByLabel("定位区域宽度", { exact: true }).fill("40");
   await d.getByLabel("定位区域高度", { exact: true }).fill("16");
-  await d.getByRole("button", { name: "测试替换", exact: true }).click();
-  await expect(d.getByRole("alert")).toContainText("保护区重叠");
   await expect(
     d.getByRole("button", { name: "确认并保存定位", exact: true }),
-  ).toBeDisabled();
-  await d.getByRole("button", { name: "Close", exact: true }).click();
-  await expect(page.getByTestId("status-location-state")).toHaveText("待确认");
+  ).toBeEnabled();
+  await d.getByRole("button", { name: "确认并保存定位", exact: true }).click();
+  await expect(d).toHaveCount(0);
+  await expect(page.getByTestId("status-location-state")).toHaveText("已确认");
+  await page.getByRole("button", { name: "进入作图", exact: true }).click();
+  await page.getByLabel("手机品牌", { exact: true }).selectOption("Samsung");
+  await expect(page.getByRole("alert")).toHaveCount(0);
 });
 
 for (const width of [400, 1080, 1179]) {
@@ -402,7 +405,7 @@ for (const width of [400, 1080, 1179]) {
       .click();
     // Keep the central blank region protected; it must survive raster rounding too.
     await dialog.getByRole("button", { name: "测试替换", exact: true }).click();
-    await expect(dialog.getByText(/测试通过：/)).toBeVisible();
+    await expect(dialog.getByText(/预览已生成：/)).toBeVisible();
     await expect(
       dialog.getByRole("button", { name: "确认并保存定位", exact: true }),
     ).toBeEnabled();
@@ -421,8 +424,11 @@ for (const width of [400, 1080, 1179]) {
     await (await metadataDownload).saveAs(jsonPath);
     const { doc } = JSON.parse(await readFile(jsonPath, "utf8"));
     await page.getByRole("button", { name: "导出", exact: true }).click();
-    const outputWidth=width===400?width*3:width;
-    if(outputWidth!==width) await page.getByPlaceholder("自定义宽度 px",{exact:true}).fill(String(outputWidth));
+    const outputWidth = width === 400 ? width * 3 : width;
+    if (outputWidth !== width)
+      await page
+        .getByPlaceholder("自定义宽度 px", { exact: true })
+        .fill(String(outputWidth));
     const imageDownload = page.waitForEvent("download");
     await page
       .getByRole("dialog")
@@ -442,7 +448,7 @@ for (const width of [400, 1080, 1179]) {
           );
           const c = document.createElement("canvas");
           c.width = outputWidth;
-          c.height = Math.round(image.height*outputWidth/image.width);
+          c.height = Math.round((image.height * outputWidth) / image.width);
           const ctx = c.getContext("2d")!;
           ctx.drawImage(image, 0, 0, c.width, c.height);
           image.close();

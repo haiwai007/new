@@ -36,13 +36,14 @@ export function renderLocatedPhone(
   const l = base.statusLocation;
   if (!l || !isLocationConfirmed(base))
     throw new Error(
-      "状态栏定位未确认或已失效，请先定位并测试替换；也可保留原图或选择顶部新增",
+      "状态栏定位未确认或已失效，请先框选并直接确认保存；也可保留原图或选择顶部新增",
     );
-  if (raw.showDate && !l.date)
+  const direct = l.approval === "direct";
+  if (!direct && raw.showDate && !l.date)
     throw new Error(
       "模板没有日期区域，请在精细定位中添加，或关闭日期／选择顶部新增",
     );
-  if (raw.showCarrier && !l.carrier)
+  if (!direct && raw.showCarrier && !l.carrier)
     throw new Error(
       "模板没有运营商区域，请在精细定位中添加，或关闭运营商／选择顶部新增",
     );
@@ -134,7 +135,7 @@ export function renderLocatedPhone(
       original * Math.min(1, phone.scale / 100),
       q.width / Math.max(1, units * 1.05),
     );
-    if (size < original * 0.55)
+    if (!direct && size < original * 0.55)
       throw new Error(
         `${role === "time" ? "时间" : "附加文字"}放不下，请扩大定位区域或缩短内容`,
       );
@@ -195,19 +196,28 @@ export function renderLocatedPhone(
   );
   const apps = phone.appIcons.filter((i) => i.visible);
   if (
+    !direct &&
     apps.length >
-    locationAppCapacity(
-      base,
-      phone.scale,
-      phone.appIconGap / phone.appIconSize,
-      phone.appIconSize / 12,
-    )
+      locationAppCapacity(
+        base,
+        phone.scale,
+        phone.appIconGap / phone.appIconSize,
+        phone.appIconSize / 12,
+      )
   )
     throw new Error("APP 图标超出模板定位空间，请减少数量或扩大 APP 区域");
   if (l.apps) {
     const q = box(l.apps),
       size = Math.min(
         q.height,
+        ...(direct && apps.length
+          ? [
+              q.width /
+                (apps.length +
+                  (Math.max(0, apps.length - 1) * phone.appIconGap) /
+                    phone.appIconSize),
+            ]
+          : []),
         (((l.time.height * H * 0.9 * phone.scale) / 100) * phone.appIconSize) /
           12,
       ),
@@ -272,9 +282,9 @@ export function renderLocatedPhone(
             : layer.id.endsWith("_carrier")
               ? "carrier"
               : null;
-    if (role && (!l[role] || !contains(l[role]!, rect)))
+    if (!direct && role && (!l[role] || !contains(l[role]!, rect)))
       throw new Error("生成内容超出对应定位小区域，请调整数量或尺寸");
-    if (l.protected.some((p) => intersects(rect, p)))
+    if (!direct && l.protected.some((p) => intersects(rect, p)))
       throw new Error("生成内容与保护区重叠，已阻止替换");
   }
   if (base.layers.length + layers.length > 2000)
@@ -284,10 +294,11 @@ export function renderLocatedPhone(
     (v) => !v.id.endsWith("_home") && !v.id.endsWith("_background"),
   )) {
     if (
-      layer.x < b.x - 0.001 ||
-      layer.y < b.y - 0.001 ||
-      layer.x + layer.width > b.x + b.width + 0.001 ||
-      layer.y + layer.height > b.y + b.height + 0.001
+      !direct &&
+      (layer.x < b.x - 0.001 ||
+        layer.y < b.y - 0.001 ||
+        layer.x + layer.width > b.x + b.width + 0.001 ||
+        layer.y + layer.height > b.y + b.height + 0.001)
     )
       throw new Error("生成内容超出状态栏定位边界");
   }

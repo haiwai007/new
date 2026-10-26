@@ -26,19 +26,10 @@ export async function locationSnapshot(doc: TemplateDoc) {
   });
   if (result.warnings.some((w) => /丢失|加载失败/.test(w))) {
     result.canvas.width = result.canvas.height = 0;
-    throw new Error("原图资源未完整加载，无法确认定位");
+    throw new Error("原图资源未完整加载，暂时无法预览；仍可直接确认保存框选区域");
   }
   return { base, canvas: result.canvas };
 }
-const hex = (rgb: number[]) =>
-  "#" +
-  rgb
-    .map((n) =>
-      Math.max(0, Math.min(255, Math.round(n)))
-        .toString(16)
-        .padStart(2, "0"),
-    )
-    .join("");
 const rgb = (hex: string) =>
   [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16));
 const distance = (a: number[], b: number[]) =>
@@ -160,149 +151,87 @@ export type LocationTestResult = {
   changed: number;
   outside: number;
 };
+/** Store exactly the user's selection. Sampling is best effort, never approval. */
+export async function confirmStatusLocation(
+  doc: TemplateDoc,
+  draft: StatusLocation,
+): Promise<StatusLocation> {
+  const base = removePhoneLayers(doc);
+  const location: StatusLocation = {
+    ...structuredClone(draft),
+    approval: "direct",
+    state: "confirmed",
+    fills: [],
+    sourceKey: locationSourceKey(base, draft.bounds),
+    testKey: "",
+  };
+  let canvas: HTMLCanvasElement | undefined;
+  try {
+    canvas = (await locationSnapshot(base)).canvas;
+  } catch {
+    /* Geometry can be saved even if sampling is unavailable. */
+  }
+  const fallback = /^#[0-9a-f]{6}$/i.test(base.canvas.backgroundColor)
+    ? base.canvas.backgroundColor
+    : "#ffffff";
+  try {
+    for (const role of LOCATION_ROLES) {
+      const r = location[role];
+      if (!r) continue;
+      let top = location.background === "solid" ? location.color : fallback,
+        bottom = top;
+      if (canvas && location.background === "auto") {
+        try {
+          const x = Math.min(
+            canvas.width - 1,
+            Math.max(0, Math.floor(r.x * canvas.width)),
+          );
+          const y = Math.min(
+            canvas.height - 1,
+            Math.max(0, Math.floor(r.y * canvas.height)),
+          );
+          const w = Math.max(
+            1,
+            Math.min(canvas.width - x, Math.ceil(r.width * canvas.width)),
+          );
+          const h = Math.max(
+            1,
+            Math.min(canvas.height - y, Math.ceil(r.height * canvas.height)),
+          );
+          const ctx = canvas.getContext("2d")!;
+          top =
+            analyseStrip(ctx.getImageData(x, y, w, 1).data)?.background ??
+            fallback;
+          bottom =
+            analyseStrip(ctx.getImageData(x, y + h - 1, w, 1).data)
+              ?.background ?? top;
+        } catch {
+          /* Keep a usable fill; complex/blank/remote images do not block saving. */
+        }
+      }
+      location.fills.push({ role, top, bottom });
+    }
+  } finally {
+    if (canvas) canvas.width = canvas.height = 0;
+  }
+  location.testKey = locationTestKey(location);
+  return location;
+}
+/** Optional preview only: no pixel threshold, recognition or background veto. */
 export async function testStatusLocation(
   doc: TemplateDoc,
   draft: StatusLocation,
 ): Promise<LocationTestResult> {
-  const issues = locationGeometryErrors(draft);
-  if (issues.length) throw new Error(issues[0]);
+  const location = await confirmStatusLocation(doc, draft);
   const { canvas, base } = await locationSnapshot(doc);
-  const liveSource = [
-    base.canvas.backgroundImage,
-    ...base.layers
-      .filter((l) => l.visible && l.type === "image")
-      .map((l) => (l.type === "image" ? l.src : null)),
-  ].some((src) => src?.kind === "url" && /^https?:/i.test(src.url));
-  if (liveSource) {
-    canvas.width = canvas.height = 0;
-    throw new Error(
-      "请先将外部图片保存为本地素材，再确认状态栏定位，避免远程图片变化导致定位失效",
-    );
-  }
   let output: HTMLCanvasElement | undefined;
   try {
-    const W = canvas.width,
-      H = canvas.height,
-      ctx = canvas.getContext("2d", { willReadFrequently: true })!;
-    const l: StatusLocation = {
-      ...structuredClone(draft),
-      state: "pending",
-      fills: [],
-      sourceKey: locationSourceKey(base, draft.bounds),
-      testKey: "",
-    };
-    for (const role of LOCATION_ROLES) {
-      const rect = l[role];
-      if (!rect) continue;
-      const x = Math.max(0, Math.floor(rect.x * W)),
-        y = Math.max(0, Math.floor(rect.y * H)),
-        w = Math.max(1, Math.min(W - x, Math.ceil(rect.width * W))),
-        h = Math.max(1, Math.min(H - y, Math.ceil(rect.height * H)));
-      if (role === "time" || role === "system") {
-        const inkData = ctx.getImageData(x, y, w, h).data,
-          bg = analyseStrip(inkData);
-        if (!bg) throw new Error("原图中没有完整的时间或系统图标");
-        const color = rgb(bg.background);
-        let ink = 0;
-        for (let i = 0; i < inkData.length; i += 4)
-          if (
-            inkData[i + 3] >= 128 &&
-            distance([inkData[i], inkData[i + 1], inkData[i + 2]], color) > 45
-          )
-            ink++;
-        if (ink < Math.max(3, w * h * 0.004))
-          throw new Error(
-            "所选时间或系统区域只有空白，不能在原状态栏上方另加一套。请重新框选原内容；没有原状态栏时请选择顶部新增",
-          );
-      }
-      if (l.background === "solid") {
-        l.fills.push({ role, top: l.color, bottom: l.color });
-        continue;
-      }
-      const pixels = ctx.getImageData(x, y, w, h).data;
-      const rows: number[][] = [];
-      let near = 0,
-        total = 0;
-      for (let yy = 0; yy < h; yy++) {
-        const row = pixels.slice(yy * w * 4, (yy + 1) * w * 4),
-          sample = analyseStrip(row);
-        if (!sample) throw new Error("定位区域没有可见背景");
-        const color = rgb(sample.background);
-        rows.push(color);
-        for (let i = 0; i < row.length; i += 4) {
-          if (row[i + 3] < 128) continue;
-          total++;
-          if (distance([row[i], row[i + 1], row[i + 2]], color) < 30) near++;
-        }
-      }
-      const top = rows[0],
-        bottom = rows[rows.length - 1];
-      let residual = 0;
-      for (let yy = 0; yy < h; yy++) {
-        const t = h > 1 ? yy / (h - 1) : 0;
-        residual += distance(
-          rows[yy],
-          top.map((v, i) => v + (bottom[i] - v) * t),
-        );
-      }
-      if (near / Math.max(1, total) < 0.55 || residual / h > 23)
-        throw new Error(
-          "背景较复杂，无法可靠清除旧内容。请调整区域、修复背景，或明确选择手动纯色后重新测试",
-        );
-      l.fills.push({
-        role,
-        top: hex(top),
-        bottom: distance(top, bottom) < 12 ? hex(top) : hex(bottom),
-      });
-    }
-    // Foreground crossing a boundary indicates a clipped old clock/icon.
-    if (l.background === "auto") {
-      const r = l.bounds;
-      const x = Math.floor(r.x * W),
-        y = Math.floor(r.y * H),
-        w = Math.max(1, Math.floor(r.width * W)),
-        h = Math.max(1, Math.floor(r.height * H));
-      const data = ctx.getImageData(
-          x,
-          y,
-          Math.min(w, W - x),
-          Math.min(h, H - y),
-        ).data,
-        sample = analyseStrip(data);
-      if (sample?.uniform) {
-        const bg = rgb(sample.background);
-        let uncovered = 0;
-        for (let yy = 0; yy < h; yy++)
-          for (let xx = 0; xx < w; xx++) {
-            const i = (yy * w + xx) * 4;
-            if (distance([data[i], data[i + 1], data[i + 2]], bg) < 65)
-              continue;
-            const pixel = {
-              x: (x + xx) / W,
-              y: (y + yy) / H,
-              width: 1 / W,
-              height: 1 / H,
-            };
-            const assigned =
-              LOCATION_ROLES.some(
-                (role) => l[role] && contains(l[role]!, pixel),
-              ) || l.protected.some((p) => contains(p, pixel));
-            if (!assigned) uncovered++;
-          }
-        if (uncovered > Math.max(10, w * h * 0.006))
-          throw new Error(
-            "外框内仍有未指定的旧内容，请调整时间／图标框，或为标题和按钮添加保护区",
-          );
-      }
-    }
-    l.state = "confirmed";
-    l.testKey = locationTestKey(l);
     const settings = naturalPhoneSettings();
     settings.groupId = "phone_locate0001";
     settings.time = "12:34";
     settings.battery = 76;
     settings.showHomeIndicator = false;
-    if (l.apps) {
+    if (location.apps)
       settings.appIcons = [
         {
           id: "app_locate0001",
@@ -312,16 +241,17 @@ export async function testStatusLocation(
           visible: true,
         },
       ];
-    }
-    const next = applyPhoneLayers({ ...base, statusLocation: l }, settings);
-    const rendered = await renderDoc(next, {
-      multiplier: canvas.width / base.canvas.width,
-    });
-    output = rendered.canvas;
-    if (output.width !== W || output.height !== H)
-      throw new Error("替换结果改变了图片尺寸，无法确认");
-    const before = ctx.getImageData(0, 0, W, H).data,
-      after = output.getContext("2d")!.getImageData(0, 0, W, H).data;
+    const next = applyPhoneLayers(
+      { ...base, statusLocation: location },
+      settings,
+    );
+    output = (
+      await renderDoc(next, { multiplier: canvas.width / base.canvas.width })
+    ).canvas;
+    const W = canvas.width,
+      H = canvas.height;
+    const before = canvas.getContext("2d")!.getImageData(0, 0, W, H).data;
+    const after = output.getContext("2d")!.getImageData(0, 0, W, H).data;
     let changed = 0,
       outside = 0;
     for (let yy = 0; yy < H; yy++)
@@ -335,18 +265,16 @@ export async function testStatusLocation(
           width: 0,
           height: 0,
         };
-        const allowed =
-          LOCATION_ROLES.some((role) => l[role] && contains(l[role]!, pixel)) &&
-          !l.protected.some((p) => contains(p, pixel));
-        if (!allowed) outside++;
+        if (
+          !LOCATION_ROLES.some(
+            (role) => location[role] && contains(location[role]!, pixel),
+          ) ||
+          location.protected.some((r) => contains(r, pixel))
+        )
+          outside++;
       }
-    if (outside)
-      throw new Error(
-        `检测到 ${outside} 个边界外像素变化，已阻止确认，请调整定位边界`,
-      );
-    if (!changed) throw new Error("没有生成可验证的替换效果，请检查区域");
     return {
-      location: l,
+      location,
       original: canvas.toDataURL("image/png"),
       result: output.toDataURL("image/png"),
       changed,

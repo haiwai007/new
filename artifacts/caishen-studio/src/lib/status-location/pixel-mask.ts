@@ -25,9 +25,19 @@ export function locationPixelMask(
     right: Math.floor((r.x + r.width) * width - 0.5 + 1e-7) + 1,
     bottom: Math.floor((r.y + r.height) * height - 0.5 + 1e-7) + 1,
   });
-  const allowed = LOCATION_ROLES.flatMap((role) =>
-    l[role] ? [centers(l[role]!)] : [],
-  );
+  const framePixels = centers(l.bounds);
+  const allowed = LOCATION_ROLES.flatMap((role) => {
+    if (!l[role]) return [];
+    const r = centers(l[role]!);
+    return [
+      {
+        left: Math.max(framePixels.left, r.left),
+        top: Math.max(framePixels.top, r.top),
+        right: Math.min(framePixels.right, r.right),
+        bottom: Math.min(framePixels.bottom, r.bottom),
+      },
+    ];
+  });
   const home =
     doc.phone?.showHomeIndicator &&
     doc.layers.find((layer) => layer.id === `${doc.phone!.groupId}_home`);
@@ -85,6 +95,22 @@ export function locationPixelMask(
         height: home.height / doc.canvas.height,
       }),
     );
+  if (l.approval === "direct" && doc.phone) {
+    for (const layer of doc.layers.filter(
+      (layer) =>
+        layer.groupId === doc.phone!.groupId &&
+        layer.id.startsWith(`${doc.phone!.groupId}_`),
+    )) {
+      tiles.push(
+        tile({
+          x: layer.x / doc.canvas.width,
+          y: layer.y / doc.canvas.height,
+          width: layer.width / doc.canvas.width,
+          height: layer.height / doc.canvas.height,
+        }),
+      );
+    }
+  }
   return { ...main, allowed, blocked, tiles };
 }
 export type LocationPixelMask = ReturnType<typeof locationPixelMask>;

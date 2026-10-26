@@ -24,6 +24,7 @@ import {
   locationSnapshot,
   proposeStatusLocation,
   testStatusLocation,
+  confirmStatusLocation,
   type LocationTestResult,
 } from "@/lib/status-location/engine";
 const names = {
@@ -98,7 +99,7 @@ export default function StatusLocationControl({
           <DialogHeader>
             <DialogTitle>模板状态栏定位</DialogTitle>
             <DialogDescription>
-              自动框选后检查时间与图标，必要时拖动或调整边界；原图保持清晰。测试通过后才能确认保存。
+              自动框选或手动调整后可直接确认保存。测试替换仅用于查看效果，不影响确认。
             </DialogDescription>
           </DialogHeader>
           {open && (
@@ -106,8 +107,9 @@ export default function StatusLocationControl({
               doc={doc}
               onConfirm={(location) => {
                 if (
+                  location.approval !== "direct" &&
                   location.sourceKey !==
-                  locationSourceKey(latest.current, location.bounds)
+                    locationSourceKey(latest.current, location.bounds)
                 ) {
                   setError("原图已变化，请重新打开定位并测试");
                   throw new Error("原图已变化，请重新定位");
@@ -318,7 +320,22 @@ function LocationBody({
         setEffect(true);
       }
     } catch (e) {
-      if (alive.current) setError(e instanceof Error ? e.message : "测试失败");
+      if (alive.current)
+        setError(
+          `预览暂不可用，仍可直接确认保存。${e instanceof Error ? e.message : ""}`,
+        );
+    } finally {
+      if (alive.current) setBusy(false);
+    }
+  }
+  async function save() {
+    setBusy(true);
+    setError("");
+    try {
+      const location = await confirmStatusLocation(source, draft);
+      if (alive.current) onConfirm(location);
+    } catch (e) {
+      if (alive.current) setError(e instanceof Error ? e.message : "保存失败");
     } finally {
       if (alive.current) setBusy(false);
     }
@@ -675,7 +692,7 @@ function LocationBody({
               </label>
             )}
             <p className="leading-relaxed text-muted-foreground">
-              红框限定最大范围；蓝框是实际替换位置；黄色框保护标题和按钮。区域不能越界或重叠。调整后需重新测试，原图不会被覆盖。
+              红框限定处理范围；蓝框标记内容；黄色框保留原图。框选后直接确认，不再进行识别或像素拦截。
             </p>
           </div>
         </div>
@@ -683,25 +700,14 @@ function LocationBody({
           <Button onClick={() => void test()} disabled={!image}>
             {busy ? "正在测试…" : "测试替换"}
           </Button>
-          <Button
-            variant="secondary"
-            disabled={!result}
-            onClick={() => {
-              if (!result) return;
-              try {
-                onConfirm(result.location);
-              } catch (e) {
-                setError(e instanceof Error ? e.message : "保存失败");
-              }
-            }}
-          >
+          <Button variant="secondary" onClick={() => void save()}>
             确认并保存定位
           </Button>
         </div>
         {result && (
           <p role="status" className="text-sm text-emerald-700">
-            测试通过：边界与保护区外 {result.outside}{" "}
-            个像素变化。请检查旧内容清理和新内容的位置，再确认保存。
+            预览已生成：边界与保护区外 {result.outside}{" "}
+            个像素变化，仅供参考。可直接确认保存。
           </p>
         )}
         {error && (

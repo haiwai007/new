@@ -24,6 +24,7 @@ export const statusLocationSchema = z.object({
   version: z.literal(1),
   state: z.enum(["pending", "confirmed", "stale", "skipped"]),
   origin: z.enum(["auto", "manual"]),
+  approval: z.literal("direct").optional(),
   bounds: locationRectSchema,
   time: locationRectSchema,
   apps: locationRectSchema.nullable(),

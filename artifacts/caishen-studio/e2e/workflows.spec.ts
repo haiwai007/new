@@ -30,7 +30,7 @@ async function confirmLocation(page: Page) {
   await d.getByRole("button",{name:"自动定位",exact:true}).click();
   await expect(d.getByRole("button",{name:"自动定位",exact:true})).toBeEnabled();
   await d.getByRole("button",{name:"测试替换",exact:true}).click();
-  await expect(d.getByText(/测试通过：/)).toBeVisible();
+  await expect(d.getByText(/预览已生成：/)).toBeVisible();
   await d.getByRole("button",{name:"确认并保存定位",exact:true}).click();
   await expect(d).toHaveCount(0);
 }
