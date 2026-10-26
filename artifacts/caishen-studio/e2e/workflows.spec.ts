@@ -1,7 +1,11 @@
 import { test, expect, type Page } from "@playwright/test";
 import { readFile, writeFile } from "node:fs/promises";
 let errors: string[];
-test.beforeEach(async ({ page }) => {
+async function confirmSession(context: import("@playwright/test").BrowserContext) {
+  await context.addInitScript(() => sessionStorage.setItem("haishen.entry-confirmed.v1", "yes"));
+}
+test.beforeEach(async ({ page, context }) => {
+  await confirmSession(context);
   errors = [];
   page.on("pageerror", (error) => errors.push(error.message));
 });
@@ -526,6 +530,7 @@ test("APP notification icons support custom uploads, visibility, portable templa
   expect(asset).toMatchObject({mime:"image/png",width:128,height:128});
   // Import in an empty browser context so no source assets can hide broken ID remapping.
   const fresh=await browser.newContext({viewport:{width:1440,height:1000}});
+  await confirmSession(fresh);
   const restored=await fresh.newPage();restored.on("pageerror",error=>errors.push(error.message));
   try {
     await restored.goto(new URL("/works",page.url()).href);
@@ -652,6 +657,7 @@ test("candidate-only custom APP preset survives full backup in a fresh browser",
   const path = info.outputPath("preset-backup.json"); await (await downloading).saveAs(path);
   const backup = JSON.parse(await readFile(path,"utf8")); expect(backup.drawingPresets).toHaveLength(1); expect(backup.assets).toHaveLength(1);
   const context = await browser.newContext({viewport: {width: 1440, height: 1000}});
+  await confirmSession(context);
   try {
     const fresh = await context.newPage(); fresh.on("pageerror", e => errors.push(e.message));
     await fresh.goto(new URL("/backup",page.url()).href);

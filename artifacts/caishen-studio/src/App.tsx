@@ -1,3 +1,4 @@
+import { EntryGate } from "./components/site/entry-gate";
 import { lazy, Suspense } from "react";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import { DefaultProviders } from "./components/providers/default.tsx";
@@ -26,11 +27,13 @@ const AssetsPage = lazy(() => import("./pages/assets/page.tsx"));
 
 export default function App() {
   return (
-    <DefaultProviders>
-      <BrowserRouter>
-        <AppRoutes />
-      </BrowserRouter>
-    </DefaultProviders>
+    <EntryGate>
+      <DefaultProviders>
+        <BrowserRouter>
+          <AppRoutes />
+        </BrowserRouter>
+      </DefaultProviders>
+    </EntryGate>
   );
 }
 function AppRoutes() {
