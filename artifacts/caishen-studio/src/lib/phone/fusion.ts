@@ -1,3 +1,4 @@
+import { detectStatusGeometry } from "./geometry-detection";
 import { renderDoc } from "../canvas/render";
 import type { TemplateDoc } from "../../types/template";
 import type { FusionAnalysis } from "./fusion-schema";
@@ -68,19 +69,25 @@ export function analyseTopPixels(
     ((last + 0.5) / 32) * 0.25,
     boundary > 2 ? (boundary / 32) * 0.25 : 0.1,
   );
+  const geometry = detectStatusGeometry(data, width, height, source, bands);
   const result: FusionAnalysis = {
+    geometry,
     ...source,
     kind: "flat",
     top: bands[0].color,
     bottom: bands[8].color,
     lightIcons: false,
     contrast: 1,
-    suspectedOldBar: probable,
-    suggestedCover: probable ? Math.max(0.025, cover) : 0,
+    suspectedOldBar: !!geometry || probable,
+    suggestedCover:
+      geometry?.barRatio ?? (probable ? Math.max(0.025, cover) : 0),
     confidence: portrait < 1.5 || portrait > 2.6 ? "low" : "medium",
     bands,
   };
-  const region = regionBackground(result, probable && boundary > 2 ? boundary / 32 * .25 : .08);
+  const region = regionBackground(
+    result,
+    probable && boundary > 2 ? (boundary / 32) * 0.25 : 0.08,
+  );
   result.kind = region.kind;
   result.bottom = region.bottom;
   const mean = (luminance(rgb(region.top)) + luminance(rgb(region.bottom))) / 2;

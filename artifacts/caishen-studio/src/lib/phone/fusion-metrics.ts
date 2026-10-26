@@ -44,7 +44,7 @@ export function designKey(base: TemplateDoc): string {
     a = Math.imul(a ^ source.charCodeAt(i), 16777619);
     b = Math.imul(b ^ source.charCodeAt(i), 2246822519);
   }
-  return `fusion-1:${source.length}:${a >>> 0}:${b >>> 0}`;
+  return `fusion-2:${source.length}:${a >>> 0}:${b >>> 0}`;
 }
 export function regionBackground(analysis: FusionAnalysis, ratio: number) {
   const n = Math.max(
@@ -87,16 +87,59 @@ export function regionBackground(analysis: FusionAnalysis, ratio: number) {
     bottom,
   };
 }
-export function naturalBarRatio(
+/** Shared geometry for background coverage, layer layout, and prepended canvas space. */
+export function phoneGeometry(
   settings: PhoneSettings,
   canvas: { width: number; height: number },
 ) {
   const model = phoneModel(settings.modelId);
-  const normal =
-    (model.bar *
-      Math.min(canvas.width / model.points, canvas.height / (model.bar + 40))) /
-    canvas.height;
-  return Math.min(0.25, Math.max(normal, settings.coverRatio));
+  const unit = Math.min(
+    canvas.width / model.points,
+    canvas.height / (model.bar + 40),
+  );
+  const nativeBar = model.bar * unit;
+  const automatic =
+    settings.rendering === "natural" &&
+    settings.fusion.enabled &&
+    !settings.fusion.locks.includes("geometry");
+  const measured = automatic ? settings.fusion.analysis?.geometry : undefined;
+  // Uncertain screenshots use a compact fallback instead of a large physical safe area.
+  const bar = measured
+    ? measured.barRatio * canvas.height
+    : automatic && settings.fusion.analysis
+      ? Math.min(nativeBar, canvas.width * 0.085)
+      : nativeBar;
+  const glyphScale = measured
+    ? (measured.glyphRatio * canvas.height) /
+      (effectiveProfile(settings).fontSize * 0.74 * unit)
+    : 1;
+  const contentScale = automatic
+    ? Math.max(
+        0.25,
+        Math.min(
+          1.25,
+          glyphScale,
+          bar / (effectiveProfile(settings).fontSize * unit * 1.5),
+        ),
+      )
+    : 1;
+  return {
+    bar,
+    contentScale,
+    center: measured ? measured.centerRatio * canvas.height : bar / 2,
+  };
+}
+export function naturalBarRatio(
+  settings: PhoneSettings,
+  canvas: { width: number; height: number },
+) {
+  return Math.min(
+    0.25,
+    Math.max(
+      phoneGeometry(settings, canvas).bar / canvas.height,
+      settings.coverRatio,
+    ),
+  );
 }
 export function resolveFusionSettings(
   settings: PhoneSettings,
@@ -108,7 +151,9 @@ export function resolveFusionSettings(
   const data = next.fusion.analysis;
   if (!data) return next;
   const locked = new Set(next.fusion.locks);
-  const region = regionBackground(data, naturalBarRatio(settings, canvas));
+  if (data.geometry && !locked.has("coverage") && next.placement === "overlay")
+    next.coverRatio = data.geometry.barRatio;
+  const region = regionBackground(data, naturalBarRatio(next, canvas));
   if (!locked.has("color")) {
     const light =
       (luminance(rgb(region.top)) + luminance(rgb(region.bottom))) / 2;
@@ -125,7 +170,8 @@ export function resolveFusionSettings(
   if (
     !locked.has("coverage") &&
     next.placement === "overlay" &&
-    data.suspectedOldBar && data.confidence === "high" &&
+    data.suspectedOldBar &&
+    data.confidence === "high" &&
     region.kind !== "complex"
   )
     next.coverRatio = Math.max(next.coverRatio, data.suggestedCover);
@@ -167,13 +213,42 @@ export function fusionWarnings(settings: PhoneSettings): string[] {
           ? "复杂背景可能残留旧状态栏；请先修复背景、调整覆盖范围或添加顶部区域"
           : "复杂背景保留原图；请检查图标对比度与原有内容",
       );
-    const resolved=resolveFusionSettings(settings,data);
-    const foreground=luminance(rgb(resolved.customColor ?? (resolved.theme === "light" ? "#ffffff" : "#111111")));
-    const colors=!resolved.transparent && (resolved.fusion.background === "flat" || resolved.fusion.locks.includes("background"))
-      ? [resolved.backgroundColor] : data.bands.slice(0,Math.max(2,Math.ceil(data.bands.length*naturalBarRatio(resolved,data)/.25))).map(b=>b.color);
-    const contrast=Math.min(...colors.map(color=>{const background=luminance(rgb(color));return (Math.max(background,foreground)+.05)/(Math.min(background,foreground)+.05);}));
+    const resolved = resolveFusionSettings(settings, data);
+    const foreground = luminance(
+      rgb(
+        resolved.customColor ??
+          (resolved.theme === "light" ? "#ffffff" : "#111111"),
+      ),
+    );
+    const colors =
+      !resolved.transparent &&
+      (resolved.fusion.background === "flat" ||
+        resolved.fusion.locks.includes("background"))
+        ? [resolved.backgroundColor]
+        : data.bands
+            .slice(
+              0,
+              Math.max(
+                2,
+                Math.ceil(
+                  (data.bands.length * naturalBarRatio(resolved, data)) / 0.25,
+                ),
+              ),
+            )
+            .map((b) => b.color);
+    const contrast = Math.min(
+      ...colors.map((color) => {
+        const background = luminance(rgb(color));
+        return (
+          (Math.max(background, foreground) + 0.05) /
+          (Math.min(background, foreground) + 0.05)
+        );
+      }),
+    );
     if (contrast < 4.5)
-      warnings.push("当前配色或顶部明暗变化可能影响清晰度，请在局部预览检查图标");
+      warnings.push(
+        "当前配色或顶部明暗变化可能影响清晰度，请在局部预览检查图标",
+      );
     if (data.confidence === "low")
       warnings.push("图片可能经过裁剪或顶部内容复杂，处理方式需人工确认");
   }

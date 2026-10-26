@@ -2,6 +2,7 @@ import { builtinAppIconSource } from "./app-icon-catalog";
 import { effectiveProfile } from "./profiles";
 import {
   gradientStops,
+  phoneGeometry,
   naturalAppCapacity,
   naturalBarRatio,
   regionBackground,
@@ -411,11 +412,12 @@ function renderPhoneLayers(doc: TemplateDoc, raw: PhoneSettings): TemplateDoc {
     W / model.points,
     H / (model.bar + (phone.showDate ? 24 : 0) + 40),
   );
-  const k = (s * phone.scale) / 100;
-  const bar =
-    phone.rendering === "natural" && phone.placement === "overlay"
-      ? Math.max(model.bar * s, Math.min(H * 0.25, H * phone.coverRatio))
-      : model.bar * s;
+  const geometry = phoneGeometry(phone, {
+    width: W,
+    height: H - (phone.addedHeight ?? 0),
+  });
+  const k = (s * phone.scale * geometry.contentScale) / 100;
+  const bar = phone.rendering === "natural" ? geometry.bar : model.bar * s;
   const color = phoneColor(phone);
   const classic = model.style === "classic";
   const android = model.style === "android";
@@ -546,7 +548,7 @@ function renderPhoneLayers(doc: TemplateDoc, raw: PhoneSettings): TemplateDoc {
   const halfHeight = Math.max(fontSize * 0.7, iconsHeight / 2);
   const requestedCy =
     (phone.rendering === "natural"
-      ? bar / (2 * s)
+      ? geometry.center / s
       : classic
         ? 10
         : android
@@ -781,7 +783,10 @@ export function applyPhoneLayers(
     base.canvas.height / (40 - (carrierRow ? 18 : 0)),
   );
   const height = Math.ceil(
-    (model.bar + (phone.showDate ? 24 : 0) + (carrierRow ? 18 : 0)) * scale,
+    (phone.rendering === "natural"
+      ? phoneGeometry(phone, base.canvas).bar
+      : model.bar * scale) +
+      ((phone.showDate ? 24 : 0) + (carrierRow ? 18 : 0)) * scale,
   );
   if (base.canvas.height + height > 8000)
     throw new Error("添加状态栏后高度超过 8000px，请缩小画布或改用覆盖模式");

@@ -894,3 +894,36 @@ test("automatic handling requires confirmation and batch fusion prepares stable 
   const downloading=page.waitForEvent("download");await page.getByRole("link",{name:"下载 ZIP",exact:true}).click();const path=info.outputPath("fused-batch.zip");await(await downloading).saveAs(path);
   const {unzipSync}=await import("fflate");expect(Object.keys(unzipSync(new Uint8Array(await readFile(path))))).toHaveLength(4);
 });
+
+test("uploaded compact status bar controls actual layer and exported image sizes", async ({page}, info) => {
+  await page.goto("/custom");
+  const encoded = await page.evaluate(() => {
+    const c=document.createElement("canvas");c.width=360;c.height=800;const ctx=c.getContext("2d")!;
+    ctx.fillStyle="#f5f5f5";ctx.fillRect(0,0,360,800);ctx.fillStyle="#191919";
+    for(let x=16;x<42;x++)if(x%7<4)ctx.fillRect(x,8,1,8);
+    for(let x=274;x<341;x++)if(x%9<5)ctx.fillRect(x,8,1,8);
+    ctx.fillStyle="#1166cc";ctx.fillRect(0,30,360,10);
+    return c.toDataURL().split(",")[1];
+  });
+  await page.locator('input[type="file"]').setInputFiles({name:"compact-status.png",mimeType:"image/png",buffer:Buffer.from(encoded,"base64")});
+  await page.getByText("保持原始尺寸",{exact:true}).click();
+  await page.getByRole("button",{name:/原图背景模式/}).click();
+  await page.getByRole("button",{name:"生成初始模板并进入编辑器"}).click();
+  await page.getByRole("button",{name:"进入作图",exact:true}).click();
+  await page.getByRole("combobox",{name:"手机品牌",exact:true}).selectOption("Apple");
+  await expect(page.getByTestId("status-bar-sizing")).toContainText("已按模板原状态栏适配");
+  await expect(page.getByTestId("status-bar-sizing")).toContainText("高度 24 px");
+  await page.getByRole("button",{name:"保存",exact:true}).click();
+  await expect(page.getByText("已保存到本地",{exact:true})).toBeVisible();
+  await page.getByRole("button",{name:"更多",exact:true}).click();
+  const downloading=page.waitForEvent("download");await page.getByRole("menuitem",{name:"导出模板文件（含图片）",exact:true}).click();
+  const path=info.outputPath("compact-status.json");await(await downloading).saveAs(path);
+  const saved=JSON.parse(await readFile(path,"utf8"));
+  const prefix=saved.doc.phone.groupId;
+  expect(saved.doc.layers.find((l:any)=>l.id===`${prefix}_background`).height).toBeCloseTo(24);
+  expect(saved.doc.layers.find((l:any)=>l.id===`${prefix}_time`).fontSize).toBeLessThan(12);
+  const bytes=await exportPNG(page,info.outputPath("compact-status.png"));
+  expect(bytes.readUInt32BE(16)).toBe(360);expect(bytes.readUInt32BE(20)).toBe(800);
+  const marker=await page.evaluate(async base64=>{const b=await createImageBitmap(new Blob([Uint8Array.from(atob(base64),c=>c.charCodeAt(0))],{type:"image/png"}));const c=document.createElement("canvas");c.width=b.width;c.height=b.height;const ctx=c.getContext("2d")!;ctx.drawImage(b,0,0);b.close();return [...ctx.getImageData(180,35,1,1).data];},bytes.toString("base64"));
+  expect(marker).toEqual([17,102,204,255]);
+});

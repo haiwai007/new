@@ -21,6 +21,7 @@ import {
   designKey,
   fusionWarnings,
   naturalBarRatio,
+  phoneGeometry,
 } from "@/lib/phone/fusion-metrics";
 import type { PhoneSettings } from "@/lib/phone/schema";
 import type { TemplateDoc } from "@/types/template";
@@ -310,6 +311,22 @@ export default function FusionPanel({
               {data.suspectedOldBar
                 ? " · 疑似已有状态内容"
                 : " · 未确定原有状态栏"}
+            </p>
+          )}
+          {data && !fusion.locks.includes("geometry") && (
+            <p
+              className="text-xs text-muted-foreground"
+              data-testid="status-bar-sizing"
+            >
+              {data.geometry
+                ? "已按模板原状态栏适配"
+                : "未识别到清晰状态栏，使用紧凑比例"}
+              {" · 高度 "}
+              {Math.round(
+                phoneGeometry(settings, removePhoneLayers(doc).canvas).bar,
+              )}{" "}
+              px
+              {" · 时间与图标同步缩放"}
             </p>
           )}
           {fusion.handling === "auto" && (

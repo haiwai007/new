@@ -30,6 +30,13 @@ export const fusionAnalysisSchema = z.object({
   suspectedOldBar: z.boolean(),
   suggestedCover: z.number().min(0).max(0.25),
   confidence: z.enum(["high", "medium", "low"]),
+  geometry: z
+    .object({
+      barRatio: z.number().positive().max(0.25),
+      glyphRatio: z.number().positive().max(0.1),
+      centerRatio: z.number().positive().max(0.2),
+    })
+    .optional(),
   bands: z
     .array(
       z.object({
