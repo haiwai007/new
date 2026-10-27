@@ -1,3 +1,4 @@
+import {DATE_PRECISIONS,dateParts,dateValue,type DatePrecision} from "@/lib/parameters/date";
 import {removeParameterBinding} from "@/lib/parameters/document";
 import OrderRuleEditor from "@/components/parameters/order-rule-editor";
 import {defaultOrderRule} from "@/lib/parameters/order";
@@ -22,6 +23,7 @@ import {
   createParameter,
   defaultGroupFor,
   getParamValue,
+  applyParamValue,
 } from "@/lib/template/params.ts";
 import type { Layer, ParamInputType, TemplateParameter } from "@/types/template.ts";
 
@@ -70,6 +72,7 @@ function Form({ param, layer: newLayer, onDone }: Props & { onDone: () => void }
   const [allowEmpty, setAllowEmpty] = useState(param?.allowEmpty ?? true);
   const [minLength, setMinLength] = useState(param?.rules.minLength?.toString() ?? "");
   const [maxLength, setMaxLength] = useState(param?.rules.maxLength?.toString() ?? "");
+  const [datePrecision,setDatePrecision]=useState<DatePrecision>(param?.rules.datePrecision??dateParts(String(param?getParamValue(doc,param):layer?.type==="text"?layer.text:""))?.precision??"date");
   const [decimals,setDecimals]=useState(param?.rules.decimals?.toString()??"");
   const [min, setMin] = useState(param?.rules.min?.toString() ?? "");
   const [max, setMax] = useState(param?.rules.max?.toString() ?? "");
@@ -156,6 +159,7 @@ function Form({ param, layer: newLayer, onDone }: Props & { onDone: () => void }
       description: description.trim(),
       placeholder: isTextual ? placeholder.trim() : "",
       rules: {
+        datePrecision:type==="date"?datePrecision:undefined,
         decimals: type==="number"&&decimals!==""?Math.max(0,Math.min(8,Math.floor(Number(decimals)||0))):undefined,
         minLength: isTextual && nMinLen && nMinLen > 0 ? Math.round(nMinLen) : undefined,
         maxLength: isTextual && nMaxLen && nMaxLen > 0 ? Math.round(nMaxLen) : undefined,
@@ -170,10 +174,13 @@ function Form({ param, layer: newLayer, onDone }: Props & { onDone: () => void }
     if (resetDefault || next.property !== base.property || next.layerId !== base.layerId) {
       next.defaultValue = getParamValue(doc, next);
     }
-    edit((d) => ({
-      ...d,
-      parameters: param ? d.parameters.map((p) => (p.id === param.id ? next : p)) : [...d.parameters, next],
-    }));
+    const currentDate=String(getParamValue(doc,next)??"");
+    const changeDatePrecision=type==="date"&&!!dateParts(currentDate)&&dateParts(currentDate)!.precision!==datePrecision;
+    if(changeDatePrecision && typeof next.defaultValue==="string" && dateParts(next.defaultValue)) next.defaultValue=dateValue(next.defaultValue,datePrecision);
+    edit((d) => {
+      const updated={...d,parameters:param?d.parameters.map(p=>p.id===param.id?next:p):[...d.parameters,next]};
+      return changeDatePrecision?applyParamValue(updated,next,dateValue(currentDate,datePrecision)):updated;
+    });
     toast.success(param ? "参数已更新" : "参数已添加");
     onDone();
   };
@@ -230,6 +237,7 @@ function Form({ param, layer: newLayer, onDone }: Props & { onDone: () => void }
           <Label>填写说明</Label>
           <Input value={description} onChange={(e) => setDescription(e.target.value)} placeholder="例如：建议不超过 8 个字" maxLength={200} />
         </div>
+        {type === "date" && <div className="space-y-1"><Label>日期精度（可选时间）</Label><Select value={datePrecision} onValueChange={v=>setDatePrecision(v as DatePrecision)}><SelectTrigger aria-label="日期参数精度"><SelectValue/></SelectTrigger><SelectContent>{DATE_PRECISIONS.map(p=><SelectItem key={p.id} value={p.id}>{p.label}</SelectItem>)}</SelectContent></Select></div>}
         {type === "order" && <OrderRuleEditor value={order} onChange={setOrder}/>}
         {isTextual && type !== "select" && type !== "order" && (
           <>

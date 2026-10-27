@@ -154,6 +154,7 @@ const parameter = z.object({
   allowEmpty: z.boolean().default(true),
   rules: z
     .object({
+      datePrecision: z.enum(["date", "minute", "second"]).optional(),
       decimals: z.number().int().min(0).max(8).optional(),
       minLength: z.number().int().positive().optional(),
       maxLength: z.number().int().positive().optional(),

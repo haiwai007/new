@@ -1,3 +1,4 @@
+import DateParameterInput from "@/components/parameters/date-parameter-input";
 import ImageParameterInput from "@/components/parameters/image-parameter-input";
 import {defaultOrderRule,randomOrder,orderSummary} from "@/lib/parameters/order";
 import ParameterManager from "./parameter-manager";
@@ -66,15 +67,13 @@ function ParamInput({ doc, param, first, last }: { doc: TemplateDoc; param: Temp
       );
       break;
     case "date":
-      control = (
-        <Input
-          type="date"
-          value={/^\d{4}-\d{2}-\d{2}$/.test(str) ? str : ""}
-          disabled={disabled}
-          onChange={(e) => apply(e.target.value)}
-          className="h-8 text-sm"
-        />
-      );
+      control = <DateParameterInput name={param.name} value={str} initialPrecision={param.rules.datePrecision} disabled={disabled} onChange={(next,precision)=>{
+        edit(d=>{
+          const updated={...param,rules:{...param.rules,datePrecision:precision}};
+          const doc={...d,parameters:d.parameters.map(p=>p.id===param.id?updated:p)};
+          return applyParamValue(doc,updated,next);
+        },{coalesceKey:`param:${param.id}`});
+      }}/>;
       break;
     case "color":
       control = <ColorField label="" value={str || "#000000"} disabled={disabled} onChange={apply} />;

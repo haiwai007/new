@@ -129,6 +129,7 @@ export type BindableProperty =
 export type ParamValue = string | number | boolean | ImageSource | null;
 
 export type ParamRules = {
+  datePrecision?: "date" | "minute" | "second";
   decimals?: number;
   minLength?: number;
   maxLength?: number;

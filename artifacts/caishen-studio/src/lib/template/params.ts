@@ -1,3 +1,4 @@
+import {dateParts} from "../parameters/date";
 import { defaultOrderRule, orderError } from "../parameters/order";
 import { RE2JS } from "re2js";
 import type {
@@ -158,8 +159,8 @@ export function validateParamValue(
     if (param.type === "number" && Number.isNaN(Number(value))) {
       return `「${param.name}」必须是数字`;
     }
-    if (param.type === "date" && !/^\d{4}[-/.年]\d{1,2}[-/.月]\d{1,2}日?$/.test(value)) {
-      return `「${param.name}」日期格式应为 2026-01-31`;
+    if (param.type === "date" && !dateParts(value)) {
+      return `「${param.name}」日期格式应为 2026-01-31，可选时间 14:30 或 14:30:25`;
     }
     if (param.type === "select" && rules.options?.length && !rules.options.includes(value)) {
       return `「${param.name}」不在可选值中`;

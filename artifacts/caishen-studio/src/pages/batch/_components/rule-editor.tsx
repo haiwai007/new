@@ -1,3 +1,4 @@
+import DateParameterInput from "@/components/parameters/date-parameter-input";
 import {
   defaultOrderRule,
   orderSummary,
@@ -246,6 +247,7 @@ function RuleFields({
           <Field label="开始时间">
             <Input
               type="datetime-local"
+              step={rule.format.includes("ss")?1:60}
               value={rule.start}
               onChange={(e) => onChange({ ...rule, start: e.target.value })}
             />
@@ -253,6 +255,7 @@ function RuleFields({
           <Field label="结束时间">
             <Input
               type="datetime-local"
+              step={rule.format.includes("ss")?1:60}
               value={rule.end}
               onChange={(e) => onChange({ ...rule, end: e.target.value })}
             />
@@ -265,7 +268,7 @@ function RuleFields({
                 onChange({ ...rule, format: e.target.value as DateFormatId })
               }
             >
-              {DATE_FORMATS.map((f) => (
+              {DATE_FORMATS.filter(f=>param.type!=="date"||f.id.startsWith("yyyy")).map((f) => (
                 <NativeSelectOption key={f.id} value={f.id}>
                   {f.label}
                 </NativeSelectOption>
@@ -329,6 +332,7 @@ function FixedField({
   onBusyChange,
   onAssetsAdded,
 }: ValueProps<string> & { value: string }) {
+  if (param.type === "date") return <DateParameterInput name={param.name} value={value} initialPrecision={param.rules.datePrecision} onChange={onChange}/>;
   if (param.type === "toggle") {
     return (
       <label className="flex items-center gap-2 text-sm">

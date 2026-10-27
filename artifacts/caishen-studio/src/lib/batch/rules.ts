@@ -1,3 +1,4 @@
+import {dateFormat,dateParts} from "../parameters/date";
 import { defaultOrderRule, generateOrders, randomOrder } from "../parameters/order";
 import { distributeModels, applyPhoneBatchRules, validatePhoneBatchRules, type PhoneBatchRules } from "./phone-rules";
 import { format as formatDate } from "date-fns";
@@ -7,6 +8,11 @@ import type { ParamInputType, ParamValue, TemplateDoc, TemplateParameter } from 
 export const MAX_BATCH_COUNT = 200;
 
 export const DATE_FORMATS = [
+  {id:"yyyy-MM-dd HH:mm:ss",label:"2026-10-25 14:30:25（到秒）",dateOnly:false},
+  {id:"yyyy/MM/dd HH:mm:ss",label:"2026/10/25 14:30:25（到秒）",dateOnly:false},
+  {id:"yyyy年M月d日 HH:mm:ss",label:"2026年10月25日 14:30:25（到秒）",dateOnly:false},
+  {id:"MM-dd HH:mm:ss",label:"10-25 14:30:25（到秒）",dateOnly:false},
+  {id:"HH:mm:ss",label:"14:30:25（到秒）",dateOnly:false},
   { id: "yyyy-MM-dd HH:mm", label: "2026-10-25 14:30", dateOnly: false },
   { id: "yyyy-MM-dd", label: "2026-10-25", dateOnly: true },
   { id: "yyyy/MM/dd", label: "2026/10/25", dateOnly: true },
@@ -84,7 +90,7 @@ export function defaultRule(mode: RuleMode, param: TemplateParameter, current: P
     case "dateRange": {
       const end = new Date();
       const start = new Date(end.getTime() - 7 * 86_400_000);
-      return { mode, start: localInput(start), end: localInput(end), format: param.type === "date" ? "yyyy-MM-dd" : "yyyy-MM-dd HH:mm" };
+      return { mode, start: localInput(start), end: localInput(end), format: param.type === "date" ? dateFormat(param.rules.datePrecision??dateParts(text)?.precision??"date") : "yyyy-MM-dd HH:mm" };
     }
     case "list":
       return {
