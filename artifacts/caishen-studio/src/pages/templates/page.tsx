@@ -257,14 +257,24 @@ export default function TemplatesPage() {
             <EmptyMedia variant="icon">
               <Search />
             </EmptyMedia>
-            <EmptyTitle>没有找到模板</EmptyTitle>
+            <EmptyTitle>
+              {category === "huimin-15" && !q.trim() && !onlyFav
+                ? "惠民十五五暂无模板"
+                : "没有找到模板"}
+            </EmptyTitle>
             <EmptyDescription>
-              换个关键词试试，或者直接上传图片生成模板。
+              {category === "huimin-15" && !q.trim() && !onlyFav
+                ? "分类已建立，暂未收录模板。"
+                : "换个关键词试试，或者直接上传图片生成模板。"}
             </EmptyDescription>
           </EmptyHeader>
           <EmptyContent>
             <Button size="sm" asChild>
-              <Link to="/custom">上传图片</Link>
+              {category === "huimin-15" ? (
+                <Link to="/templates">查看全部模板</Link>
+              ) : (
+                <Link to="/custom">上传图片</Link>
+              )}
             </Button>
           </EmptyContent>
         </Empty>

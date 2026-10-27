@@ -10,7 +10,8 @@ export type TemplateCategory =
   | "notice"
   | "festival"
   | "general"
-  | "blank";
+  | "blank"
+  | "huimin-15";
 
 export const CATEGORIES: { id: TemplateCategory; label: string }[] = [
   { id: "poster", label: "宣传海报" },
@@ -19,6 +20,7 @@ export const CATEGORIES: { id: TemplateCategory; label: string }[] = [
   { id: "notice", label: "活动通知" },
   { id: "festival", label: "节日祝福" },
   { id: "general", label: "通用图文设计" },
+  { id: "huimin-15", label: "惠民十五五" },
   { id: "blank", label: "空白画布" },
 ];
 

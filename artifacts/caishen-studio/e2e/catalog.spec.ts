@@ -31,7 +31,7 @@ test("retained catalogue exposes eleven templates without withdrawn categories o
   await page.goto("/templates");
   await expect(
     page.getByText(
-      "现有 11 套模板、7 个分类，可编辑图层，也可按参数批量生成。",
+      "现有 11 套模板、8 个分类，可编辑图层，也可按参数批量生成。",
       { exact: true },
     ),
   ).toBeVisible();
@@ -68,7 +68,19 @@ test("retained catalogue exposes eleven templates without withdrawn categories o
   await page.setViewportSize({ width: 375, height: 900 });
   await expect(
     page.getByLabel("模板分类", { exact: true }).locator("option"),
-  ).toHaveCount(9);
+  ).toHaveCount(10);
+  await page.getByLabel("模板分类", { exact: true }).selectOption("huimin-15");
+  await expect(page).toHaveURL(/category=huimin-15/);
+  await expect(
+    page.getByText("惠民十五五暂无模板", { exact: true }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: "使用模板", exact: true }),
+  ).toHaveCount(0);
+  await page.reload();
+  await expect(page.getByLabel("模板分类", { exact: true })).toHaveValue(
+    "huimin-15",
+  );
   await page.getByLabel("模板分类", { exact: true }).selectOption("blank");
   await expect(
     page.getByRole("button", { name: "使用模板", exact: true }),
@@ -134,13 +146,11 @@ test("saved copies remain intact while batch selectors exclude withdrawn builtin
     fontSize: 24,
   });
   await page.goto("/works");
-  await page
-    .locator('input[type="file"]')
-    .setInputFiles({
-      name: "saved-copy.json",
-      mimeType: "application/json",
-      buffer: Buffer.from(JSON.stringify(data)),
-    });
+  await page.locator('input[type="file"]').setInputFiles({
+    name: "saved-copy.json",
+    mimeType: "application/json",
+    buffer: Buffer.from(JSON.stringify(data)),
+  });
   await expect(page).toHaveURL(/\/editor\//);
   const existingUrl = page.url();
   const saved = await packaged(page, info);
@@ -167,8 +177,17 @@ test("saved copies remain intact while batch selectors exclude withdrawn builtin
   ).toBe(false);
   await expect(
     page.getByLabel("筛选批量模板分类", { exact: true }).locator("option"),
-  ).toHaveCount(9);
+  ).toHaveCount(10);
   await expect(page.getByLabel("批量转账渠道", { exact: true })).toHaveCount(0);
+  await page
+    .getByLabel("筛选批量模板分类", { exact: true })
+    .selectOption("huimin-15");
+  await expect(
+    page.getByLabel("批量模板", { exact: true }).locator("option"),
+  ).toHaveCount(1);
+  await page
+    .getByLabel("筛选批量模板分类", { exact: true })
+    .selectOption("all");
   await page
     .getByLabel("批量模板", { exact: true })
     .selectOption("b:bt_coffee");

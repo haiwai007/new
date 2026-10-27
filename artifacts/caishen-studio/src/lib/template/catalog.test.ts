@@ -5,9 +5,9 @@ const TEMPLATE_EXAMPLE_LABEL = "海神作图 · 设计示例";
 import { loadTemplateDoc } from "./migrate";
 import { generateItems } from "../batch/rules";
 describe("available template catalogue", () => {
-  it("retains eleven unmarked templates and seven populated categories", () => {
+  it("retains eleven templates with seven populated categories and an empty reserved category", () => {
     expect(BUILTIN_TEMPLATES).toHaveLength(11);
-    expect(CATEGORIES).toHaveLength(7);
+    expect(CATEGORIES).toHaveLength(8);
     expect(new Set(BUILTIN_TEMPLATES.map((t) => t.id)).size).toBe(11);
     expect(CATEGORY_COUNTS).toEqual({
       poster: 2,
@@ -17,6 +17,7 @@ describe("available template catalogue", () => {
       festival: 1,
       general: 1,
       blank: 4,
+      "huimin-15": 0,
     });
     for (const t of BUILTIN_TEMPLATES) {
       expect(
