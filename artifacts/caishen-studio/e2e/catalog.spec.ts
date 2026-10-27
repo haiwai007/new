@@ -32,7 +32,7 @@ test("expanded catalogue supports counts, semantic search, pagination, favorites
   await page.goto("/templates");
   await expect(
     page.getByText(
-      "现有 131 套模板、15 个分类，可编辑图层，也可按参数批量生成。",
+      "现有 331 套模板、15 个分类，可编辑图层，也可按参数批量生成。",
       { exact: true },
     ),
   ).toBeVisible();
@@ -44,7 +44,7 @@ test("expanded catalogue supports counts, semantic search, pagination, favorites
   await page.reload();
   await expect(
     page.getByRole("status", { name: "模板筛选结果", exact: true }),
-  ).toContainText("第 2 / 6 页");
+  ).toContainText("第 2 / 14 页");
   await page.getByRole("button", { name: /^机票与行程/ }).click();
   await expect(
     page.getByRole("button", { name: "使用模板", exact: true }),
@@ -126,6 +126,7 @@ for (const scenario of [
     page,
   }, info) => {
     await page.goto(`/templates?category=${scenario.category}`);
+    if(scenario.category==="transfer")await page.getByLabel("转账模板渠道",{exact:true}).selectOption("general");
     await page.getByLabel("搜索模板", { exact: true }).fill(scenario.query);
     await page.getByRole("button", { name: "使用模板", exact: true }).click();
     await expect(page).toHaveURL(/\/editor\//);

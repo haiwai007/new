@@ -1,3 +1,4 @@
+import {FINANCE_CHANNELS,FINANCE_SCENES} from "@/lib/template/financial";
 import {templateMatches} from "@/lib/template/catalog";
 import {getParamValue} from "@/lib/template/params";
 import {
@@ -76,6 +77,8 @@ type Option = {
   doc: TemplateDoc;
   group: "builtin" | "mine";
   category?: TemplateCategory;
+  channel?:string;
+  financeScene?:string;
 };
 const newSeed = () => Math.floor(Math.random() * 2 ** 31);
 
@@ -83,6 +86,7 @@ export default function BatchPage() {
   const { state } = useWorks();
   const [templateCategory, setTemplateCategory] = useState("all");
   const [templateQuery, setTemplateQuery] = useState("");
+  const [financeChannel,setFinanceChannel]=useState("all"),[financeScene,setFinanceScene]=useState("all");
   const [params] = useSearchParams();
   const [assets, setAssets] = useState<AssetRecord[]>([]);
   const [templateId, setTemplateId] = useState(
@@ -144,6 +148,8 @@ export default function BatchPage() {
       doc: t.doc,
       group: "builtin" as const,
       category: t.category,
+      channel:t.channel,
+      financeScene:t.financeScene,
     }));
     const mine =
       state.status === "ready"
@@ -160,6 +166,8 @@ export default function BatchPage() {
   }, [state]);
   const filteredOptions = options.filter(o=>{
     if(templateCategory!=="all" && (templateCategory==="mine" ? o.group!=="mine" : o.category!==templateCategory))return false;
+    if(templateCategory==="transfer"&&financeChannel!=="all"&&(o.channel??"general")!==financeChannel)return false;
+    if(templateCategory==="transfer"&&financeScene!=="all"&&o.financeScene!==financeScene)return false;
     const builtin=o.group==="builtin"?BUILTIN_TEMPLATES.find(t=>`b:${t.id}`===o.id):undefined;
     return builtin?templateMatches(builtin,templateQuery):o.name.toLocaleLowerCase().includes(templateQuery.trim().toLocaleLowerCase());
   });
@@ -319,6 +327,10 @@ export default function BatchPage() {
                   </NativeSelect>
                   <Input aria-label="搜索批量模板" placeholder="搜索名称、场景或参数" value={templateQuery} onChange={e=>setTemplateQuery(e.target.value)}/>
                 </div>
+                {templateCategory==="transfer"&&<div className="grid gap-2 sm:grid-cols-2 [&>[data-slot=native-select-wrapper]]:w-full">
+                  <NativeSelect aria-label="批量转账渠道" value={financeChannel} onChange={e=>setFinanceChannel(e.target.value)}><NativeSelectOption value="all">全部支付平台／银行</NativeSelectOption><NativeSelectOption value="general">通用场景</NativeSelectOption>{FINANCE_CHANNELS.map(c=><NativeSelectOption key={c.id} value={c.id}>{c.label}</NativeSelectOption>)}</NativeSelect>
+                  <NativeSelect aria-label="批量转账业务场景" value={financeScene} onChange={e=>setFinanceScene(e.target.value)}><NativeSelectOption value="all">全部业务场景</NativeSelectOption>{FINANCE_SCENES.map(s=><NativeSelectOption key={s.id} value={s.id}>{s.label}</NativeSelectOption>)}</NativeSelect>
+                </div>}
                 <NativeSelect
                   aria-label="批量模板"
                   className="w-full"

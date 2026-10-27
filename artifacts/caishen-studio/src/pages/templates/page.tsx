@@ -1,3 +1,4 @@
+import { FINANCE_CHANNELS, FINANCE_SCENES } from "@/lib/template/financial";
 import { useMemo, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { Search, Layers3, Upload } from "lucide-react";
@@ -21,6 +22,8 @@ import {
 } from "@/components/ui/empty.tsx";
 import { BUILTIN_TEMPLATES, CATEGORIES } from "@/lib/template/builtin.ts";
 import {
+  FINANCE_CHANNEL_COUNTS,
+  paginationWindow,
   CATEGORY_COUNTS,
   TEMPLATE_PAGE_SIZE,
   templateMatches,
@@ -38,6 +41,15 @@ type Sort = "popular" | "latest" | "name";
 export default function TemplatesPage() {
   const [params, setParams] = useSearchParams();
   const category = params.get("category") ?? "all";
+  const channel = params.get("channel") ?? "all",
+    scene = params.get("scene") ?? "all";
+  const changeFinanceFilter = (key: string, value: string) => {
+    const next = new URLSearchParams(params);
+    next.delete("page");
+    if (value === "all") next.delete(key);
+    else next.set(key, value);
+    setParams(next);
+  };
   const [q, setQ] = useState("");
   const [sort, setSort] = useState<Sort>("popular");
   const page = Math.max(1, Number(params.get("page")) || 1);
@@ -51,6 +63,18 @@ export default function TemplatesPage() {
     return BUILTIN_TEMPLATES.filter(
       (t) => category === "all" || t.category === category,
     )
+      .filter(
+        (t) =>
+          category !== "transfer" ||
+          channel === "all" ||
+          (t.channel ?? "general") === channel,
+      )
+      .filter(
+        (t) =>
+          category !== "transfer" ||
+          scene === "all" ||
+          t.financeScene === scene,
+      )
       .filter((t) => !onlyFav || favs.includes(t.id))
       .filter((t) => templateMatches(t, q))
       .sort((a, b) =>
@@ -60,7 +84,7 @@ export default function TemplatesPage() {
             ? b.addedAt.localeCompare(a.addedAt)
             : a.name.localeCompare(b.name, "zh"),
       );
-  }, [category, q, sort, onlyFav, favs]);
+  }, [category, channel, scene, q, sort, onlyFav, favs]);
 
   const customTemplates =
     state.status === "ready"
@@ -186,6 +210,59 @@ export default function TemplatesPage() {
         ))}
       </div>
 
+      {category === "transfer" && (
+        <div
+          className="mt-4 grid gap-3 rounded-xl border bg-card p-3 sm:grid-cols-2"
+          aria-label="转账模板细分类"
+        >
+          <label className="space-y-1 text-sm">
+            支付平台／银行
+            <select
+              aria-label="转账模板渠道"
+              value={channel}
+              onChange={(e) => changeFinanceFilter("channel", e.target.value)}
+              className="h-11 w-full rounded border bg-background px-2"
+            >
+              <option value="all">
+                全部渠道（{CATEGORY_COUNTS.transfer}）
+              </option>
+              <option value="general">
+                通用场景（{FINANCE_CHANNEL_COUNTS.general}）
+              </option>
+              {(["wallet", "bank"] as const).map((group) => (
+                <optgroup
+                  key={group}
+                  label={group === "wallet" ? "支付平台" : "银行网银"}
+                >
+                  {FINANCE_CHANNELS.filter((c) => c.group === group).map(
+                    (c) => (
+                      <option key={c.id} value={c.id}>
+                        {c.label}（{FINANCE_CHANNEL_COUNTS[c.id]}）
+                      </option>
+                    ),
+                  )}
+                </optgroup>
+              ))}
+            </select>
+          </label>
+          <label className="space-y-1 text-sm">
+            业务场景
+            <select
+              aria-label="转账模板业务场景"
+              value={scene}
+              onChange={(e) => changeFinanceFilter("scene", e.target.value)}
+              className="h-11 w-full rounded border bg-background px-2"
+            >
+              <option value="all">全部场景</option>
+              {FINANCE_SCENES.map((s) => (
+                <option key={s.id} value={s.id}>
+                  {s.label}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
+      )}
       <div className="mt-4 flex flex-col gap-3 sm:flex-row">
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
@@ -289,17 +366,23 @@ export default function TemplatesPage() {
           >
             上一页
           </Button>
-          {Array.from({ length: pageCount }, (_, i) => i + 1).map((n) => (
-            <Button
-              key={n}
-              variant={n === currentPage ? "default" : "outline"}
-              aria-label={`第 ${n} 页`}
-              aria-current={n === currentPage ? "page" : undefined}
-              onClick={() => changePage(n)}
-            >
-              {n}
-            </Button>
-          ))}
+          {paginationWindow(currentPage, pageCount).map((n, i) =>
+            n === "gap" ? (
+              <span key={`gap-${i}`} aria-hidden="true" className="px-1">
+                …
+              </span>
+            ) : (
+              <Button
+                key={n}
+                variant={n === currentPage ? "default" : "outline"}
+                aria-label={`第 ${n} 页`}
+                aria-current={n === currentPage ? "page" : undefined}
+                onClick={() => changePage(n)}
+              >
+                {n}
+              </Button>
+            ),
+          )}
           <Button
             variant="outline"
             disabled={currentPage >= pageCount}

@@ -1,3 +1,4 @@
+import { FINANCIAL_TEMPLATES } from "./financial";
 import { EXTENDED_TEMPLATES } from "./collection";
 import type { Layer, TemplateDoc, TemplateParameter } from "../../types/template.ts";
 import { createImageLayer, createShapeLayer, createTextLayer } from "./layers.ts";
@@ -45,6 +46,9 @@ export type BuiltinTemplate = {
   tags?: string[];
   description?: string;
   sample?: boolean;
+  channel?: string;
+  financeScene?: string;
+  layoutFamily?: string;
   category: TemplateCategory;
   popularity: number;
   addedAt: string;
@@ -347,6 +351,7 @@ export const BUILTIN_TEMPLATES: BuiltinTemplate[] = [
     doc: doc(b.id, b.name.replace(/ \d+×\d+$/, ""), b.w, b.h, "#ffffff", [], []),
   })),
   ...EXTENDED_TEMPLATES,
+  ...FINANCIAL_TEMPLATES,
 ];
 
 export function findBuiltin(id: string): BuiltinTemplate | undefined {

@@ -26,3 +26,29 @@ export const CATEGORY_COUNTS = Object.fromEntries(
     BUILTIN_TEMPLATES.filter((t) => t.category === c.id).length,
   ]),
 );
+
+export const FINANCE_CHANNEL_COUNTS = Object.fromEntries([
+  [
+    "general",
+    BUILTIN_TEMPLATES.filter((t) => t.category === "transfer" && !t.channel)
+      .length,
+  ],
+  ...Array.from(
+    new Set(BUILTIN_TEMPLATES.flatMap((t) => (t.channel ? [t.channel] : []))),
+  ).map((id) => [id, BUILTIN_TEMPLATES.filter((t) => t.channel === id).length]),
+]);
+export function paginationWindow(
+  current: number,
+  total: number,
+): (number | "gap")[] {
+  const pages = [
+    ...new Set(
+      [1, total, current - 1, current, current + 1].filter(
+        (n) => n >= 1 && n <= total,
+      ),
+    ),
+  ].sort((a, b) => a - b);
+  return pages.flatMap((n, i) =>
+    i && n - pages[i - 1] > 1 ? ["gap" as const, n] : [n],
+  );
+}

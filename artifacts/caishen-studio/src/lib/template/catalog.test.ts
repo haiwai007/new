@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { BUILTIN_TEMPLATES, CATEGORIES } from "./builtin";
+import { FINANCIAL_TEMPLATES } from "./financial";
 import { EXTENDED_TEMPLATES } from "./collection";
 import { CATEGORY_COUNTS, templateMatches } from "./catalog";
 import { loadTemplateDoc } from "./migrate";
@@ -9,12 +10,12 @@ import { getParamValue, validateParamValue } from "./params";
 describe("expanded editable template catalogue", () => {
   it("contains 120 original scenarios with stable unique ids and 15 populated categories", () => {
     expect(EXTENDED_TEMPLATES).toHaveLength(120);
-    expect(BUILTIN_TEMPLATES).toHaveLength(131);
+    expect(BUILTIN_TEMPLATES).toHaveLength(331);
     expect(CATEGORIES).toHaveLength(15);
-    expect(new Set(BUILTIN_TEMPLATES.map((t) => t.id)).size).toBe(131);
-    expect(new Set(BUILTIN_TEMPLATES.map((t) => t.name)).size).toBe(131);
+    expect(new Set(BUILTIN_TEMPLATES.map((t) => t.id)).size).toBe(331);
+    expect(new Set(BUILTIN_TEMPLATES.map((t) => t.name)).size).toBe(331);
     expect(CATEGORY_COUNTS).toMatchObject({
-      transfer: 20,
+      transfer: 220,
       flight: 20,
       credential: 20,
       receipt: 12,
@@ -27,7 +28,7 @@ describe("expanded editable template catalogue", () => {
       expect(CATEGORY_COUNTS[c.id]).toBeGreaterThan(0);
   });
   it("loads every new scenario, has valid defaults and keeps editable regions inside the canvas", () => {
-    for (const t of EXTENDED_TEMPLATES) {
+    for (const t of [...EXTENDED_TEMPLATES, ...FINANCIAL_TEMPLATES]) {
       const loaded = loadTemplateDoc(t.doc);
       expect(loaded.ok, t.id).toBe(true);
       if (!loaded.ok) continue;
@@ -80,7 +81,7 @@ describe("expanded editable template catalogue", () => {
     expect(templateMatches(flight, "   ")).toBe(true);
   });
   it("generates every new template in batches with valid exact order strings and frozen sample labels", () => {
-    for (const t of EXTENDED_TEMPLATES) {
+    for (const t of [...EXTENDED_TEMPLATES, ...FINANCIAL_TEMPLATES]) {
       const items = generateItems(t.doc, {}, 3, 123);
       expect(
         items.every((item) => item.errors.length === 0),

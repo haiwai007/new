@@ -37,7 +37,7 @@ const f = (
   value: string,
   type: Field["type"] = "text",
 ): Field => ({ name, value, type });
-class Design {
+export class Design {
   layers: Layer[] = [];
   parameters: TemplateParameter[] = [];
   constructor(
