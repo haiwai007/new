@@ -373,3 +373,48 @@ test("public APIs remain anonymous while admin APIs reject anonymous and cross-o
   ).toBeVisible();
   expect((await page.request.get("/api/admin/catalog")).status()).toBe(401);
 });
+test("administrator changes password in the dashboard and old sessions lose access", async ({
+  page,
+  browser,
+}) => {
+  await login(page);
+  const other = await browser.newContext({
+    baseURL: new URL("/", page.url()).href,
+  });
+  try {
+    const old = await other.newPage();
+    await login(old);
+    await page.getByRole("button", { name: "修改密码", exact: true }).click();
+    const form = page.getByRole("form", {
+      name: "修改管理员密码",
+      exact: true,
+    });
+    await form.getByLabel("当前密码", { exact: true }).fill(password);
+    await form
+      .getByLabel("新密码", { exact: true })
+      .fill("New-Local-Cms-Password-931!");
+    await form
+      .getByLabel("确认新密码", { exact: true })
+      .fill("New-Local-Cms-Password-931!");
+    await form.getByRole("button", { name: "保存新密码", exact: true }).click();
+    await expect(
+      page.getByRole("heading", { name: "管理员登录", exact: true }),
+    ).toBeVisible();
+    expect((await old.request.get("/api/admin/catalog")).status()).toBe(401);
+    await page.getByLabel("管理员密码", { exact: true }).fill(password);
+    await page.getByRole("button", { name: "登录后台", exact: true }).click();
+    await expect(page.getByRole("alert")).toContainText(
+      "管理员账号或密码不正确",
+    );
+    await page
+      .getByLabel("管理员密码", { exact: true })
+      .fill("New-Local-Cms-Password-931!");
+    await page.getByRole("button", { name: "登录后台", exact: true }).click();
+    await expect(
+      page.getByRole("button", { name: "分类管理", exact: true }),
+    ).toBeVisible();
+    expect((await page.request.get("/api/public/catalog")).status()).toBe(200);
+  } finally {
+    await other.close();
+  }
+});

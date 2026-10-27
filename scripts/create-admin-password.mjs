@@ -1,12 +1,14 @@
 import { pathToFileURL } from "node:url";
 import { pbkdf2Sync, randomBytes } from "node:crypto";
-export function passwordHash(password) {
+export function passwordHash(password, { initial = false } = {}) {
   if (
     typeof password !== "string" ||
-    password.length < 12 ||
+    password.length < (initial ? 6 : 12) ||
     password.length > 256
   )
-    throw new Error("管理员密码需为 12～256 个字符");
+    throw new Error(
+      initial ? "临时密码需为 6～256 个字符" : "管理员密码需为 12～256 个字符",
+    );
   const salt = randomBytes(16);
   return `pbkdf2$100000$${salt.toString("hex")}$${pbkdf2Sync(password, salt, 100000, 32, "sha256").toString("hex")}`;
 }
@@ -14,9 +16,12 @@ if (
   process.argv[1] &&
   import.meta.url === pathToFileURL(process.argv[1]).href
 ) {
+  const initial = process.argv.includes("--initial");
   let password = "";
   if (process.stdin.isTTY) {
-    process.stderr.write("请输入管理员密码（至少 12 个字符，不回显）：");
+    process.stderr.write(
+      "请输入管理员密码（默认至少 12 个字符，--initial 临时密码至少 6 位，不回显）：",
+    );
     process.stdin.setRawMode(true);
     process.stdin.resume();
     password = await new Promise((resolve, reject) => {
@@ -47,7 +52,7 @@ if (
     password = password.replace(/\r?\n$/, "");
   }
   try {
-    process.stdout.write(passwordHash(password) + "\n");
+    process.stdout.write(passwordHash(password, { initial }) + "\n");
   } catch (e) {
     process.stderr.write(e.message + "\n");
     process.exitCode = 1;

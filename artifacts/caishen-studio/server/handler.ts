@@ -16,6 +16,7 @@ import {
 import { referencedAssetIds } from "../src/lib/template/doc-ops";
 import { ApiError, type CmsEnv, type Database } from "./types";
 import {
+  changePassword,
   validPasswordHash,
   readSession,
   requireSession,
@@ -417,6 +418,10 @@ export async function handleApi(
         });
       }
       await requireSession(request, env);
+      if (path === "admin/password" && request.method === "POST")
+        return json({ authenticated: false }, 200, {
+          "Set-Cookie": await changePassword(request, env, await body(request)),
+        });
       if (path === "admin/logout" && request.method === "POST")
         return json({ authenticated: false }, 200, {
           "Set-Cookie": await logout(request, db),

@@ -413,3 +413,124 @@ describe("Cloudflare CMS API", () => {
     ).toBe(401);
   });
 });
+
+it("changes the admin password, rejects stale sessions, keeps hashes private and allows secret-based recovery", async () => {
+  const first = await admin(),
+    second = await admin();
+  expect(
+    (
+      await call(
+        "admin/password",
+        "POST",
+        { currentPassword: password, newPassword: "short" },
+        first,
+      )
+    ).status,
+  ).toBe(400);
+  expect(
+    (
+      await call(
+        "admin/password",
+        "POST",
+        {
+          currentPassword: "wrong",
+          newPassword: "Replacement-Cms-Password-837!",
+        },
+        first,
+      )
+    ).status,
+  ).toBe(400);
+  expect((await call("admin/catalog", "GET", undefined, first)).status).toBe(
+    200,
+  );
+  const changed = await call(
+    "admin/password",
+    "POST",
+    { currentPassword: password, newPassword: "Replacement-Cms-Password-837!" },
+    first,
+  );
+  expect(changed.status).toBe(200);
+  expect(changed.headers.get("set-cookie")).toContain("Max-Age=0");
+  for (const session of [first, second])
+    expect(
+      (await call("admin/catalog", "GET", undefined, session)).status,
+    ).toBe(401);
+  expect(
+    (await call("admin/login", "POST", { username: "admin", password })).status,
+  ).toBe(401);
+  const newLogin = await call("admin/login", "POST", {
+    username: "admin",
+    password: "Replacement-Cms-Password-837!",
+  });
+  expect(newLogin.status).toBe(200);
+  const session = {
+    cookie: newLogin.headers.get("set-cookie")!.split(";")[0],
+    csrf: (await newLogin.json()).csrf,
+  };
+  expect((await call("admin/catalog", "GET", undefined, session)).status).toBe(
+    200,
+  );
+  const publicText = await (await call("public/catalog")).text();
+  expect(publicText).not.toContain("pbkdf2");
+  expect(publicText).not.toContain("admin-credentials");
+  const privateText = await (
+    await call("admin/catalog", "GET", undefined, session)
+  ).text();
+  expect(privateText).not.toContain("pbkdf2");
+  // Changing the deployment secret resets an in-dashboard password and invalidates its sessions.
+  const resetPassword = "Cloudflare-Reset-Password-927!";
+  env.ADMIN_PASSWORD_HASH = `pbkdf2$100000$${salt}$${pbkdf2Sync(resetPassword, Buffer.from(salt, "hex"), 100000, 32, "sha256").toString("hex")}`;
+  expect((await call("admin/catalog", "GET", undefined, session)).status).toBe(
+    401,
+  );
+  expect(
+    (
+      await call("admin/login", "POST", {
+        username: "admin",
+        password: resetPassword,
+      })
+    ).status,
+  ).toBe(200);
+});
+it("supports a configured six-digit temporary credential and replacing it after login", async () => {
+  const temporary = "654321";
+  env.ADMIN_PASSWORD_HASH = `pbkdf2$100000$${salt}$${pbkdf2Sync(temporary, Buffer.from(salt, "hex"), 100000, 32, "sha256").toString("hex")}`;
+  const response = await call("admin/login", "POST", {
+    username: "admin",
+    password: temporary,
+  });
+  expect(response.status).toBe(200);
+  const session = {
+    cookie: response.headers.get("set-cookie")!.split(";")[0],
+    csrf: (await response.json()).csrf,
+  };
+  expect(
+    (
+      await call(
+        "admin/password",
+        "POST",
+        {
+          currentPassword: temporary,
+          newPassword: "Permanent-Admin-Password-739!",
+        },
+        session,
+      )
+    ).status,
+  ).toBe(200);
+  expect(
+    (
+      await call("admin/login", "POST", {
+        username: "admin",
+        password: temporary,
+      })
+    ).status,
+  ).toBe(401);
+  expect(
+    (
+      await call("admin/login", "POST", {
+        username: "admin",
+        password: "Permanent-Admin-Password-739!",
+      })
+    ).status,
+  ).toBe(200);
+});

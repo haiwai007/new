@@ -77,7 +77,7 @@ export default function AdminPage() {
       });
       setHint("设置已保存。");
       toast.success("设置已保存");
-      if (path.endsWith("/logout")) return true;
+      if (path.endsWith("/logout") || path.endsWith("/password")) return true;
       try {
         await load();
         await refresh();
@@ -223,6 +223,7 @@ export default function AdminPage() {
               ["templates", "模板管理"],
               ["popup", "弹窗设置"],
               ["audit", "操作记录"],
+              ["password", "修改密码"],
             ].map(([key, label]) => (
               <Button
                 key={key}
@@ -249,6 +250,24 @@ export default function AdminPage() {
             />
           )}
           {tab === "audit" && <Audit />}
+          {tab === "password" && (
+            <PasswordSettings
+              busy={busy}
+              onSave={async (currentPassword, newPassword) => {
+                if (
+                  await mutate("/api/admin/password", "POST", {
+                    currentPassword,
+                    newPassword,
+                  })
+                ) {
+                  setAuth(false);
+                  setCsrf("");
+                  setData(null);
+                  setHint("密码已修改，请使用新密码重新登录。");
+                }
+              }}
+            />
+          )}
         </>
       )}
       {cloudConfig.enabled && (
@@ -259,6 +278,78 @@ export default function AdminPage() {
         </p>
       )}
     </div>
+  );
+}
+function PasswordSettings({
+  busy,
+  onSave,
+}: {
+  busy: boolean;
+  onSave: (currentPassword: string, newPassword: string) => Promise<void>;
+}) {
+  const [current, setCurrent] = useState(""),
+    [next, setNext] = useState(""),
+    [confirm, setConfirm] = useState(""),
+    [error, setError] = useState("");
+  return (
+    <form
+      aria-label="修改管理员密码"
+      className="max-w-md space-y-4 rounded-xl border p-5"
+      onSubmit={async (e) => {
+        e.preventDefault();
+        setError("");
+        if (next !== confirm) {
+          setError("两次输入的新密码不一致");
+          return;
+        }
+        await onSave(current, next);
+      }}
+    >
+      <h2 className="font-semibold">修改管理员密码</h2>
+      <p className="text-sm text-muted-foreground">
+        新密码至少 12
+        个字符。修改后所有后台会话退出，需要重新登录；不需要重新部署网站。
+      </p>
+      <Field label="当前密码">
+        <Input
+          type="password"
+          autoComplete="current-password"
+          required
+          value={current}
+          onChange={(e) => setCurrent(e.target.value)}
+        />
+      </Field>
+      <Field label="新密码">
+        <Input
+          type="password"
+          autoComplete="new-password"
+          required
+          minLength={12}
+          maxLength={256}
+          value={next}
+          onChange={(e) => setNext(e.target.value)}
+        />
+      </Field>
+      <Field label="确认新密码">
+        <Input
+          type="password"
+          autoComplete="new-password"
+          required
+          minLength={12}
+          maxLength={256}
+          value={confirm}
+          onChange={(e) => setConfirm(e.target.value)}
+        />
+      </Field>
+      {error && (
+        <p role="alert" className="text-sm text-destructive">
+          {error}
+        </p>
+      )}
+      <Button disabled={busy} type="submit">
+        保存新密码
+      </Button>
+    </form>
   );
 }
 function Login({
