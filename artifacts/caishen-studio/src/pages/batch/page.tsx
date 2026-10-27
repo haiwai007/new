@@ -1,3 +1,4 @@
+import {getParamValue} from "@/lib/template/params";
 import {
   requireStatusLocation,
   isLocationConfirmed,
@@ -50,6 +51,7 @@ import {
   createRng,
   defaultRule,
   generateItems,
+  preserveUniqueOrders,
   type GeneratedItem,
   isLockedParam,
   type BatchRules,
@@ -397,9 +399,11 @@ export default function BatchPage() {
                   <RuleEditor
                     key={p.id}
                     param={p}
-                    rule={rules[p.id] ?? { mode: "keep" }}
+                    rule={rules[p.id] ?? (p.type === "order" ? {mode:"orderRandom",unique:true} : { mode: "keep" })}
                     locked={isLockedParam(selected.doc, p)}
                     assets={assets}
+                    onBusyChange={setUploading}
+                    onAssetsAdded={added=>setAssets(old=>[...new Map([...old,...added].map(a=>[a.id,a])).values()])}
                     onModeChange={(m) => setMode(p.id, m)}
                     onChange={(r) => setRule(p.id, r)}
                   />
@@ -544,6 +548,7 @@ export default function BatchPage() {
                         invalid={i.errors.length > 0}
                         maxSize={160}
                       />
+                      {i.doc.parameters.filter(p=>p.type==="order").map(p=><p key={p.id} aria-label={`第 ${i.index+1} 张${p.name}`} className="break-all text-[11px] text-muted-foreground">{p.name}：{String(getParamValue(i.doc,p)??"")}</p>)}
                       {i.doc.phone && (
                         <p
                           aria-label={`第 ${i.index + 1} 张状态栏`}
@@ -610,6 +615,8 @@ export default function BatchPage() {
                               return;
                             }
                           }
+                          try { replacement=preserveUniqueOrders(replacement,items,rules,createRng(nextSeed^0x17ac)); }
+                          catch(e){setError(e instanceof Error?e.message:"单号重新随机失败");return;}
                           setWorking(true);
                           setPreparing(true);
                           setAdapted(0);

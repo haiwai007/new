@@ -1,3 +1,6 @@
+import {removeParameterBinding} from "@/lib/parameters/document";
+import OrderRuleEditor from "@/components/parameters/order-rule-editor";
+import {defaultOrderRule} from "@/lib/parameters/order";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button.tsx";
@@ -26,7 +29,7 @@ type Props =
   | { param: TemplateParameter; layer?: undefined; children: React.ReactNode }
   | { layer: Layer; param?: undefined; children: React.ReactNode };
 
-const TEXTUAL: ParamInputType[] = ["text", "multiline", "number", "date", "select"];
+const TEXTUAL: ParamInputType[] = ["text", "order", "multiline", "number", "date", "select"];
 const NUMERIC: ParamInputType[] = ["number", "fontSize", "width", "height", "x", "y", "rotation", "opacity"];
 const CUSTOM_PATTERN = "custom";
 const NO_PATTERN = "none";
@@ -55,6 +58,7 @@ function Form({ param, layer: newLayer, onDone }: Props & { onDone: () => void }
   const [boundLayerId, setBoundLayerId] = useState(layerId);
   const layer = doc.layers.find((l) => l.id === boundLayerId);
   const types = layer ? allowedParamTypes(layer) : [];
+  const [order,setOrder]=useState(param?.order??defaultOrderRule());
   const [type, setType] = useState<ParamInputType>(param?.type ?? types[0] ?? "text");
   const [name, setName] = useState(param?.name ?? "");
   const [nameError, setNameError] = useState("");
@@ -66,6 +70,7 @@ function Form({ param, layer: newLayer, onDone }: Props & { onDone: () => void }
   const [allowEmpty, setAllowEmpty] = useState(param?.allowEmpty ?? true);
   const [minLength, setMinLength] = useState(param?.rules.minLength?.toString() ?? "");
   const [maxLength, setMaxLength] = useState(param?.rules.maxLength?.toString() ?? "");
+  const [decimals,setDecimals]=useState(param?.rules.decimals?.toString()??"");
   const [min, setMin] = useState(param?.rules.min?.toString() ?? "");
   const [max, setMax] = useState(param?.rules.max?.toString() ?? "");
   const [step, setStep] = useState(param?.rules.step?.toString() ?? "");
@@ -141,6 +146,7 @@ function Form({ param, layer: newLayer, onDone }: Props & { onDone: () => void }
       ...base,
       name: displayName,
       type,
+      order: type === "order" ? order : undefined,
       layerId: layer.id,
       property: PROPERTY_FOR_TYPE[type],
       required,
@@ -150,6 +156,7 @@ function Form({ param, layer: newLayer, onDone }: Props & { onDone: () => void }
       description: description.trim(),
       placeholder: isTextual ? placeholder.trim() : "",
       rules: {
+        decimals: type==="number"&&decimals!==""?Math.max(0,Math.min(8,Math.floor(Number(decimals)||0))):undefined,
         minLength: isTextual && nMinLen && nMinLen > 0 ? Math.round(nMinLen) : undefined,
         maxLength: isTextual && nMaxLen && nMaxLen > 0 ? Math.round(nMaxLen) : undefined,
         min: isNumeric ? nMin : undefined,
@@ -173,7 +180,7 @@ function Form({ param, layer: newLayer, onDone }: Props & { onDone: () => void }
 
   const remove = () => {
     if (!param) return;
-    edit((d) => ({ ...d, parameters: d.parameters.filter((p) => p.id !== param.id) }));
+    edit((d) => removeParameterBinding(d, param.id));
     onDone();
   };
 
@@ -223,7 +230,8 @@ function Form({ param, layer: newLayer, onDone }: Props & { onDone: () => void }
           <Label>填写说明</Label>
           <Input value={description} onChange={(e) => setDescription(e.target.value)} placeholder="例如：建议不超过 8 个字" maxLength={200} />
         </div>
-        {isTextual && type !== "select" && (
+        {type === "order" && <OrderRuleEditor value={order} onChange={setOrder}/>}
+        {isTextual && type !== "select" && type !== "order" && (
           <>
             <div className="space-y-1">
               <Label>输入框提示文字</Label>
@@ -269,6 +277,7 @@ function Form({ param, layer: newLayer, onDone }: Props & { onDone: () => void }
             <textarea className="min-h-20 w-full rounded-md border bg-transparent px-3 py-2 text-sm" value={options} onChange={(e) => setOptions(e.target.value)} placeholder={"新品上市\n限时秒杀"} />
           </div>
         )}
+        {type==="number"&&<div className="space-y-1"><Label>保留小数位（留空不格式化）</Label><Input aria-label="数字参数小数位" type="number" min={0} max={8} value={decimals} onChange={e=>setDecimals(e.target.value)}/></div>}
         {isNumeric && (
           <div className="grid grid-cols-3 gap-3">
             <div className="space-y-1"><Label>最小值</Label><Input type="number" value={min} onChange={(e) => setMin(e.target.value)} /></div>

@@ -1,3 +1,4 @@
+import { defaultOrderRule, generateOrders, randomOrder } from "../parameters/order";
 import { distributeModels, applyPhoneBatchRules, validatePhoneBatchRules, type PhoneBatchRules } from "./phone-rules";
 import { format as formatDate } from "date-fns";
 import { applyParamValues, getParamValue, validateParamValue } from "../template/params.ts";
@@ -17,6 +18,8 @@ export type DateFormatId = (typeof DATE_FORMATS)[number]["id"];
 
 export type ParamRule =
   | { mode: "keep" }
+  | { mode: "orderRandom"; unique: boolean }
+  | { mode: "orderedList"; options: string[]; loop?: boolean }
   | { mode: "fixed"; value: string }
   | { mode: "range"; min: number; max: number; decimals: number; prefix: string; suffix: string }
   | { mode: "dateRange"; start: string; end: string; format: DateFormatId }
@@ -27,6 +30,8 @@ export type BatchRules = Record<string, ParamRule>;
 
 export const RULE_MODE_LABEL: Record<RuleMode, string> = {
   keep: "沿用模板",
+  orderRandom: "按模板随机",
+  orderedList: "按顺序使用",
   fixed: "固定值",
   range: "随机区间",
   dateRange: "随机时间段",
@@ -38,10 +43,12 @@ const NUMERIC_TYPES: ParamInputType[] = ["fontSize", "width", "height", "x", "y"
 
 /** Which rule modes make sense for each parameter type. */
 export function modesFor(type: ParamInputType): RuleMode[] {
+  if(type === "order") return ["keep","fixed","orderRandom","orderedList"];
+  if(type === "image") return ["keep","fixed","list","orderedList"];
   if (type === "text" || type === "multiline") return ["keep", "fixed", "list", "sequence", "range", "dateRange"];
   if (type === "number") return ["keep", "fixed", "range", "list"];
   if (type === "date") return ["keep", "fixed", "dateRange", "list"];
-  if (type === "image" || type === "color" || type === "font" || type === "select" || type === "toggle") return ["keep", "fixed", "list"];
+  if (type === "color" || type === "font" || type === "select" || type === "toggle") return ["keep", "fixed", "list"];
   if (NUMERIC_TYPES.includes(type)) return ["keep", "fixed", "range"];
   return ["keep", "fixed"];
 }
@@ -61,6 +68,8 @@ function localInput(d: Date) {
 export function defaultRule(mode: RuleMode, param: TemplateParameter, current: ParamValue): ParamRule {
   const text = typeof current === "string" || typeof current === "number" ? String(current) : "";
   switch (mode) {
+    case "orderRandom": return {mode,unique:true};
+    case "orderedList": return {mode,options:param.type==="image"?[]:text?[text]:[],loop:param.type==="image"};
     case "keep":
       return { mode };
     case "fixed":
@@ -68,7 +77,7 @@ export function defaultRule(mode: RuleMode, param: TemplateParameter, current: P
     case "range": {
       const n = Number(text.replace(/[^\d.-]/g, ""));
       const base = Number.isFinite(n) && n > 0 ? n : 100;
-      const decimals = param.type === "opacity" ? 2 : 0;
+      const decimals = param.type === "opacity" ? 2 : param.rules.decimals ?? 0;
       const prefix = /^[¥￥$]/.test(text) ? text[0] : "";
       return { mode, min: param.rules.min ?? Math.floor(base * 0.5), max: param.rules.max ?? Math.ceil(base * 1.5), decimals, prefix, suffix: "" };
     }
@@ -112,6 +121,12 @@ function convertFixed(param: TemplateParameter, raw: string): ParamValue | undef
 /** Value for one parameter on image #index, or undefined to keep the template value. */
 export function generateValue(param: TemplateParameter, rule: ParamRule, index: number, rng: () => number): ParamValue | undefined {
   switch (rule.mode) {
+    case "orderRandom": return generateOrders(param.order??defaultOrderRule(),1,rng,false)[0];
+    case "orderedList": {
+      const options=rule.options.filter(Boolean);
+      const value=options[rule.loop?index%options.length:index];
+      return value===undefined?undefined:convertFixed(param,value);
+    }
     case "keep":
       return undefined;
     case "fixed":
@@ -147,19 +162,39 @@ export function generateItems(template: TemplateDoc, rules: BatchRules, count: n
   const rng = createRng(seed);
   const assignedModels = distributeModels(phoneRules, total, createRng(seed ^ 0x6f5271));
   const phoneErrors = validatePhoneBatchRules(phoneRules, template);
+  const orderValues:Record<string,string[]>={}; const orderErrors:string[]=[];
+  for(const p of template.parameters){
+    const rule=rules[p.id]??(p.type==="order"?{mode:"orderRandom" as const,unique:true}:undefined);
+    if(rule?.mode==="orderRandom"&&!isLockedParam(template,p))try{orderValues[p.id]=generateOrders(p.order??defaultOrderRule(),total,rng,rule.unique);}catch(e){orderErrors.push(`「${p.name}」${e instanceof Error?e.message:"无法随机单号"}`);}
+  }
   return Array.from({ length: total }, (_, index) => {
     const values: Record<string, ParamValue> = {};
+    const itemErrors=[...orderErrors];
     for (const param of template.parameters) {
-      const rule = rules[param.id];
+      const rule = rules[param.id]??(param.type==="order"?{mode:"orderRandom" as const,unique:true}:undefined);
       if (!rule || isLockedParam(template, param)) continue;
-      const value = generateValue(param, rule, index, rng);
+      if(rule.mode==="orderedList"&&!rule.loop&&index>=rule.options.filter(Boolean).length)itemErrors.push(`「${param.name}」列表数量不足，请补充内容或开启循环使用`);
+      const value = rule.mode==="orderRandom"?orderValues[param.id]?.[index]:generateValue(param, rule, index, rng);
       if (value !== undefined) values[param.id] = value;
     }
     let doc: TemplateDoc;
     try { doc = applyPhoneBatchRules(applyParamValues(template, values), phoneRules, createRng(seed ^ 0x51f15e ^ Math.imul(index + 1, 0x45d9f3b)), assignedModels[index]); } catch (e) {return {index, doc: template, errors: [e instanceof Error ? e.message : "状态栏生成失败"]};}
-    const errors = doc.parameters
+    const errors = doc.parameters.filter(p=>p.type!=="order")
       .map((p) => validateParamValue(p, getParamValue(doc, p)))
       .filter((m): m is string => m !== null);
-    return { index, doc, errors: [...new Set([...phoneErrors, ...errors])], ...(phoneRules?.setup?.mode === "keep" ? {preservePhone: true} : {}) };
+    return { index, doc, errors: [...new Set([...phoneErrors, ...itemErrors, ...errors])], ...(phoneRules?.setup?.mode === "keep" ? {preservePhone: true} : {}) };
   });
+}
+
+/** Keep every other preview frozen while avoiding their existing order numbers. */
+export function preserveUniqueOrders(replacement:GeneratedItem, items:GeneratedItem[], rules:BatchRules, rng:()=>number):GeneratedItem {
+  let doc=replacement.doc;
+  for(const p of doc.parameters){
+    const rule=rules[p.id]??(p.type==="order"?{mode:"orderRandom" as const,unique:true}:undefined);
+    if(p.type!=="order"||rule?.mode!=="orderRandom"||!rule.unique||isLockedParam(doc,p))continue;
+    const excluded=items.filter(item=>item.index!==replacement.index).map(item=>String(getParamValue(item.doc,p)??""));
+    const value=randomOrder(p.order??defaultOrderRule(),String(getParamValue(items.find(item=>item.index===replacement.index)?.doc??doc,p)??""),excluded,rng);
+    doc=applyParamValues(doc,{[p.id]:value});
+  }
+  return {...replacement,doc};
 }

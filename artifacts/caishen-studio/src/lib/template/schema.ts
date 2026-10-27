@@ -1,3 +1,4 @@
+import { orderRuleSchema } from "../parameters/order";
 import { statusLocationSchema } from "../status-location/schema";
 import { z } from "zod";
 import { phoneSettingsSchema } from "../phone/schema";
@@ -60,6 +61,8 @@ const textLayer = z.object({
 const imageLayer = z.object({
   ...base,
   type: z.literal("image"),
+  containAlign: z.boolean().optional(),
+  containScale: z.number().min(.1).max(1).optional(),
   src: imageSource.nullable().default(null),
   fit: z.enum(["cover", "contain", "stretch"]).default("cover"),
   focusX: z.number().min(0).max(1).default(0.5),
@@ -103,10 +106,17 @@ const paramValue = z.union([
 ]);
 
 const parameter = z.object({
+  order: orderRuleSchema.optional(),
+  linkedLayerIds: z.array(z.string().min(1)).max(2000).optional(),
+  imageRole: z.enum(["avatar","logo","image"]).optional(),
+  imageBorder: z.object({width:z.number().min(0).max(200),color:z.string()}).optional(),
+  imageDefaults: z.object({containAlign:z.boolean().optional(),containScale:z.number().min(.1).max(1).optional(),fit:z.enum(["cover","contain","stretch"]),focusX:z.number().min(0).max(1),focusY:z.number().min(0).max(1),cropZoom:z.number().min(1).max(5),radius:z.number().min(0)}).optional(),
+  cleanup: z.object({mode:z.enum(["keep","solid","image"]),color:z.string(),src:imageSource.nullable(),follow:z.boolean(),rect:z.object({x:z.number(),y:z.number(),width:z.number().positive(),height:z.number().positive()})}).optional(),
   id: z.string().min(1),
   name: z.string().min(1),
   type: z.enum([
     "text",
+    "order",
     "multiline",
     "number",
     "date",
@@ -144,6 +154,7 @@ const parameter = z.object({
   allowEmpty: z.boolean().default(true),
   rules: z
     .object({
+      decimals: z.number().int().min(0).max(8).optional(),
       minLength: z.number().int().positive().optional(),
       maxLength: z.number().int().positive().optional(),
       min: z.number().optional(),

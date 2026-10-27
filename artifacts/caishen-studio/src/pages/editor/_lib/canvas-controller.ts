@@ -1,4 +1,5 @@
-import { ActiveSelection, Canvas, Rect, type FabricObject, type TPointerEventInfo, type TPointerEvent } from "fabric";
+import { parameterRenderDoc } from "@/lib/parameters/document";
+import { ActiveSelection, Canvas, Rect, FabricImage, type FabricObject, type TPointerEventInfo, type TPointerEvent } from "fabric";
 import type { Layer, TemplateDoc } from "@/types/template.ts";
 import { buildBackground, buildObject, readGeometry, type ObjectMeta } from "@/lib/canvas/render.ts";
 import { computeSnap, type Guide } from "./snapping.ts";
@@ -12,6 +13,8 @@ export type ControllerCallbacks = {
   onModify: (patches: Record<string, Partial<Layer>>) => void;
   onTextEdited: (id: string, text: string) => void;
   onDraw: (box: DrawBox) => void;
+  onDrawUpdate?: (box: DrawBox|null,point?:{x:number;y:number})=>void;
+  onCrop?: (id:string,focusX:number,focusY:number)=>void;
   onOverflow: (ids: string[]) => void;
   onMissing: (ids: string[]) => void;
 };
@@ -33,6 +36,14 @@ export class CanvasController {
   private drawing: { start: { x: number; y: number }; rect: Rect } | null = null;
   private drawMode = false;
   private zoom = 1;
+  private parameterDrawing=false;
+  private options={snap:true,ratio:null as number|null,crop:false};
+  private cropping:{id:string;x:number;y:number;focusX:number;focusY:number;width:number;height:number;sign:number}|null=null;
+  configure(options:Partial<{snap:boolean;ratio:number|null;crop:boolean}>){
+    this.options={...this.options,...options};
+    for(const entry of this.entries.values())if(entry.layer.type==="image")entry.obj.set({lockMovementX:this.options.crop,lockMovementY:this.options.crop});
+  }
+
 
   constructor(el: HTMLCanvasElement, private cb: ControllerCallbacks) {
     this.canvas = new Canvas(el, {
@@ -42,7 +53,7 @@ export class CanvasController {
       selectionLineWidth: 1,
       stopContextMenu: true,
       fireRightClick: false,
-      targetFindTolerance: 6,
+      targetFindTolerance: 8,
     });
     this.bindEvents();
   }
@@ -57,12 +68,15 @@ export class CanvasController {
     const emitSelection = () => {
       if (this.suppressSelection) return;
       this.cb.onSelect(this.activeIds());
+      const entry=this.entries.get(this.activeIds()[0]);
+      c.uniformScaling=entry?.layer.type==="image"?entry.layer.lockAspect:true;
     };
     c.on("selection:created", emitSelection);
     c.on("selection:updated", emitSelection);
     c.on("selection:cleared", emitSelection);
 
     c.on("object:modified", () => {
+      if(this.options.crop)return;
       const patches: Record<string, Partial<Layer>> = {};
       for (const obj of c.getActiveObjects()) {
         const m = this.metaByObj.get(obj);
@@ -75,7 +89,7 @@ export class CanvasController {
     });
 
     c.on("object:moving", (e) => {
-      if (!this.doc) return;
+      if (!this.doc || !this.options.snap || (e.e as MouseEvent|undefined)?.altKey || this.options.crop) {this.guides=[];return;}
       const target = e.target;
       const others = c
         .getObjects()
@@ -108,9 +122,24 @@ export class CanvasController {
       }
     });
 
-    c.on("mouse:down", (e) => this.onDrawStart(e));
-    c.on("mouse:move", (e) => this.onDrawMove(e));
-    c.on("mouse:up", () => this.onDrawEnd());
+    c.on("mouse:down", (e) => {
+      if(this.options.crop&&!this.drawMode){
+        const id=this.activeIds()[0],entry=this.entries.get(id);
+        if(entry?.layer.type==="image"){
+          const p=c.getScenePoint(e.e),l=entry.layer;
+          const image=entry.obj instanceof FabricImage?entry.obj:null,natural=image?.getOriginalSize();
+          const contain=l.fit==="contain",width=contain?l.width-entry.obj.getScaledWidth():(natural?.width??l.width)*(image?.scaleX??1)-l.width,height=contain?l.height-entry.obj.getScaledHeight():(natural?.height??l.height)*(image?.scaleY??1)-l.height;
+          this.cropping={id,x:p.x,y:p.y,focusX:l.focusX,focusY:l.focusY,width:Math.max(1,width),height:Math.max(1,height),sign:contain?1:-1};
+          entry.obj.set({lockMovementX:true,lockMovementY:true});return;
+        }
+      }
+      this.onDrawStart(e);
+    });
+    c.on("mouse:move", (e) => {
+      if(this.cropping){const p=c.getScenePoint(e.e),s=this.cropping;this.cb.onCrop?.(s.id,Math.max(0,Math.min(1,s.focusX+s.sign*(p.x-s.x)/s.width)),Math.max(0,Math.min(1,s.focusY+s.sign*(p.y-s.y)/s.height)));return;}
+      this.onDrawMove(e);
+    });
+    c.on("mouse:up", () => {this.cropping=null;this.onDrawEnd();});
   }
 
   private drawGuides() {
@@ -138,7 +167,9 @@ export class CanvasController {
 
   // ----- drawing a box (frame / mask / text area) -----
 
-  setDrawMode(on: boolean) {
+  setDrawMode(on: boolean, parameterDrawing=false) {
+    this.parameterDrawing=parameterDrawing;
+    this.cb.onDrawUpdate?.(null);
     // Cancelling or switching tools must not leave a preview rectangle behind.
     if (this.drawing) {this.canvas.remove(this.drawing.rect); this.drawing = null;}
     this.drawMode = on;
@@ -157,6 +188,7 @@ export class CanvasController {
   private onDrawStart(e: TPointerEventInfo<TPointerEvent>) {
     if (!this.drawMode) return;
     const p = this.canvas.getScenePoint(e.e);
+    p.x=Math.max(0,Math.min(this.doc?.canvas.width??p.x,p.x));p.y=Math.max(0,Math.min(this.doc?.canvas.height??p.y,p.y));
     const rect = new Rect({
       left: p.x,
       top: p.y,
@@ -177,15 +209,23 @@ export class CanvasController {
   }
 
   private onDrawMove(e: TPointerEventInfo<TPointerEvent>) {
-    if (!this.drawing) return;
-    const p = this.canvas.getScenePoint(e.e);
-    const { start, rect } = this.drawing;
-    rect.set({
-      left: Math.min(start.x, p.x),
-      top: Math.min(start.y, p.y),
-      width: Math.abs(p.x - start.x),
-      height: Math.abs(p.y - start.y),
-    });
+    if(!this.drawing||!this.doc)return;
+    const p=this.canvas.getScenePoint(e.e),{start,rect}=this.drawing;
+    p.x=Math.max(0,Math.min(this.doc.canvas.width,p.x));p.y=Math.max(0,Math.min(this.doc.canvas.height,p.y));
+    if(this.options.snap&&!(e.e as MouseEvent).altKey){
+      const others=this.doc.layers.filter(l=>l.visible).map(l=>({left:l.x,top:l.y,width:l.width,height:l.height}));
+      const snap=computeSnap({left:p.x,top:p.y,width:0,height:0},others,this.doc.canvas,6/this.zoom);
+      p.x+=snap.dx;p.y+=snap.dy;this.guides=snap.guides;
+    }
+    let width=Math.abs(p.x-start.x),height=Math.abs(p.y-start.y);
+    if(this.options.ratio){
+      if(width/Math.max(.001,height)>this.options.ratio)height=width/this.options.ratio;else width=height*this.options.ratio;
+      const scale=Math.min(1,(p.x>=start.x?this.doc.canvas.width-start.x:start.x)/Math.max(1,width),(p.y>=start.y?this.doc.canvas.height-start.y:start.y)/Math.max(1,height));
+      width*=scale;height*=scale;
+    }
+    const box={x:p.x<start.x?start.x-width:start.x,y:p.y<start.y?start.y-height:start.y,width,height};
+    rect.set({left:box.x,top:box.y,width,height});
+    this.cb.onDrawUpdate?.(box,p);
     this.canvas.requestRenderAll();
   }
 
@@ -197,12 +237,19 @@ export class CanvasController {
     const W = this.doc.canvas.width;
     const H = this.doc.canvas.height;
     let box: DrawBox = { x: rect.left, y: rect.top, width: rect.width, height: rect.height };
-    // A click without dragging creates a default-size box at that point.
-    if (box.width < 8 || box.height < 8) {
+    this.cb.onDrawUpdate?.(null);
+    this.guides=[];
+    // Keep tiny parameter selections editable instead of discarding them.
+    if(this.parameterDrawing&&(box.width<4||box.height<4)){
+      box={...box,width:Math.max(24/this.zoom,box.width),height:Math.max(20/this.zoom,box.height)};
+      if(this.options.ratio)box.height=box.width/this.options.ratio;
+    }
+    else if (box.width < 8 || box.height < 8) {
       const w = W * 0.4;
       const h = H * 0.12;
       box = { x: start.x - w / 2, y: start.y - h / 2, width: w, height: h };
     }
+    if(this.parameterDrawing)box={...box,width:Math.min(W,box.width),height:Math.min(H,box.height),x:Math.max(0,Math.min(box.x,W-Math.min(W,box.width))),y:Math.max(0,Math.min(box.y,H-Math.min(H,box.height)))};
     const x = Math.max(0, box.x);
     const y = Math.max(0, box.y);
     box = {
@@ -265,6 +312,7 @@ export class CanvasController {
 
   async sync(doc: TemplateDoc, selectedIds: string[]) {
     const token = ++this.syncToken;
+    doc = parameterRenderDoc(doc, true);
     this.doc = doc;
     const c = this.canvas;
 
@@ -321,6 +369,7 @@ export class CanvasController {
       } else if (!old) {
         c.add(r.obj);
       }
+      if(r.layer.type==="image"&&this.options.crop)r.obj.set({lockMovementX:true,lockMovementY:true});
       this.metaByObj.set(r.obj, r.meta);
       nextEntries.set(r.layer.id, r);
     }
@@ -330,7 +379,7 @@ export class CanvasController {
     });
 
     this.cb.onOverflow(results.filter((r) => r.meta.overflow).map((r) => r.layer.id));
-    this.cb.onMissing(results.filter((r) => r.meta.missing).map((r) => r.layer.id));
+    this.cb.onMissing(results.filter((r) => r.meta.missing && !(r.layer.type === "image" && !r.layer.src && r.layer.opacity===0)).map((r) => r.layer.id));
     if (!editing) this.applySelection(selectedIds);
     c.requestRenderAll();
   }

@@ -125,6 +125,7 @@ export function remapAssetIds(
       l.type === "image" ? { ...l, src: src(l.src) } : l,
     ),
     parameters: doc.parameters.map((p) => {
+      p = p.cleanup ? {...p,cleanup:{...p.cleanup,src:src(p.cleanup.src)}} : p;
       const v = p.defaultValue;
       return v && typeof v === "object" && v.kind === "asset"
         ? { ...p, defaultValue: src(v) }
@@ -179,6 +180,7 @@ export function mapImageSources(
         : layer,
     ),
     parameters: doc.parameters.map((parameter) => {
+      parameter=parameter.cleanup?.src?{...parameter,cleanup:{...parameter.cleanup,src:replace(parameter.cleanup.src)}}:parameter;
       const value = parameter.defaultValue;
       return value &&
         typeof value === "object" &&

@@ -1,3 +1,4 @@
+import {createShapeLayer} from "./layers";
 import { invalidateLocation } from "../status-location/model";
 import { refreshPhoneLayers } from "../phone/layers";
 import type { Layer, Shadow, TemplateDoc } from "../../types/template.ts";
@@ -99,5 +100,11 @@ export function resizeDoc(doc: TemplateDoc, width: number, height: number, mode:
     if (l.layout === "fixed") return l;
     return round(mode === "smart" ? smartLayer(l, W, H, W2, H2) : scaleLayer(l, W2 / W, H2 / H));
   });
-  return refreshPhoneLayers(invalidateLocation({ ...doc, canvas, layers }), doc);
+  const parameters=doc.parameters.map(p=>{
+    if(!p.cleanup||p.cleanup.follow)return p;
+    const frame=createShapeLayer("rect",p.cleanup.rect);
+    const moved=mode === "smart" ? smartLayer(frame,W,H,W2,H2) : scaleLayer(frame,W2/W,H2/H);
+    return {...p,cleanup:{...p.cleanup,rect:{x:moved.x,y:moved.y,width:moved.width,height:moved.height}}};
+  });
+  return refreshPhoneLayers(invalidateLocation({ ...doc, canvas, layers, parameters }), doc);
 }

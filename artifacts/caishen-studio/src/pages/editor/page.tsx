@@ -1,3 +1,6 @@
+import ParameterDrawOptions from "./_components/parameter-draw-options";
+import ParameterInspector from "./_components/parameter-inspector";
+import {parameterLayerIds} from "@/lib/parameters/document";
 import { proposeStatusLocation } from "@/lib/status-location/engine";
 import { defaultStatusLocation } from "@/lib/status-location/model";
 import ManualReferenceNotice from "./_components/manual-reference-notice";
@@ -57,6 +60,7 @@ function RightPanel() {
   const tab = useEditor((s) => s.rightTab);
   const setTab = useEditor((s) => s.setRightTab);
   const count = useEditor((s) => s.doc?.parameters.length ?? 0);
+  const hasParameter = useEditor(s=>s.isTemplate&&!!s.doc?.parameters.some(p=>parameterLayerIds(p).some(id=>s.selectedIds.includes(id))));
   return (
     <Tabs
       value={tab}
@@ -73,7 +77,7 @@ function RightPanel() {
         </TabsTrigger>
       </TabsList>
       <TabsContent value="props" className="flex-1 overflow-y-auto">
-        <PropertiesPanel />
+        {hasParameter ? <ParameterInspector/> : <PropertiesPanel />}
       </TabsContent>
       <TabsContent value="params" className="flex-1 overflow-y-auto">
         <ParamsPanel />
@@ -122,7 +126,7 @@ function EditorInner({ workId }: { workId: string | undefined }) {
       const res = loadTemplateDoc(work.doc);
       if (!res.ok) throw new Error(res.error);
       if (!alive) return;
-      useEditor.getState().load(work.id, res.doc, work.revision ?? 0);
+      useEditor.getState().load(work.id, res.doc, work.revision ?? 0, work.kind === "template");
       setWarnings(res.warnings);
       setState({ status: "ready", isTemplate: work.kind === "template" });
     };
@@ -202,6 +206,10 @@ function EditorInner({ workId }: { workId: string | undefined }) {
 
   // Open the properties drawer on mobile when something is selected.
   const hasSel = useEditor((s) => s.selectedIds.length > 0);
+  const activeTool=useEditor(s=>s.tool),cropping=useEditor(s=>s.cropMode);
+  useEffect(()=>{if(isMobile&&(activeTool!=="select"||cropping))setDrawer(null);},[isMobile,activeTool,cropping]);
+  useEffect(()=>{const open=()=>{if(isMobile)setDrawer("props");};window.addEventListener("haishen:parameter-settings",open);return()=>window.removeEventListener("haishen:parameter-settings",open);},[isMobile]);
+
 
   if (state.status === "loading") {
     return (
@@ -278,11 +286,12 @@ function EditorInner({ workId }: { workId: string | undefined }) {
           onDragOver={(e) => e.preventDefault()}
           onDrop={onDrop}
         >
+          <ParameterDrawOptions/>
           <CanvasStage onReady={(api) => (stageApi.current = api)} />
           <EditorOcrDialog />
           <RepairDialog />
         </div>
-        <aside className="hidden w-72 shrink-0 border-l bg-background md:block">
+        <aside className="hidden w-80 shrink-0 border-l bg-background md:block">
           <RightPanel />
         </aside>
       </div>
@@ -312,6 +321,7 @@ function EditorInner({ workId }: { workId: string | undefined }) {
           >
             <DrawerContent className="max-h-[70vh]">
               <DrawerHeader className="py-2">
+                <div className="flex items-center justify-between gap-2"><button className="min-h-9 rounded px-2 text-xs" aria-label="收起参数设置" onClick={()=>setDrawer(null)}>收起</button><Button size="sm" variant="secondary" onClick={onSave}>{state.isTemplate?"保存当前模板":"保存当前作品"}</Button></div>
                 <DrawerTitle className="text-sm">
                   {drawer === "props"
                     ? "属性与参数"

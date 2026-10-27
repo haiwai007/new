@@ -1,3 +1,4 @@
+import type { OrderRule } from "../lib/parameters/order";
 import type { StatusLocation } from "../lib/status-location/schema";
 import type { PhoneSettings } from "../lib/phone/schema";
 // Core template data model. The template JSON is the single source of truth;
@@ -62,6 +63,8 @@ export type ImageFit = "cover" | "contain" | "stretch";
 export type ImageLayer = BaseLayer & {
   /** Optional alpha-preserving tint for custom notification icons. */
   tint?: string;
+  containAlign?: boolean;
+  containScale?: number;
   type: "image";
   src: ImageSource | null;
   fit: ImageFit;
@@ -92,6 +95,7 @@ export type LayerType = Layer["type"];
 
 export type ParamInputType =
   | "text"
+  | "order"
   | "multiline"
   | "number"
   | "date"
@@ -125,6 +129,7 @@ export type BindableProperty =
 export type ParamValue = string | number | boolean | ImageSource | null;
 
 export type ParamRules = {
+  decimals?: number;
   minLength?: number;
   maxLength?: number;
   min?: number;
@@ -137,7 +142,18 @@ export type ParamRules = {
   patternMessage?: string;
 };
 
+export type ParameterImageDefaults = Pick<ImageLayer, "fit"|"focusX"|"focusY"|"cropZoom"|"radius"|"containScale"|"containAlign">;
+export type ParameterCleanup = {
+  mode: "keep"|"solid"|"image"; color: string; src: ImageSource|null;
+  follow: boolean; rect: {x:number;y:number;width:number;height:number};
+};
 export type TemplateParameter = {
+  order?: OrderRule;
+  linkedLayerIds?: string[];
+  imageRole?: "avatar"|"logo"|"image";
+  imageBorder?: {width:number;color:string};
+  imageDefaults?: ParameterImageDefaults;
+  cleanup?: ParameterCleanup;
   id: string;
   name: string;
   type: ParamInputType;

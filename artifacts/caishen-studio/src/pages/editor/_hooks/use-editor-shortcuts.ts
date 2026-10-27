@@ -48,6 +48,7 @@ export function useEditorShortcuts(onSave: () => void) {
           s.deleteSelected();
         }
       } else if (k === "escape") {
+        s.setParameterBox(null);s.setRedrawLayer(null);s.setDrawOptions({cropMode:false});
         if (s.tool !== "select") s.setTool("select");
         else s.select([]);
       } else if (k.startsWith("arrow") && s.selectedIds.length && s.doc) {

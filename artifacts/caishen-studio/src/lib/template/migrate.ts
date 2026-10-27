@@ -53,7 +53,7 @@ export function loadTemplateDoc(raw: unknown): LoadResult {
     if (ids.has(l.id)) return { ok: false, error: `图层 ID 重复：${l.id}` };
     ids.add(l.id);
   }
-  const params = doc.parameters.filter((p) => {
+  const params = doc.parameters.map(p=>p.linkedLayerIds?{...p,linkedLayerIds:p.linkedLayerIds.filter(id=>ids.has(id)&&id!==p.layerId)}:p).filter((p) => {
     if (ids.has(p.layerId)) return true;
     warnings.push(`参数「${p.name}」关联的图层不存在，已移除`);
     return false;

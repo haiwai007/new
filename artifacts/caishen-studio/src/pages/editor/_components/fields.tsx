@@ -47,6 +47,7 @@ export function NumberField({
       <div className="relative">
         <Input
           type="number"
+          aria-label={label}
           inputMode="decimal"
           value={draft}
           step={step}

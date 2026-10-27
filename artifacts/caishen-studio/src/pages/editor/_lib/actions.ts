@@ -57,6 +57,20 @@ export function handleDrawnBox(box: DrawBox): string | null {
   const { tool, doc, setTool } = useEditor.getState();
   if (!doc) return null;
   let layer: Layer | null = null;
+  if(tool === "draw-parameter") {
+    const state=useEditor.getState();
+    if(state.redrawLayerId){
+      const target=doc.layers.find(l=>l.id===state.redrawLayerId);
+      if(target)edit(d=>({...d,layers:d.layers.map(l=>{
+        if(l.id!==target.id)return l;
+        const p=d.parameters.find(p=>p.layerId===l.id||p.linkedLayerIds?.includes(l.id));
+        const side=Math.min(box.width,box.height);
+        return {...l,...box,rotation:0,...(l.type==="image"&&p?.imageRole==="avatar"&&l.lockAspect?{x:box.x+(box.width-side)/2,y:box.y+(box.height-side)/2,width:side,height:side,radius:side/2}:{})} as Layer;
+      })}));
+      state.setRedrawLayer(null);setTool("select");if(target)state.select([target.id]);return null;
+    }
+    state.setParameterBox(box);setTool("select");return null;
+  }
   if (tool === "draw-text") {
     layer = createTextLayer(box, {
       name: "文字",

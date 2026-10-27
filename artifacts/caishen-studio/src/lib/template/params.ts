@@ -1,3 +1,4 @@
+import { defaultOrderRule, orderError } from "../parameters/order";
 import { RE2JS } from "re2js";
 import type {
   BindableProperty,
@@ -31,6 +32,7 @@ export function renameParameter(doc: TemplateDoc, id: string, raw: string): Temp
 
 export const PARAM_TYPE_LABEL: Record<ParamInputType, string> = {
   text: "单行文本",
+  order: "订单号",
   multiline: "多行文本",
   number: "数字",
   date: "日期",
@@ -50,6 +52,7 @@ export const PARAM_TYPE_LABEL: Record<ParamInputType, string> = {
 
 export const PROPERTY_FOR_TYPE: Record<ParamInputType, BindableProperty> = {
   text: "text",
+  order: "text",
   multiline: "text",
   number: "text",
   date: "text",
@@ -67,13 +70,13 @@ export const PROPERTY_FOR_TYPE: Record<ParamInputType, BindableProperty> = {
   opacity: "opacity",
 };
 
-const TEXT_ONLY: ParamInputType[] = ["text", "multiline", "number", "date", "select", "font", "fontSize"];
+const TEXT_ONLY: ParamInputType[] = ["text", "order", "multiline", "number", "date", "select", "font", "fontSize"];
 
 /** Parameters are grouped into sections in the fill-in panel. */
 export const DEFAULT_GROUPS = { content: "内容", image: "图片", style: "样式", layout: "布局" } as const;
 
 export function defaultGroupFor(type: ParamInputType): string {
-  if (["text", "multiline", "number", "date", "select"].includes(type)) return DEFAULT_GROUPS.content;
+  if (["text", "order", "multiline", "number", "date", "select"].includes(type)) return DEFAULT_GROUPS.content;
   if (type === "image") return DEFAULT_GROUPS.image;
   if (["color", "font", "fontSize", "opacity", "toggle"].includes(type)) return DEFAULT_GROUPS.style;
   return DEFAULT_GROUPS.layout;
@@ -137,6 +140,7 @@ export function validateParamValue(
     return null;
   }
   const { rules } = param;
+  if(param.type === "order" && typeof value === "string") return orderError(param.order ?? defaultOrderRule(),value);
   if (typeof value === "string") {
     const len = [...value].length;
     if (rules.minLength && len < rules.minLength) {
@@ -171,6 +175,7 @@ export function validateParamValue(
 }
 
 function coerce(param: TemplateParameter, value: ParamValue): ParamValue {
+  if(param.type==="number"&&param.rules.decimals!==undefined&&value!==null&&String(value).trim()!==""&&Number.isFinite(Number(value)))value=Number(value).toFixed(param.rules.decimals);
   switch (param.property) {
     case "text":
     case "fill":
@@ -195,12 +200,14 @@ export function applyParamValue(
   const coerced = coerce(param, value);
   if (coerced === null && param.property !== "src") return doc;
   const layers = doc.layers.map((l) => {
-    if (l.id !== param.layerId) return l;
+    if (l.id !== param.layerId && !param.linkedLayerIds?.includes(l.id)) return l;
     // Width/height must stay positive.
     if ((param.property === "width" || param.property === "height") && Number(coerced) <= 0) {
       return l;
     }
-    return { ...l, [param.property]: coerced } as Layer;
+    return { ...l, [param.property]: coerced,
+      ...(param.property === "src" && l.type === "image" ? {focusX:.5,focusY:.5,cropZoom:1,autoFocus:false,...(param.imageRole?{containScale:1,containAlign:true}:{})}:{}),
+    } as Layer;
   });
   return { ...doc, layers };
 }
@@ -220,7 +227,11 @@ export function applyParamValues(
 export function resetParamsToDefault(doc: TemplateDoc): TemplateDoc {
   const values: Record<string, ParamValue> = {};
   for (const p of doc.parameters) values[p.id] = p.defaultValue;
-  return applyParamValues(doc, values);
+  const next=applyParamValues(doc, values);
+  return {...next,layers:next.layers.map(l=>{
+    const p=doc.parameters.find(p=>(p.layerId===l.id||p.linkedLayerIds?.includes(l.id))&&p.type==="image");
+    return l.type==="image"&&p?.imageDefaults?{...l,...p.imageDefaults,radius:l.radius}:l;
+  })};
 }
 
 export function createParameter(
@@ -240,6 +251,7 @@ export function createParameter(
     editable: true,
     allowEmpty: true,
     rules: type === "opacity" ? { min: 0, max: 1 } : {},
+    ...(type === "order" ? {order:defaultOrderRule()}:{}),
     group: defaultGroupFor(type),
     description: "",
     placeholder: "",

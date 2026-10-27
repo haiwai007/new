@@ -1,3 +1,4 @@
+import { parameterRenderDoc } from "../parameters/document";
 import { hasLocationPixelMask, locationPixelMask, restoreOutsideLocation, type LocationPixelMask } from "../status-location/pixel-mask";
 import {
   FabricImage,
@@ -62,6 +63,7 @@ function commonProps(layer: Layer, interactive: boolean) {
     cornerStrokeColor: ACCENT,
     cornerStyle: "circle" as const,
     cornerSize: 11,
+    touchCornerSize: 44,
     transparentCorners: false,
     borderScaleFactor: 1.5,
     padding: 0,
@@ -171,10 +173,11 @@ async function buildImage(layer: ImageLayer, interactive: boolean): Promise<Buil
     focus.y,
     layer.cropZoom,
   );
+  if(layer.fit==="contain"&&layer.containAlign){g.scaleX*=layer.containScale??1;g.scaleY*=layer.containScale??1;}
   const dispW = g.width * g.scaleX;
   const dispH = g.height * g.scaleY;
-  const offX = (layer.width - dispW) / 2;
-  const offY = (layer.height - dispH) / 2;
+  const offX = (layer.width - dispW) * (layer.fit==="contain"&&layer.containAlign?layer.focusX:.5);
+  const offY = (layer.height - dispH) * (layer.fit==="contain"&&layer.containAlign?layer.focusY:.5);
   const p = rot(offX, offY, layer.rotation);
   let displayed: HTMLImageElement | HTMLCanvasElement = el;
   if (layer.tint) {
@@ -322,6 +325,7 @@ export async function renderDoc(
   doc: TemplateDoc,
   opts: { multiplier: number; transparent?: boolean },
 ): Promise<RenderResult> {
+  doc = parameterRenderDoc(doc);
   const warnings: string[] = [];
   const el = document.createElement("canvas");
   const sc = new StaticCanvas(el, {

@@ -1,13 +1,14 @@
+import {duplicateParameter,parameterLayerIds,normalizeParameterGeometry} from "@/lib/parameters/document";
 import { invalidateLocation } from "@/lib/status-location/model";
 import { syncPhoneTextSettings } from "@/lib/phone/layers";
 import { create } from "zustand";
-import type { Layer, TemplateDoc } from "@/types/template.ts";
+import type { Layer, TemplateDoc, ParamValue } from "@/types/template.ts";
 import { cloneLayers, addLayers, expandToGroups, removeLayers } from "@/lib/template/doc-ops.ts";
 
 const HISTORY_LIMIT = 100;
 const COALESCE_MS = 800;
 
-export type Tool = "select" | "draw-text" | "draw-image" | "draw-mask" | "draw-rect" | "draw-ocr";
+export type Tool = "draw-parameter" | "select" | "draw-text" | "draw-image" | "draw-mask" | "draw-rect" | "draw-ocr";
 /** Canvas-space region the user asked to run OCR on. */
 export type OcrRequest = { x: number; y: number; width: number; height: number; full: boolean };
 export type SaveStatus = "saved" | "dirty" | "saving" | "error";
@@ -30,6 +31,25 @@ type CommitOptions = {
 };
 
 type EditorState = {
+  isTemplate: boolean;
+  activeParamId: string|null;
+  previewValues: Record<string,ParamValue>;
+  previewPatches: Record<string,Partial<Layer>>;
+  redrawLayerId:string|null;
+  setRedrawLayer:(id:string|null)=>void;
+  parameterBox: {x:number;y:number;width:number;height:number}|null;
+  continuousDraw: boolean;
+  snapEnabled: boolean;
+  magnifierEnabled: boolean;
+  drawRatio: number|null;
+  cropMode: boolean;
+  setActiveParam: (id:string|null)=>void;
+  setParamPreview: (id:string,value:ParamValue)=>void;
+  setPreviewPatch: (id:string,patch:Partial<Layer>)=>void;
+  clearParamPreview: (id?:string)=>void;
+  setParameterBox: (box:EditorState["parameterBox"])=>void;
+  setDrawOptions: (options:Partial<Pick<EditorState,"continuousDraw"|"snapEnabled"|"magnifierEnabled"|"drawRatio"|"cropMode">>)=>void;
+
   workId: string | null;
   doc: TemplateDoc | null;
   revision: number;
@@ -50,7 +70,7 @@ type EditorState = {
   setOcrRequest: (r: OcrRequest | null) => void;
   repairOpen: boolean;
   setRepairOpen: (o: boolean) => void;
-  load: (workId: string, doc: TemplateDoc, revision?: number) => void;
+  load: (workId: string, doc: TemplateDoc, revision?: number, isTemplate?:boolean) => void;
   reset: () => void;
   commit: (doc: TemplateDoc, opts?: CommitOptions) => void;
   undo: () => void;
@@ -68,6 +88,22 @@ type EditorState = {
 };
 
 export const useEditor = create<EditorState>((set, get) => ({
+  isTemplate:false,activeParamId:null,previewValues:{},previewPatches:{},parameterBox:null,redrawLayerId:null,
+  setRedrawLayer:redrawLayerId=>set({redrawLayerId}),
+  continuousDraw:false,snapEnabled:true,magnifierEnabled:true,drawRatio:null,cropMode:false,
+  setActiveParam:activeParamId=>set({activeParamId}),
+  setParamPreview:(id,value)=>set(s=>({previewValues:{...s.previewValues,[id]:value}})),
+  setPreviewPatch:(id,patch)=>set(s=>({previewPatches:{...s.previewPatches,[id]:{...s.previewPatches[id],...patch}}})),
+  clearParamPreview:(id)=>set(s=>{
+    if(!id)return {previewValues:{},previewPatches:{}};
+    const values={...s.previewValues};delete values[id];
+    const p=s.doc?.parameters.find(p=>p.id===id),patches={...s.previewPatches};
+    for(const layerId of p?[p.layerId,...(p.linkedLayerIds??[])]:[])delete patches[layerId];
+    return {previewValues:values,previewPatches:patches};
+  }),
+  setParameterBox:parameterBox=>set({parameterBox}),
+  setDrawOptions:options=>set(options),
+
   revision: 0,
   loadId: 0,
   recoveryWorkId: null,
@@ -89,11 +125,12 @@ export const useEditor = create<EditorState>((set, get) => ({
   repairOpen: false,
   setRepairOpen: (repairOpen) => set({ repairOpen }),
 
-  load: (workId, doc, revision = 0) =>
+  load: (workId, doc, revision = 0, isTemplate=false) =>
     set({
       workId,
       doc,
       revision,
+      isTemplate,activeParamId:null,previewValues:{},previewPatches:{},parameterBox:null,cropMode:false,redrawLayerId:null,
       loadId: get().loadId + 1,
       recoveryWorkId: null,
       past: [],
@@ -107,11 +144,12 @@ export const useEditor = create<EditorState>((set, get) => ({
       repairOpen: false,
     }),
 
-  reset: () => set({ workId: null, doc: null, past: [], future: [], selectedIds: [] }),
+  reset: () => set({ workId: null, doc: null, past: [], future: [], selectedIds: [],isTemplate:false,activeParamId:null,previewValues:{},previewPatches:{},parameterBox:null,cropMode:false,redrawLayerId:null }),
 
   commit: (doc, opts) => {
     const { doc: prev, past, lastCommit } = get();
     if (!prev || prev === doc) return;
+    doc = normalizeParameterGeometry(doc,prev,get().isTemplate);
     doc = invalidateLocation(syncPhoneTextSettings(doc));
     const now = Date.now();
     const merge =
@@ -185,6 +223,10 @@ export const useEditor = create<EditorState>((set, get) => ({
     const { doc, selectedIds, commit } = get();
     if (!doc) return;
     const src = doc.layers.filter((l) => selectedIds.includes(l.id));
+    if (get().isTemplate && selectedIds.length===1) {
+      const p=doc.parameters.find(p=>parameterLayerIds(p).includes(selectedIds[0]));
+      if(p){const next=duplicateParameter(doc,p.id);commit(next);const added=next.parameters.at(-1)!;set({selectedIds:[added.layerId],activeParamId:added.id});return;}
+    }
     if (src.length === 0) return;
     const clones = cloneLayers(src);
     commit(addLayers(doc, clones));

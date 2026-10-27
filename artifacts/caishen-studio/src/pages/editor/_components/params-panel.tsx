@@ -1,3 +1,6 @@
+import ImageParameterInput from "@/components/parameters/image-parameter-input";
+import {defaultOrderRule,randomOrder,orderSummary} from "@/lib/parameters/order";
+import ParameterManager from "./parameter-manager";
 import ParameterNameEditor from "./parameter-name-editor";
 import { ChevronDown, ChevronUp, ImagePlus, Lock, Plus, RotateCcw, Settings2, SlidersHorizontal, Sparkles, Trash2 } from "lucide-react";
 import { toast } from "sonner";
@@ -44,6 +47,9 @@ function ParamInput({ doc, param, first, last }: { doc: TemplateDoc; param: Temp
 
   let control: React.ReactNode;
   switch (param.type) {
+    case "order":
+      control=<div className="space-y-1"><div className="flex gap-1"><Input aria-label={param.name} value={str} disabled={disabled} onChange={e=>apply(e.target.value)}/><Button size="sm" variant="secondary" disabled={disabled} aria-label={`随机生成${param.name}`} onClick={()=>apply(randomOrder(param.order??defaultOrderRule(),str))}>随机生成</Button></div><p className="text-[11px] text-muted-foreground">{orderSummary(param.order??defaultOrderRule())}</p></div>;
+      break;
     case "multiline":
       control = <Textarea value={str} rows={3} disabled={disabled} onChange={(e) => apply(e.target.value)} className="text-sm" />;
       break;
@@ -99,26 +105,7 @@ function ParamInput({ doc, param, first, last }: { doc: TemplateDoc; param: Temp
       );
       break;
     case "image":
-      control = (
-        <Button
-          size="sm"
-          variant="secondary"
-          className="w-full"
-          disabled={disabled}
-          onClick={async () => {
-            const f = await pickFile();
-            if (!f) return;
-            try {
-              const a = await storeImageFile(f);
-              apply({ kind: "asset", assetId: a.id });
-            } catch (e) {
-              toast.error("图片上传失败", { description: e instanceof Error ? e.message : undefined });
-            }
-          }}
-        >
-          <ImagePlus className="size-4" /> 更换图片
-        </Button>
-      );
+      control=<ImageParameterInput doc={doc} param={param} disabled={disabled}/>;
       break;
     case "number":
     case "fontSize":
@@ -148,7 +135,7 @@ function ParamInput({ doc, param, first, last }: { doc: TemplateDoc; param: Temp
   }
 
   return (
-    <div className="space-y-1.5">
+    <div className="space-y-1.5" aria-label={`参数${param.name}`}>
       <div className="flex items-center justify-between gap-2">
         <div className="flex min-w-0 flex-1 items-start gap-1 text-xs">
           <ParameterNameEditor param={param} />
@@ -183,7 +170,9 @@ function ParamInput({ doc, param, first, last }: { doc: TemplateDoc; param: Temp
 export default function ParamsPanel() {
   const doc = useEditor((s) => s.doc);
   const selectedIds = useEditor((s) => s.selectedIds);
+  const isTemplate=useEditor(s=>s.isTemplate);
   if (!doc) return null;
+  if(isTemplate)return <ParameterManager/>;
 
   const suggest = (): void => {
     const s = suggestParameters(doc);
@@ -225,6 +214,7 @@ export default function ParamsPanel() {
   return (
     <div className="space-y-4 p-4">
       <div className="flex flex-wrap gap-2">
+        {doc.parameters.some(p=>p.type==="order"&&p.editable)&&<Button size="sm" variant="secondary" onClick={()=>edit(d=>d.parameters.filter(p=>p.type==="order"&&p.editable).reduce((next,p)=>applyParamValue(next,p,randomOrder(p.order??defaultOrderRule(),String(getParamValue(next,p)??""))),d))}>随机全部订单号</Button>}
         <Button size="sm" variant="secondary" onClick={() => edit(resetParamsToDefault)}>
           <RotateCcw className="size-4" /> 恢复默认值
         </Button>

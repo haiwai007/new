@@ -76,7 +76,8 @@ describe("batch rules", () => {
   });
 
   it("offers type-appropriate modes", () => {
-    expect(modesFor("image")).toEqual(["keep", "fixed", "list"]);
+    expect(modesFor("image")).toEqual(["keep", "fixed", "list", "orderedList"]);
+    expect(modesFor("order")).toContain("orderRandom");
     expect(modesFor("number")).toContain("range");
     expect(modesFor("date")).toContain("dateRange");
   });

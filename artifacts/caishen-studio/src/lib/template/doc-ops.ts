@@ -37,7 +37,10 @@ export function removeLayers(doc: TemplateDoc, ids: string[]): TemplateDoc {
     ...doc,
     layers: doc.layers.filter((l) => !set.has(l.id)),
     // Parameters bound to removed layers would dangle, so drop them too.
-    parameters: doc.parameters.filter((p) => !set.has(p.layerId)),
+    parameters: doc.parameters.flatMap(p=>{
+      const ids=[p.layerId,...(p.linkedLayerIds??[])].filter(id=>!set.has(id));
+      return ids.length?[{...p,layerId:ids[0],...(p.linkedLayerIds?{linkedLayerIds:ids.slice(1)}:{})}]:[];
+    }),
   };
 }
 
@@ -203,6 +206,7 @@ export function referencedAssetIds(doc: TemplateDoc): string[] {
   for (const p of doc.parameters) {
     const v = p.defaultValue;
     if (v && typeof v === "object" && v.kind === "asset") ids.add(v.assetId);
+    if(p.cleanup?.src?.kind === "asset") ids.add(p.cleanup.src.assetId);
   }
   return [...ids];
 }
