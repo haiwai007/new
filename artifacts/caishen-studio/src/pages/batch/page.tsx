@@ -1,5 +1,11 @@
-import {templateMatches} from "@/lib/template/catalog";
-import {getParamValue} from "@/lib/template/params";
+import {
+  usePublicCatalog,
+  type SharedGalleryTemplate,
+} from "@/lib/catalog-service/provider";
+import { sharedTemplateDocument } from "@/lib/catalog-service/start";
+import type { ManagedTemplate } from "@/lib/catalog-service/contracts";
+import { templateMatches } from "@/lib/template/catalog";
+import { getParamValue } from "@/lib/template/params";
 import {
   requireStatusLocation,
   isLocationConfirmed,
@@ -14,7 +20,7 @@ import { naturalPhoneSettings as defaultPhoneSettings } from "@/lib/phone/layers
 import { applyPhoneBatchRules, drawingRules } from "@/lib/batch/phone-rules";
 import { type PhoneBatchRules } from "@/lib/batch/phone-rules";
 import { phoneTime } from "@/lib/phone/layers";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useRef } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import {
   Check,
@@ -45,7 +51,7 @@ import {
 import { useWorks } from "@/hooks/use-works.ts";
 import { listAssets } from "@/lib/storage/assets.ts";
 import type { AssetRecord } from "@/lib/storage/db.ts";
-import { BUILTIN_TEMPLATES, CATEGORIES, type TemplateCategory } from "@/lib/template/builtin.ts";
+import type { TemplateCategory } from "@/lib/template/builtin.ts";
 import { collectParamValues } from "@/lib/template/params.ts";
 import {
   MAX_BATCH_COUNT,
@@ -74,12 +80,22 @@ type Option = {
   id: string;
   name: string;
   doc: TemplateDoc;
-  group: "builtin" | "mine";
+  group: "builtin" | "mine" | "shared";
+  shared?: ManagedTemplate;
   category?: TemplateCategory;
 };
 const newSeed = () => Math.floor(Math.random() * 2 ** 31);
 
 export default function BatchPage() {
+  const { templates: BUILTIN_TEMPLATES, categories: CATEGORIES } =
+    usePublicCatalog();
+  const [remoteDoc, setRemoteDoc] = useState<{
+      id: string;
+      revision: number;
+      doc: TemplateDoc;
+    } | null>(null),
+    [remoteBusy, setRemoteBusy] = useState(false),
+    [remoteRetry, setRemoteRetry] = useState(0);
   const { state } = useWorks();
   const [templateCategory, setTemplateCategory] = useState("all");
   const [templateQuery, setTemplateQuery] = useState("");
@@ -108,6 +124,8 @@ export default function BatchPage() {
     Record<string, StatusLocation>
   >({});
   const [configured, setConfigured] = useState(false);
+  const configuredRef = useRef(configured);
+  configuredRef.current = configured;
   const [uploading, setUploading] = useState(false);
   const [preview, setPreview] = useState<GeneratedItem[] | null>(null);
   const [needsPreview, setNeedsPreview] = useState(false);
@@ -142,7 +160,8 @@ export default function BatchPage() {
       id: `b:${t.id}`,
       name: t.name,
       doc: t.doc,
-      group: "builtin" as const,
+      group: t.shared ? ("shared" as const) : ("builtin" as const),
+      shared: t.shared,
       category: t.category,
     }));
     const mine =
@@ -157,28 +176,91 @@ export default function BatchPage() {
             }))
         : [];
     return [...mine, ...builtin];
-  }, [state]);
-  const filteredOptions = options.filter(o=>{
-    if(templateCategory!=="all" && (templateCategory==="mine" ? o.group!=="mine" : o.category!==templateCategory))return false;
-    const builtin=o.group==="builtin"?BUILTIN_TEMPLATES.find(t=>`b:${t.id}`===o.id):undefined;
-    return builtin?templateMatches(builtin,templateQuery):o.name.toLocaleLowerCase().includes(templateQuery.trim().toLocaleLowerCase());
+  }, [state, BUILTIN_TEMPLATES]);
+  const filteredOptions = options.filter((o) => {
+    if (
+      templateCategory !== "all" &&
+      (templateCategory === "mine"
+        ? o.group !== "mine"
+        : o.category !== templateCategory)
+    )
+      return false;
+    const builtin =
+      o.group === "builtin"
+        ? BUILTIN_TEMPLATES.find((t) => `b:${t.id}` === o.id)
+        : undefined;
+    return builtin
+      ? templateMatches(builtin, templateQuery)
+      : o.name
+          .toLocaleLowerCase()
+          .includes(templateQuery.trim().toLocaleLowerCase());
   });
   const selectedOption = options.find((o) => o.id === templateId) ?? null;
-  const selected = useMemo(
-    () =>
-      selectedOption
-        ? {
-            ...selectedOption,
-            doc: {
-              ...selectedOption.doc,
-              statusLocation:
-                locationOverrides[templateId] ??
-                selectedOption.doc.statusLocation,
-            },
+  useEffect(() => {
+    let cancelled = false;
+    const shared = selectedOption?.shared;
+    if (!shared) {
+      setRemoteBusy(false);
+      return;
+    }
+    if (remoteDoc?.id === shared.id && remoteDoc.revision === shared.revision) {
+      setRemoteBusy(false);
+      return;
+    }
+    setRemoteBusy(true);
+    sharedTemplateDocument(shared)
+      .then((doc) => {
+        if (!cancelled) {
+          setRemoteDoc({ id: shared.id, revision: shared.revision, doc });
+          void listAssets().then((records) => {
+            if (!cancelled) setAssets(records);
+          });
+          if (!configuredRef.current) {
+            const next = drawingRules(doc.phone ?? defaultPhoneSettings());
+            next.setup!.mode = "keep";
+            next.time.enabled = next.battery.enabled = false;
+            next.apps = {
+              ...next.apps!,
+              mode: "fixed",
+              fixed: doc.phone?.appIcons.filter((icon) => icon.visible) ?? [],
+            };
+            setPhoneRules(next);
           }
-        : null,
-    [selectedOption, locationOverrides, templateId],
-  );
+        }
+      })
+      .catch((e) => {
+        if (!cancelled)
+          setError(e instanceof Error ? e.message : "共享模板读取失败");
+      })
+      .finally(() => {
+        if (!cancelled) setRemoteBusy(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [
+    selectedOption?.id,
+    selectedOption?.shared?.revision,
+    remoteDoc,
+    remoteRetry,
+  ]);
+  const selected = useMemo(() => {
+    if (
+      !selectedOption ||
+      (selectedOption.shared &&
+        (remoteDoc?.id !== selectedOption.shared.id ||
+          remoteDoc.revision !== selectedOption.shared.revision))
+    )
+      return null;
+    const source = selectedOption.shared ? remoteDoc!.doc : selectedOption.doc;
+    return {
+      ...selectedOption,
+      doc: {
+        ...source,
+        statusLocation: locationOverrides[templateId] ?? source.statusLocation,
+      },
+    };
+  }, [selectedOption, locationOverrides, templateId, remoteDoc]);
   const needsLocation =
     !!selected &&
     phoneRules.setup?.mode !== "keep" &&
@@ -312,12 +394,29 @@ export default function BatchPage() {
             ) : (
               <div className="space-y-2 [&>[data-slot=native-select-wrapper]]:w-full">
                 <div className="grid gap-2 sm:grid-cols-2 [&>[data-slot=native-select-wrapper]]:w-full">
-                  <NativeSelect aria-label="筛选批量模板分类" value={templateCategory} onChange={e=>setTemplateCategory(e.target.value)}>
-                    <NativeSelectOption value="all">全部分类</NativeSelectOption>
-                    <NativeSelectOption value="mine">我的模板</NativeSelectOption>
-                    {CATEGORIES.map(c=><NativeSelectOption key={c.id} value={c.id}>{c.label}</NativeSelectOption>)}
+                  <NativeSelect
+                    aria-label="筛选批量模板分类"
+                    value={templateCategory}
+                    onChange={(e) => setTemplateCategory(e.target.value)}
+                  >
+                    <NativeSelectOption value="all">
+                      全部分类
+                    </NativeSelectOption>
+                    <NativeSelectOption value="mine">
+                      我的模板
+                    </NativeSelectOption>
+                    {CATEGORIES.map((c) => (
+                      <NativeSelectOption key={c.id} value={c.id}>
+                        {c.label}
+                      </NativeSelectOption>
+                    ))}
                   </NativeSelect>
-                  <Input aria-label="搜索批量模板" placeholder="搜索名称、场景或参数" value={templateQuery} onChange={e=>setTemplateQuery(e.target.value)}/>
+                  <Input
+                    aria-label="搜索批量模板"
+                    placeholder="搜索名称、场景或参数"
+                    value={templateQuery}
+                    onChange={(e) => setTemplateQuery(e.target.value)}
+                  />
                 </div>
                 <NativeSelect
                   aria-label="批量模板"
@@ -328,13 +427,28 @@ export default function BatchPage() {
                   <NativeSelectOption value="">
                     请选择一个模板
                   </NativeSelectOption>
-                  {selectedOption&&!filteredOptions.some(o=>o.id===selectedOption.id)&&<NativeSelectOptGroup label="当前选择（筛选外）"><NativeSelectOption value={selectedOption.id}>{selectedOption.name}</NativeSelectOption></NativeSelectOptGroup>}
-                  {(["mine", "builtin"] as const).map((g) => {
+                  {selectedOption &&
+                    !filteredOptions.some(
+                      (o) => o.id === selectedOption.id,
+                    ) && (
+                      <NativeSelectOptGroup label="当前选择（筛选外）">
+                        <NativeSelectOption value={selectedOption.id}>
+                          {selectedOption.name}
+                        </NativeSelectOption>
+                      </NativeSelectOptGroup>
+                    )}
+                  {(["mine", "shared", "builtin"] as const).map((g) => {
                     const list = filteredOptions.filter((o) => o.group === g);
                     return list.length ? (
                       <NativeSelectOptGroup
                         key={g}
-                        label={g === "mine" ? "我的模板" : "模板库"}
+                        label={
+                          g === "mine"
+                            ? "我的模板"
+                            : g === "shared"
+                              ? "共享模板"
+                              : "模板库"
+                        }
                       >
                         {list.map((o) => (
                           <NativeSelectOption key={o.id} value={o.id}>
@@ -345,8 +459,27 @@ export default function BatchPage() {
                     ) : null;
                   })}
                 </NativeSelect>
-                <p className="text-xs text-muted-foreground">筛选到 {filteredOptions.length} 套模板，筛选不会清空当前参数规则。</p>
+                <p className="text-xs text-muted-foreground">
+                  筛选到 {filteredOptions.length}{" "}
+                  套模板，筛选不会清空当前参数规则。
+                </p>
               </div>
+            )}
+            {remoteBusy && (
+              <p role="status" className="mt-2 text-sm">
+                正在下载共享模板及图片…
+              </p>
+            )}
+            {!remoteBusy && selectedOption?.shared && !selected && (
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setError("");
+                  setRemoteRetry((n) => n + 1);
+                }}
+              >
+                重新读取共享模板
+              </Button>
             )}
             {selected && (
               <p className="mt-2 text-xs text-muted-foreground">
@@ -419,11 +552,22 @@ export default function BatchPage() {
                   <RuleEditor
                     key={p.id}
                     param={p}
-                    rule={rules[p.id] ?? (p.type === "order" ? {mode:"orderRandom",unique:true} : { mode: "keep" })}
+                    rule={
+                      rules[p.id] ??
+                      (p.type === "order"
+                        ? { mode: "orderRandom", unique: true }
+                        : { mode: "keep" })
+                    }
                     locked={isLockedParam(selected.doc, p)}
                     assets={assets}
                     onBusyChange={setUploading}
-                    onAssetsAdded={added=>setAssets(old=>[...new Map([...old,...added].map(a=>[a.id,a])).values()])}
+                    onAssetsAdded={(added) =>
+                      setAssets((old) => [
+                        ...new Map(
+                          [...old, ...added].map((a) => [a.id, a]),
+                        ).values(),
+                      ])
+                    }
                     onModeChange={(m) => setMode(p.id, m)}
                     onChange={(r) => setRule(p.id, r)}
                   />
@@ -568,7 +712,17 @@ export default function BatchPage() {
                         invalid={i.errors.length > 0}
                         maxSize={160}
                       />
-                      {i.doc.parameters.filter(p=>p.type==="order").map(p=><p key={p.id} aria-label={`第 ${i.index+1} 张${p.name}`} className="break-all text-[11px] text-muted-foreground">{p.name}：{String(getParamValue(i.doc,p)??"")}</p>)}
+                      {i.doc.parameters
+                        .filter((p) => p.type === "order")
+                        .map((p) => (
+                          <p
+                            key={p.id}
+                            aria-label={`第 ${i.index + 1} 张${p.name}`}
+                            className="break-all text-[11px] text-muted-foreground"
+                          >
+                            {p.name}：{String(getParamValue(i.doc, p) ?? "")}
+                          </p>
+                        ))}
                       {i.doc.phone && (
                         <p
                           aria-label={`第 ${i.index + 1} 张状态栏`}
@@ -635,8 +789,21 @@ export default function BatchPage() {
                               return;
                             }
                           }
-                          try { replacement=preserveUniqueOrders(replacement,items,rules,createRng(nextSeed^0x17ac)); }
-                          catch(e){setError(e instanceof Error?e.message:"单号重新随机失败");return;}
+                          try {
+                            replacement = preserveUniqueOrders(
+                              replacement,
+                              items,
+                              rules,
+                              createRng(nextSeed ^ 0x17ac),
+                            );
+                          } catch (e) {
+                            setError(
+                              e instanceof Error
+                                ? e.message
+                                : "单号重新随机失败",
+                            );
+                            return;
+                          }
                           setWorking(true);
                           setPreparing(true);
                           setAdapted(0);

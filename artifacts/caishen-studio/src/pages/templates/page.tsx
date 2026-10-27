@@ -19,10 +19,9 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from "@/components/ui/empty.tsx";
-import { BUILTIN_TEMPLATES, CATEGORIES } from "@/lib/template/builtin.ts";
+import { usePublicCatalog } from "@/lib/catalog-service/provider";
 import {
   paginationWindow,
-  CATEGORY_COUNTS,
   TEMPLATE_PAGE_SIZE,
   templateMatches,
 } from "@/lib/template/catalog";
@@ -37,6 +36,14 @@ import CustomTemplateGrid from "./_components/custom-template-grid.tsx";
 type Sort = "popular" | "latest" | "name";
 
 export default function TemplatesPage() {
+  const { templates: BUILTIN_TEMPLATES, categories: CATEGORIES } =
+    usePublicCatalog();
+  const CATEGORY_COUNTS = Object.fromEntries(
+    CATEGORIES.map((c) => [
+      c.id,
+      BUILTIN_TEMPLATES.filter((t) => t.category === c.id).length,
+    ]),
+  );
   const [params, setParams] = useSearchParams();
   const requestedCategory = params.get("category") ?? "all";
   const category =
@@ -66,7 +73,7 @@ export default function TemplatesPage() {
             ? b.addedAt.localeCompare(a.addedAt)
             : a.name.localeCompare(b.name, "zh"),
       );
-  }, [category, q, sort, onlyFav, favs]);
+  }, [category, q, sort, onlyFav, favs, BUILTIN_TEMPLATES]);
 
   const customTemplates =
     state.status === "ready"

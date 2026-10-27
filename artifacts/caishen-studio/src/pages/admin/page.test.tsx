@@ -1,100 +1,63 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
-import { beforeEach, describe, expect, it, vi } from "vitest";
-const mocks = vi.hoisted(() => ({
-  allowed: true,
-  save: vi.fn(),
-  more: vi.fn(),
-  policy: { uploadsEnabled: true, notice: "", revision: 0 },
+import { beforeEach, describe, it, expect, vi } from "vitest";
+const mocks = vi.hoisted(() => ({ request: vi.fn() }));
+vi.mock("@/lib/catalog-service/client", () => ({ requestJson: mocks.request }));
+vi.mock("@/lib/cloud-config", () => ({
+  cloudConfig: { enabled: false, missing: [], invalid: [] },
 }));
-vi.mock("@/lib/cloud-config", () => ({ cloudConfig: { enabled: true } }));
-vi.mock("convex/react", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("convex/react")>();
-  const { getFunctionName } = await import("convex/server");
-  return {
-    ...actual,
-    useConvexAuth: () => ({ isAuthenticated: true, isLoading: false }),
-    useQuery: (ref: Parameters<typeof getFunctionName>[0]) => {
-      const name = getFunctionName(ref);
-      if (name === "admin:access")
-        return { allowed: mocks.allowed, tokenIdentifier: "account-id" };
-      if (name === "cloudWorks:policy") return mocks.policy;
-      return { userCount: 0, workCount: 0, truncated: false };
-    },
-    usePaginatedQuery: () => ({
-      results: [],
-      status: "CanLoadMore",
-      loadMore: mocks.more,
-    }),
-    useMutation: () => mocks.save,
-  };
-});
 import AdminPage from "./page";
-function app() {
-  return (
-    <MemoryRouter>
-      <AdminPage />
-    </MemoryRouter>
-  );
-}
 beforeEach(() => {
-  vi.resetAllMocks();
-  mocks.allowed = true;
-  mocks.policy = { uploadsEnabled: true, notice: "", revision: 0 };
-  mocks.save.mockResolvedValue({ revision: 1 });
+  mocks.request.mockReset();
 });
-describe("admin controls", () => {
-  it("hides all controls from a non-administrator", () => {
-    mocks.allowed = false;
-    render(app());
-    expect(screen.getByText("无管理员权限")).toBeInTheDocument();
+describe("Cloudflare content management gate", () => {
+  it("shows missing real resources rather than simulated editing controls", async () => {
+    mocks.request.mockResolvedValue({
+      enabled: false,
+      missing: ["CATALOG_DB", "CATALOG_FILES", "ADMIN_PASSWORD_HASH"],
+      migrated: false,
+    });
+    render(
+      <MemoryRouter>
+        <AdminPage />
+      </MemoryRouter>,
+    );
     expect(
-      screen.queryByRole("button", { name: "维护设置" }),
+      await screen.findByRole("heading", { name: "后台服务尚未启用" }),
+    ).toBeInTheDocument();
+    expect(screen.getByText(/待配置：CATALOG_DB/)).toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: "保存分类" }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: "上传为草稿" }),
     ).not.toBeInTheDocument();
   });
-  it("loads the next page explicitly", () => {
-    render(app());
-    fireEvent.click(screen.getByRole("button", { name: "加载更多" }));
-    expect(mocks.more).toHaveBeenCalledWith(20);
-  });
-  it("requires confirmation before saving an upload maintenance change", async () => {
-    render(app());
-    fireEvent.click(screen.getByRole("button", { name: "维护设置" }));
-    fireEvent.click(screen.getByRole("checkbox", { name: "允许云端上传" }));
-    fireEvent.change(screen.getByLabelText(/账户页公告/), {
-      target: { value: "维护中" },
+  it("keeps administrative controls hidden when login fails", async () => {
+    mocks.request.mockImplementation((path: string) => {
+      if (path.endsWith("/status"))
+        return Promise.resolve({ enabled: true, missing: [], migrated: true });
+      if (path.endsWith("/session"))
+        return Promise.resolve({ authenticated: false });
+      return Promise.reject(
+        Object.assign(new Error("管理员账号或密码不正确"), { status: 401 }),
+      );
     });
-    fireEvent.click(screen.getByRole("button", { name: "保存设置" }));
-    expect(mocks.save).not.toHaveBeenCalled();
-    fireEvent.click(screen.getByRole("button", { name: "确认保存设置" }));
-    await waitFor(() =>
-      expect(mocks.save).toHaveBeenCalledWith({
-        uploadsEnabled: false,
-        notice: "维护中",
-        expectedRevision: 0,
-      }),
+    render(
+      <MemoryRouter>
+        <AdminPage />
+      </MemoryRouter>,
     );
-    expect(await screen.findByRole("status")).toHaveTextContent("设置已保存");
-  });
-  it("preserves unsaved input when another administrator changes the server settings", () => {
-    const view = render(app());
-    fireEvent.click(screen.getByRole("button", { name: "维护设置" }));
-    fireEvent.change(screen.getByLabelText(/账户页公告/), {
-      target: { value: "我的草稿" },
+    await screen.findByRole("heading", { name: "管理员登录" });
+    fireEvent.change(screen.getByLabelText("管理员密码"), {
+      target: { value: "incorrect-password" },
     });
-    mocks.policy = {
-      uploadsEnabled: false,
-      notice: "另一位管理员的公告",
-      revision: 1,
-    };
-    view.rerender(app());
-    expect(screen.getByLabelText(/账户页公告/)).toHaveValue("我的草稿");
-    fireEvent.click(screen.getByRole("button", { name: "加载最新设置" }));
-    expect(screen.getByLabelText(/账户页公告/)).toHaveValue(
-      "另一位管理员的公告",
+    fireEvent.click(screen.getByRole("button", { name: "登录后台" }));
+    expect(await screen.findByRole("alert")).toHaveTextContent(
+      "管理员账号或密码不正确",
     );
     expect(
-      screen.getByRole("checkbox", { name: "允许云端上传" }),
-    ).not.toBeChecked();
+      screen.queryByRole("button", { name: "分类管理" }),
+    ).not.toBeInTheDocument();
   });
 });

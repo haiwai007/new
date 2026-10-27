@@ -11,7 +11,7 @@ import {
   Upload,
 } from "lucide-react";
 import { Button } from "@/components/ui/button.tsx";
-import { BUILTIN_TEMPLATES, CATEGORIES } from "@/lib/template/builtin.ts";
+import { usePublicCatalog } from "@/lib/catalog-service/provider";
 import TemplateCard from "@/components/templates/template-card.tsx";
 import { useStartTemplate } from "@/hooks/use-start-template.ts";
 import { useTemplateFavorites } from "@/hooks/use-template-favorites.ts";
@@ -20,21 +20,41 @@ import HeroCanvas from "./_components/hero-canvas.tsx";
 import { SECTIONS } from "@/components/site/nav-config.ts";
 
 const STEPS = [
-  { icon: Upload, title: "上传参考图", desc: "拖拽、点击或粘贴图片，自动读取尺寸与格式" },
-  { icon: Layers, title: "拆成图层", desc: "框选文字、图片区域，遮盖原文字，生成独立图层" },
-  { icon: SlidersHorizontal, title: "设置参数", desc: "把标题、价格、图片变成表单参数，改参数就出图" },
-  { icon: Download, title: "高清导出", desc: "按原始分辨率或倍率导出 PNG / JPEG" },
+  {
+    icon: Upload,
+    title: "上传参考图",
+    desc: "拖拽、点击或粘贴图片，自动读取尺寸与格式",
+  },
+  {
+    icon: Layers,
+    title: "拆成图层",
+    desc: "框选文字、图片区域，遮盖原文字，生成独立图层",
+  },
+  {
+    icon: SlidersHorizontal,
+    title: "设置参数",
+    desc: "把标题、价格、图片变成表单参数，改参数就出图",
+  },
+  {
+    icon: Download,
+    title: "高清导出",
+    desc: "按原始分辨率或倍率导出 PNG / JPEG",
+  },
 ];
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
 export default function Index() {
+  const { templates: BUILTIN_TEMPLATES, categories: CATEGORIES } =
+    usePublicCatalog();
   const navigate = useNavigate();
   const { start, busy } = useStartTemplate();
   const { favs, toggle } = useTemplateFavorites();
   const real = BUILTIN_TEMPLATES.filter((t) => t.category !== "blank");
   const hot = [...real].sort((a, b) => b.popularity - a.popularity).slice(0, 4);
-  const latest = [...real].sort((a, b) => b.addedAt.localeCompare(a.addedAt)).slice(0, 4);
+  const latest = [...real]
+    .sort((a, b) => b.addedAt.localeCompare(a.addedAt))
+    .slice(0, 4);
 
   return (
     <div>
@@ -49,7 +69,8 @@ export default function Index() {
               transition={{ duration: 0.5, ease }}
               className="inline-flex items-center gap-2 rounded-full border border-accent/60 bg-accent/15 px-3 py-1 text-xs font-medium text-accent-foreground dark:text-accent"
             >
-              <Sparkles className="size-3.5" /> 打开网页即可作图 · 无需下载 · 无需注册
+              <Sparkles className="size-3.5" /> 打开网页即可作图 · 无需下载 ·
+              无需注册
             </motion.p>
             <motion.h1
               initial={{ opacity: 0, y: 16 }}
@@ -75,7 +96,11 @@ export default function Index() {
               transition={{ duration: 0.6, delay: 0.24, ease }}
               className="mt-8 flex flex-wrap gap-3"
             >
-              <Button size="lg" className="h-12 px-6 text-base" onClick={() => navigate("/custom")}>
+              <Button
+                size="lg"
+                className="h-12 px-6 text-base"
+                onClick={() => navigate("/custom")}
+              >
                 <Upload className="size-5" /> 上传图片，立即生成模板
               </Button>
               <Button
@@ -123,7 +148,12 @@ export default function Index() {
                   <p className="mt-1 text-sm text-muted-foreground">{s.desc}</p>
                   <div className="mt-3 flex flex-wrap gap-1.5">
                     {s.tabs.map((t) => (
-                      <span key={t.to} className="rounded-full bg-muted px-2.5 py-0.5 text-xs text-muted-foreground">{t.label}</span>
+                      <span
+                        key={t.to}
+                        className="rounded-full bg-muted px-2.5 py-0.5 text-xs text-muted-foreground"
+                      >
+                        {t.label}
+                      </span>
                     ))}
                   </div>
                 </div>
@@ -162,7 +192,10 @@ export default function Index() {
         <section key={s.title} className="mx-auto max-w-7xl px-4 pb-12 md:px-6">
           <div className="mb-4 flex items-end justify-between">
             <h2 className="font-serif text-2xl font-bold">{s.title}</h2>
-            <Link to="/templates" className="flex cursor-pointer items-center gap-1 text-sm text-primary">
+            <Link
+              to="/templates"
+              className="flex cursor-pointer items-center gap-1 text-sm text-primary"
+            >
               查看全部 <ArrowRight className="size-4" />
             </Link>
           </div>
@@ -183,7 +216,9 @@ export default function Index() {
 
       <section className="border-t bg-muted/40">
         <div className="mx-auto max-w-7xl px-4 py-14 md:px-6">
-          <h2 className="font-serif text-2xl font-bold">新手指引：四步做出你的模板</h2>
+          <h2 className="font-serif text-2xl font-bold">
+            新手指引：四步做出你的模板
+          </h2>
           <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {STEPS.map((s, i) => (
               <div key={s.title} className="rounded-xl border bg-card p-5">
@@ -191,7 +226,9 @@ export default function Index() {
                   <span className="flex size-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
                     <s.icon className="size-5" />
                   </span>
-                  <span className="font-serif text-3xl font-bold text-accent">{String(i + 1).padStart(2, "0")}</span>
+                  <span className="font-serif text-3xl font-bold text-accent">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
                 </div>
                 <p className="mt-4 font-semibold">{s.title}</p>
                 <p className="mt-1 text-sm text-muted-foreground">{s.desc}</p>

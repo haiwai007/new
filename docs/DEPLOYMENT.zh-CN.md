@@ -1070,3 +1070,7 @@ GitHub 提交成功、CI 通过、正式域名上线是三个状态。本仓库 
 - [Docker](https://docs.docker.com/build/)、[Nginx](https://nginx.org/en/docs/)、[Convex](https://docs.convex.dev/production/hosting/)、[OpenID Connect](https://openid.net/specs/openid-connect-core-1_0.html)
 
 相关文件：[README](../README.md)、[部署模板](../deploy/)、[检查脚本](../scripts/check-deployment.mjs)。
+
+## Cloudflare 分类、共享模板与弹窗后台
+
+网站增加 Pages Functions 内容管理服务，前台免登录，后台独立登录。需要绑定 `CATALOG_DB`（D1）、`CATALOG_FILES`（R2），执行 `migrations/catalog/0001_initial.sql`，设置加密变量 `ADMIN_PASSWORD_HASH` 并重新部署。不要为整个 Pages 项目开启登录保护。完整控制台步骤、密码摘要生成、验证与备份见[后台部署手册](ADMIN_CMS.zh-CN.md)。

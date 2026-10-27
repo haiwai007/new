@@ -22,7 +22,12 @@ export default defineConfig({
     screenshot: "only-on-failure",
   },
   webServer: {
-    command: process.env.E2E_PRODUCTION === "1" ? "pnpm run serve" : "pnpm run dev",
+    command:
+      process.env.CMS_E2E === "1"
+        ? "node ../../scripts/cms-local-server.mjs"
+        : process.env.E2E_PRODUCTION === "1"
+          ? "pnpm run serve"
+          : "pnpm run dev",
     url: `http://127.0.0.1:${port}`,
     reuseExistingServer: false,
     timeout: 120_000,

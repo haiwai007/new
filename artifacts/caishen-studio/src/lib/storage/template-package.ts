@@ -91,11 +91,15 @@ async function prepareTemplateFile(file: File) {
 }
 export async function importTemplateFile(
   file: File,
+  assetScope: AssetRecord["scope"] = "internal",
 ): Promise<{ doc: TemplateDoc; warnings: string[]; assetCount: number }> {
   const prepared = await prepareTemplateFile(file);
   const db = await getDb();
   const tx = db.transaction("assets", "readwrite");
-  await Promise.all([...prepared.assets.map((a) => tx.store.add(a)), tx.done]);
+  await Promise.all([
+    ...prepared.assets.map((a) => tx.store.add({ ...a, scope: assetScope })),
+    tx.done,
+  ]);
   return prepared;
 }
 /** Import images, the work and initial history together, or leave all stores unchanged. */

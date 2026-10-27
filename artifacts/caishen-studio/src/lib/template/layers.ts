@@ -23,11 +23,12 @@ const baseDefaults = {
 export function createTextLayer(
   box: Box,
   overrides: Partial<Omit<TextLayer, "type" | "id">> = {},
+  id = newId("text"),
 ): TextLayer {
   return {
     ...baseDefaults,
     ...box,
-    id: newId("text"),
+    id,
     type: "text",
     name: "文字",
     text: "双击编辑文字",
@@ -54,11 +55,12 @@ export function createImageLayer(
   box: Box,
   src: ImageSource | null,
   overrides: Partial<Omit<ImageLayer, "type" | "id">> = {},
+  id = newId("image"),
 ): ImageLayer {
   return {
     ...baseDefaults,
     ...box,
-    id: newId("image"),
+    id,
     type: "image",
     name: "图片",
     src,
@@ -84,11 +86,12 @@ export function createShapeLayer(
   kind: ShapeKind,
   box: Box,
   overrides: Partial<Omit<ShapeLayer, "type" | "id">> = {},
+  id = newId(kind),
 ): ShapeLayer {
   return {
     ...baseDefaults,
     ...box,
-    id: newId(kind),
+    id,
     type: kind,
     name: SHAPE_NAMES[kind],
     fill: kind === "line" ? "#1f1f1f" : "#e8b04a",

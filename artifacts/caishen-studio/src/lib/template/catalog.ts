@@ -12,6 +12,9 @@ export function templateMatches(
   const haystack = [
     template.name,
     template.description ?? "",
+    ...("categoryName" in template && typeof template.categoryName === "string"
+      ? [template.categoryName]
+      : []),
     ...(template.tags ?? []),
     CATEGORIES.find((c) => c.id === template.category)?.label ?? "",
     ...template.doc.parameters.map((p) => p.name),

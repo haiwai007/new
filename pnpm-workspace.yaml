@@ -171,6 +171,7 @@ overrides:
 
 # Browser app uses the platform esbuild binary; native server canvas is optional.
 allowBuilds:
+  workerd: true
   esbuild: true
   canvas: false
   tesseract.js: false

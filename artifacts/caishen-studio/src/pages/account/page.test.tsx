@@ -3,7 +3,7 @@ import { MemoryRouter } from "react-router-dom";
 import { describe, expect, it, vi } from "vitest";
 vi.mock("@/lib/cloud-config", () => ({ cloudConfig: { enabled: false } }));
 import AccountPage from "./page";
-import AdminPage from "../admin/page";
+import AdminPage from "../admin/cloud-admin";
 describe("local-only mode", () => {
   it("renders the account page without auth or Convex providers", () => {
     render(

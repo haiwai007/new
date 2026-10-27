@@ -1,0 +1,1 @@
+{"extends":"../../tsconfig.base.json","compilerOptions":{"noEmit":true,"lib":["esnext","dom","dom.iterable"],"types":["node"],"allowImportingTsExtensions":true},"include":["server/**/*.ts","../../functions/**/*.ts"],"exclude":["**/*.test.ts"]}

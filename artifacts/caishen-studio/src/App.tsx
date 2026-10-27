@@ -1,3 +1,4 @@
+import { PublicCatalogProvider } from "./lib/catalog-service/provider";
 import { EntryGate } from "./components/site/entry-gate";
 import { lazy, Suspense } from "react";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
@@ -16,6 +17,7 @@ const EditorPage = lazy(() => import("./pages/editor/page.tsx"));
 const BackupPage = lazy(() => import("./pages/backup/page.tsx"));
 const AccountPage = lazy(() => import("./pages/account/page.tsx"));
 const AdminPage = lazy(() => import("./pages/admin/page.tsx"));
+const CloudAdminPage = lazy(() => import("./pages/admin/cloud-admin.tsx"));
 const AuthCallback = lazy(() => import("./pages/auth/Callback.tsx"));
 const TemplatesPage = lazy(() => import("./pages/templates/page.tsx"));
 const CustomTemplatePage = lazy(() => import("./pages/custom/page.tsx"));
@@ -27,13 +29,15 @@ const AssetsPage = lazy(() => import("./pages/assets/page.tsx"));
 
 export default function App() {
   return (
-    <EntryGate>
-      <DefaultProviders>
-        <BrowserRouter>
-          <AppRoutes />
-        </BrowserRouter>
-      </DefaultProviders>
-    </EntryGate>
+    <PublicCatalogProvider>
+      <BrowserRouter>
+        <EntryGate>
+          <DefaultProviders>
+            <AppRoutes />
+          </DefaultProviders>
+        </EntryGate>
+      </BrowserRouter>
+    </PublicCatalogProvider>
   );
 }
 function AppRoutes() {
@@ -87,6 +91,7 @@ function AppRoutes() {
             <Route path="/backup" element={<BackupPage />} />
             <Route path="/account" element={<AccountPage />} />
             <Route path="/admin" element={<AdminPage />} />
+            <Route path="/admin/cloud" element={<CloudAdminPage />} />
             <Route path="/help" element={<HelpPage />} />
           </Route>
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

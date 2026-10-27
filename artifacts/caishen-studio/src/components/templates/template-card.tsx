@@ -1,7 +1,8 @@
 import { Heart, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button.tsx";
 import { Badge } from "@/components/ui/badge.tsx";
-import { categoryLabel, type BuiltinTemplate } from "@/lib/template/builtin.ts";
+import type { SharedGalleryTemplate } from "@/lib/catalog-service/provider";
+import { categoryLabel } from "@/lib/template/builtin.ts";
 import { cn } from "@/lib/utils.ts";
 import TemplatePreview from "./template-preview.tsx";
 
@@ -12,7 +13,7 @@ export default function TemplateCard({
   onUse,
   busy,
 }: {
-  template: BuiltinTemplate;
+  template: SharedGalleryTemplate;
   favorite: boolean;
   onToggleFavorite: () => void;
   onUse: () => void;
@@ -28,12 +29,21 @@ export default function TemplateCard({
         aria-label={`使用模板 ${template.name}`}
       >
         <div className="aspect-[4/5] bg-muted p-3">
-          <TemplatePreview
-            doc={doc}
-            cacheKey={template.id}
-            contain
-            className="bg-transparent [&_img]:drop-shadow-md"
-          />
+          {template.thumbnailUrl ? (
+            <img
+              src={template.thumbnailUrl}
+              alt={template.name}
+              loading="lazy"
+              className="size-full object-contain"
+            />
+          ) : (
+            <TemplatePreview
+              doc={doc}
+              cacheKey={template.id}
+              contain
+              className="bg-transparent [&_img]:drop-shadow-md"
+            />
+          )}
         </div>
         <span className="absolute left-2 top-2 rounded bg-black/55 px-1.5 py-0.5 text-[11px] text-white">
           {doc.canvas.width}×{doc.canvas.height}
@@ -52,11 +62,11 @@ export default function TemplateCard({
             )}
             <div className="mt-1 flex flex-wrap items-center gap-1.5">
               <Badge variant="secondary" className="text-[11px]">
-                {categoryLabel(template.category)}
+                {template.categoryName ?? categoryLabel(template.category)}
               </Badge>
-              {doc.parameters.length > 0 && (
+              {(template.parameterCount ?? doc.parameters.length) > 0 && (
                 <span className="text-[11px] text-muted-foreground">
-                  {doc.parameters.length} 个参数
+                  {template.parameterCount ?? doc.parameters.length} 个参数
                 </span>
               )}
             </div>

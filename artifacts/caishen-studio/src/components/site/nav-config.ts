@@ -1,6 +1,10 @@
 import { Images, LayoutTemplate, type LucideIcon } from "lucide-react";
 
-export type SectionTab = { to: string; label: string; match: (path: string, search: string) => boolean };
+export type SectionTab = {
+  to: string;
+  label: string;
+  match: (path: string, search: string) => boolean;
+};
 export type Section = {
   id: "templates" | "make";
   label: string;
@@ -19,8 +23,16 @@ export const SECTIONS: Section[] = [
     icon: LayoutTemplate,
     desc: "浏览模板库、管理我的模板，或上传图片生成可改参数的模板",
     tabs: [
-      { to: "/templates", label: "模板库", match: (p, s) => p === "/templates" && !s.includes("category=custom") },
-      { to: "/templates?category=custom", label: "我的模板", match: (p, s) => p === "/templates" && s.includes("category=custom") },
+      {
+        to: "/templates",
+        label: "模板库",
+        match: (p, s) => p === "/templates" && !s.includes("category=custom"),
+      },
+      {
+        to: "/templates?category=custom",
+        label: "我的模板",
+        match: (p, s) => p === "/templates" && s.includes("category=custom"),
+      },
       { to: "/custom", label: "上传生成模板", match: (p) => p === "/custom" },
     ],
   },
@@ -38,6 +50,7 @@ export const SECTIONS: Section[] = [
 ];
 
 export const MORE_LINKS = [
+  { to: "/admin", label: "管理后台" },
   { to: "/assets", label: "素材库" },
   { to: "/backup", label: "备份与恢复" },
   { to: "/account", label: "云端账户" },
