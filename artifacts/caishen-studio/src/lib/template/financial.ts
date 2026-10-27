@@ -1,3 +1,4 @@
+import { TEMPLATE_EXAMPLE_LABEL } from "./labels";
 import type { BuiltinTemplate } from "./builtin";
 import { Design } from "./collection";
 
@@ -782,7 +783,7 @@ function build(
   // Visible example labels are ordinary saved artwork, independent of generated parameter values.
   d.text(
     "finance_watermark",
-    "示例 · 非真实凭证",
+    TEMPLATE_EXAMPLE_LABEL,
     wide ? 590 : 160,
     wide ? 1010 : h - 174,
     wide ? 850 : 760,
@@ -796,7 +797,7 @@ function build(
       editable: false,
     },
   );
-  d.footer("场景设计示例 · 非官方界面 · 不代表真实转账、收款或到账结果");
+  d.footer();
   const base = d.finish(
     {
       key: scenario.id,

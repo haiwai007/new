@@ -1,3 +1,4 @@
+import { TEMPLATE_EXAMPLE_LABEL } from "./labels";
 import { describe, it, expect } from "vitest";
 import {
   FINANCIAL_TEMPLATES,
@@ -61,6 +62,7 @@ describe("payment scene catalogue", () => {
         (l) => l.id === "finance_watermark" || l.id === "sample_footer",
       );
       expect(marks).toHaveLength(2);
+      expect(marks.every(l=>l.type==="text"&&l.text===TEMPLATE_EXAMPLE_LABEL)).toBe(true);
       expect(marks.every((l) => l.visible && l.locked && !l.editable)).toBe(
         true,
       );

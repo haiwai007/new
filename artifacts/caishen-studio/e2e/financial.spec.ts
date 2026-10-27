@@ -166,7 +166,7 @@ for (const layout of [
     );
     expect(
       saved.doc.layers.find((l: any) => l.id === "finance_watermark"),
-    ).toMatchObject({ text: "示例 · 非真实凭证", visible: true, locked: true });
+    ).toMatchObject({ text: "海神作图 · 设计示例", visible: true, locked: true });
     const image = await exportPNG(page, info);
     expect(image.readUInt32BE(16)).toBe(layout.width);
     expect(image.readUInt32BE(20)).toBe(layout.height);

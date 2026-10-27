@@ -1,3 +1,4 @@
+import { TEMPLATE_EXAMPLE_LABEL } from "./labels";
 import type { BuiltinTemplate, TemplateCategory } from "./builtin";
 import type {
   Layer,
@@ -215,10 +216,10 @@ export class Design {
       },
     });
   }
-  footer(sample: string) {
+  footer() {
     this.text(
       "sample_header",
-      "海神设计 · 示例",
+      TEMPLATE_EXAMPLE_LABEL,
       this.width - 270,
       24,
       230,
@@ -233,7 +234,7 @@ export class Design {
     );
     this.text(
       "sample_footer",
-      sample,
+      TEMPLATE_EXAMPLE_LABEL,
       44,
       this.height - 82,
       this.width - 88,
@@ -372,7 +373,7 @@ function transfer(profile: Profile, index: number) {
         ),
       );
   }
-  d.footer("示例交易记录 · 非真实到账凭证");
+  d.footer();
   return d.finish(profile, "transfer", index, true);
 }
 
@@ -463,7 +464,7 @@ function flight(profile: Profile, index: number) {
   d.rect("stub", 64, h - 198, w - 128, 60, p.soft, 12);
   d.text(
     "stub_text",
-    "SAMPLE / NOT VALID FOR TRAVEL",
+    TEMPLATE_EXAMPLE_LABEL,
     84,
     h - 194,
     w - 168,
@@ -477,7 +478,7 @@ function flight(profile: Profile, index: number) {
       editable: false,
     },
   );
-  d.footer("示例行程 · 不含可用登机码 · 不可用于乘机");
+  d.footer();
   return d.finish(profile, "flight", index, true);
 }
 
@@ -547,7 +548,7 @@ function badge(profile: Profile, index: number) {
   });
   d.field("number", profile.fields[3], x, y + 218, width, 32);
   d.field("validity", profile.fields[4], x, y + 358, width, 28);
-  d.footer("设计样卡 · 非官方身份证件或有效通行凭证");
+  d.footer();
   return d.finish(profile, "credential", index, true);
 }
 
@@ -1478,7 +1479,7 @@ function sheet(
       d.rect("ticket_stub", 64, h - 232, w - 128, 76, p.soft, 14);
       d.text(
         "stub_text",
-        "SAMPLE / EVENT DESIGN",
+        TEMPLATE_EXAMPLE_LABEL,
         80,
         h - 222,
         w - 160,
@@ -1498,15 +1499,7 @@ function sheet(
     ["receipt", "ticket"].includes(category) ||
     certificate ||
     (profile.key === "delivery" && category === "life");
-  d.footer(
-    category === "receipt"
-      ? "示例消费清单 · 不作为付款、报销或税务凭证"
-      : category === "ticket"
-        ? "门票设计示例 · 不含真实核验码"
-        : certificate
-          ? "学习纪念设计 · 非学历或职业资格证明"
-          : "海神原创设计 / HAISHEN DESIGN",
-  );
+  d.footer();
   return d.finish(profile, category, index, sample);
 }
 export const EXTENDED_TEMPLATES: BuiltinTemplate[] = [

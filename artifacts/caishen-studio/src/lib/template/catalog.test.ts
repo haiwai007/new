@@ -1,3 +1,4 @@
+import { TEMPLATE_EXAMPLE_LABEL } from "./labels";
 import { describe, expect, it } from "vitest";
 import { BUILTIN_TEMPLATES, CATEGORIES } from "./builtin";
 import { FINANCIAL_TEMPLATES } from "./financial";
@@ -29,6 +30,10 @@ describe("expanded editable template catalogue", () => {
   });
   it("loads every new scenario, has valid defaults and keeps editable regions inside the canvas", () => {
     for (const t of [...EXTENDED_TEMPLATES, ...FINANCIAL_TEMPLATES]) {
+      for(const mark of t.doc.layers.filter(l=>["sample_header","sample_footer","finance_watermark","stub_text"].includes(l.id))) {
+        expect(mark.type==="text"&&mark.text===TEMPLATE_EXAMPLE_LABEL,t.id).toBe(true);
+        expect(mark.visible&&!mark.editable,t.id).toBe(true);
+      }
       const loaded = loadTemplateDoc(t.doc);
       expect(loaded.ok, t.id).toBe(true);
       if (!loaded.ok) continue;
