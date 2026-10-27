@@ -1,4 +1,3 @@
-import { FINANCE_CHANNELS, FINANCE_SCENES } from "@/lib/template/financial";
 import { useMemo, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { Search, Layers3, Upload } from "lucide-react";
@@ -22,7 +21,6 @@ import {
 } from "@/components/ui/empty.tsx";
 import { BUILTIN_TEMPLATES, CATEGORIES } from "@/lib/template/builtin.ts";
 import {
-  FINANCE_CHANNEL_COUNTS,
   paginationWindow,
   CATEGORY_COUNTS,
   TEMPLATE_PAGE_SIZE,
@@ -40,16 +38,12 @@ type Sort = "popular" | "latest" | "name";
 
 export default function TemplatesPage() {
   const [params, setParams] = useSearchParams();
-  const category = params.get("category") ?? "all";
-  const channel = params.get("channel") ?? "all",
-    scene = params.get("scene") ?? "all";
-  const changeFinanceFilter = (key: string, value: string) => {
-    const next = new URLSearchParams(params);
-    next.delete("page");
-    if (value === "all") next.delete(key);
-    else next.set(key, value);
-    setParams(next);
-  };
+  const requestedCategory = params.get("category") ?? "all";
+  const category =
+    requestedCategory === "custom" ||
+    CATEGORIES.some((c) => c.id === requestedCategory)
+      ? requestedCategory
+      : "all";
   const [q, setQ] = useState("");
   const [sort, setSort] = useState<Sort>("popular");
   const page = Math.max(1, Number(params.get("page")) || 1);
@@ -63,18 +57,6 @@ export default function TemplatesPage() {
     return BUILTIN_TEMPLATES.filter(
       (t) => category === "all" || t.category === category,
     )
-      .filter(
-        (t) =>
-          category !== "transfer" ||
-          channel === "all" ||
-          (t.channel ?? "general") === channel,
-      )
-      .filter(
-        (t) =>
-          category !== "transfer" ||
-          scene === "all" ||
-          t.financeScene === scene,
-      )
       .filter((t) => !onlyFav || favs.includes(t.id))
       .filter((t) => templateMatches(t, q))
       .sort((a, b) =>
@@ -84,7 +66,7 @@ export default function TemplatesPage() {
             ? b.addedAt.localeCompare(a.addedAt)
             : a.name.localeCompare(b.name, "zh"),
       );
-  }, [category, channel, scene, q, sort, onlyFav, favs]);
+  }, [category, q, sort, onlyFav, favs]);
 
   const customTemplates =
     state.status === "ready"
@@ -210,59 +192,6 @@ export default function TemplatesPage() {
         ))}
       </div>
 
-      {category === "transfer" && (
-        <div
-          className="mt-4 grid gap-3 rounded-xl border bg-card p-3 sm:grid-cols-2"
-          aria-label="转账模板细分类"
-        >
-          <label className="space-y-1 text-sm">
-            支付平台／银行
-            <select
-              aria-label="转账模板渠道"
-              value={channel}
-              onChange={(e) => changeFinanceFilter("channel", e.target.value)}
-              className="h-11 w-full rounded border bg-background px-2"
-            >
-              <option value="all">
-                全部渠道（{CATEGORY_COUNTS.transfer}）
-              </option>
-              <option value="general">
-                通用场景（{FINANCE_CHANNEL_COUNTS.general}）
-              </option>
-              {(["wallet", "bank"] as const).map((group) => (
-                <optgroup
-                  key={group}
-                  label={group === "wallet" ? "支付平台" : "银行网银"}
-                >
-                  {FINANCE_CHANNELS.filter((c) => c.group === group).map(
-                    (c) => (
-                      <option key={c.id} value={c.id}>
-                        {c.label}（{FINANCE_CHANNEL_COUNTS[c.id]}）
-                      </option>
-                    ),
-                  )}
-                </optgroup>
-              ))}
-            </select>
-          </label>
-          <label className="space-y-1 text-sm">
-            业务场景
-            <select
-              aria-label="转账模板业务场景"
-              value={scene}
-              onChange={(e) => changeFinanceFilter("scene", e.target.value)}
-              className="h-11 w-full rounded border bg-background px-2"
-            >
-              <option value="all">全部场景</option>
-              {FINANCE_SCENES.map((s) => (
-                <option key={s.id} value={s.id}>
-                  {s.label}
-                </option>
-              ))}
-            </select>
-          </label>
-        </div>
-      )}
       <div className="mt-4 flex flex-col gap-3 sm:flex-row">
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
@@ -273,7 +202,7 @@ export default function TemplatesPage() {
               setQ(e.target.value);
               resetPage();
             }}
-            placeholder="搜索模板，例如：转账、机票、工作证、订单号"
+            placeholder="搜索模板，例如：海报、价格、旅行"
             className="pl-9"
           />
         </div>
@@ -396,7 +325,7 @@ export default function TemplatesPage() {
       <div className="mt-10 flex items-start gap-3 rounded-xl border bg-muted/40 p-4 text-sm text-muted-foreground">
         <Layers3 className="mt-0.5 size-5 shrink-0 text-primary" />
         <p>
-          转账、行程、票据与证件卡牌采用虚构示例内容，标注保留在导出图片中。证件分类包含工作证、学生证、访客卡、会员卡等设计样卡。
+          选择模板后会创建独立作品，可修改图层和参数；保存自己的设计后，也可另存为自定义模板。
         </p>
       </div>
     </div>

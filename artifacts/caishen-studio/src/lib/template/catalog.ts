@@ -27,16 +27,6 @@ export const CATEGORY_COUNTS = Object.fromEntries(
   ]),
 );
 
-export const FINANCE_CHANNEL_COUNTS = Object.fromEntries([
-  [
-    "general",
-    BUILTIN_TEMPLATES.filter((t) => t.category === "transfer" && !t.channel)
-      .length,
-  ],
-  ...Array.from(
-    new Set(BUILTIN_TEMPLATES.flatMap((t) => (t.channel ? [t.channel] : []))),
-  ).map((id) => [id, BUILTIN_TEMPLATES.filter((t) => t.channel === id).length]),
-]);
 export function paginationWindow(
   current: number,
   total: number,

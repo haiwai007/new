@@ -1,19 +1,9 @@
-import { FINANCIAL_TEMPLATES } from "./financial";
-import { EXTENDED_TEMPLATES } from "./collection";
 import type { Layer, TemplateDoc, TemplateParameter } from "../../types/template.ts";
 import { createImageLayer, createShapeLayer, createTextLayer } from "./layers.ts";
 import { defaultGroupFor } from "./params.ts";
 import { SCHEMA_VERSION } from "../../types/template.ts";
 
 export type TemplateCategory =
-  | "transfer"
-  | "flight"
-  | "credential"
-  | "receipt"
-  | "ticket"
-  | "business"
-  | "education"
-  | "life"
   | "poster"
   | "social"
   | "ecommerce"
@@ -29,14 +19,6 @@ export const CATEGORIES: { id: TemplateCategory; label: string }[] = [
   { id: "notice", label: "活动通知" },
   { id: "festival", label: "节日祝福" },
   { id: "general", label: "通用图文设计" },
-  { id: "transfer", label: "转账与收款" },
-  { id: "flight", label: "机票与行程" },
-  { id: "credential", label: "证件与卡牌" },
-  { id: "receipt", label: "收据与清单" },
-  { id: "ticket", label: "活动与门票" },
-  { id: "business", label: "商务与门店" },
-  { id: "education", label: "教育与证书" },
-  { id: "life", label: "生活与预约" },
   { id: "blank", label: "空白画布" },
 ];
 
@@ -45,10 +27,6 @@ export type BuiltinTemplate = {
   name: string;
   tags?: string[];
   description?: string;
-  sample?: boolean;
-  channel?: string;
-  financeScene?: string;
-  layoutFamily?: string;
   category: TemplateCategory;
   popularity: number;
   addedAt: string;
@@ -350,8 +328,6 @@ export const BUILTIN_TEMPLATES: BuiltinTemplate[] = [
     addedAt: "2026-10-01",
     doc: doc(b.id, b.name.replace(/ \d+×\d+$/, ""), b.w, b.h, "#ffffff", [], []),
   })),
-  ...EXTENDED_TEMPLATES,
-  ...FINANCIAL_TEMPLATES,
 ];
 
 export function findBuiltin(id: string): BuiltinTemplate | undefined {
