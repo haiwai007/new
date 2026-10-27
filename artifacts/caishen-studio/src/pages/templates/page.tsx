@@ -1,12 +1,30 @@
 import { useMemo, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import { Search, ShieldAlert, Upload } from "lucide-react";
+import { Search, Layers3, Upload } from "lucide-react";
 import { toast } from "sonner";
 import { Input } from "@/components/ui/input.tsx";
 import { Button } from "@/components/ui/button.tsx";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select.tsx";
-import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty.tsx";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select.tsx";
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/components/ui/empty.tsx";
 import { BUILTIN_TEMPLATES, CATEGORIES } from "@/lib/template/builtin.ts";
+import {
+  CATEGORY_COUNTS,
+  TEMPLATE_PAGE_SIZE,
+  templateMatches,
+} from "@/lib/template/catalog";
 import TemplateCard from "@/components/templates/template-card.tsx";
 import { useStartTemplate } from "@/hooks/use-start-template.ts";
 import { useTemplateFavorites } from "@/hooks/use-template-favorites.ts";
@@ -22,6 +40,7 @@ export default function TemplatesPage() {
   const category = params.get("category") ?? "all";
   const [q, setQ] = useState("");
   const [sort, setSort] = useState<Sort>("popular");
+  const page = Math.max(1, Number(params.get("page")) || 1);
   const [onlyFav, setOnlyFav] = useState(false);
   const { favs, toggle } = useTemplateFavorites();
   const { start, busy } = useStartTemplate();
@@ -29,10 +48,11 @@ export default function TemplatesPage() {
   const navigate = useNavigate();
 
   const list = useMemo(() => {
-    const kw = q.trim().toLowerCase();
-    return BUILTIN_TEMPLATES.filter((t) => category === "all" || t.category === category)
+    return BUILTIN_TEMPLATES.filter(
+      (t) => category === "all" || t.category === category,
+    )
       .filter((t) => !onlyFav || favs.includes(t.id))
-      .filter((t) => !kw || t.name.toLowerCase().includes(kw) || t.doc.parameters.some((p) => p.name.includes(kw)))
+      .filter((t) => templateMatches(t, q))
       .sort((a, b) =>
         sort === "popular"
           ? b.popularity - a.popularity
@@ -47,28 +67,64 @@ export default function TemplatesPage() {
       ? state.works
           .filter((w) => w.kind === "template")
           .filter((w) => !onlyFav || w.favorite)
-          .filter((w) => !q.trim() || w.name.toLowerCase().includes(q.trim().toLowerCase()))
+          .filter(
+            (w) =>
+              !q.trim() ||
+              w.name.toLowerCase().includes(q.trim().toLowerCase()),
+          )
       : [];
 
   const useCustom = async (id: string) => {
-    const w = state.status === "ready" ? state.works.find((x) => x.id === id) : undefined;
+    const w =
+      state.status === "ready"
+        ? state.works.find((x) => x.id === id)
+        : undefined;
     if (!w) return;
     try {
       const workId = await startFromDoc(w.doc, w.name, w.id);
       navigate(`/editor/${workId}`);
     } catch (e) {
-      toast.error("无法使用模板", { description: e instanceof Error ? e.message : undefined });
+      toast.error("无法使用模板", {
+        description: e instanceof Error ? e.message : undefined,
+      });
     }
   };
 
-  const tabs = [{ id: "all", label: "全部" }, ...CATEGORIES, { id: "custom", label: "自定义模板" }];
+  const tabs = [
+    { id: "all", label: "全部" },
+    ...CATEGORIES,
+    { id: "custom", label: "自定义模板" },
+  ];
+  const pageCount = Math.max(1, Math.ceil(list.length / TEMPLATE_PAGE_SIZE));
+  const currentPage = Math.min(Math.floor(page), pageCount);
+  const visibleList = list.slice(
+    (currentPage - 1) * TEMPLATE_PAGE_SIZE,
+    currentPage * TEMPLATE_PAGE_SIZE,
+  );
+  const changePage = (next: number) => {
+    const nextParams = new URLSearchParams(params);
+    nextParams.set("page", String(next));
+    setParams(nextParams);
+  };
+  const resetPage = () => {
+    if (params.has("page")) {
+      const next = new URLSearchParams(params);
+      next.delete("page");
+      setParams(next, { replace: true });
+    }
+  };
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 md:px-6">
       <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
         <div>
-          <h1 className="font-serif text-3xl font-bold">{category === "custom" ? "我的模板" : "模板库"}</h1>
-          <p className="mt-1 text-muted-foreground">每个模板都由独立图层组成，可直接编辑或通过参数批量改内容。</p>
+          <h1 className="font-serif text-3xl font-bold">
+            {category === "custom" ? "我的模板" : "模板库"}
+          </h1>
+          <p className="mt-1 text-muted-foreground">
+            现有 {BUILTIN_TEMPLATES.length} 套模板、{CATEGORIES.length}{" "}
+            个分类，可编辑图层，也可按参数批量生成。
+          </p>
         </div>
         <Button asChild>
           <Link to="/custom">
@@ -77,7 +133,33 @@ export default function TemplatesPage() {
         </Button>
       </div>
 
-      <div className="mt-6 flex flex-wrap gap-2">
+      <div className="mt-6 sm:hidden">
+        <label className="block space-y-1 text-sm font-medium">
+          模板分类
+          <select
+            aria-label="模板分类"
+            value={category}
+            onChange={(e) =>
+              setParams(
+                e.target.value === "all" ? {} : { category: e.target.value },
+              )
+            }
+            className="h-11 w-full rounded-lg border bg-card px-3 text-sm"
+          >
+            {tabs.map((t) => (
+              <option key={t.id} value={t.id}>
+                {t.label}
+                {t.id === "all"
+                  ? `（${BUILTIN_TEMPLATES.length}）`
+                  : t.id !== "custom"
+                    ? `（${CATEGORY_COUNTS[t.id]}）`
+                    : ""}
+              </option>
+            ))}
+          </select>
+        </label>
+      </div>
+      <div className="mt-6 hidden flex-wrap gap-2 sm:flex">
         {tabs.map((t) => (
           <button
             key={t.id}
@@ -85,10 +167,21 @@ export default function TemplatesPage() {
             onClick={() => setParams(t.id === "all" ? {} : { category: t.id })}
             className={cn(
               "cursor-pointer rounded-full border px-4 py-1.5 text-sm transition-colors",
-              category === t.id ? "border-primary bg-primary text-primary-foreground" : "bg-card hover:border-primary",
+              category === t.id
+                ? "border-primary bg-primary text-primary-foreground"
+                : "bg-card hover:border-primary",
             )}
           >
-            {t.label}
+            {t.label}{" "}
+            <span className="ml-1 opacity-65">
+              {t.id === "all"
+                ? BUILTIN_TEMPLATES.length
+                : t.id === "custom"
+                  ? state.status === "ready"
+                    ? state.works.filter((w) => w.kind === "template").length
+                    : ""
+                  : CATEGORY_COUNTS[t.id]}
+            </span>
           </button>
         ))}
       </div>
@@ -96,9 +189,24 @@ export default function TemplatesPage() {
       <div className="mt-4 flex flex-col gap-3 sm:flex-row">
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-          <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="搜索模板，例如：海报、价格" className="pl-9" />
+          <Input
+            aria-label="搜索模板"
+            value={q}
+            onChange={(e) => {
+              setQ(e.target.value);
+              resetPage();
+            }}
+            placeholder="搜索模板，例如：转账、机票、工作证、订单号"
+            className="pl-9"
+          />
         </div>
-        <Select value={sort} onValueChange={(v) => setSort(v as Sort)}>
+        <Select
+          value={sort}
+          onValueChange={(v) => {
+            setSort(v as Sort);
+            resetPage();
+          }}
+        >
           <SelectTrigger className="sm:w-40">
             <SelectValue />
           </SelectTrigger>
@@ -108,10 +216,27 @@ export default function TemplatesPage() {
             <SelectItem value="name">按名称</SelectItem>
           </SelectContent>
         </Select>
-        <Button variant={onlyFav ? "default" : "secondary"} onClick={() => setOnlyFav((v) => !v)}>
+        <Button
+          variant={onlyFav ? "default" : "secondary"}
+          onClick={() => {
+            setOnlyFav((v) => !v);
+            resetPage();
+          }}
+        >
           只看收藏
         </Button>
       </div>
+
+      {category !== "custom" && (
+        <p
+          role="status"
+          aria-label="模板筛选结果"
+          className="mt-4 text-sm text-muted-foreground"
+        >
+          找到 {list.length} 套模板 · 每页 {TEMPLATE_PAGE_SIZE} 套
+          {pageCount > 1 && ` · 第 ${currentPage} / ${pageCount} 页`}
+        </p>
+      )}
 
       {category === "custom" ? (
         <CustomTemplateGrid
@@ -123,17 +248,23 @@ export default function TemplatesPage() {
       ) : list.length === 0 ? (
         <Empty className="mt-10">
           <EmptyHeader>
-            <EmptyMedia variant="icon"><Search /></EmptyMedia>
+            <EmptyMedia variant="icon">
+              <Search />
+            </EmptyMedia>
             <EmptyTitle>没有找到模板</EmptyTitle>
-            <EmptyDescription>换个关键词试试，或者直接上传图片生成模板。</EmptyDescription>
+            <EmptyDescription>
+              换个关键词试试，或者直接上传图片生成模板。
+            </EmptyDescription>
           </EmptyHeader>
           <EmptyContent>
-            <Button size="sm" asChild><Link to="/custom">上传图片</Link></Button>
+            <Button size="sm" asChild>
+              <Link to="/custom">上传图片</Link>
+            </Button>
           </EmptyContent>
         </Empty>
       ) : (
         <div className="mt-6 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
-          {list.map((t) => (
+          {visibleList.map((t) => (
             <TemplateCard
               key={t.id}
               template={t}
@@ -146,10 +277,43 @@ export default function TemplatesPage() {
         </div>
       )}
 
+      {category !== "custom" && pageCount > 1 && (
+        <nav
+          aria-label="模板分页"
+          className="mt-6 flex flex-wrap items-center justify-center gap-2"
+        >
+          <Button
+            variant="outline"
+            disabled={currentPage <= 1}
+            onClick={() => changePage(currentPage - 1)}
+          >
+            上一页
+          </Button>
+          {Array.from({ length: pageCount }, (_, i) => i + 1).map((n) => (
+            <Button
+              key={n}
+              variant={n === currentPage ? "default" : "outline"}
+              aria-label={`第 ${n} 页`}
+              aria-current={n === currentPage ? "page" : undefined}
+              onClick={() => changePage(n)}
+            >
+              {n}
+            </Button>
+          ))}
+          <Button
+            variant="outline"
+            disabled={currentPage >= pageCount}
+            onClick={() => changePage(currentPage + 1)}
+          >
+            下一页
+          </Button>
+        </nav>
+      )}
+
       <div className="mt-10 flex items-start gap-3 rounded-xl border bg-muted/40 p-4 text-sm text-muted-foreground">
-        <ShieldAlert className="mt-0.5 size-5 shrink-0 text-primary" />
+        <Layers3 className="mt-0.5 size-5 shrink-0 text-primary" />
         <p>
-          本平台不提供聊天截图、支付/钱包界面、银行卡、票据凭证等可能被用于伪造的模板，也请勿使用本平台制作冒充真实凭证或他人身份的图片。
+          转账、行程、票据与证件卡牌采用虚构示例内容，标注保留在导出图片中。证件分类包含工作证、学生证、访客卡、会员卡等设计样卡。
         </p>
       </div>
     </div>

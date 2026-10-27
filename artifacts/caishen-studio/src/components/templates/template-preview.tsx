@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { ImageOff } from "lucide-react";
 import { renderThumbnail } from "@/lib/canvas/render.ts";
 import type { TemplateDoc } from "@/types/template.ts";
@@ -33,9 +33,33 @@ export default function TemplatePreview({
   /** Fill the parent box and letterbox the preview instead of using the canvas ratio. */
   contain?: boolean;
 }) {
+  const container = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(
+    typeof IntersectionObserver === "undefined",
+  );
+  useEffect(() => {
+    if (
+      visible ||
+      !container.current ||
+      typeof IntersectionObserver === "undefined"
+    )
+      return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          setVisible(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "240px" },
+    );
+    observer.observe(container.current);
+    return () => observer.disconnect();
+  }, [visible]);
   const [url, setUrl] = useState<string | null>(null);
   const [failed, setFailed] = useState(false);
   useEffect(() => {
+    if (!visible) return;
     let alive = true;
     thumbFor(cacheKey, doc)
       .then((u) => alive && (u ? setUrl(u) : setFailed(true)))
@@ -43,12 +67,27 @@ export default function TemplatePreview({
     return () => {
       alive = false;
     };
-  }, [cacheKey, doc]);
+  }, [cacheKey, doc, visible]);
   const ratio = `${doc.canvas.width} / ${doc.canvas.height}`;
   return (
-    <div className={cn("relative w-full overflow-hidden bg-muted", contain && "h-full", className)} style={contain ? undefined : { aspectRatio: ratio }}>
+    <div
+      ref={container}
+      className={cn(
+        "relative w-full overflow-hidden bg-muted",
+        contain && "h-full",
+        className,
+      )}
+      style={contain ? undefined : { aspectRatio: ratio }}
+    >
       {url ? (
-        <img src={url} alt={doc.name} className={contain ? "size-full object-contain" : "size-full object-cover"} loading="lazy" />
+        <img
+          src={url}
+          alt={doc.name}
+          className={
+            contain ? "size-full object-contain" : "size-full object-cover"
+          }
+          loading="lazy"
+        />
       ) : failed ? (
         <div className="flex size-full items-center justify-center text-muted-foreground">
           <ImageOff className="size-6" />

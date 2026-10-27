@@ -1,3 +1,4 @@
+import {templateMatches} from "@/lib/template/catalog";
 import {getParamValue} from "@/lib/template/params";
 import {
   requireStatusLocation,
@@ -44,7 +45,7 @@ import {
 import { useWorks } from "@/hooks/use-works.ts";
 import { listAssets } from "@/lib/storage/assets.ts";
 import type { AssetRecord } from "@/lib/storage/db.ts";
-import { BUILTIN_TEMPLATES } from "@/lib/template/builtin.ts";
+import { BUILTIN_TEMPLATES, CATEGORIES, type TemplateCategory } from "@/lib/template/builtin.ts";
 import { collectParamValues } from "@/lib/template/params.ts";
 import {
   MAX_BATCH_COUNT,
@@ -74,11 +75,14 @@ type Option = {
   name: string;
   doc: TemplateDoc;
   group: "builtin" | "mine";
+  category?: TemplateCategory;
 };
 const newSeed = () => Math.floor(Math.random() * 2 ** 31);
 
 export default function BatchPage() {
   const { state } = useWorks();
+  const [templateCategory, setTemplateCategory] = useState("all");
+  const [templateQuery, setTemplateQuery] = useState("");
   const [params] = useSearchParams();
   const [assets, setAssets] = useState<AssetRecord[]>([]);
   const [templateId, setTemplateId] = useState(
@@ -139,6 +143,7 @@ export default function BatchPage() {
       name: t.name,
       doc: t.doc,
       group: "builtin" as const,
+      category: t.category,
     }));
     const mine =
       state.status === "ready"
@@ -153,6 +158,11 @@ export default function BatchPage() {
         : [];
     return [...mine, ...builtin];
   }, [state]);
+  const filteredOptions = options.filter(o=>{
+    if(templateCategory!=="all" && (templateCategory==="mine" ? o.group!=="mine" : o.category!==templateCategory))return false;
+    const builtin=o.group==="builtin"?BUILTIN_TEMPLATES.find(t=>`b:${t.id}`===o.id):undefined;
+    return builtin?templateMatches(builtin,templateQuery):o.name.toLocaleLowerCase().includes(templateQuery.trim().toLocaleLowerCase());
+  });
   const selectedOption = options.find((o) => o.id === templateId) ?? null;
   const selected = useMemo(
     () =>
@@ -300,7 +310,15 @@ export default function BatchPage() {
             {state.status === "loading" ? (
               <Skeleton className="h-10 w-full" />
             ) : (
-              <div className="[&>[data-slot=native-select-wrapper]]:w-full">
+              <div className="space-y-2 [&>[data-slot=native-select-wrapper]]:w-full">
+                <div className="grid gap-2 sm:grid-cols-2 [&>[data-slot=native-select-wrapper]]:w-full">
+                  <NativeSelect aria-label="筛选批量模板分类" value={templateCategory} onChange={e=>setTemplateCategory(e.target.value)}>
+                    <NativeSelectOption value="all">全部分类</NativeSelectOption>
+                    <NativeSelectOption value="mine">我的模板</NativeSelectOption>
+                    {CATEGORIES.map(c=><NativeSelectOption key={c.id} value={c.id}>{c.label}</NativeSelectOption>)}
+                  </NativeSelect>
+                  <Input aria-label="搜索批量模板" placeholder="搜索名称、场景或参数" value={templateQuery} onChange={e=>setTemplateQuery(e.target.value)}/>
+                </div>
                 <NativeSelect
                   aria-label="批量模板"
                   className="w-full"
@@ -310,8 +328,9 @@ export default function BatchPage() {
                   <NativeSelectOption value="">
                     请选择一个模板
                   </NativeSelectOption>
+                  {selectedOption&&!filteredOptions.some(o=>o.id===selectedOption.id)&&<NativeSelectOptGroup label="当前选择（筛选外）"><NativeSelectOption value={selectedOption.id}>{selectedOption.name}</NativeSelectOption></NativeSelectOptGroup>}
                   {(["mine", "builtin"] as const).map((g) => {
-                    const list = options.filter((o) => o.group === g);
+                    const list = filteredOptions.filter((o) => o.group === g);
                     return list.length ? (
                       <NativeSelectOptGroup
                         key={g}
@@ -326,6 +345,7 @@ export default function BatchPage() {
                     ) : null;
                   })}
                 </NativeSelect>
+                <p className="text-xs text-muted-foreground">筛选到 {filteredOptions.length} 套模板，筛选不会清空当前参数规则。</p>
               </div>
             )}
             {selected && (

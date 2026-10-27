@@ -14,7 +14,7 @@ test.afterEach(() => {
 });
 async function createFromBuiltin(page: Page, query?: string) {
   await page.goto("/templates");
-  if(query)await page.getByPlaceholder("搜索模板，例如：海报、价格").fill(query);
+  if(query)await page.getByLabel("搜索模板", {exact:true}).fill(query);
   await page
     .getByRole("button", { name: "使用模板", exact: true })
     .first()
