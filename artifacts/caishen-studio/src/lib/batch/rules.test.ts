@@ -10,11 +10,70 @@ const textOf = (doc: ReturnType<typeof makeTemplate>, id: string) => {
 };
 
 describe("batch rules", () => {
+  it("groups numeric amounts by thousands while preserving sign, precision, affixes and opt-out", () => {
+    const p: TemplateParameter = {
+      ...priceParam,
+      type: "number",
+      rules: { decimals: 2 },
+    };
+    const tpl = makeTemplate({
+      layers: [textLayer("layer-price", "0")],
+      parameters: [p],
+    });
+    const range = {
+      mode: "range",
+      min: 125000,
+      max: 125000,
+      decimals: 2,
+      prefix: "+",
+      suffix: "元",
+    } as const;
+    const grouped = generateItems(tpl, { [p.id]: range }, 2, 42);
+    expect(grouped.map((i) => textOf(i.doc, "layer-price"))).toEqual([
+      "+125,000.00元",
+      "+125,000.00元",
+    ]);
+    expect(grouped.every((i) => i.errors.length === 0)).toBe(true);
+    const plain = generateItems(
+      tpl,
+      { [p.id]: { ...range, groupThousands: false } },
+      1,
+      42,
+    );
+    expect(textOf(plain[0].doc, "layer-price")).toBe("+125000.00元");
+    expect(
+      generateValue(
+        p,
+        {
+          ...range,
+          min: -1234567.1256,
+          max: -1234567.1256,
+          decimals: 4,
+          prefix: "",
+          suffix: "",
+        },
+        0,
+        createRng(1),
+      ),
+    ).toBe("-1,234,567.1256");
+    expect(
+      generateValue(
+        p,
+        { ...range, min: 999.999, max: 999.999, prefix: "", suffix: "" },
+        0,
+        createRng(1),
+      ),
+    ).toBe("1,000.00");
+    expect(
+      generateValue({ ...p, property: "width" }, range, 0, createRng(1)),
+    ).toBe(125000);
+  });
+
   it("keeps a plus prefix on rounded numeric layers and their linked layers", () => {
     const p: TemplateParameter = { ...priceParam, type: "number", rules: { decimals: 2 }, linkedLayerIds: ["linked-price"] };
     const tpl = makeTemplate({ layers: [textLayer("layer-price", "0"), textLayer("linked-price", "0")], parameters: [p] });
     for (const suffix of ["", "元"]) {
-      const items = generateItems(tpl, { [p.id]: { mode: "range", min: 125000, max: 375000, decimals: 2, prefix: "+", suffix } }, 61, 42);
+      const items = generateItems(tpl, { [p.id]: { mode: "range", min: 125000, max: 375000, decimals: 2, prefix: "+", suffix, groupThousands: false } }, 61, 42);
       expect(items.every(item => item.errors.length === 0)).toBe(true);
       for (const item of items) {
         const value = textOf(item.doc, "layer-price")!;

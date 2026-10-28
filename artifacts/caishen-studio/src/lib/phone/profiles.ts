@@ -10,8 +10,10 @@ export type StatusProfile = {
   label: string;
   fontSize: number;
   weight: "normal" | "bold";
-  signal: "bars" | "triangle";
+  signal: "bars" | "triangle" | "rounded" | "thin";
   wifi: "arc" | "fan";
+  wifiStroke: number;
+  airplane: "ios" | "android" | "samsung" | "harmony";
   battery: "horizontal" | "vertical";
   radius: number;
   batteryStyle: "inside" | "outline";
@@ -25,6 +27,8 @@ const base: StatusProfile = {
   weight: "bold",
   signal: "bars",
   wifi: "arc",
+  wifiStroke: 2.2,
+  airplane: "ios",
   battery: "horizontal",
   radius: 3,
   batteryStyle: "inside",
@@ -44,6 +48,7 @@ export const STATUS_PROFILES: Record<PhoneSystem, StatusProfile> = {
   },
   pixel: {
     ...base,
+    airplane: "android",
     label: "Pixel / 原生 Android",
     fontSize: 13,
     weight: "normal",
@@ -58,6 +63,9 @@ export const STATUS_PROFILES: Record<PhoneSystem, StatusProfile> = {
   },
   oneui: {
     ...base,
+    airplane: "samsung",
+    signal: "rounded",
+    wifiStroke: 1.8,
     label: "Samsung One UI 6",
     fontSize: 13,
     weight: "normal",
@@ -70,6 +78,9 @@ export const STATUS_PROFILES: Record<PhoneSystem, StatusProfile> = {
   },
   oneui7: {
     ...base,
+    airplane: "samsung",
+    signal: "rounded",
+    wifiStroke: 2,
     label: "Samsung One UI 7",
     fontSize: 13,
     weight: "normal",
@@ -82,6 +93,9 @@ export const STATUS_PROFILES: Record<PhoneSystem, StatusProfile> = {
   },
   hyperos: {
     ...base,
+    airplane: "android",
+    signal: "rounded",
+    wifiStroke: 1.8,
     label: "小米 HyperOS",
     fontSize: 13,
     weight: "normal",
@@ -91,6 +105,9 @@ export const STATUS_PROFILES: Record<PhoneSystem, StatusProfile> = {
   },
   harmony: {
     ...base,
+    airplane: "harmony",
+    signal: "thin",
+    wifiStroke: 1.8,
     label: "华为 HarmonyOS",
     fontSize: 13,
     weight: "normal",
@@ -101,6 +118,9 @@ export const STATUS_PROFILES: Record<PhoneSystem, StatusProfile> = {
   },
   magic: {
     ...base,
+    airplane: "harmony",
+    signal: "thin",
+    wifiStroke: 1.7,
     label: "荣耀 MagicOS",
     fontSize: 13,
     weight: "normal",
@@ -111,6 +131,9 @@ export const STATUS_PROFILES: Record<PhoneSystem, StatusProfile> = {
   },
   coloros: {
     ...base,
+    airplane: "android",
+    signal: "rounded",
+    wifiStroke: 1.8,
     label: "ColorOS（OPPO / 一加国行）",
     fontSize: 13,
     weight: "normal",
@@ -120,6 +143,9 @@ export const STATUS_PROFILES: Record<PhoneSystem, StatusProfile> = {
   },
   originos: {
     ...base,
+    airplane: "android",
+    signal: "thin",
+    wifiStroke: 1.6,
     label: "OriginOS（vivo / iQOO 国行）",
     fontSize: 13,
     weight: "normal",
@@ -130,6 +156,9 @@ export const STATUS_PROFILES: Record<PhoneSystem, StatusProfile> = {
   },
   realme: {
     ...base,
+    airplane: "android",
+    signal: "rounded",
+    wifiStroke: 1.8,
     label: "realme UI",
     fontSize: 13,
     weight: "normal",

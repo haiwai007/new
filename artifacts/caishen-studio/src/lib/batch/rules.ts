@@ -28,7 +28,7 @@ export type ParamRule =
   | { mode: "orderRandom"; unique: boolean }
   | { mode: "orderedList"; options: string[]; loop?: boolean }
   | { mode: "fixed"; value: string }
-  | { mode: "range"; min: number; max: number; decimals: number; prefix: string; suffix: string }
+  | { mode: "range"; min: number; max: number; decimals: number; prefix: string; suffix: string; groupThousands?: boolean }
   | { mode: "dateRange"; start: string; end: string; format: DateFormatId }
   | { mode: "list"; options: string[] }
   | { mode: "sequence"; prefix: string; start: number; pad: number; suffix: string };
@@ -72,6 +72,18 @@ function localInput(d: Date) {
   return `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}T${pad2(d.getHours())}:${pad2(d.getMinutes())}`;
 }
 
+/** Display grouping applies to numeric text, never to geometry or order numbers. */
+export function usesThousands(
+  param: TemplateParameter,
+  rule: { groupThousands?: boolean },
+): boolean {
+  return (
+    param.property === "text" &&
+    (rule.groupThousands ??
+      (param.type === "number" ||
+        /金额|价格|余额|费用|收入|支出|amount|price/i.test(param.name)))
+  );
+}
 export function defaultRule(mode: RuleMode, param: TemplateParameter, current: ParamValue): ParamRule {
   const text = typeof current === "string" || typeof current === "number" ? String(current) : "";
   switch (mode) {
@@ -148,7 +160,18 @@ export function generateValue(param: TemplateParameter, rule: ParamRule, index: 
       const hi = Math.max(rule.min, rule.max);
       const decimals = Math.max(0, Math.min(4, Math.floor(rule.decimals)));
       const n = Number((lo + rng() * (hi - lo)).toFixed(decimals));
-      return param.property === "text" ? `${rule.prefix}${n.toFixed(decimals)}${rule.suffix}` : n;
+      const text = n.toFixed(decimals);
+      const formatted = usesThousands(param, rule)
+        ? text
+            .split(".")
+            .map((part, i) =>
+              i === 0 ? part.replace(/\B(?=(\d{3})+(?!\d))/g, ",") : part,
+            )
+            .join(".")
+        : text;
+      return param.property === "text"
+        ? `${rule.prefix}${formatted}${rule.suffix}`
+        : n;
     }
     case "dateRange": {
       const a = new Date(rule.start).getTime();

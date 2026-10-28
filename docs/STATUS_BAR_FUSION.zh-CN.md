@@ -18,7 +18,7 @@
 
 ## 系统样式
 
-提供 9 个可选择的参考样式：iOS 17、18、26，One UI 6、7，HarmonyOS 4、5，HyperOS 1、2。其他品牌继续使用现有 Pixel、MagicOS、ColorOS、OriginOS、realme UI 等系统参考。
+提供 20 个可选择的参考样式：iOS 经典、17、18、26，One UI 6、7，HarmonyOS 4、5，HyperOS 1、2，Android 14、15（Pixel），MagicOS 8、9，ColorOS 14、15，OriginOS 4、5，realme UI 5、6。现有全部 62 个型号按系统家族与型号代际选择默认参考版本。
 
 “按型号选择”只选择默认参考，不识别图片或设备实际系统版本。iPhone 17 默认使用 iOS 26 参考，iPhone 16 默认使用 iOS 18；不展示这些机型不适用的较早 iOS 选项，Galaxy S25 也不提供 One UI 6。可选版本取决于型号与系统家族。
 

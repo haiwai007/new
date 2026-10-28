@@ -19,6 +19,7 @@ import {
   DATE_FORMATS,
   RULE_MODE_LABEL,
   modesFor,
+  usesThousands,
   type DateFormatId,
   type ParamRule,
   type RuleMode,
@@ -240,6 +241,18 @@ function RuleFields({
                 onChange={(e) => onChange({ ...rule, suffix: e.target.value })}
               />
             </Field>
+          )}
+          {isTextProp && (
+            <label className="col-span-2 flex items-center gap-2 text-xs sm:col-span-5">
+              <Switch
+                aria-label={`${param.name}千位分隔符`}
+                checked={usesThousands(param, rule)}
+                onCheckedChange={(groupThousands) =>
+                  onChange({ ...rule, groupThousands })
+                }
+              />
+              每三位加逗号分隔（1,234.00）
+            </label>
           )}
         </div>
       );

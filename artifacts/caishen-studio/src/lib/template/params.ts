@@ -134,6 +134,14 @@ export function getParamValue(doc: TemplateDoc, param: TemplateParameter): Param
   return null;
 }
 
+/** Accept standard thousands-grouped numeric text without accepting malformed commas. */
+function numericValue(value: ParamValue): number {
+  if (typeof value === "string" && /^[+-]?\d{1,3}(?:,\d{3})+(?:\.\d+)?$/.test(value.trim())) {
+    return Number(value.replaceAll(",", ""));
+  }
+  return Number(value);
+}
+
 export function validateParamValue(
   param: TemplateParameter,
   value: ParamValue,
@@ -160,7 +168,7 @@ export function validateParamValue(
     if (re && !re.test(value)) {
       return rules.patternMessage ? `「${param.name}」${rules.patternMessage}` : `「${param.name}」格式不正确`;
     }
-    if (param.type === "number" && Number.isNaN(Number(value))) {
+    if (param.type === "number" && Number.isNaN(numericValue(value))) {
       return `「${param.name}」必须是数字`;
     }
     if (param.type === "date" && !dateParts(value)) {
@@ -171,7 +179,7 @@ export function validateParamValue(
     }
   }
   const num =
-    typeof value === "number" ? value : param.type === "number" ? Number(value) : null;
+    typeof value === "number" ? value : param.type === "number" ? numericValue(value) : null;
   if (num !== null && !Number.isNaN(num)) {
     if (rules.min !== undefined && num < rules.min) return `「${param.name}」不能小于 ${rules.min}`;
     if (rules.max !== undefined && num > rules.max) return `「${param.name}」不能大于 ${rules.max}`;

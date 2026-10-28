@@ -132,7 +132,7 @@ test("custom template entry, refresh and legacy batch links work on a phone with
     "原始内容",
   );
 });
-test("numeric random ranges preserve the plus prefix in exported and saved drawings", async ({ page }, info) => {
+test("numeric random ranges preserve plus prefixes and thousands grouping in exported and saved drawings", async ({ page }, info) => {
   const doc = makeTemplate();
   doc.name = "正号数字测试";
   doc.parameters = [{ ...titleParam, type: "number", defaultValue: "0.00", rules: { decimals: 2 } }];
@@ -149,6 +149,7 @@ test("numeric random ranges preserve the plus prefix in exported and saved drawi
   await page.getByLabel("最小值", { exact: true }).fill("125000");
   await page.getByLabel("最大值", { exact: true }).fill("375000");
   await page.getByLabel("小数位", { exact: true }).fill("2");
+  await expect(page.getByRole("switch", { name: "主标题千位分隔符", exact: true })).toBeChecked();
   await page.getByLabel("前缀", { exact: true }).fill("+");
   await page.getByRole("button", { name: "生成预览", exact: true }).click();
   await page.getByRole("button", { name: "生成 1 张图片", exact: true }).click();
@@ -157,5 +158,6 @@ test("numeric random ranges preserve the plus prefix in exported and saved drawi
   await page.getByRole("button", { name: "图层编辑", exact: true }).click();
   await expect(page).toHaveURL(/\/editor\//);
   await page.getByRole("button", { name: "参数", exact: true }).click();
-  await expect(page.getByLabel("参数主标题", { exact: true }).locator("input").first()).toHaveValue(/^\+\d+\.\d{2}$/);
+  await expect(page.getByLabel("参数主标题", { exact: true }).locator("input").first()).toHaveValue(/^\+\d{1,3}(,\d{3})+\.\d{2}$/);
+  await expect(page.getByText("「主标题」必须是数字", { exact: true })).toHaveCount(0);
 });

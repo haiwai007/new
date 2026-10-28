@@ -1,3 +1,4 @@
+import { airplaneIcon } from "./airplane";
 import { isLocationConfirmed } from "../status-location/model";
 import { renderLocatedPhone } from "../status-location/render";
 import { builtinAppIconSource } from "./app-icon-catalog";
@@ -124,23 +125,30 @@ export function phoneColor(settings: PhoneSettings): string {
 }
 type IconPart = { width: number; svg: (color: string) => string };
 const DIM = 'opacity=".3"';
-function signalBars(level: number, small = false, triangle = false): IconPart {
-  if (triangle) {
+function signalBars(
+  level: number,
+  small = false,
+  style: "bars" | "triangle" | "rounded" | "thin" = "bars",
+): IconPart {
+  if (style === "triangle") {
     const f = level / 4;
     return {
       width: small ? 13 : 17,
       svg: (c) =>
-        `<path d="M0 18L16 2V18Z" fill="${c}" ${DIM}/>${level ? `<path d="M${16 * (1 - f)} 18L16 ${18 - 16 * f}V18Z" fill="${c}"/>` : ""}`,
+        `<g transform="scale(${small ? 0.75 : 1})"><path d="M0 18L16 2V18Z" fill="${c}" ${DIM}/>${level ? `<path d="M${16 * (1 - f)} 18L16 ${18 - 16 * f}V18Z" fill="${c}"/>` : ""}</g>`,
     };
   }
   const k = small ? 0.75 : 1;
+  const barWidth = style === "thin" ? 2.2 : style === "rounded" ? 3 : 3.5;
+  const spacing = style === "thin" ? 4.2 : 5;
+  const radius = style === "rounded" ? 1.5 : style === "thin" ? 0.25 : 0.7;
   return {
-    width: 18.5 * k,
+    width: (spacing * 3 + barWidth) * k,
     svg: (c) =>
       [0, 1, 2, 3]
         .map(
           (i) =>
-            `<rect x="${i * 5 * k}" y="${18 - (4 + i * 3) * k}" width="${3.5 * k}" height="${(4 + i * 3) * k}" rx=".7" fill="${c}" ${i < level ? "" : DIM}/>`,
+            `<rect x="${i * spacing * k}" y="${18 - (4 + i * 3) * k}" width="${barWidth * k}" height="${(4 + i * 3) * k}" rx="${radius * k}" fill="${c}" ${i < level ? "" : DIM}/>`,
         )
         .join(""),
   };
@@ -297,24 +305,13 @@ export function statusIcons(settings: PhoneSettings): {
     if (settings[key]) parts.push(SMALL_ICONS[key]);
   if (settings.vpn) parts.push(textBadge("VPN", true));
   const cellular: IconPart[] = [];
-  if (settings.airplane)
-    cellular.push({
-      width: 20,
-      svg: (c) =>
-        `<path d="M1 8L8 9L14 2L17 2L13 9L20 11L20 13L12 12L9 17L7 17L8 11L1 10Z" fill="${c}"/>`,
-    });
+  if (settings.airplane) cellular.push(airplaneIcon(profile.airplane));
   else {
     if (settings.hd) cellular.push(textBadge("HD", true));
-    cellular.push(
-      signalBars(settings.signal, false, profile.signal === "triangle"),
-    );
+    cellular.push(signalBars(settings.signal, false, profile.signal));
     if (settings.dualSim)
       cellular.push(
-        signalBars(
-          Math.max(0, settings.signal - 1),
-          true,
-          profile.signal === "triangle",
-        ),
+        signalBars(Math.max(0, settings.signal - 1), true, profile.signal),
       );
     if (
       settings.wifi === 0 &&
@@ -331,7 +328,7 @@ export function statusIcons(settings: PhoneSettings): {
             svg: (c) =>
               profile.wifi === "fan"
                 ? `<path d="M0 6Q9 -1 18 6L9 18Z" fill="${c}" ${settings.wifi === 3 ? "" : DIM}/>${settings.wifi < 3 ? `<path d="${settings.wifi === 2 ? "M4 10Q9 6 14 10L9 18Z" : "M7 14Q9 12 11 14L9 18Z"}" fill="${c}"/>` : ""}`
-                : `<g fill="none" stroke-width="${phoneModel(settings.modelId).system === "harmony" ? 1.8 : 2.2}" stroke-linecap="round"><path d="M1 7Q9 0 17 7" stroke="${c}" ${settings.wifi >= 3 ? "" : DIM}/><path d="M3.8 10.6Q9 6 14.2 10.6" stroke="${c}" ${settings.wifi >= 2 ? "" : DIM}/><path d="M6.6 14Q9 12 11.4 14" stroke="${c}"/></g><circle cx="9" cy="16.6" r="1.3" fill="${c}"/>`,
+                : `<g fill="none" stroke-width="${profile.wifiStroke}" stroke-linecap="round"><path d="M1 7Q9 0 17 7" stroke="${c}" ${settings.wifi >= 3 ? "" : DIM}/><path d="M3.8 10.6Q9 6 14.2 10.6" stroke="${c}" ${settings.wifi >= 2 ? "" : DIM}/><path d="M6.6 14Q9 12 11.4 14" stroke="${c}"/></g><circle cx="9" cy="16.6" r="1.3" fill="${c}"/>`,
           },
         ]
       : [];

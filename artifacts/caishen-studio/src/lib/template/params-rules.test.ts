@@ -36,6 +36,14 @@ const textParam = (rules: TemplateParameter["rules"]): TemplateParameter => {
 };
 
 describe("parameter rules", () => {
+  it("accepts standard grouped amounts and checks their numeric bounds", () => {
+    const p: TemplateParameter = { ...textParam({ min: 1, max: 2000 }), type: "number" };
+    expect(validateParamValue(p, "+1,234.50")).toBeNull();
+    expect(validateParamValue(p, "2,001.00")).toMatch(/不能大于/);
+    expect(validateParamValue(p, "-1,234.50")).toMatch(/不能小于/);
+    for (const invalid of ["12,34", "1,,234", "1,234,", "1234,567"]) expect(validateParamValue(p, invalid)).toMatch(/必须是数字/);
+  });
+
   it("checks min length by characters", () => {
     const p = textParam({ minLength: 2 });
     expect(validateParamValue(p, "一")).toMatch(/至少 2/);

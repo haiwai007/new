@@ -180,3 +180,75 @@ it("covers the old iPhone top bar even when switching to a shorter Android statu
   ).toBe(0);
   expect(uploadCoverRatio(image, { width: 800, height: 300 })).toBe(0);
 });
+
+it("resolves an explicit compatible system style for every model and preserves user content on switches", async () => {
+  const { defaultSystemStyle, compatibleStyle, SYSTEM_STYLES } =
+    await import("./system-styles");
+  const { effectiveProfile } = await import("./profiles");
+  const { naturalPhoneSettings } = await import("./layers");
+  for (const model of PHONE_MODELS) {
+    const style = defaultSystemStyle(model.system, model.id);
+    expect(style, model.id).not.toBe("auto");
+    expect(compatibleStyle(style, model.system, model.id), model.id).toBe(true);
+    expect(
+      SYSTEM_STYLES.some((s) => s.id === style),
+      model.id,
+    ).toBe(true);
+    const current = {
+      ...naturalPhoneSettings(),
+      time: "20:06",
+      battery: 18,
+      airplane: true,
+      wifi: 3,
+    };
+    const settings = settingsForModel(current, model.id);
+    expect(settings).toMatchObject({
+      time: "20:06",
+      battery: 18,
+      airplane: true,
+      wifi: 3,
+    });
+    expect(effectiveProfile(settings).label).toContain("参考");
+    const svg = statusIconsSvg(settings);
+    expect(svg, model.id).toContain("data-airplane=");
+    expect(svg, model.id).not.toMatch(/NaN|Infinity/);
+  }
+});
+
+it("uses system-specific airplane orientation, hides cellular service and retains optional Wi-Fi", () => {
+  const variants = new Set<string>();
+  for (const modelId of [
+    "iphone16",
+    "pixel9",
+    "galaxys25",
+    "huaweimate70",
+  ] as const) {
+    const settings = {
+      ...settingsForModel(defaultPhoneSettings(), modelId),
+      airplane: true,
+      wifi: 0,
+      network: "5G" as const,
+      hd: true,
+      dualSim: true,
+    };
+    const svg = statusIconsSvg(settings);
+    expect(svg).not.toContain(">5G<");
+    expect(svg).not.toContain(">HD<");
+    variants.add(svg.match(/<g data-airplane=.*?<\/g><\/g>/)![0]);
+    expect(statusIconsSvg({ ...settings, wifi: 3 })).not.toBe(svg);
+  }
+  expect(variants.size).toBe(4);
+});
+
+it("hides pre-launch system versions on newer models", async () => {
+  const { compatibleStyle } = await import("./system-styles");
+  for (const [model, system, oldStyle] of [
+    ["xiaomi15", "hyperos", "hyperos1"],
+    ["honormagic7pro", "magic", "magic8"],
+    ["oppofindx8", "coloros", "coloros14"],
+    ["oneplus13", "coloros", "coloros14"],
+    ["vivox200", "originos", "originos4"],
+    ["iqoo13", "originos", "originos4"],
+    ["realmegt7pro", "realme", "realme5"],
+  ] as const) expect(compatibleStyle(oldStyle, system, model), model).toBe(false);
+});
