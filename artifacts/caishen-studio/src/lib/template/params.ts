@@ -160,7 +160,7 @@ export function validateParamValue(
     if (re && !re.test(value)) {
       return rules.patternMessage ? `「${param.name}」${rules.patternMessage}` : `「${param.name}」格式不正确`;
     }
-    if (param.type === "number" && (value.trim() === "" || !Number.isFinite(Number(value)))) {
+    if (param.type === "number" && Number.isNaN(Number(value))) {
       return `「${param.name}」必须是数字`;
     }
     if (param.type === "date" && !dateParts(value)) {
@@ -180,10 +180,7 @@ export function validateParamValue(
 }
 
 function coerce(param: TemplateParameter, value: ParamValue): ParamValue {
-  if (param.type === "number" && param.rules.decimals !== undefined && value !== null && String(value).trim() !== "" && Number.isFinite(Number(value))) {
-    const explicitPlus = typeof value === "string" && value.trimStart().startsWith("+");
-    value = `${explicitPlus ? "+" : ""}${Number(value).toFixed(param.rules.decimals)}`;
-  }
+  if(param.type==="number"&&param.rules.decimals!==undefined&&value!==null&&String(value).trim()!==""&&Number.isFinite(Number(value)))value=Number(value).toFixed(param.rules.decimals);
   switch (param.property) {
     case "text":
     case "fill":

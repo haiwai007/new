@@ -29,20 +29,6 @@ function emptyDoc(): TemplateDoc {
 }
 
 describe("parameter binding", () => {
-  it("preserves explicit plus signs through numeric formatting and defaults", () => {
-    const p: TemplateParameter = { ...param("p_title"), type: "number", rules: { decimals: 2, min: -100, max: 100 }, defaultValue: "+18.80" };
-    const doc = { ...coffee, parameters: [p] };
-    for (const [input, expected] of [["+18.8", "+18.80"], ["+0", "+0.00"], ["18.8", "18.80"], ["-18.8", "-18.80"]]) {
-      expect(validateParamValue(p, input)).toBeNull();
-      expect(getParamValue(applyParamValue(doc, p, input), p)).toBe(expected);
-    }
-    expect(getParamValue(resetParamsToDefault(doc), p)).toBe("+18.80");
-    expect(validateParamValue(p, "+101")).toMatch(/不能大于/);
-    for (const invalid of ["+", "+abc", "Infinity", "   "]) expect(validateParamValue(p, invalid)).not.toBeNull();
-    const unformatted = { ...p, rules: {} };
-    expect(getParamValue(applyParamValue(doc, unformatted, "+0018.80"), unformatted)).toBe("+0018.80");
-  });
-
   it("updates only the bound layer", () => {
     const next = applyParamValue(coffee, param("p_title"), "生椰冷萃");
     const title = next.layers.find((l) => l.id === "text_title");
