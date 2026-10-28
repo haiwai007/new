@@ -142,17 +142,40 @@ describe("status-bar app icon documents", () => {
       src: { kind: "asset", assetId: "replaced" },
     });
   });
-  it("uses offline icon geometry and refuses to interpolate an unvalidated SVG colour", () => {
+  it("renders offline brand colours independently of status-bar text colour", () => {
     for (const icon of APP_ICONS) {
-      const url = builtinAppIconSource(icon.id, "#ffffff").url;
+      const url = builtinAppIconSource(icon.id).url;
       expect(url.startsWith("data:image/svg+xml")).toBe(true);
-      expect(decodeURIComponent(url)).toContain('fill="#ffffff"');
+      const svg = decodeURIComponent(url);
+      expect(svg).toContain("<svg");
+      expect(svg).not.toMatch(/<script|onload=|https?:\/\/(?!www.w3.org)/);
     }
+    expect(decodeURIComponent(builtinAppIconSource("wechat").url)).toContain(
+      'fill="#07C160"',
+    );
+    expect(decodeURIComponent(builtinAppIconSource("douyin").url)).toContain(
+      'fill="#25F4EE"',
+    );
+    const icons = builtins();
+    const light = applyPhoneLayers(template(), {
+      ...defaultPhoneSettings(),
+      theme: "dark",
+      appIcons: icons,
+    });
+    const dark = applyPhoneLayers(template(), {
+      ...defaultPhoneSettings(),
+      theme: "light",
+      appIcons: icons,
+    });
     expect(
-      decodeURIComponent(
-        builtinAppIconSource("wechat", '\" onload=\"alert(1)').url,
-      ),
-    ).not.toContain("onload=");
+      light.layers
+        .filter((l) => l.id.includes("_app_"))
+        .map((l) => l.type === "image" && l.src),
+    ).toEqual(
+      dark.layers
+        .filter((l) => l.id.includes("_app_"))
+        .map((l) => l.type === "image" && l.src),
+    );
   });
 });
 
@@ -175,10 +198,10 @@ it("can randomize a legacy IndexedDB work before its missing APP defaults have b
   ).toBe(true);
 });
 
-it("keeps the original eight IDs and persists all twenty new icons in portable templates", async () => {
+it("keeps existing IDs and persists the expanded colour library in portable templates", async () => {
   const { buildPackage, parseTemplateFile } =
     await import("../template/package");
-  expect(APP_ICONS).toHaveLength(28);
+  expect(APP_ICONS).toHaveLength(60);
   expect(APP_ICONS.slice(0, 8).map((icon) => icon.id)).toEqual([
     "kuaishou",
     "douyin",
@@ -189,20 +212,18 @@ it("keeps the original eight IDs and persists all twenty new icons in portable t
     "alipay",
     "telegram",
   ]);
-  expect(new Set(APP_ICONS.map((icon) => icon.id)).size).toBe(28);
-  expect(new Set(APP_ICONS.map((icon) => icon.name)).size).toBe(28);
+  expect(new Set(APP_ICONS.map((icon) => icon.id)).size).toBe(60);
+  expect(new Set(APP_ICONS.map((icon) => icon.name)).size).toBe(60);
   const added = APP_ICONS.slice(8);
-  expect(added).toHaveLength(20);
+  expect(added).toHaveLength(52);
   for (let index = 0; index < added.length; index += MAX_APP_ICONS) {
-    const icons = added
-      .slice(index, index + MAX_APP_ICONS)
-      .map((icon, i) => ({
-        id: `app_${i.toString(36).padStart(10, "a")}`,
-        kind: "builtin" as const,
-        builtinId: icon.id,
-        name: icon.name,
-        visible: true,
-      }));
+    const icons = added.slice(index, index + MAX_APP_ICONS).map((icon, i) => ({
+      id: `app_${i.toString(36).padStart(10, "a")}`,
+      kind: "builtin" as const,
+      builtinId: icon.id,
+      name: icon.name,
+      visible: true,
+    }));
     const doc = applyPhoneLayers(template(), {
       ...defaultPhoneSettings(),
       appIcons: icons,

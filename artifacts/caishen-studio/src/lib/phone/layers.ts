@@ -781,7 +781,7 @@ function renderPhoneLayers(doc: TemplateDoc, raw: PhoneSettings): TemplateDoc {
         createImageLayer(
           { x, y: cy - appSize / 2, width: appSize, height: appSize },
           app.kind === "builtin"
-            ? builtinAppIconSource(app.builtinId, color)
+            ? builtinAppIconSource(app.builtinId)
             : app.src,
           {
             name: `APP · ${app.name}`,

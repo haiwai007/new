@@ -10,7 +10,6 @@ import {
   builtinAppIconSource,
 } from "@/lib/phone/app-icon-catalog";
 import { uploadAppIcon } from "@/lib/phone/app-icon-upload";
-import { phoneColor } from "@/lib/phone/layers";
 import { deleteAsset, resolveImageUrl } from "@/lib/storage/assets";
 import { newId } from "@/lib/template/ids";
 import type { PhoneAppIcon, PhoneSettings } from "@/lib/phone/schema";
@@ -96,7 +95,6 @@ export default function AppIconsEditor({
     (settings.rendering === "natural"
       ? naturalAppCapacity(settings)
       : MAX_APP_ICONS);
-  const color = phoneColor(settings);
   const background = settings.backgroundColor;
   const keyword = query.trim().toLowerCase();
   const choices = APP_ICONS.filter(
@@ -174,7 +172,7 @@ export default function AppIconsEditor({
         {settings.rendering === "natural"
           ? "空间不足时请调整大小或数量。"
           : "旧版布局空间不足时自动缩小。"}
-        内置图标跟随状态栏颜色，自定义图标保留上传颜色。
+        内置 60 种图标保留品牌配色，自定义图标保留上传颜色。
       </p>
       <fieldset disabled={disabled} className="min-w-0 space-y-3">
         <Input
@@ -230,9 +228,9 @@ export default function AppIconsEditor({
                 }
               >
                 <img
-                  src={builtinAppIconSource(app.id, "#111111").url}
+                  src={builtinAppIconSource(app.id).url}
                   alt=""
-                  className="size-4 shrink-0 dark:invert"
+                  className="size-4 shrink-0"
                 />
                 <span className="min-w-0 truncate">{app.name}</span>
               </Button>
@@ -329,7 +327,7 @@ export default function AppIconsEditor({
                   <IconPreview
                     source={
                       icon.kind === "builtin"
-                        ? builtinAppIconSource(icon.builtinId, color)
+                        ? builtinAppIconSource(icon.builtinId)
                         : icon.src
                     }
                     name={icon.name}

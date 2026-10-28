@@ -104,13 +104,13 @@
 
 ### 4.5.1 APP 通知图标
 
-单张作图手机面板与批量作图提供 APP 图标设置。内置快手、抖音、微信、QQ 等 28 种图标，支持中英文搜索和滚动选择；也可以上传 PNG、JPEG 或 WebP 自定义图标。
+单张作图手机面板与批量作图提供 APP 图标设置。内置快手、抖音、微信、QQ 等 60 种彩色图标，支持中英文搜索和滚动选择；也可以上传 PNG、JPEG 或 WebP 自定义图标。
 
-新增图标包括小红书、淘宝、美团、知乎、豆瓣、百度、网易云音乐、钉钉、阿里旺旺，以及 WhatsApp、Instagram、Facebook、Messenger、YouTube、Spotify、Discord、LINE、X、Zoom 和 Snapchat。
+新增图标包括小红书、淘宝、美团、知乎、豆瓣、百度、网易云音乐、钉钉、阿里旺旺，以及 WhatsApp、Instagram、Facebook、Messenger、YouTube、Spotify、Discord、LINE、X、Zoom 和 Snapchat。另增加搜狗输入法、1688、Trip.com、Chrome、Gmail、Google 地图／云端硬盘／相册／翻译、Firefox、Opera、Brave、Safari、DuckDuckGo、Signal、Viber、Pinterest、Reddit、Twitch、Netflix、Apple Music／播客、Shazam、SoundCloud、Steam、Notion、Dropbox、GitHub、多邻国、Figma、Todoist、印象笔记。
 
 - 最多添加 8 个，支持显示 / 隐藏、排序、删除、大小和间距调整。
 - 图标放在时间旁；空间不足时自动缩小并为时钟、开孔及右侧系统图标保留空间。
-- 内置图标随状态栏颜色显示，自定义图标保留原色与透明度。
+- 内置图标保留品牌配色，不随时间、信号等状态栏文字统一染色；自定义图标默认保留原色与透明度。
 - 自定义图片不超过 2MB、1024×1024，按比例居中转换为 128×128 PNG，仅存于浏览器本地。
 - 图标及素材引用随作品、历史、模板文件和备份保留；恢复时重建引用，隐藏图标也可再次显示。
 - 批量做图支持固定 APP＋指定候选随机、随机增加数量区间、顺序及自定义上传，按候选型号最小共同容量校验。

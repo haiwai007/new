@@ -233,7 +233,7 @@ export function renderLocatedPhone(
             height: size,
           },
           app.kind === "builtin"
-            ? builtinAppIconSource(app.builtinId, autoColor("apps"))
+            ? builtinAppIconSource(app.builtinId)
             : app.src,
           {
             name: `APP · ${app.name}`,

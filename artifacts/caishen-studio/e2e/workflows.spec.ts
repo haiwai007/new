@@ -969,7 +969,7 @@ test("expanded APP library supports search, selection limits, saving and PNG exp
     name: "内置 APP 图标",
     exact: true,
   });
-  await expect(choices.getByRole("button")).toHaveCount(28);
+  await expect(choices.getByRole("button")).toHaveCount(60);
   for (const name of [
     "小红书",
     "淘宝",

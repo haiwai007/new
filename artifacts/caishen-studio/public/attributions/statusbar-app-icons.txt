@@ -23,7 +23,7 @@ imply affiliation or endorsement. Uploaded custom icons are supplied by users.
 
 DingTalk and Aliwangwang: Ant Design Icons, distributed by react-icons.
 Source: https://github.com/ant-design/ant-design-icons
-Geometry is rendered in a monochrome status-bar colour, at the selected size.
+Geometry is rendered in brand colours, at the selected size.
 License text:
 
 MIT LICENSE
@@ -48,3 +48,15 @@ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
 LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+Expanded library: Sogou, Alibaba.com (1688), Trip.com, Google Chrome,
+Gmail, Google Maps, Google Drive, Google Photos, Google Translate,
+Firefox Browser, Opera, Brave, Safari, DuckDuckGo, Signal, Viber,
+Pinterest, Reddit, Twitch, Netflix, Apple Music, Apple Podcasts,
+Shazam, SoundCloud, Steam, Notion, Dropbox, GitHub, Duolingo,
+Figma, Todoist and Evernote: Simple Icons (CC0), distributed by react-icons.
+Geometry is bundled locally. Haishen Studio adds brand colours, gradients
+and simplified multi-colour treatments (Douyin, QQ, Chrome, Gmail,
+Drive, Photos, Figma and Snapchat); these are small notification renditions,
+not a claim to supply official application icon artwork.
+Status-bar text colour does not recolour built-in application icons.

@@ -16,7 +16,6 @@ import {
   minimumAppCapacity,
   type PhoneBatchRules,
 } from "@/lib/batch/phone-rules";
-import { phoneColor } from "@/lib/phone/layers";
 import type { PhoneAppIcon } from "@/lib/phone/schema";
 const selectClass =
   "h-9 w-full min-w-0 rounded border bg-background px-2 text-xs";
@@ -389,10 +388,7 @@ export function AppOptions({
                     <IconPreview
                       source={
                         icon.kind === "builtin"
-                          ? builtinAppIconSource(
-                              icon.builtinId,
-                              phoneColor(settings),
-                            )
+                          ? builtinAppIconSource(icon.builtinId)
                           : icon.src
                       }
                       name={icon.name}
