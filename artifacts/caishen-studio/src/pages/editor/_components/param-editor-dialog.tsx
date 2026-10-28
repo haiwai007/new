@@ -1,7 +1,7 @@
 import {DATE_PRECISIONS,dateParts,dateValue,type DatePrecision} from "@/lib/parameters/date";
 import {removeParameterBinding} from "@/lib/parameters/document";
 import OrderRuleEditor from "@/components/parameters/order-rule-editor";
-import {defaultOrderRule} from "@/lib/parameters/order";
+import {inferOrderRule} from "@/lib/parameters/order";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button.tsx";
@@ -60,7 +60,7 @@ function Form({ param, layer: newLayer, onDone }: Props & { onDone: () => void }
   const [boundLayerId, setBoundLayerId] = useState(layerId);
   const layer = doc.layers.find((l) => l.id === boundLayerId);
   const types = layer ? allowedParamTypes(layer) : [];
-  const [order,setOrder]=useState(param?.order??defaultOrderRule());
+  const [order,setOrder]=useState(param?.order??inferOrderRule(layer?.type==="text"?layer.text:""));
   const [type, setType] = useState<ParamInputType>(param?.type ?? types[0] ?? "text");
   const [name, setName] = useState(param?.name ?? "");
   const [nameError, setNameError] = useState("");

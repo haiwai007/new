@@ -16,7 +16,7 @@ export default function OrderRuleEditor({
     >
       <legend className="px-1 text-xs font-medium">订单号生成规则</legend>
       <label className="block space-y-1 text-xs">
-        随机部分位数
+        随机部分位数（含 *）
         <Input
           aria-label="订单号随机部分位数"
           type="number"
@@ -26,9 +26,39 @@ export default function OrderRuleEditor({
           onChange={(e) => {
             const length = Number(e.target.value);
             if (Number.isInteger(length) && length >= 1 && length <= 64)
-              onChange({ ...value, length });
+              onChange({
+                ...value,
+                length,
+                maskPattern: value.maskPattern
+                  ? value.maskPattern.slice(0, length).padEnd(length, "0")
+                  : undefined,
+              });
           }}
         />
+      </label>
+      <label className="block space-y-1 text-xs">
+        随机单号脱敏示例（可选）
+        <Input
+          aria-label="订单号脱敏示例"
+          value={value.maskPattern ?? ""}
+          maxLength={64}
+          placeholder="例如：6205****5522"
+          onChange={(e) => {
+            const pattern = e.target.value
+              .replace(/[＊﹡]/g, "*")
+              .replace(/\s/g, "");
+            if (!/^[0-9A-Za-z*]*$/.test(pattern)) return;
+            onChange({
+              ...value,
+              maskPattern: pattern || undefined,
+              length: pattern.length || value.length,
+            });
+          }}
+        />
+        <span className="block leading-relaxed text-muted-foreground">
+          *
+          原位保留，其余位置按字符类型随机。填写示例会自动调整位数；固定首尾内容请用前后缀。清空示例则不随机添加星号。
+        </span>
       </label>
       <label className="block space-y-1 text-xs">
         字符类型

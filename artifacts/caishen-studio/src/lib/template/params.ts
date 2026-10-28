@@ -1,5 +1,5 @@
 import {dateParts} from "../parameters/date";
-import { defaultOrderRule, orderError } from "../parameters/order";
+import { defaultOrderRule, orderError, inferOrderRule } from "../parameters/order";
 import { RE2JS } from "re2js";
 import type {
   BindableProperty,
@@ -252,7 +252,7 @@ export function createParameter(
     editable: true,
     allowEmpty: true,
     rules: type === "opacity" ? { min: 0, max: 1 } : {},
-    ...(type === "order" ? {order:defaultOrderRule()}:{}),
+    ...(type === "order" ? {order:inferOrderRule(layer.type==="text"?layer.text:"")}:{}),
     group: defaultGroupFor(type),
     description: "",
     placeholder: "",
