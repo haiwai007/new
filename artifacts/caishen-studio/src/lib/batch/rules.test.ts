@@ -10,6 +10,20 @@ const textOf = (doc: ReturnType<typeof makeTemplate>, id: string) => {
 };
 
 describe("batch rules", () => {
+  it("retains leading plus signs in fixed and random numeric drawings", () => {
+    const p: TemplateParameter = { ...priceParam, type: "number", rules: { decimals: 2 } };
+    const tpl = makeTemplate({ layers: [textLayer("layer-price", "+1.00")], parameters: [p] });
+    const fixed = generateItems(tpl, { [p.id]: { mode: "fixed", value: "+18.8" } }, 2, 42);
+    expect(fixed.map(i => textOf(i.doc, "layer-price"))).toEqual(["+18.80", "+18.80"]);
+    const random = generateItems(tpl, { [p.id]: { mode: "range", min: 10, max: 20, decimals: 2, prefix: "+", suffix: "" } }, 20, 42);
+    for (const item of random) {
+      const text = textOf(item.doc, "layer-price")!;
+      expect(text).toMatch(/^\+\d+\.\d{2}$/);
+      expect(Number(text)).toBeGreaterThanOrEqual(10);
+      expect(Number(text)).toBeLessThanOrEqual(20);
+    }
+  });
+
   it("keeps random ranges inside bounds with the requested decimals and affixes", () => {
     const rng = createRng(42);
     for (let i = 0; i < 200; i += 1) {

@@ -119,7 +119,8 @@ function ParamInput({ doc, param, first, last }: { doc: TemplateDoc; param: Temp
     case "rotation":
       control = (
         <Input
-          type="number"
+          type={param.type === "number" ? "text" : "number"}
+          inputMode={param.type === "number" ? "decimal" : undefined}
           value={str}
           disabled={disabled}
           min={param.rules.min}
