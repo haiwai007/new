@@ -1,3 +1,4 @@
+import type {CardRule} from "../lib/parameters/card";
 import type { OrderRule } from "../lib/parameters/order";
 import type { StatusLocation } from "../lib/status-location/schema";
 import type { PhoneSettings } from "../lib/phone/schema";
@@ -96,6 +97,7 @@ export type LayerType = Layer["type"];
 export type ParamInputType =
   | "text"
   | "order"
+  | "card"
   | "multiline"
   | "number"
   | "date"
@@ -149,6 +151,7 @@ export type ParameterCleanup = {
   follow: boolean; rect: {x:number;y:number;width:number;height:number};
 };
 export type TemplateParameter = {
+  card?: CardRule;
   order?: OrderRule;
   linkedLayerIds?: string[];
   imageRole?: "avatar"|"logo"|"image";

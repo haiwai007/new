@@ -1,3 +1,5 @@
+import CardRuleEditor from "@/components/parameters/card-rule-editor";
+import {defaultCardRule,inferCardRule,cardRuleSchema,cardFromRank,cardError,randomCard} from "@/lib/parameters/card";
 import { useMemo, useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -143,7 +145,9 @@ export default function ParameterInspector() {
       type,
       property: PROPERTY_FOR_TYPE[type],
       order: type === "order" ? (p.order ?? defaultOrderRule()) : undefined,
+      card:type==="card"?(p.card??inferCardRule(String(getParamValue(doc,p)??""))):undefined,
     };
+    if(type==="card"&&p.type!=="card")next={...next,defaultValue:cardError(next.card!,String(getParamValue(doc,p)??""))?cardFromRank(next.card!,0n):String(getParamValue(doc,p)??"")};
     if (type === "order" && p.type !== "order")
       next = { ...next, defaultValue: orderFromRank(next.order!, 0n) };
     edit((d) => {
@@ -193,7 +197,7 @@ export default function ParameterInspector() {
             onChange={(e) => changeType(e.target.value as ParamInputType)}
           >
             {(layer.type === "text"
-              ? ["text", "multiline", "number", "order", "date", "select"]
+              ? ["text", "multiline", "number", "order", "card", "date", "select"]
               : layer.type === "image"
                 ? ["image"]
                 : [p.type]
@@ -238,6 +242,7 @@ export default function ParameterInspector() {
           </Button>
         </ParamEditorDialog>
       </Section>
+      {p.type==="card"&&<div className="px-3"><CardRuleEditor value={p.card??defaultCardRule()} onChange={card=>change({card})}/></div>}
       {p.type === "order" && (
         <div className="px-3">
           <OrderRuleEditor
@@ -286,6 +291,7 @@ export default function ParameterInspector() {
                 useEditor.getState().setParamPreview(p.id, e.target.value)
               }
             />
+            {p.type==="card"&&<Button size="sm" variant="secondary" disabled={!cardRuleSchema.safeParse(p.card??defaultCardRule()).success} onClick={()=>useEditor.getState().setParamPreview(p.id,randomCard(p.card??defaultCardRule(),String(getParamValue(view,p)??"")))}>随机卡号示例</Button>}
             {p.type === "order" && (
               <Button
                 size="sm"

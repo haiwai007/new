@@ -1,3 +1,4 @@
+import {cardRuleSchema} from "../parameters/card";
 import { orderRuleSchema } from "../parameters/order";
 import { statusLocationSchema } from "../status-location/schema";
 import { z } from "zod";
@@ -107,6 +108,7 @@ const paramValue = z.union([
 
 const parameter = z.object({
   order: orderRuleSchema.optional(),
+  card: cardRuleSchema.optional(),
   linkedLayerIds: z.array(z.string().min(1)).max(2000).optional(),
   imageRole: z.enum(["avatar","logo","image"]).optional(),
   imageBorder: z.object({width:z.number().min(0).max(200),color:z.string()}).optional(),
@@ -117,6 +119,7 @@ const parameter = z.object({
   type: z.enum([
     "text",
     "order",
+    "card",
     "multiline",
     "number",
     "date",

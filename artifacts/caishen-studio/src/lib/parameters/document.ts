@@ -1,3 +1,4 @@
+import {defaultCardRule,cardFromRank} from "./card";
 import type {
   Layer,
   TemplateDoc,
@@ -19,7 +20,7 @@ import { cloneLayers } from "../template/doc-ops";
 import { newId } from "../template/ids";
 import { defaultOrderRule, orderFromRank } from "./order";
 export type RegionKind =
-  "text" | "number" | "order" | "avatar" | "logo" | "image";
+  "text" | "number" | "order" | "card" | "avatar" | "logo" | "image";
 export type RegionBox = { x: number; y: number; width: number; height: number };
 export const parameterLayerIds = (p: TemplateParameter) => [
   p.layerId,
@@ -86,9 +87,9 @@ export function createRegionParameter(
     });
   } else
     layer = createTextLayer(box, {
-      name: kind === "order" ? "订单号" : kind === "number" ? "金额" : "文字",
+      name: kind === "card"?"卡号":kind === "order" ? "订单号" : kind === "number" ? "金额" : "文字",
       text:
-        kind === "order"
+        kind === "card"?cardFromRank(defaultCardRule(),0n):kind === "order"
           ? orderFromRank(defaultOrderRule(), 0n)
           : kind === "number"
             ? "0.00"
@@ -117,7 +118,7 @@ export function createRegionParameter(
     layer,
     layer.type === "image"
       ? "image"
-      : kind === "order"
+      : kind === "card"?"card":kind === "order"
         ? "order"
         : kind === "number"
           ? "number"

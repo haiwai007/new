@@ -1,3 +1,4 @@
+import {defaultCardRule,cardSummary,randomCard} from "@/lib/parameters/card";
 import DateParameterInput from "@/components/parameters/date-parameter-input";
 import ImageParameterInput from "@/components/parameters/image-parameter-input";
 import {defaultOrderRule,randomOrder,orderSummary} from "@/lib/parameters/order";
@@ -48,6 +49,9 @@ function ParamInput({ doc, param, first, last }: { doc: TemplateDoc; param: Temp
 
   let control: React.ReactNode;
   switch (param.type) {
+    case "card":
+      control=<div className="space-y-1"><div className="flex gap-1"><Input aria-label={param.name} value={str} disabled={disabled} onChange={e=>apply(e.target.value)}/><Button size="sm" variant="secondary" disabled={disabled} aria-label={`随机生成${param.name}`} onClick={()=>apply(randomCard(param.card??defaultCardRule(),str))}>随机生成</Button></div><p className="text-[11px] text-muted-foreground">{cardSummary(param.card??defaultCardRule())}</p></div>;
+      break;
     case "order":
       control=<div className="space-y-1"><div className="flex gap-1"><Input aria-label={param.name} value={str} disabled={disabled} onChange={e=>apply(e.target.value)}/><Button size="sm" variant="secondary" disabled={disabled} aria-label={`随机生成${param.name}`} onClick={()=>apply(randomOrder(param.order??defaultOrderRule(),str))}>随机生成</Button></div><p className="text-[11px] text-muted-foreground">{orderSummary(param.order??defaultOrderRule())}</p></div>;
       break;
@@ -213,6 +217,7 @@ export default function ParamsPanel() {
   return (
     <div className="space-y-4 p-4">
       <div className="flex flex-wrap gap-2">
+        {doc.parameters.some(p=>p.type==="card"&&p.editable)&&<Button size="sm" variant="secondary" onClick={()=>edit(d=>d.parameters.filter(p=>p.type==="card"&&p.editable).reduce((next,p)=>applyParamValue(next,p,randomCard(p.card??defaultCardRule(),String(getParamValue(next,p)??""))),d))}>随机全部卡号</Button>}
         {doc.parameters.some(p=>p.type==="order"&&p.editable)&&<Button size="sm" variant="secondary" onClick={()=>edit(d=>d.parameters.filter(p=>p.type==="order"&&p.editable).reduce((next,p)=>applyParamValue(next,p,randomOrder(p.order??defaultOrderRule(),String(getParamValue(next,p)??""))),d))}>随机全部订单号</Button>}
         <Button size="sm" variant="secondary" onClick={() => edit(resetParamsToDefault)}>
           <RotateCcw className="size-4" /> 恢复默认值

@@ -294,7 +294,7 @@ export default function BatchPage() {
     const defaults: BatchRules = {};
     for (const param of selected?.doc.parameters ?? []) {
       defaults[param.id] = defaultRule(
-        param.type === "order"
+        (param.type === "order"||param.type==="card")
           ? "orderRandom"
           : param.type === "image" || isLockedParam(selected!.doc, param)
             ? "keep"
@@ -874,7 +874,7 @@ export default function BatchPage() {
                         maxSize={count === 1 ? 420 : 160}
                       />
                       {i.doc.parameters
-                        .filter((p) => p.type === "order")
+                        .filter((p) => p.type === "order"||p.type==="card")
                         .map((p) => (
                           <p
                             key={p.id}

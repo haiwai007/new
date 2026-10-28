@@ -1,3 +1,4 @@
+import {defaultCardRule,cardSummary} from "@/lib/parameters/card";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -63,6 +64,7 @@ export default function ParameterManager() {
         {[
           { value: "all", label: "全部" },
           { value: "order", label: "订单号" },
+          {value:"card",label:"卡号"},
           { value: "image", label: "图片" },
           { value: "text", label: "文字" },
           { value: "number", label: "数字" },
@@ -115,7 +117,7 @@ export default function ParameterManager() {
               >
                 <strong className="block truncate text-sm">{p.name}</strong>
                 <span className="block text-[11px] text-muted-foreground">
-                  {p.type === "order"
+                  {p.type === "card"?cardSummary(p.card??defaultCardRule()):p.type === "order"
                     ? orderSummary(p.order ?? defaultOrderRule())
                     : p.type === "image"
                       ? `${p.imageRole === "avatar" ? "头像" : p.imageRole === "logo" ? "Logo" : "图片"} · ${layer?.type === "image" && layer.fit === "contain" ? "完整显示" : "铺满裁剪"}`

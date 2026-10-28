@@ -1,3 +1,4 @@
+import {defaultCardRule,cardSummary,cardError} from "@/lib/parameters/card";
 import DateParameterInput from "@/components/parameters/date-parameter-input";
 import {
   defaultOrderRule,
@@ -136,8 +137,9 @@ function RuleFields({
       return (
         <div className="space-y-2">
           <p className="text-xs text-muted-foreground">
-            {orderSummary(param.order ?? defaultOrderRule())}
+            {param.type==="card"?cardSummary(param.card??defaultCardRule()):orderSummary(param.order ?? defaultOrderRule())}
           </p>
+          {param.type==="card"&&<p className="break-all text-xs text-muted-foreground" title={(param.card??defaultCardRule()).prefixes.join("、")}>卡头候选：{(param.card??defaultCardRule()).prefixes.slice(0,6).join("、")}{(param.card??defaultCardRule()).prefixes.length>6?" 等":""}</p>}
           <label className="flex items-center gap-2 text-xs">
             <Switch
               aria-label={`${param.name}本批次不重复`}
@@ -403,6 +405,7 @@ function FixedField({
         value={value}
         onChange={(e) => onChange(e.target.value)}
       />
+      {param.type==="card"&&value&&cardError(param.card??defaultCardRule(),value)&&<p className="mt-1 text-xs text-amber-700">{cardError(param.card??defaultCardRule(),value)}</p>}
       {param.type === "order" &&
         value &&
         orderError(param.order ?? defaultOrderRule(), value) && (

@@ -1,3 +1,4 @@
+import {defaultCardRule,generateCards,randomCard} from "../parameters/card";
 import {dateFormat,dateParts} from "../parameters/date";
 import { defaultOrderRule, generateOrders, randomOrder } from "../parameters/order";
 import { distributeModels, applyPhoneBatchRules, validatePhoneBatchRules, type PhoneBatchRules } from "./phone-rules";
@@ -49,7 +50,7 @@ const NUMERIC_TYPES: ParamInputType[] = ["fontSize", "width", "height", "x", "y"
 
 /** Which rule modes make sense for each parameter type. */
 export function modesFor(type: ParamInputType): RuleMode[] {
-  if(type === "order") return ["keep","fixed","orderRandom","orderedList"];
+  if(type === "order"||type === "card") return ["keep","fixed","orderRandom","orderedList"];
   if(type === "image") return ["keep","fixed","list","orderedList"];
   if (type === "text" || type === "multiline") return ["keep", "fixed", "list", "sequence", "range", "dateRange"];
   if (type === "number") return ["keep", "fixed", "range", "list"];
@@ -127,7 +128,7 @@ function convertFixed(param: TemplateParameter, raw: string): ParamValue | undef
 /** Value for one parameter on image #index, or undefined to keep the template value. */
 export function generateValue(param: TemplateParameter, rule: ParamRule, index: number, rng: () => number): ParamValue | undefined {
   switch (rule.mode) {
-    case "orderRandom": return generateOrders(param.order??defaultOrderRule(),1,rng,false)[0];
+    case "orderRandom": return param.type==="card"?generateCards(param.card??defaultCardRule(),1,rng,false)[0]:generateOrders(param.order??defaultOrderRule(),1,rng,false)[0];
     case "orderedList": {
       const options=rule.options.filter(Boolean);
       const value=options[rule.loop?index%options.length:index];
@@ -170,14 +171,14 @@ export function generateItems(template: TemplateDoc, rules: BatchRules, count: n
   const phoneErrors = validatePhoneBatchRules(phoneRules, template);
   const orderValues:Record<string,string[]>={}; const orderErrors:string[]=[];
   for(const p of template.parameters){
-    const rule=rules[p.id]??(p.type==="order"?{mode:"orderRandom" as const,unique:true}:undefined);
-    if(rule?.mode==="orderRandom"&&!isLockedParam(template,p))try{orderValues[p.id]=generateOrders(p.order??defaultOrderRule(),total,rng,rule.unique);}catch(e){orderErrors.push(`「${p.name}」${e instanceof Error?e.message:"无法随机单号"}`);}
+    const rule=rules[p.id]??((p.type==="order"||p.type==="card")?{mode:"orderRandom" as const,unique:true}:undefined);
+    if(rule?.mode==="orderRandom"&&!isLockedParam(template,p))try{orderValues[p.id]=(p.type==="card"?generateCards(p.card??defaultCardRule(),total,rng,rule.unique):generateOrders(p.order??defaultOrderRule(),total,rng,rule.unique));}catch(e){orderErrors.push(`「${p.name}」${e instanceof Error?e.message:"无法随机单号"}`);}
   }
   return Array.from({ length: total }, (_, index) => {
     const values: Record<string, ParamValue> = {};
     const itemErrors=[...orderErrors];
     for (const param of template.parameters) {
-      const rule = rules[param.id]??(param.type==="order"?{mode:"orderRandom" as const,unique:true}:undefined);
+      const rule = rules[param.id]??((param.type==="order"||param.type==="card")?{mode:"orderRandom" as const,unique:true}:undefined);
       if (!rule || isLockedParam(template, param)) continue;
       if(rule.mode==="orderedList"&&!rule.loop&&index>=rule.options.filter(Boolean).length)itemErrors.push(`「${param.name}」列表数量不足，请补充内容或开启循环使用`);
       const value = rule.mode==="orderRandom"?orderValues[param.id]?.[index]:generateValue(param, rule, index, rng);
@@ -196,10 +197,10 @@ export function generateItems(template: TemplateDoc, rules: BatchRules, count: n
 export function preserveUniqueOrders(replacement:GeneratedItem, items:GeneratedItem[], rules:BatchRules, rng:()=>number):GeneratedItem {
   let doc=replacement.doc;
   for(const p of doc.parameters){
-    const rule=rules[p.id]??(p.type==="order"?{mode:"orderRandom" as const,unique:true}:undefined);
-    if(p.type!=="order"||rule?.mode!=="orderRandom"||!rule.unique||isLockedParam(doc,p))continue;
+    const rule=rules[p.id]??((p.type==="order"||p.type==="card")?{mode:"orderRandom" as const,unique:true}:undefined);
+    if((p.type!=="order"&&p.type!=="card")||rule?.mode!=="orderRandom"||!rule.unique||isLockedParam(doc,p))continue;
     const excluded=items.filter(item=>item.index!==replacement.index).map(item=>String(getParamValue(item.doc,p)??""));
-    const value=randomOrder(p.order??defaultOrderRule(),String(getParamValue(items.find(item=>item.index===replacement.index)?.doc??doc,p)??""),excluded,rng);
+    const value=p.type==="card"?randomCard(p.card??defaultCardRule(),String(getParamValue(items.find(item=>item.index===replacement.index)?.doc??doc,p)??""),excluded,rng):randomOrder(p.order??defaultOrderRule(),String(getParamValue(items.find(item=>item.index===replacement.index)?.doc??doc,p)??""),excluded,rng);
     doc=applyParamValues(doc,{[p.id]:value});
   }
   return {...replacement,doc};

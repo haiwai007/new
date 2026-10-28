@@ -1,3 +1,4 @@
+import {defaultCardRule,inferCardRule,cardError} from "../parameters/card";
 import {dateParts} from "../parameters/date";
 import { defaultOrderRule, orderError, inferOrderRule } from "../parameters/order";
 import { RE2JS } from "re2js";
@@ -34,6 +35,7 @@ export function renameParameter(doc: TemplateDoc, id: string, raw: string): Temp
 export const PARAM_TYPE_LABEL: Record<ParamInputType, string> = {
   text: "单行文本",
   order: "订单号",
+  card: "卡号",
   multiline: "多行文本",
   number: "数字",
   date: "日期",
@@ -54,6 +56,7 @@ export const PARAM_TYPE_LABEL: Record<ParamInputType, string> = {
 export const PROPERTY_FOR_TYPE: Record<ParamInputType, BindableProperty> = {
   text: "text",
   order: "text",
+  card: "text",
   multiline: "text",
   number: "text",
   date: "text",
@@ -71,13 +74,13 @@ export const PROPERTY_FOR_TYPE: Record<ParamInputType, BindableProperty> = {
   opacity: "opacity",
 };
 
-const TEXT_ONLY: ParamInputType[] = ["text", "order", "multiline", "number", "date", "select", "font", "fontSize"];
+const TEXT_ONLY: ParamInputType[] = ["text", "order", "card", "multiline", "number", "date", "select", "font", "fontSize"];
 
 /** Parameters are grouped into sections in the fill-in panel. */
 export const DEFAULT_GROUPS = { content: "内容", image: "图片", style: "样式", layout: "布局" } as const;
 
 export function defaultGroupFor(type: ParamInputType): string {
-  if (["text", "order", "multiline", "number", "date", "select"].includes(type)) return DEFAULT_GROUPS.content;
+  if (["text", "order", "card", "multiline", "number", "date", "select"].includes(type)) return DEFAULT_GROUPS.content;
   if (type === "image") return DEFAULT_GROUPS.image;
   if (["color", "font", "fontSize", "opacity", "toggle"].includes(type)) return DEFAULT_GROUPS.style;
   return DEFAULT_GROUPS.layout;
@@ -141,6 +144,7 @@ export function validateParamValue(
     return null;
   }
   const { rules } = param;
+  if(param.type === "card" && typeof value === "string")return cardError(param.card??defaultCardRule(),value);
   if(param.type === "order" && typeof value === "string") return orderError(param.order ?? defaultOrderRule(),value);
   if (typeof value === "string") {
     const len = [...value].length;
@@ -253,6 +257,7 @@ export function createParameter(
     allowEmpty: true,
     rules: type === "opacity" ? { min: 0, max: 1 } : {},
     ...(type === "order" ? {order:inferOrderRule(layer.type==="text"?layer.text:"")}:{}),
+    ...(type==="card"?{card:inferCardRule(layer.type==="text"?layer.text:"")}:{}),
     group: defaultGroupFor(type),
     description: "",
     placeholder: "",

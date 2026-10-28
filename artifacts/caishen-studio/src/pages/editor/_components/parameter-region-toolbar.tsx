@@ -38,6 +38,7 @@ export default function ParameterRegionToolbar() {
           { kind: "text", label: "文字" },
           { kind: "number", label: "数字／金额" },
           { kind: "order", label: "订单号" },
+          {kind:"card",label:"卡号"},
           { kind: "avatar", label: "头像" },
           { kind: "logo", label: "Logo" },
           { kind: "image", label: "普通图片" },

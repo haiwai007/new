@@ -268,7 +268,7 @@ function SubmissionDetail({
                     : String(p.defaultValue ?? "未设置")}
                 </p>
                 <pre className="mt-1 whitespace-pre-wrap break-all text-xs text-muted-foreground">
-                  {JSON.stringify(p.rules, null, 2)}
+                  {JSON.stringify({...p.rules,...(p.order?{order:p.order}:{}),...(p.card?{card:p.card}:{})}, null, 2)}
                 </pre>
               </div>
             ))}

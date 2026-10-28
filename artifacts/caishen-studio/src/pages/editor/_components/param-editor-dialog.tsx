@@ -1,3 +1,5 @@
+import CardRuleEditor from "@/components/parameters/card-rule-editor";
+import {cardRuleSchema,inferCardRule} from "@/lib/parameters/card";
 import {DATE_PRECISIONS,dateParts,dateValue,type DatePrecision} from "@/lib/parameters/date";
 import {removeParameterBinding} from "@/lib/parameters/document";
 import OrderRuleEditor from "@/components/parameters/order-rule-editor";
@@ -31,7 +33,7 @@ type Props =
   | { param: TemplateParameter; layer?: undefined; children: React.ReactNode }
   | { layer: Layer; param?: undefined; children: React.ReactNode };
 
-const TEXTUAL: ParamInputType[] = ["text", "order", "multiline", "number", "date", "select"];
+const TEXTUAL: ParamInputType[] = ["text", "order", "card", "multiline", "number", "date", "select"];
 const NUMERIC: ParamInputType[] = ["number", "fontSize", "width", "height", "x", "y", "rotation", "opacity"];
 const CUSTOM_PATTERN = "custom";
 const NO_PATTERN = "none";
@@ -60,6 +62,7 @@ function Form({ param, layer: newLayer, onDone }: Props & { onDone: () => void }
   const [boundLayerId, setBoundLayerId] = useState(layerId);
   const layer = doc.layers.find((l) => l.id === boundLayerId);
   const types = layer ? allowedParamTypes(layer) : [];
+  const [card,setCard]=useState(param?.card??inferCardRule(layer?.type==="text"?layer.text:""));
   const [order,setOrder]=useState(param?.order??inferOrderRule(layer?.type==="text"?layer.text:""));
   const [type, setType] = useState<ParamInputType>(param?.type ?? types[0] ?? "text");
   const [name, setName] = useState(param?.name ?? "");
@@ -145,11 +148,14 @@ function Form({ param, layer: newLayer, onDone }: Props & { onDone: () => void }
     // Legacy long names remain valid when editing other parameter settings.
     const error = displayName === param?.name ? null : parameterNameError(displayName);
     if (error) {setNameError(error); return;}
+    const checkedCard=type==="card"?cardRuleSchema.safeParse(card):null;
+    if(checkedCard&&!checkedCard.success){toast.error(checkedCard.error.issues[0]?.message??"请完善卡号规则");return;}
     const next: TemplateParameter = {
       ...base,
       name: displayName,
       type,
       order: type === "order" ? order : undefined,
+      card: type==="card"&&checkedCard?.success?checkedCard.data:undefined,
       layerId: layer.id,
       property: PROPERTY_FOR_TYPE[type],
       required,
@@ -238,6 +244,7 @@ function Form({ param, layer: newLayer, onDone }: Props & { onDone: () => void }
           <Input value={description} onChange={(e) => setDescription(e.target.value)} placeholder="例如：建议不超过 8 个字" maxLength={200} />
         </div>
         {type === "date" && <div className="space-y-1"><Label>日期精度（可选时间）</Label><Select value={datePrecision} onValueChange={v=>setDatePrecision(v as DatePrecision)}><SelectTrigger aria-label="日期参数精度"><SelectValue/></SelectTrigger><SelectContent>{DATE_PRECISIONS.map(p=><SelectItem key={p.id} value={p.id}>{p.label}</SelectItem>)}</SelectContent></Select></div>}
+        {type === "card" && <CardRuleEditor value={card} onChange={setCard}/>}
         {type === "order" && <OrderRuleEditor value={order} onChange={setOrder}/>}
         {isTextual && type !== "select" && type !== "order" && (
           <>
