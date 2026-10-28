@@ -187,7 +187,9 @@ export function generateItems(template: TemplateDoc, rules: BatchRules, count: n
     let doc: TemplateDoc;
     try { doc = applyPhoneBatchRules(applyParamValues(template, values), phoneRules, createRng(seed ^ 0x51f15e ^ Math.imul(index + 1, 0x45d9f3b)), assignedModels[index]); } catch (e) {return {index, doc: template, errors: [e instanceof Error ? e.message : "状态栏生成失败"]};}
     const errors = doc.parameters.filter(p=>p.type!=="order")
-      .map((p) => validateParamValue(p, getParamValue(doc, p)))
+      // Text-bound numbers are display content: prefixes, suffixes and masks are
+      // allowed here and must not cause an otherwise renderable image to be skipped.
+      .map((p) => validateParamValue(p.type === "number" && p.property === "text" ? { ...p, type: "text" } : p, getParamValue(doc, p)))
       .filter((m): m is string => m !== null);
     return { index, doc, errors: [...new Set([...phoneErrors, ...itemErrors, ...errors])], ...(phoneRules?.setup?.mode === "keep" ? {preservePhone: true} : {}) };
   });

@@ -10,6 +10,19 @@ const textOf = (doc: ReturnType<typeof makeTemplate>, id: string) => {
 };
 
 describe("batch rules", () => {
+  it("exports numeric display content with affixes without numeric-only restrictions", () => {
+    const p: TemplateParameter = { ...priceParam, type: "number", rules: { min: 1, max: 100 } };
+    const tpl = makeTemplate({ layers: [textLayer("layer-price", "0")], parameters: [p] });
+    for (const value of ["+18.80", "¥18.80", "18.80元", "****", "200"]) {
+      const [item] = generateItems(tpl, { [p.id]: { mode: "fixed", value } }, 1, 42);
+      expect(item.errors).toEqual([]);
+      expect(textOf(item.doc, "layer-price")).toBe(value);
+    }
+    const random = generateItems(tpl, { [p.id]: { mode: "range", min: 10, max: 20, decimals: 2, prefix: "+", suffix: "元" } }, 61, 42);
+    expect(random.every(item => item.errors.length === 0)).toBe(true);
+    expect(random.every(item => /^\+\d+\.\d{2}元$/.test(textOf(item.doc, "layer-price")!))).toBe(true);
+  });
+
   it("keeps random ranges inside bounds with the requested decimals and affixes", () => {
     const rng = createRng(42);
     for (let i = 0; i < 200; i += 1) {
