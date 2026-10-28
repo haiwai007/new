@@ -70,9 +70,14 @@ function templateFile(name: string) {
 }
 async function submit(page: Page, name: string) {
   await page.goto("/submit");
-  await page
-    .getByLabel("选择投稿模板文件", { exact: true })
-    .setInputFiles(templateFile(name));
+  const uploadButton = page.getByRole("button", {
+    name: "选择模板文件",
+    exact: true,
+  });
+  await expect(uploadButton).toBeEnabled();
+  const chooser = page.waitForEvent("filechooser");
+  await uploadButton.click();
+  await (await chooser).setFiles(templateFile(name));
   await expect(page.getByAltText("投稿模板真实预览")).toBeVisible();
   await page.getByLabel("投稿模板分类", { exact: true }).selectOption("poster");
   await page.getByLabel("模板说明", { exact: true }).fill("原创可编辑活动海报");
@@ -123,14 +128,12 @@ test("anonymous submissions stay private until an administrator inspects actual 
     admin.on("pageerror", (e) => errors.push(e.message));
     await adminLogin(admin);
     await admin.getByRole("button", { name: /^投稿审核/ }).click();
-    const card = admin
-      .locator("article")
-      .filter({
-        has: admin.getByRole("heading", {
-          name: "匿名读书海报投稿",
-          exact: true,
-        }),
-      });
+    const card = admin.locator("article").filter({
+      has: admin.getByRole("heading", {
+        name: "匿名读书海报投稿",
+        exact: true,
+      }),
+    });
     await card.getByRole("button", { name: "查看详情", exact: true }).click();
     const detail = admin.getByRole("region", { name: "投稿详情", exact: true });
     await expect(detail.getByAltText("投稿实际模板预览")).toBeVisible();
@@ -196,14 +199,12 @@ test("rejection remains private and administrators can remove the rejected files
     const admin = await context.newPage();
     await adminLogin(admin);
     await admin.getByRole("button", { name: /^投稿审核/ }).click();
-    const card = admin
-      .locator("article")
-      .filter({
-        has: admin.getByRole("heading", {
-          name: "待修改的活动投稿",
-          exact: true,
-        }),
-      });
+    const card = admin.locator("article").filter({
+      has: admin.getByRole("heading", {
+        name: "待修改的活动投稿",
+        exact: true,
+      }),
+    });
     await card.getByRole("button", { name: "查看详情", exact: true }).click();
     const detail = admin.getByRole("region", { name: "投稿详情", exact: true });
     await expect(detail.getByAltText("投稿实际模板预览")).toBeVisible();
@@ -224,14 +225,12 @@ test("rejection remains private and administrators can remove the rejected files
       ).status(),
     ).toBe(404);
     await admin.getByRole("button", { name: /^已拒绝（/ }).click();
-    const rejected = admin
-      .locator("article")
-      .filter({
-        has: admin.getByRole("heading", {
-          name: "待修改的活动投稿",
-          exact: true,
-        }),
-      });
+    const rejected = admin.locator("article").filter({
+      has: admin.getByRole("heading", {
+        name: "待修改的活动投稿",
+        exact: true,
+      }),
+    });
     await rejected
       .getByRole("button", { name: "查看详情", exact: true })
       .click();

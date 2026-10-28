@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
+import { UploadCloud, FileJson, FolderOpen } from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,6 +11,7 @@ import { base64ToBlob } from "@/lib/storage/encoding";
 type Status = { enabled: boolean; message?: string };
 export default function SubmitTemplatePage() {
   const { categories } = usePublicCatalog();
+  const fileInput = useRef<HTMLInputElement>(null);
   const [status, setStatus] = useState<Status | null>(null),
     [checking, setChecking] = useState(false),
     [file, setFile] = useState<File | null>(null),
@@ -144,10 +146,10 @@ export default function SubmitTemplatePage() {
             disabled={busy || preparing || !status?.enabled}
             className="min-w-0 space-y-4 disabled:opacity-60"
           >
-            <label className="block space-y-2 text-sm font-medium">
-              <span>模板文件</span>
+            <div className="rounded-2xl border-2 border-dashed border-primary/40 bg-primary/5 p-5 shadow-sm transition-colors focus-within:border-primary focus-within:ring-4 focus-within:ring-primary/10 sm:p-7">
               <input
-                className="block max-w-full text-sm"
+                ref={fileInput}
+                className="sr-only"
                 aria-label="选择投稿模板文件"
                 type="file"
                 accept=".json,application/json"
@@ -174,10 +176,51 @@ export default function SubmitTemplatePage() {
                   }
                 }}
               />
-            </label>
-            <p className="text-xs text-muted-foreground">
-              在编辑器“更多 → 导出模板文件（含图片）”获取 .haishen.json
-              文件，最大 20MB。预览自动生成，无需另传封面。
+              <div className="flex flex-col items-center gap-4 text-center sm:flex-row sm:items-start sm:gap-5 sm:text-left">
+                <div className="flex size-16 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+                  <UploadCloud aria-hidden="true" className="size-8" />
+                </div>
+                <div className="min-w-0 flex-1 space-y-3">
+                  <div className="space-y-1">
+                    <p className="text-xs font-semibold tracking-wide text-primary">
+                      第一步 · 上传模板
+                    </p>
+                    <h2 className="text-xl font-bold">选择要提交的模板文件</h2>
+                    <p className="text-sm text-muted-foreground">
+                      支持 .haishen.json / JSON · 最大 20MB
+                    </p>
+                  </div>
+                  <Button
+                    type="button"
+                    size="lg"
+                    className="h-12 w-full gap-2 px-6 text-base font-semibold shadow-sm sm:w-auto"
+                    disabled={busy || preparing || !status?.enabled}
+                    onClick={() => fileInput.current?.click()}
+                  >
+                    <FolderOpen aria-hidden="true" className="size-5" />
+                    {preparing
+                      ? "正在读取模板…"
+                      : file
+                        ? "重新选择模板"
+                        : "选择模板文件"}
+                  </Button>
+                  {file && (
+                    <p className="flex min-w-0 items-start justify-center gap-2 text-sm font-medium sm:justify-start">
+                      <FileJson
+                        aria-hidden="true"
+                        className="mt-0.5 size-4 shrink-0 text-primary"
+                      />
+                      <span className="min-w-0 break-all">
+                        已选择：{file.name}
+                      </span>
+                    </p>
+                  )}
+                </div>
+              </div>
+            </div>
+            <p className="text-xs leading-relaxed text-muted-foreground">
+              在编辑器“更多 →
+              导出模板文件（含图片）”获取完整模板文件。上传后自动生成预览，无需另传封面。
             </p>
             {preview && (
               <figure className="space-y-2">
