@@ -158,7 +158,13 @@ test("administrator publishes a categorized template and anonymous visitors crea
       front.getByRole("img", { name: "共享活动海报", exact: true }),
     ).toBeVisible();
     await front.getByRole("button", { name: "使用模板", exact: true }).click();
+    await expect(front).toHaveURL(/\/draw\?/);
+    await front.getByRole("button", { name: "图层编辑", exact: true }).click();
     await expect(front).toHaveURL(/\/editor\//);
+    if (
+      await front.getByRole("button", { name: "手机", exact: true }).isVisible()
+    )
+      await front.getByRole("button", { name: "手机", exact: true }).click();
     const workUrl = front.url();
     await front.getByRole("button", { name: "参数", exact: true }).click();
     await front
@@ -201,10 +207,10 @@ test("administrator publishes a categorized template and anonymous visitors crea
     ).id;
     await front.goto("/batch");
     await front
-      .getByLabel("筛选批量模板分类", { exact: true })
+      .getByLabel("筛选作图模板分类", { exact: true })
       .selectOption(category.id);
     await front
-      .getByLabel("批量模板", { exact: true })
+      .getByLabel("作图模板", { exact: true })
       .selectOption(`b:${sharedId}`);
     await expect(front.getByTitle("活动标题", { exact: true })).toBeVisible();
     await front.getByLabel("生成张数", { exact: true }).fill("2");

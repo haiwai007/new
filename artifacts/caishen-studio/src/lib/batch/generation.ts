@@ -53,7 +53,24 @@ function zipToBlob(chunks: Uint8Array[]): Blob {
   return new Blob(parts, { type: "application/zip" });
 }
 
-export async function createBatchArchive(options: BatchGenerationOptions): Promise<BatchArchiveResult> {
+/** Render the frozen preview once for either a single PNG or a ZIP entry. */
+export async function renderGeneratedImage(item: GeneratedItem) {
+  if (item.errors.length) throw new Error(item.errors.join("；"));
+  if (!item.preservePhone && !fusionReady(item.doc))
+    throw new Error("自然融合尚未准备，请重新生成预览");
+  const { canvas, warnings } = await renderDoc(phoneScreenContent(item.doc), {
+    multiplier: 1,
+  });
+  try {
+    return { image: await canvasToBlob(canvas, "image/png"), warnings };
+  } finally {
+    canvas.width = canvas.height = 0;
+  }
+}
+
+export async function createBatchArchive(
+  options: BatchGenerationOptions,
+): Promise<BatchArchiveResult> {
   const outcomes: BatchItemOutcome[] = [];
   const outputChunks: Uint8Array[] = [];
   let zipError: Error | null = null;
@@ -80,18 +97,26 @@ export async function createBatchArchive(options: BatchGenerationOptions): Promi
   for (const [position, item] of options.items.entries()) {
     let outcome: BatchItemOutcome;
     if (item.errors.length) {
-      outcome = { index: item.index, fileName: null, status: "failed", message: item.errors.join("；") };
+      outcome = {
+        index: item.index,
+        fileName: null,
+        status: "failed",
+        message: item.errors.join("；"),
+      };
       failed += 1;
     } else {
       try {
-        if (!item.preservePhone && !fusionReady(item.doc)) throw new Error("自然融合尚未准备，请重新生成预览");
-        const { canvas, warnings } = await renderDoc(phoneScreenContent(item.doc), { multiplier: 1 });
-        const image = await canvasToBlob(canvas, "image/png");
+        const { image, warnings } = await renderGeneratedImage(item);
         const fileName = `${base}-${String(item.index + 1).padStart(width, "0")}.png`;
         const entry = new ZipPassThrough(fileName);
         zip.add(entry);
         entry.push(new Uint8Array(await image.arrayBuffer()), true);
-        outcome = { index: item.index, fileName, status: "success", warnings: warnings.length ? warnings : undefined };
+        outcome = {
+          index: item.index,
+          fileName,
+          status: "success",
+          warnings: warnings.length ? warnings : undefined,
+        };
         succeeded += 1;
       } catch (error) {
         outcome = {
@@ -105,7 +130,13 @@ export async function createBatchArchive(options: BatchGenerationOptions): Promi
     }
 
     outcomes.push(outcome);
-    options.onProgress?.({ completed: position + 1, total: options.items.length, succeeded, failed, latest: outcome });
+    options.onProgress?.({
+      completed: position + 1,
+      total: options.items.length,
+      succeeded,
+      failed,
+      latest: outcome,
+    });
     // Yield between images so the progress indicator stays responsive.
     await new Promise<void>((resolve) => window.setTimeout(resolve, 0));
   }

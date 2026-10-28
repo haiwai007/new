@@ -39,12 +39,16 @@ export const SECTIONS: Section[] = [
   {
     id: "make",
     label: "做图",
-    to: "/works",
+    to: "/draw",
     icon: Images,
-    desc: "编辑单张作品，或用参数面板一次批量生成多张图片",
+    desc: "选择模板，在同一页面生成单张或批量图片",
     tabs: [
+      {
+        to: "/draw",
+        label: "作图工作台",
+        match: (p) => p === "/draw" || p === "/batch",
+      },
       { to: "/works", label: "我的作品", match: (p) => p === "/works" },
-      { to: "/batch", label: "批量做图", match: (p) => p === "/batch" },
     ],
   },
 ];
@@ -59,5 +63,5 @@ export const MORE_LINKS = [
 ];
 
 export function sectionFor(path: string): Section | undefined {
-  return SECTIONS.find((s) => s.tabs.some((t) => t.to.split("?")[0] === path));
+  return SECTIONS.find((s) => s.tabs.some((t) => t.match(path, "")));
 }

@@ -34,7 +34,6 @@ import {
 } from "@/components/ui/dialog.tsx";
 import type { WorkRecord } from "@/lib/storage/db.ts";
 import { deleteWork, duplicateWork, patchWork } from "@/lib/storage/works.ts";
-import { startFromDoc } from "@/lib/template/start.ts";
 import { cn } from "@/lib/utils.ts";
 import VersionsDialog from "@/components/templates/versions-dialog.tsx";
 import {
@@ -114,7 +113,8 @@ export default function WorkCard({
           {renaming ? (
             <Input
               autoFocus
-              maxLength={MAX_WORK_NAME} value={name}
+              maxLength={MAX_WORK_NAME}
+              value={name}
               onChange={(e) => setName(e.target.value)}
               onBlur={() => {
                 setRenaming(false);
@@ -168,15 +168,13 @@ export default function WorkCard({
               {work.kind === "template" && (
                 <DropdownMenuItem
                   onClick={() =>
-                    run(async () =>
-                      navigate(
-                        `/editor/${await startFromDoc(work.doc, work.name, work.id)}`,
-                      ),
+                    navigate(
+                      `/draw?template=${encodeURIComponent(`w:${work.id}`)}`,
                     )
                   }
                 >
                   <Play className="size-4" />
-                  用此模板新建作品
+                  使用模板做图
                 </DropdownMenuItem>
               )}
               <DropdownMenuItem onClick={() => setRenaming(true)}>

@@ -100,7 +100,9 @@ export default function WorksPage() {
         </div>
         <div className="flex flex-wrap gap-2">
           <Button asChild>
-            <Link to="/batch"><Layers className="size-4" /> 批量做图</Link>
+            <Link to="/draw">
+              <Layers className="size-4" /> 开始做图
+            </Link>
           </Button>
           <Button variant="ghost" asChild>
             <Link to="/backup">备份与恢复</Link>

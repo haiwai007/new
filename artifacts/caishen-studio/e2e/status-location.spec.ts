@@ -106,6 +106,10 @@ test("template automatically proposes a location, confirms by pixel test and rep
   await page.getByRole("button", { name: "状态栏定位", exact: true }).click();
   await expect(page.getByTestId("status-location-state")).toHaveText("已确认");
   await page.getByRole("button", { name: "进入作图", exact: true }).click();
+  await page.getByRole("button", { name: "图层编辑", exact: true }).click();
+  await expect(page).toHaveURL(/\/editor\//);
+  if (await page.getByRole("button", { name: "手机", exact: true }).isVisible())
+    await page.getByRole("button", { name: "手机", exact: true }).click();
   await page.getByRole("button", { name: "手机", exact: true }).click();
   await expect(page.getByTestId("status-location-state")).toHaveText("已确认");
   await page.getByLabel("手机品牌", { exact: true }).selectOption("Samsung");
@@ -283,12 +287,12 @@ test("batch reuses a confirmed template location and freezes exported results", 
   await expect(page.getByText("已保存到本地", { exact: true })).toBeVisible();
   await page.goto("/batch");
   const option = page
-    .getByLabel("批量模板", { exact: true })
+    .getByLabel("作图模板", { exact: true })
     .locator("option")
     .filter({ hasText: "location-source" });
   await expect(option).toHaveCount(1);
   await page
-    .getByLabel("批量模板", { exact: true })
+    .getByLabel("作图模板", { exact: true })
     .selectOption((await option.getAttribute("value"))!);
   await page.getByLabel("生成张数", { exact: true }).fill("3");
   await page
@@ -365,6 +369,10 @@ test("pointer adjustments support undo and overlapping protection does not block
   await expect(d).toHaveCount(0);
   await expect(page.getByTestId("status-location-state")).toHaveText("已确认");
   await page.getByRole("button", { name: "进入作图", exact: true }).click();
+  await page.getByRole("button", { name: "图层编辑", exact: true }).click();
+  await expect(page).toHaveURL(/\/editor\//);
+  if (await page.getByRole("button", { name: "手机", exact: true }).isVisible())
+    await page.getByRole("button", { name: "手机", exact: true }).click();
   await page.getByLabel("手机品牌", { exact: true }).selectOption("Samsung");
   await expect(page.getByRole("alert")).toHaveCount(0);
 });
@@ -413,6 +421,12 @@ for (const width of [400, 1080, 1179]) {
       .getByRole("button", { name: "确认并保存定位", exact: true })
       .click();
     await page.getByRole("button", { name: "进入作图", exact: true }).click();
+    await page.getByRole("button", { name: "图层编辑", exact: true }).click();
+    await expect(page).toHaveURL(/\/editor\//);
+    if (
+      await page.getByRole("button", { name: "手机", exact: true }).isVisible()
+    )
+      await page.getByRole("button", { name: "手机", exact: true }).click();
     await page.getByLabel("手机品牌", { exact: true }).selectOption("Samsung");
     await page.getByLabel("状态栏时间", { exact: true }).fill("13:08");
     await page.getByRole("button", { name: "更多", exact: true }).click();

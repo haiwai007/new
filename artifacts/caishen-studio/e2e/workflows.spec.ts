@@ -23,7 +23,11 @@ async function createFromBuiltin(page: Page, query?: string) {
     .getByRole("button", { name: "使用模板", exact: true })
     .first()
     .click();
+  await expect(page).toHaveURL(/\/draw\?/);
+  await page.getByRole("button", { name: "图层编辑", exact: true }).click();
   await expect(page).toHaveURL(/\/editor\//);
+  if (await page.getByRole("button", { name: "手机", exact: true }).isVisible())
+    await page.getByRole("button", { name: "手机", exact: true }).click();
   await page.getByRole("button", { name: "保存", exact: true }).click();
   await expect(page.getByText("已保存到本地", { exact: true })).toBeVisible();
 }
@@ -61,13 +65,11 @@ async function calibratedWork(page: Page) {
     ctx.fillRect(12, 100, 376, 300);
     return c.toDataURL().split(",")[1];
   });
-  await page
-    .locator('input[type="file"]')
-    .setInputFiles({
-      name: "batch-reference.png",
-      mimeType: "image/png",
-      buffer: Buffer.from(encoded, "base64"),
-    });
+  await page.locator('input[type="file"]').setInputFiles({
+    name: "batch-reference.png",
+    mimeType: "image/png",
+    buffer: Buffer.from(encoded, "base64"),
+  });
   await page.getByText("保持原始尺寸", { exact: true }).click();
   await page.getByRole("button", { name: /原图背景模式/ }).click();
   await page
@@ -75,6 +77,10 @@ async function calibratedWork(page: Page) {
     .click();
   await confirmLocation(page);
   await page.getByRole("button", { name: "进入作图", exact: true }).click();
+  await page.getByRole("button", { name: "图层编辑", exact: true }).click();
+  await expect(page).toHaveURL(/\/editor\//);
+  if (await page.getByRole("button", { name: "手机", exact: true }).isVisible())
+    await page.getByRole("button", { name: "手机", exact: true }).click();
 }
 async function calibratedBatch(page: Page) {
   await calibratedWork(page);
@@ -87,12 +93,12 @@ async function calibratedBatch(page: Page) {
   await expect(page.getByRole("dialog")).toHaveCount(0);
   await page.goto("/batch");
   const option = page
-    .getByLabel("批量模板", { exact: true })
+    .getByLabel("作图模板", { exact: true })
     .locator("option")
     .filter({ hasText: "已定位批量测试模板" });
   await expect(option).toHaveCount(1);
   await page
-    .getByLabel("批量模板", { exact: true })
+    .getByLabel("作图模板", { exact: true })
     .selectOption((await option.getAttribute("value"))!);
 }
 async function textImage(page: Page, path: string) {
@@ -221,7 +227,7 @@ test("batch parameter rules produce two real PNG files inside a ZIP", async ({
   await page.getByRole("button", { name: "保存模板", exact: true }).click();
   await expect(page.getByRole("dialog")).toHaveCount(0);
   await page.goto("/batch");
-  await page.getByLabel("批量模板", { exact: true }).selectOption({ index: 1 });
+  await page.getByLabel("作图模板", { exact: true }).selectOption({ index: 1 });
   await page.getByLabel("生成张数", { exact: true }).fill("2");
   await page
     .getByRole("button", { name: "自动编号", exact: true })
@@ -269,6 +275,11 @@ test("mobile layouts, local-only service status and 404 recovery", async ({
       await page
         .locator("header")
         .getByRole("link", { name: "做图", exact: true })
+        .click();
+      await expect(page).toHaveURL(/\/draw$/);
+      await page
+        .getByRole("main")
+        .getByRole("link", { name: "我的作品", exact: true })
         .click();
     }
     await expect(page).toHaveURL(/\/works$/);
@@ -465,13 +476,11 @@ test("transparent PNG omits background images", async ({ page }) => {
     ctx.fillRect(0, 0, 100, 100);
     return canvas.toDataURL().split(",")[1];
   });
-  await page
-    .locator('input[type="file"]')
-    .setInputFiles({
-      name: "blue.png",
-      mimeType: "image/png",
-      buffer: Buffer.from(data, "base64"),
-    });
+  await page.locator('input[type="file"]').setInputFiles({
+    name: "blue.png",
+    mimeType: "image/png",
+    buffer: Buffer.from(data, "base64"),
+  });
   await page.getByRole("button", { name: /原图背景模式/ }).click();
   await page.getByRole("button", { name: "生成初始模板并进入编辑器" }).click();
   await expect(page).toHaveURL(/\/editor\//);
@@ -511,7 +520,7 @@ test("batch status-bar rules change real exported pixels and keep the source tem
   await page.getByRole("button", { name: "保存模板", exact: true }).click();
   await expect(page.getByRole("dialog")).toHaveCount(0);
   await page.goto("/batch");
-  await page.getByLabel("批量模板", { exact: true }).selectOption({ index: 1 });
+  await page.getByLabel("作图模板", { exact: true }).selectOption({ index: 1 });
   await page.getByLabel("生成张数", { exact: true }).fill("2");
   await expect(page.getByLabel("第 1 张状态栏", { exact: true })).toContainText(
     "09:41 · 电量 100%",
@@ -609,8 +618,8 @@ test("batch status-bar rules change real exported pixels and keep the source tem
   expect(difference.top).toBeGreaterThan(100);
   expect(difference.middle).toBe(0);
   // Switching templates keeps drawing settings, without changing the saved template.
-  await page.getByLabel("批量模板", { exact: true }).selectOption("");
-  await page.getByLabel("批量模板", { exact: true }).selectOption({ index: 1 });
+  await page.getByLabel("作图模板", { exact: true }).selectOption("");
+  await page.getByLabel("作图模板", { exact: true }).selectOption({ index: 1 });
   await expect(
     page.getByRole("button", { name: "时间区间随机", exact: true }),
   ).toHaveAttribute("aria-pressed", "true");
@@ -642,13 +651,11 @@ test("upload model selection protects unrelated top controls and switches brand 
     ctx.fillRect(900, 140, 150, 25);
     return canvas.toDataURL().split(",")[1];
   });
-  await page
-    .locator('input[type="file"]')
-    .setInputFiles({
-      name: "iphone-reference.png",
-      mimeType: "image/png",
-      buffer: Buffer.from(encoded, "base64"),
-    });
+  await page.locator('input[type="file"]').setInputFiles({
+    name: "iphone-reference.png",
+    mimeType: "image/png",
+    buffer: Buffer.from(encoded, "base64"),
+  });
   await page.getByText("保持原始尺寸", { exact: true }).click();
   await page.getByRole("button", { name: /原图背景模式/ }).click();
   await expect(
@@ -661,6 +668,10 @@ test("upload model selection protects unrelated top controls and switches brand 
   ).toHaveCount(0);
   await confirmLocation(page);
   await page.getByRole("button", { name: "进入作图", exact: true }).click();
+  await page.getByRole("button", { name: "图层编辑", exact: true }).click();
+  await expect(page).toHaveURL(/\/editor\//);
+  if (await page.getByRole("button", { name: "手机", exact: true }).isVisible())
+    await page.getByRole("button", { name: "手机", exact: true }).click();
   await expect(
     page.getByRole("button", { name: "手机", exact: true }),
   ).toBeVisible();
@@ -742,13 +753,11 @@ test("APP notification icons support custom uploads, visibility, portable templa
   await expect(
     page.getByRole("list", { name: "已选 APP 图标" }).getByRole("listitem"),
   ).toHaveCount(4);
-  await page
-    .getByLabel("上传 APP 图标文件", { exact: true })
-    .setInputFiles({
-      name: "bad.svg",
-      mimeType: "image/svg+xml",
-      buffer: Buffer.from('<svg xmlns="http://www.w3.org/2000/svg"/>'),
-    });
+  await page.getByLabel("上传 APP 图标文件", { exact: true }).setInputFiles({
+    name: "bad.svg",
+    mimeType: "image/svg+xml",
+    buffer: Buffer.from('<svg xmlns="http://www.w3.org/2000/svg"/>'),
+  });
   await expect(page.getByRole("alert")).toContainText("仅支持 PNG");
   const encoded = await page.evaluate(() => {
     const canvas = document.createElement("canvas");
@@ -759,13 +768,11 @@ test("APP notification icons support custom uploads, visibility, portable templa
     ctx.fillRect(0, 0, 64, 32);
     return canvas.toDataURL().split(",")[1];
   });
-  await page
-    .getByLabel("上传 APP 图标文件", { exact: true })
-    .setInputFiles({
-      name: "自定义通知.png",
-      mimeType: "image/png",
-      buffer: Buffer.from(encoded, "base64"),
-    });
+  await page.getByLabel("上传 APP 图标文件", { exact: true }).setInputFiles({
+    name: "自定义通知.png",
+    mimeType: "image/png",
+    buffer: Buffer.from(encoded, "base64"),
+  });
   await expect(
     page.getByRole("list", { name: "已选 APP 图标" }).getByRole("listitem"),
   ).toHaveCount(5);
@@ -850,6 +857,16 @@ test("APP notification icons support custom uploads, visibility, portable templa
     await restored
       .getByRole("button", { name: "进入作图", exact: true })
       .click();
+    await restored
+      .getByRole("button", { name: "图层编辑", exact: true })
+      .click();
+    await expect(restored).toHaveURL(/\/editor\//);
+    if (
+      await restored
+        .getByRole("button", { name: "手机", exact: true })
+        .isVisible()
+    )
+      await restored.getByRole("button", { name: "手机", exact: true }).click();
     await restored.getByRole("button", { name: "手机", exact: true }).click();
     await expect(
       restored
@@ -905,12 +922,12 @@ test("APP notification icons support custom uploads, visibility, portable templa
     await expect(restored.getByRole("dialog")).toHaveCount(0);
     await restored.goto(new URL("/batch", page.url()).href);
     const importedOption = restored
-      .getByLabel("批量模板", { exact: true })
+      .getByLabel("作图模板", { exact: true })
       .locator("option")
       .filter({ hasText: "导入图标批量模板" });
     await expect(importedOption).toHaveCount(1);
     await restored
-      .getByLabel("批量模板", { exact: true })
+      .getByLabel("作图模板", { exact: true })
       .selectOption((await importedOption.getAttribute("value"))!);
     await restored.getByLabel("生成张数", { exact: true }).fill("1");
     await expect(
@@ -926,13 +943,10 @@ test("APP notification icons support custom uploads, visibility, portable templa
       restored.getByText("已生成 1 张图片", { exact: true }),
     ).toBeVisible();
     const batch = restored.waitForEvent("download");
-    await restored.getByRole("link", { name: "下载 ZIP", exact: true }).click();
-    const batchPath = info.outputPath("app-batch.zip");
+    await restored.getByRole("link", { name: "下载 PNG", exact: true }).click();
+    const batchPath = info.outputPath("app-single.png");
     await (await batch).saveAs(batchPath);
-    const { unzipSync } = await import("fflate");
-    const files = Object.values(
-      unzipSync(new Uint8Array(await readFile(batchPath))),
-    );
+    const files = [new Uint8Array(await readFile(batchPath))];
     expect(files).toHaveLength(1);
     expect(await greenPixels(restored, Buffer.from(files[0]))).toBeGreaterThan(
       10,
@@ -1085,13 +1099,11 @@ test("single-drawing custom APP preset survives full backup in a fresh browser",
     ctx.fillRect(0, 0, 64, 64);
     return c.toDataURL().split(",")[1];
   });
-  await page
-    .getByLabel("上传 APP 图标文件", { exact: true })
-    .setInputFiles({
-      name: "绿色通知.png",
-      mimeType: "image/png",
-      buffer: Buffer.from(encoded, "base64"),
-    });
+  await page.getByLabel("上传 APP 图标文件", { exact: true }).setInputFiles({
+    name: "绿色通知.png",
+    mimeType: "image/png",
+    buffer: Buffer.from(encoded, "base64"),
+  });
   await expect(
     page.getByRole("switch", { name: "显示绿色通知图标", exact: true }),
   ).toBeChecked();
@@ -1299,7 +1311,7 @@ test("custom parameter labels support rename, cancel, undo, persistence and batc
   await page.getByRole("button", { name: "保存模板", exact: true }).click();
   await expect(page.getByRole("dialog")).toHaveCount(0);
   await page.goto("/batch");
-  await page.getByLabel("批量模板", { exact: true }).selectOption({ index: 1 });
+  await page.getByLabel("作图模板", { exact: true }).selectOption({ index: 1 });
   await expect(page.getByTitle("商品名称", { exact: true })).toBeVisible();
   await page.getByLabel("生成张数", { exact: true }).fill("1");
   await page.getByRole("button", { name: "生成预览", exact: true }).click();
@@ -1310,13 +1322,10 @@ test("custom parameter labels support rename, cancel, undo, persistence and batc
     page.getByText("已生成 1 张图片", { exact: true }),
   ).toBeVisible();
   const downloading = page.waitForEvent("download");
-  await page.getByRole("link", { name: "下载 ZIP", exact: true }).click();
-  const path = info.outputPath("renamed-parameter.zip");
+  await page.getByRole("link", { name: "下载 PNG", exact: true }).click();
+  const path = info.outputPath("renamed-parameter.png");
   await (await downloading).saveAs(path);
-  const { unzipSync } = await import("fflate");
-  expect(
-    Object.keys(unzipSync(new Uint8Array(await readFile(path)))),
-  ).toHaveLength(1);
+  expect((await readFile(path)).subarray(1, 4).toString()).toBe("PNG");
 });
 
 test("manual region editing preserves source colors, cancels cleanly and repairs legacy faded references", async ({
@@ -1334,13 +1343,11 @@ test("manual region editing preserves source colors, cancels cleanly and repairs
     ctx.fillRect(430, 80, 100, 100);
     return c.toDataURL().split(",")[1];
   });
-  await page
-    .locator('input[type="file"]')
-    .setInputFiles({
-      name: "manual-colors.png",
-      mimeType: "image/png",
-      buffer: Buffer.from(encoded, "base64"),
-    });
+  await page.locator('input[type="file"]').setInputFiles({
+    name: "manual-colors.png",
+    mimeType: "image/png",
+    buffer: Buffer.from(encoded, "base64"),
+  });
   await page.getByRole("button", { name: /手动重建模式/ }).click();
   await page
     .getByRole("button", { name: "生成初始模板并进入编辑器", exact: true })
@@ -1445,13 +1452,11 @@ test("manual region editing preserves source colors, cancels cleanly and repairs
   };
   packaged.doc.layers.push(unrelated);
   await page.goto("/works");
-  await page
-    .locator('input[type="file"]')
-    .setInputFiles({
-      name: "legacy-manual.haishen.json",
-      mimeType: "application/json",
-      buffer: Buffer.from(JSON.stringify(packaged)),
-    });
+  await page.locator('input[type="file"]').setInputFiles({
+    name: "legacy-manual.haishen.json",
+    mimeType: "application/json",
+    buffer: Buffer.from(JSON.stringify(packaged)),
+  });
   await expect(page).toHaveURL(/\/editor\//);
   await expect(
     page.getByRole("button", { name: "恢复原图清晰度", exact: true }),
@@ -1539,13 +1544,11 @@ test("calibrated rendering keeps manual appearance and tints custom icons", asyn
     ctx.fill();
     return c.toDataURL().split(",")[1];
   });
-  await page
-    .getByLabel("上传 APP 图标文件", { exact: true })
-    .setInputFiles({
-      name: "圆形通知.png",
-      mimeType: "image/png",
-      buffer: Buffer.from(icon, "base64"),
-    });
+  await page.getByLabel("上传 APP 图标文件", { exact: true }).setInputFiles({
+    name: "圆形通知.png",
+    mimeType: "image/png",
+    buffer: Buffer.from(icon, "base64"),
+  });
   await expect(
     page.getByLabel("显示圆形通知图标", { exact: true }),
   ).toBeChecked();
@@ -1680,18 +1683,20 @@ test("uploaded compact status bar controls actual layer and exported image sizes
     ctx.fillRect(0, 30, 360, 10);
     return c.toDataURL().split(",")[1];
   });
-  await page
-    .locator('input[type="file"]')
-    .setInputFiles({
-      name: "compact-status.png",
-      mimeType: "image/png",
-      buffer: Buffer.from(encoded, "base64"),
-    });
+  await page.locator('input[type="file"]').setInputFiles({
+    name: "compact-status.png",
+    mimeType: "image/png",
+    buffer: Buffer.from(encoded, "base64"),
+  });
   await page.getByText("保持原始尺寸", { exact: true }).click();
   await page.getByRole("button", { name: /原图背景模式/ }).click();
   await page.getByRole("button", { name: "生成初始模板并进入编辑器" }).click();
   await confirmLocation(page);
   await page.getByRole("button", { name: "进入作图", exact: true }).click();
+  await page.getByRole("button", { name: "图层编辑", exact: true }).click();
+  await expect(page).toHaveURL(/\/editor\//);
+  if (await page.getByRole("button", { name: "手机", exact: true }).isVisible())
+    await page.getByRole("button", { name: "手机", exact: true }).click();
   await page
     .getByRole("combobox", { name: "手机品牌", exact: true })
     .selectOption("Apple");
@@ -1857,11 +1862,10 @@ test("batch custom APP candidate can be unchecked, reselected and exported as re
     page.getByText("已生成 1 张图片", { exact: true }),
   ).toBeVisible();
   const downloading = page.waitForEvent("download");
-  await page.getByRole("link", { name: "下载 ZIP", exact: true }).click();
-  const path = info.outputPath("custom-app.zip");
+  await page.getByRole("link", { name: "下载 PNG", exact: true }).click();
+  const path = info.outputPath("custom-app.png");
   await (await downloading).saveAs(path);
-  const { unzipSync } = await import("fflate");
-  const images = Object.values(unzipSync(new Uint8Array(await readFile(path))));
+  const images = [new Uint8Array(await readFile(path))];
   expect(images).toHaveLength(1);
   const green = await page.evaluate(async (base64) => {
     const b = await createImageBitmap(
@@ -1930,13 +1934,11 @@ test("status-bar replacement preserves every navigation and body pixel in single
     ctx.fillText("¥18.80", 140, 245);
     return c.toDataURL().split(",")[1];
   });
-  await page
-    .locator('input[type="file"]')
-    .setInputFiles({
-      name: "receipt-navigation.png",
-      mimeType: "image/png",
-      buffer: Buffer.from(encoded, "base64"),
-    });
+  await page.locator('input[type="file"]').setInputFiles({
+    name: "receipt-navigation.png",
+    mimeType: "image/png",
+    buffer: Buffer.from(encoded, "base64"),
+  });
   await page.getByText("保持原始尺寸", { exact: true }).click();
   await page.getByRole("button", { name: /原图背景模式/ }).click();
   await page
@@ -1944,6 +1946,10 @@ test("status-bar replacement preserves every navigation and body pixel in single
     .click();
   await confirmLocation(page);
   await page.getByRole("button", { name: "进入作图", exact: true }).click();
+  await page.getByRole("button", { name: "图层编辑", exact: true }).click();
+  await expect(page).toHaveURL(/\/editor\//);
+  if (await page.getByRole("button", { name: "手机", exact: true }).isVisible())
+    await page.getByRole("button", { name: "手机", exact: true }).click();
   await page.getByLabel("手机品牌", { exact: true }).selectOption("Samsung");
   await expect(page.getByTestId("status-location-state")).toHaveText("已确认");
   await expect(
@@ -1996,12 +2002,12 @@ test("status-bar replacement preserves every navigation and body pixel in single
   await expect(page.getByRole("dialog")).toHaveCount(0);
   await page.goto("/batch");
   const option = page
-    .getByLabel("批量模板", { exact: true })
+    .getByLabel("作图模板", { exact: true })
     .locator("option")
     .filter({ hasText: "状态栏边界保护模板" });
   await expect(option).toHaveCount(1);
   await page
-    .getByLabel("批量模板", { exact: true })
+    .getByLabel("作图模板", { exact: true })
     .selectOption((await option.getAttribute("value"))!);
   await page.getByLabel("生成张数", { exact: true }).fill("2");
   await page
@@ -2035,7 +2041,7 @@ test("a poster without a safe status area is preserved until prepend is explicit
 }) => {
   await page.goto("/batch");
   await page
-    .getByLabel("批量模板", { exact: true })
+    .getByLabel("作图模板", { exact: true })
     .selectOption("b:bt_coffee");
   await page.getByLabel("生成张数", { exact: true }).fill("1");
   await page

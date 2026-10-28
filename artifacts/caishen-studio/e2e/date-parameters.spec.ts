@@ -26,29 +26,33 @@ test("optional date seconds persist in templates and work in fixed and random ba
     },
   ];
   await page.goto("/works");
-  await page
-    .locator('input[type="file"]')
-    .setInputFiles({
-      name: "date.haishen.json",
-      mimeType: "application/json",
-      buffer: Buffer.from(
-        JSON.stringify({
-          format: "caishen-template",
-          formatVersion: 1,
-          exportedAt: new Date().toISOString(),
-          doc,
-          assets: [],
-        }),
-      ),
-    });
+  await page.locator('input[type="file"]').setInputFiles({
+    name: "date.haishen.json",
+    mimeType: "application/json",
+    buffer: Buffer.from(
+      JSON.stringify({
+        format: "caishen-template",
+        formatVersion: 1,
+        exportedAt: new Date().toISOString(),
+        doc,
+        assets: [],
+      }),
+    ),
+  });
   await expect(page).toHaveURL(/\/editor\//);
   await page.getByRole("button", { name: "进入作图", exact: true }).click();
+  await page.getByRole("button", { name: "图层编辑", exact: true }).click();
+  await expect(page).toHaveURL(/\/editor\//);
+  if (await page.getByRole("button", { name: "手机", exact: true }).isVisible())
+    await page.getByRole("button", { name: "手机", exact: true }).click();
   await page.getByRole("button", { name: "参数", exact: true }).click();
   const precision = page.getByLabel("活动日期日期精度", { exact: true }),
     input = page.getByLabel("活动日期", { exact: true });
   await expect(precision).toHaveValue("date");
   await expect(input).toHaveAttribute("step", "1");
-  expect(await input.evaluate((el:HTMLInputElement)=>el.validity.valid)).toBe(true);
+  expect(
+    await input.evaluate((el: HTMLInputElement) => el.validity.valid),
+  ).toBe(true);
   await precision.selectOption("second");
   await expect(input).toHaveAttribute("step", "1");
   await input.fill("2026-10-27T20:06:37");
@@ -67,11 +71,11 @@ test("optional date seconds persist in templates and work in fixed and random ba
   const packed = JSON.parse(await readFile(filename, "utf8"));
   expect(packed.doc.parameters[0].rules.datePrecision).toBe("second");
   expect(packed.doc.layers[0].text).toBe("2026-10-27 20:06:37");
-  await page.getByRole("button", {name:"参数设置",exact:true}).click();
-  const settings=page.getByRole("dialog");
-  await settings.getByLabel("日期参数精度", {exact:true}).click();
-  await page.getByRole("option", {name:"到分钟",exact:true}).click();
-  await settings.getByRole("button", {name:"保存",exact:true}).click();
+  await page.getByRole("button", { name: "参数设置", exact: true }).click();
+  const settings = page.getByRole("dialog");
+  await settings.getByLabel("日期参数精度", { exact: true }).click();
+  await page.getByRole("option", { name: "到分钟", exact: true }).click();
+  await settings.getByRole("button", { name: "保存", exact: true }).click();
   await expect(settings).toHaveCount(0);
   await expect(input).toHaveValue("2026-10-27T20:06");
   await precision.selectOption("date");
@@ -83,7 +87,7 @@ test("optional date seconds persist in templates and work in fixed and random ba
   await page.getByRole("button", { name: "保存模板", exact: true }).click();
   await expect(page.getByRole("dialog")).toHaveCount(0);
   await page.goto("/batch");
-  const select = page.getByLabel("批量模板", { exact: true });
+  const select = page.getByLabel("作图模板", { exact: true });
   const option = select.locator("option").filter({ hasText: "秒级日期批量" });
   await select.selectOption((await option.getAttribute("value"))!);
   await page.getByRole("button", { name: "固定值", exact: true }).click();

@@ -1,3 +1,7 @@
+import { recordExport } from "@/lib/storage/works";
+import { phoneScreenContent } from "@/lib/phone/export";
+import { saveDrawing } from "@/lib/template/save-drawing";
+import { toast } from "sonner";
 import {
   usePublicCatalog,
   type SharedGalleryTemplate,
@@ -21,7 +25,7 @@ import { applyPhoneBatchRules, drawingRules } from "@/lib/batch/phone-rules";
 import { type PhoneBatchRules } from "@/lib/batch/phone-rules";
 import { phoneTime } from "@/lib/phone/layers";
 import { useEffect, useMemo, useState, useRef } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import {
   Check,
   Dices,
@@ -67,6 +71,7 @@ import {
 } from "@/lib/batch/rules.ts";
 import {
   createBatchArchive,
+  renderGeneratedImage,
   safeFileName,
   type BatchItemOutcome,
   type BatchProgress,
@@ -87,8 +92,11 @@ type Option = {
 const newSeed = () => Math.floor(Math.random() * 2 ** 31);
 
 export default function BatchPage() {
-  const { templates: BUILTIN_TEMPLATES, categories: CATEGORIES } =
-    usePublicCatalog();
+  const {
+    templates: BUILTIN_TEMPLATES,
+    categories: CATEGORIES,
+    loading: catalogLoading,
+  } = usePublicCatalog();
   const [remoteDoc, setRemoteDoc] = useState<{
       id: string;
       revision: number;
@@ -99,12 +107,25 @@ export default function BatchPage() {
   const { state } = useWorks();
   const [templateCategory, setTemplateCategory] = useState("all");
   const [templateQuery, setTemplateQuery] = useState("");
-  const [params] = useSearchParams();
+  const [params, setParams] = useSearchParams();
+  const navigate = useNavigate();
+  const urlTemplate = params.get("template") ?? "";
+  const normalizedTemplate =
+    !urlTemplate || urlTemplate.startsWith("b:") || urlTemplate.startsWith("w:")
+      ? urlTemplate
+      : `b:${urlTemplate}`;
   const [assets, setAssets] = useState<AssetRecord[]>([]);
-  const [templateId, setTemplateId] = useState(
-    () => params.get("template") ?? "",
+  const [templateId, setTemplateId] = useState(() => normalizedTemplate);
+  const urlCount = Math.max(
+    1,
+    Math.min(MAX_BATCH_COUNT, Math.floor(Number(params.get("count"))) || 1),
   );
-  const [count, setCount] = useState(20);
+  const [count, setCount] = useState(() => urlCount);
+  const lastMultiple = useRef(count > 1 ? count : 20);
+  const [savedDrawing, setSavedDrawing] = useState<{
+    id: string;
+    key: string;
+  } | null>(null);
   const [rules, setRules] = useState<BatchRules>({});
   const [phoneRules, setPhoneRules] = useState<PhoneBatchRules>(() => ({
     ...drawingRules(defaultPhoneSettings()),
@@ -140,6 +161,7 @@ export default function BatchPage() {
     url: string;
     name: string;
     count: number;
+    kind: "png" | "zip";
   } | null>(null);
   const [error, setError] = useState("");
 
@@ -167,7 +189,7 @@ export default function BatchPage() {
     const mine =
       state.status === "ready"
         ? state.works
-            .filter((w) => w.kind === "template")
+            .filter((w) => w.kind === "template" || `w:${w.id}` === templateId)
             .map((w) => ({
               id: `w:${w.id}`,
               name: w.name,
@@ -176,7 +198,7 @@ export default function BatchPage() {
             }))
         : [];
     return [...mine, ...builtin];
-  }, [state, BUILTIN_TEMPLATES]);
+  }, [state, BUILTIN_TEMPLATES, templateId]);
   const filteredOptions = options.filter((o) => {
     if (
       templateCategory !== "all" &&
@@ -268,6 +290,22 @@ export default function BatchPage() {
     phoneRules.setup?.settings.rendering === "natural" &&
     !isLocationConfirmed(selected.doc);
 
+  const effectiveRules = useMemo<BatchRules>(() => {
+    const defaults: BatchRules = {};
+    for (const param of selected?.doc.parameters ?? []) {
+      defaults[param.id] = defaultRule(
+        param.type === "order"
+          ? "orderRandom"
+          : param.type === "image" || isLockedParam(selected!.doc, param)
+            ? "keep"
+            : "fixed",
+        param,
+        getParamValue(selected!.doc, param),
+      );
+    }
+    return { ...defaults, ...rules };
+  }, [selected, rules]);
+
   const computedItems = useMemo(
     () =>
       selected
@@ -296,9 +334,16 @@ export default function BatchPage() {
     setFailures([]);
     setProgress(null);
     setError("");
+    setSavedDrawing(null);
   };
-  const selectTemplate = (id: string) => {
+  const selectTemplate = (id: string, syncUrl = true) => {
     setTemplateId(id);
+    if (syncUrl) {
+      const next = new URLSearchParams(params);
+      if (id) next.set("template", id);
+      else next.delete("template");
+      setParams(next, { replace: true });
+    }
     setRules({});
     if (!configured) {
       const saved = options.find((o) => o.id === id)?.doc.phone;
@@ -316,6 +361,77 @@ export default function BatchPage() {
     setPreviewPage(0);
     resetOutput(false);
     setNeedsPreview(false);
+  };
+  useEffect(() => {
+    if (normalizedTemplate !== templateId)
+      selectTemplate(normalizedTemplate, false);
+  }, [normalizedTemplate]);
+  const initialized = useRef("");
+  useEffect(() => {
+    if (!selectedOption || initialized.current === selectedOption.id) return;
+    initialized.current = selectedOption.id;
+    if (!configuredRef.current) {
+      const saved = selectedOption.doc.phone,
+        next = drawingRules(saved ?? defaultPhoneSettings());
+      next.setup!.mode = "keep";
+      next.time.enabled = next.battery.enabled = false;
+      next.apps = {
+        ...next.apps!,
+        mode: "fixed",
+        fixed: saved?.appIcons.filter((icon) => icon.visible) ?? [],
+      };
+      setPhoneRules(next);
+    }
+  }, [selectedOption?.id]);
+  useEffect(() => {
+    if (urlCount !== count) {
+      setCount(urlCount);
+      if (urlCount > 1) lastMultiple.current = urlCount;
+      setPreview(null);
+      setPreviewPage(0);
+      resetOutput();
+    }
+  }, [urlCount]);
+  const changeCount = (value: number) => {
+    const next = Math.max(1, Math.min(MAX_BATCH_COUNT, Math.floor(value) || 1));
+    if (next > 1) lastMultiple.current = next;
+    setCount(next);
+    setPreview(null);
+    setPreviewPage(0);
+    resetOutput();
+    const query = new URLSearchParams(params);
+    if (next === 1) query.delete("count");
+    else query.set("count", String(next));
+    setParams(query, { replace: true });
+  };
+  const saveCurrent = async (openEditor = false) => {
+    const item = items[0];
+    if (
+      !selected ||
+      !item ||
+      working ||
+      uploading ||
+      needsPreview ||
+      item.errors.length ||
+      (!item.preservePhone && !fusionReady(item.doc))
+    )
+      return;
+    setWorking(true);
+    setError("");
+    try {
+      const key = JSON.stringify(item.doc),
+        id =
+          savedDrawing?.key === key
+            ? savedDrawing.id
+            : await saveDrawing(item.doc, selected.name, templateId);
+      setSavedDrawing({ id, key });
+      if (openEditor) navigate(`/editor/${id}`);
+      else toast.success("已保存到我的作品");
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "保存作品失败");
+    } finally {
+      setWorking(false);
+    }
   };
   const setRule = (paramId: string, rule: ParamRule) => {
     setRules((old) => ({ ...old, [paramId]: rule }));
@@ -344,9 +460,22 @@ export default function BatchPage() {
       items.some((i) => !i.preservePhone && !fusionReady(i.doc))
     )
       return;
-    resetOutput(false);
+    setZip(null);
+    setFailures([]);
+    setProgress(null);
+    setError("");
     setWorking(true);
     try {
+      if (items.length === 1) {
+        const { image } = await renderGeneratedImage(items[0]);
+        setZip({
+          url: URL.createObjectURL(image),
+          name: `${safeFileName(selected.name, "设计")}.png`,
+          count: 1,
+          kind: "png",
+        });
+        return;
+      }
       const result = await createBatchArchive({
         name: selected.name,
         items,
@@ -358,10 +487,11 @@ export default function BatchPage() {
           url: URL.createObjectURL(result.archive),
           name: `${safeFileName(selected.name, "设计")}-批量${result.succeeded}张.zip`,
           count: result.succeeded,
+          kind: "zip",
         });
       }
     } catch (reason) {
-      setError(reason instanceof Error ? reason.message : "批量生成或打包失败");
+      setError(reason instanceof Error ? reason.message : "图片生成或打包失败");
     } finally {
       setWorking(false);
     }
@@ -374,12 +504,19 @@ export default function BatchPage() {
           <p className="mb-3 inline-flex items-center gap-2 rounded-full border border-accent/60 bg-accent/15 px-3 py-1 text-xs font-medium text-accent-foreground dark:text-accent">
             <WandSparkles className="size-3.5" /> 本地生成 · 图片不离开此浏览器
           </p>
-          <h1 className="font-serif text-3xl font-bold md:text-4xl">
-            批量做图
-          </h1>
+          <h1 className="font-serif text-3xl font-bold md:text-4xl">做图</h1>
           <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
-            选择模板，设置张数和每个参数的规则：固定值、随机区间、随机时间段、候选随机或自动编号。
+            使用同一个工作台完成单张和批量作图。生成 1 张下载 PNG，生成多张下载
+            ZIP，参数和手机设置共用。
           </p>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          <Button asChild variant="outline">
+            <Link to="/templates">选择更多模板</Link>
+          </Button>
+          <Button asChild variant="secondary">
+            <Link to="/works">我的作品</Link>
+          </Button>
         </div>
       </div>
 
@@ -395,7 +532,7 @@ export default function BatchPage() {
               <div className="space-y-2 [&>[data-slot=native-select-wrapper]]:w-full">
                 <div className="grid gap-2 sm:grid-cols-2 [&>[data-slot=native-select-wrapper]]:w-full">
                   <NativeSelect
-                    aria-label="筛选批量模板分类"
+                    aria-label="筛选作图模板分类"
                     value={templateCategory}
                     onChange={(e) => setTemplateCategory(e.target.value)}
                   >
@@ -412,14 +549,14 @@ export default function BatchPage() {
                     ))}
                   </NativeSelect>
                   <Input
-                    aria-label="搜索批量模板"
+                    aria-label="搜索作图模板"
                     placeholder="搜索名称、场景或参数"
                     value={templateQuery}
                     onChange={(e) => setTemplateQuery(e.target.value)}
                   />
                 </div>
                 <NativeSelect
-                  aria-label="批量模板"
+                  aria-label="作图模板"
                   className="w-full"
                   value={templateId}
                   onChange={(e) => selectTemplate(e.target.value)}
@@ -452,7 +589,10 @@ export default function BatchPage() {
                       >
                         {list.map((o) => (
                           <NativeSelectOption key={o.id} value={o.id}>
-                            {o.name} · {o.doc.parameters.length} 个参数
+                            {o.name} ·{" "}
+                            {o.shared?.parameterCount ??
+                              o.doc.parameters.length}{" "}
+                            个参数
                           </NativeSelectOption>
                         ))}
                       </NativeSelectOptGroup>
@@ -465,6 +605,14 @@ export default function BatchPage() {
                 </p>
               </div>
             )}
+            {templateId &&
+              !catalogLoading &&
+              state.status !== "loading" &&
+              !selectedOption && (
+                <p role="alert" className="mt-2 text-sm text-destructive">
+                  所选模板不存在或已下架，请重新选择模板。
+                </p>
+              )}
             {remoteBusy && (
               <p role="status" className="mt-2 text-sm">
                 正在下载共享模板及图片…
@@ -490,6 +638,26 @@ export default function BatchPage() {
           </Step>
 
           <Step n="02" title="生成张数">
+            <div
+              className="mb-4 flex flex-wrap gap-2"
+              role="group"
+              aria-label="生成方式"
+            >
+              <Button
+                variant={count === 1 ? "default" : "outline"}
+                aria-pressed={count === 1}
+                onClick={() => changeCount(1)}
+              >
+                单张作图
+              </Button>
+              <Button
+                variant={count > 1 ? "default" : "outline"}
+                aria-pressed={count > 1}
+                onClick={() => changeCount(lastMultiple.current)}
+              >
+                多张作图
+              </Button>
+            </div>
             <div className="flex items-center gap-4">
               <Slider
                 className="flex-1"
@@ -498,8 +666,7 @@ export default function BatchPage() {
                 step={1}
                 value={[count]}
                 onValueChange={([v]) => {
-                  setCount(v);
-                  resetOutput();
+                  changeCount(v);
                 }}
               />
               <Input
@@ -509,18 +676,17 @@ export default function BatchPage() {
                 max={MAX_BATCH_COUNT}
                 value={count}
                 className="w-24"
-                onChange={(e) => {
-                  setCount(
-                    Math.max(
-                      1,
-                      Math.min(MAX_BATCH_COUNT, Number(e.target.value) || 1),
-                    ),
-                  );
-                  resetOutput();
-                }}
+                onChange={(e) => changeCount(Number(e.target.value))}
               />
               <span className="text-sm text-muted-foreground">张</span>
             </div>
+            <p className="mt-2 text-xs text-muted-foreground">
+              当前为
+              {count === 1
+                ? "单张作图，下载 PNG 图片"
+                : "多张作图，下载 ZIP 图片包"}
+              。切换张数保留参数和手机设置。
+            </p>
           </Step>
 
           <Step n="03" title="参数规则">
@@ -552,12 +718,7 @@ export default function BatchPage() {
                   <RuleEditor
                     key={p.id}
                     param={p}
-                    rule={
-                      rules[p.id] ??
-                      (p.type === "order"
-                        ? { mode: "orderRandom", unique: true }
-                        : { mode: "keep" })
-                    }
+                    rule={effectiveRules[p.id] ?? { mode: "keep" }}
                     locked={isLockedParam(selected.doc, p)}
                     assets={assets}
                     onBusyChange={setUploading}
@@ -696,7 +857,7 @@ export default function BatchPage() {
                 : "生成预览"}
             </Button>
             <div
-              className={`grid grid-cols-2 gap-2 sm:grid-cols-3 ${needsPreview ? "opacity-50" : ""}`}
+              className={`grid ${count === 1 ? "grid-cols-1" : "grid-cols-2 sm:grid-cols-3"} gap-2 ${needsPreview ? "opacity-50" : ""}`}
             >
               {selected ? (
                 items
@@ -710,7 +871,7 @@ export default function BatchPage() {
                         doc={i.doc}
                         label={String(i.index + 1)}
                         invalid={i.errors.length > 0}
-                        maxSize={160}
+                        maxSize={count === 1 ? 420 : 160}
                       />
                       {i.doc.parameters
                         .filter((p) => p.type === "order")
@@ -881,7 +1042,8 @@ export default function BatchPage() {
           <section className="rounded-xl border bg-card p-5">
             <h2 className="font-semibold">生成与下载</h2>
             <p className="mt-1 text-sm text-muted-foreground">
-              按当前预览尺寸导出屏幕内容 PNG，打包成 ZIP；添加状态栏会增加高度。
+              按当前预览尺寸导出屏幕内容；单张为 PNG，多张打包
+              ZIP。添加状态栏会增加高度。
             </p>
             <Button
               className="mt-4 w-full"
@@ -921,11 +1083,75 @@ export default function BatchPage() {
                   <Check className="size-4" /> 已生成 {zip.count} 张图片
                 </p>
                 <Button asChild className="mt-2 w-full" variant="secondary">
-                  <a href={zip.url} download={zip.name}>
-                    <Download className="size-4" /> 下载 ZIP
+                  <a
+                    href={zip.url}
+                    download={zip.name}
+                    onClick={() => {
+                      if (zip.kind !== "png" || !selected || !items[0]) return;
+                      const screen = phoneScreenContent(items[0].doc);
+                      void recordExport({
+                        workId: savedDrawing?.id ?? null,
+                        workName: selected.name,
+                        fileName: zip.name,
+                        format: "png",
+                        width: screen.canvas.width,
+                        height: screen.canvas.height,
+                      }).catch(() =>
+                        toast.warning("图片下载已开始，但导出记录保存失败"),
+                      );
+                    }}
+                  >
+                    <Download className="size-4" />{" "}
+                    {zip.kind === "png" ? "下载 PNG" : "下载 ZIP"}
                   </a>
                 </Button>
               </>
+            )}
+            {selected && (
+              <div className="mt-3 grid grid-cols-2 gap-2">
+                <Button
+                  variant="outline"
+                  disabled={
+                    working ||
+                    uploading ||
+                    needsPreview ||
+                    !items[0] ||
+                    items[0].errors.length > 0 ||
+                    (!items[0].preservePhone && !fusionReady(items[0].doc))
+                  }
+                  onClick={() => void saveCurrent(false)}
+                >
+                  {count === 1 ? "保存为作品" : "保存第1张"}
+                </Button>
+                <Button
+                  variant="outline"
+                  disabled={
+                    working ||
+                    uploading ||
+                    needsPreview ||
+                    !items[0] ||
+                    items[0].errors.length > 0 ||
+                    (!items[0].preservePhone && !fusionReady(items[0].doc))
+                  }
+                  onClick={() => void saveCurrent(true)}
+                >
+                  {count === 1 ? "图层编辑" : "编辑第1张图层"}
+                </Button>
+              </div>
+            )}
+            {selected && !savedDrawing && (
+              <p className="mt-2 text-xs text-muted-foreground">
+                填写内容保留在当前页面，点击“保存为作品”可留存。
+              </p>
+            )}
+            {savedDrawing && (
+              <p role="status" className="mt-2 text-xs text-muted-foreground">
+                作品已保存，可在
+                <Link className="text-primary underline" to="/works">
+                  我的作品
+                </Link>
+                继续使用。
+              </p>
             )}
             {failures.length > 0 && (
               <p className="mt-3 text-xs text-destructive">

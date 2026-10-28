@@ -149,6 +149,10 @@ test("region order parameters preserve rules, previews, linked positions and fro
   expect(template.doc.parameters[0].linkedLayerIds).toHaveLength(1);
   await page.getByRole("button", { name: "保存", exact: true }).click();
   await page.getByRole("button", { name: "进入作图", exact: true }).click();
+  await page.getByRole("button", { name: "图层编辑", exact: true }).click();
+  await expect(page).toHaveURL(/\/editor\//);
+  if (await page.getByRole("button", { name: "手机", exact: true }).isVisible())
+    await page.getByRole("button", { name: "手机", exact: true }).click();
   await page.getByRole("button", { name: "参数", exact: true }).click();
   await page
     .getByRole("button", { name: "随机生成交易订单号", exact: true })
@@ -175,12 +179,12 @@ test("region order parameters preserve rules, previews, linked positions and fro
   await expect(page.getByRole("dialog")).toHaveCount(0);
   await page.goto("/batch");
   const option = page
-    .getByLabel("批量模板", { exact: true })
+    .getByLabel("作图模板", { exact: true })
     .locator("option")
     .filter({ hasText: "订单号批量模板" });
   await expect(option).toHaveCount(1);
   await page
-    .getByLabel("批量模板", { exact: true })
+    .getByLabel("作图模板", { exact: true })
     .selectOption((await option.getAttribute("value"))!);
   await page.getByLabel("生成张数", { exact: true }).fill("4");
   await page.getByRole("button", { name: "生成预览", exact: true }).click();
@@ -252,6 +256,10 @@ test("avatar and transparent logo defaults survive crop, replacement and portabl
   await page.getByRole("button", { name: "设为默认值", exact: true }).click();
   await page.getByRole("button", { name: "保存", exact: true }).click();
   await page.getByRole("button", { name: "进入作图", exact: true }).click();
+  await page.getByRole("button", { name: "图层编辑", exact: true }).click();
+  await expect(page).toHaveURL(/\/editor\//);
+  if (await page.getByRole("button", { name: "手机", exact: true }).isVisible())
+    await page.getByRole("button", { name: "手机", exact: true }).click();
   await page.getByRole("button", { name: "参数", exact: true }).click();
   await page.getByLabel("上传买家头像", { exact: true }).setInputFiles({
     name: "red.png",
@@ -337,6 +345,12 @@ test("avatar and transparent logo defaults survive crop, replacement and portabl
       .setInputFiles(info.outputPath("images.json"));
     await expect(fresh).toHaveURL(/\/editor\//);
     await fresh.getByRole("button", { name: "进入作图", exact: true }).click();
+    await fresh.getByRole("button", { name: "图层编辑", exact: true }).click();
+    await expect(fresh).toHaveURL(/\/editor\//);
+    if (
+      await fresh.getByRole("button", { name: "手机", exact: true }).isVisible()
+    )
+      await fresh.getByRole("button", { name: "手机", exact: true }).click();
     const restored = await png(fresh, info, "restored.png");
     expect(restored.equals(image)).toBe(true);
   } finally {
@@ -442,7 +456,7 @@ test("batch image parameters accept uploaded candidates and export their chosen 
   await page.getByRole("button", { name: "保存", exact: true }).click();
   await expect(page.getByText("已保存到本地", { exact: true })).toBeVisible();
   await page.goto("/batch");
-  await page.getByLabel("批量模板", { exact: true }).selectOption({ index: 1 });
+  await page.getByLabel("作图模板", { exact: true }).selectOption({ index: 1 });
   await page.getByLabel("生成张数", { exact: true }).fill("2");
   await page.getByRole("button", { name: "按顺序使用", exact: true }).click();
   await page.getByLabel("上传批量参数图片", { exact: true }).setInputFiles([

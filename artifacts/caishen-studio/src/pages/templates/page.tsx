@@ -1,7 +1,6 @@
 import { useMemo, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { Search, Layers3, Upload } from "lucide-react";
-import { toast } from "sonner";
 import { Input } from "@/components/ui/input.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import {
@@ -29,7 +28,6 @@ import TemplateCard from "@/components/templates/template-card.tsx";
 import { useStartTemplate } from "@/hooks/use-start-template.ts";
 import { useTemplateFavorites } from "@/hooks/use-template-favorites.ts";
 import { useWorks } from "@/hooks/use-works.ts";
-import { startFromDoc } from "@/lib/template/start.ts";
 import { cn } from "@/lib/utils.ts";
 import CustomTemplateGrid from "./_components/custom-template-grid.tsx";
 
@@ -93,14 +91,7 @@ export default function TemplatesPage() {
         ? state.works.find((x) => x.id === id)
         : undefined;
     if (!w) return;
-    try {
-      const workId = await startFromDoc(w.doc, w.name, w.id);
-      navigate(`/editor/${workId}`);
-    } catch (e) {
-      toast.error("无法使用模板", {
-        description: e instanceof Error ? e.message : undefined,
-      });
-    }
+    navigate(`/draw?template=${encodeURIComponent(`w:${w.id}`)}`);
   };
 
   const tabs = [

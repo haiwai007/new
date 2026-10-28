@@ -107,7 +107,7 @@ export default function Index() {
                 size="lg"
                 variant="secondary"
                 className="h-12 px-6 text-base"
-                onClick={() => start("blank_portrait")}
+                onClick={() => navigate("/new?template=blank_portrait")}
                 disabled={busy !== null}
               >
                 <Brush className="size-5" /> 开始创作

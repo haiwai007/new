@@ -166,7 +166,13 @@ test("anonymous submissions stay private until an administrator inspects actual 
     await page
       .getByRole("button", { name: "使用模板 审核发布的读书海报", exact: true })
       .click();
+    await expect(page).toHaveURL(/\/draw\?/);
+    await page.getByRole("button", { name: "图层编辑", exact: true }).click();
     await expect(page).toHaveURL(/\/editor\//);
+    if (
+      await page.getByRole("button", { name: "手机", exact: true }).isVisible()
+    )
+      await page.getByRole("button", { name: "手机", exact: true }).click();
     await page.getByRole("button", { name: "导出", exact: true }).click();
     const downloaded = page.waitForEvent("download");
     await page

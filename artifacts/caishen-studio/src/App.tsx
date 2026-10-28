@@ -88,6 +88,7 @@ function AppRoutes() {
             <Route path="/submit" element={<SubmitTemplatePage />} />
             <Route path="/custom" element={<CustomTemplatePage />} />
             <Route path="/works" element={<WorksPage />} />
+            <Route path="/draw" element={<BatchPage />} />
             <Route path="/batch" element={<BatchPage />} />
             <Route path="/assets" element={<AssetsPage />} />
             <Route path="/backup" element={<BackupPage />} />

@@ -13,7 +13,11 @@ async function createCoffee(page: Page) {
   await page.goto("/templates");
   await page.getByLabel("搜索模板", { exact: true }).fill("咖啡");
   await page.getByRole("button", { name: "使用模板", exact: true }).click();
+  await expect(page).toHaveURL(/\/draw\?/);
+  await page.getByRole("button", { name: "图层编辑", exact: true }).click();
   await expect(page).toHaveURL(/\/editor\//);
+  if (await page.getByRole("button", { name: "手机", exact: true }).isVisible())
+    await page.getByRole("button", { name: "手机", exact: true }).click();
 }
 async function packaged(page: Page, info: TestInfo) {
   await page.getByRole("button", { name: "更多", exact: true }).click();
@@ -161,7 +165,7 @@ test("saved copies remain intact while batch selectors exclude withdrawn builtin
   await expect(page.getByText("历史标注模板", { exact: true })).toBeVisible();
   await page.goto("/batch?template=b%3Abt_pay_wechat_transfer_completed");
   const options = page
-    .getByLabel("批量模板", { exact: true })
+    .getByLabel("作图模板", { exact: true })
     .locator("option");
   expect(
     (
@@ -176,20 +180,20 @@ test("saved copies remain intact while batch selectors exclude withdrawn builtin
     ),
   ).toBe(false);
   await expect(
-    page.getByLabel("筛选批量模板分类", { exact: true }).locator("option"),
+    page.getByLabel("筛选作图模板分类", { exact: true }).locator("option"),
   ).toHaveCount(10);
   await expect(page.getByLabel("批量转账渠道", { exact: true })).toHaveCount(0);
   await page
-    .getByLabel("筛选批量模板分类", { exact: true })
+    .getByLabel("筛选作图模板分类", { exact: true })
     .selectOption("huimin-15");
   await expect(
-    page.getByLabel("批量模板", { exact: true }).locator("option"),
+    page.getByLabel("作图模板", { exact: true }).locator("option"),
   ).toHaveCount(1);
   await page
-    .getByLabel("筛选批量模板分类", { exact: true })
+    .getByLabel("筛选作图模板分类", { exact: true })
     .selectOption("all");
   await page
-    .getByLabel("批量模板", { exact: true })
+    .getByLabel("作图模板", { exact: true })
     .selectOption("b:bt_coffee");
   await page.getByLabel("生成张数", { exact: true }).fill("2");
   await page.getByRole("button", { name: "生成预览", exact: true }).click();
