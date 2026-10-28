@@ -21,6 +21,14 @@ export const SYSTEM_STYLE_IDS = [
   "originos5",
   "realme5",
   "realme6",
+  "oneui8",
+  "hyperos3",
+  "harmony6",
+  "magic10",
+  "coloros16",
+  "originos6",
+  "realme7",
+  "pixel16",
 ] as const;
 export const FUSION_LOCKS = [
   "color",

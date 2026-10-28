@@ -67,7 +67,7 @@ export default function PhoneModelPicker({
       )}
       {!compact && (
         <p className="text-[11px] leading-relaxed text-muted-foreground">
-          按品牌系统预设切换时钟、电池和信号样式；系统版本、主题及显示缩放可能影响实际外观。
+          读取具体型号与版本的独立布局；当前为参考适配，尚未经逐台真机截图标定。系统主题与显示缩放会影响实际外观。
         </p>
       )}
     </div>

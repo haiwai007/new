@@ -1,3 +1,5 @@
+import { PHONE_MODELS, PHONE_BRANDS } from "../src/lib/phone/models";
+import { DEVICE_LAYOUTS } from "../src/lib/phone/device-layouts";
 import { test, expect, type Page } from "@playwright/test";
 import { readFile } from "node:fs/promises";
 test.beforeEach(async ({ context }) => {
@@ -82,6 +84,7 @@ async function confirm(page: Page) {
   ).toBeEnabled();
   await dialog.getByRole("button", { name: "测试替换", exact: true }).click();
   await expect(dialog.getByText(/预览已生成：/)).toBeVisible();
+  await expect(dialog.getByText(/预览已生成：/)).toContainText("外框外 0 个像素变化");
   await dialog
     .getByRole("button", { name: "确认并保存定位", exact: true })
     .click();
@@ -174,7 +177,8 @@ test("manual selections can be saved without preview even when the time region i
   await expect(
     dialog.getByRole("button", { name: "自动定位", exact: true }),
   ).toBeEnabled();
-  await dialog.getByLabel("定位区域", { exact: true }).selectOption("time");
+  await expect(dialog.getByLabel("定位区域", { exact: true })).toHaveCount(0);
+  await dialog.getByLabel("定位区域宽度", { exact: true }).fill("200");
   await dialog.getByLabel("定位区域 X", { exact: true }).fill("180");
   await expect(
     dialog.getByRole("button", { name: "确认并保存定位", exact: true }),
@@ -327,7 +331,7 @@ test("batch reuses a confirmed template location and freezes exported results", 
   }
 });
 
-test("pointer adjustments support undo and overlapping protection does not block confirmation", async ({
+test("outer-frame adjustments support undo and confirmation without inner slots", async ({
   page,
 }) => {
   await upload(page);
@@ -338,7 +342,8 @@ test("pointer adjustments support undo and overlapping protection does not block
   await expect(
     d.getByRole("button", { name: "自动定位", exact: true }),
   ).toBeEnabled();
-  await d.getByLabel("定位区域", { exact: true }).selectOption("time");
+  await expect(d.getByLabel("定位区域", { exact: true })).toHaveCount(0);
+  await d.getByLabel("定位区域宽度", { exact: true }).fill("350");
   const x = d.getByLabel("定位区域 X", { exact: true });
   const original = await x.inputValue();
   const handle = await d.locator('rect[data-handle="move"]').boundingBox();
@@ -357,11 +362,9 @@ test("pointer adjustments support undo and overlapping protection does not block
   await expect(x).not.toHaveValue(original);
   await d.getByRole("button", { name: "撤销定位", exact: true }).click();
   await expect(x).toHaveValue(original);
-  await d.getByRole("button", { name: "添加保护区", exact: true }).click();
-  await d.getByLabel("定位区域 X", { exact: true }).fill("14");
-  await d.getByLabel("定位区域 Y", { exact: true }).fill("12");
-  await d.getByLabel("定位区域宽度", { exact: true }).fill("40");
-  await d.getByLabel("定位区域高度", { exact: true }).fill("16");
+  await expect(
+    d.getByRole("button", { name: "添加保护区", exact: true }),
+  ).toHaveCount(0);
   await expect(
     d.getByRole("button", { name: "确认并保存定位", exact: true }),
   ).toBeEnabled();
@@ -394,24 +397,20 @@ for (const width of [400, 1080, 1179]) {
     await expect(
       dialog.getByRole("button", { name: "自动定位", exact: true }),
     ).toBeEnabled();
-    await dialog.getByLabel("定位区域", { exact: true }).selectOption("time");
+    await expect(dialog.getByLabel("定位区域", { exact: true })).toHaveCount(0);
     const x = dialog.getByLabel("定位区域 X", { exact: true });
     const w = dialog.getByLabel("定位区域宽度", { exact: true });
     const originalX = Number(await x.inputValue()),
       originalWidth = Number(await w.inputValue());
-    await x.fill(String(originalX - 0.27));
-    await w.fill(String(originalWidth + 0.54));
-    await dialog.getByLabel("定位区域", { exact: true }).selectOption("apps");
+    await w.fill(String(originalWidth - 0.54));
+    await x.fill(String(originalX + 0.27));
+
     const y = dialog.getByLabel("定位区域 Y", { exact: true });
     const h = dialog.getByLabel("定位区域高度", { exact: true });
     const originalY = Number(await y.inputValue()),
       originalHeight = Number(await h.inputValue());
     await y.fill(String(originalY + 0.23));
     await h.fill(String(originalHeight - 0.46));
-    await dialog
-      .getByRole("button", { name: "添加保护区", exact: true })
-      .click();
-    // Keep the central blank region protected; it must survive raster rounding too.
     await dialog.getByRole("button", { name: "测试替换", exact: true }).click();
     await expect(dialog.getByText(/预览已生成：/)).toBeVisible();
     await expect(
@@ -474,13 +473,7 @@ for (const width of [400, 1080, 1179]) {
         };
         const a = await read(source),
           b = await read(result);
-        const roles = [
-          location.time,
-          location.apps,
-          location.system,
-          location.date,
-          location.carrier,
-        ].filter(Boolean);
+        const roles = [location.bounds];
         const contains = (r: any, x: number, y: number) =>
           x >= r.x - 1e-7 &&
           y >= r.y - 1e-7 &&
@@ -513,5 +506,90 @@ for (const width of [400, 1080, 1179]) {
     expect(diff.outside).toBe(0);
     expect(diff.protectedChanges).toBe(0);
     expect(diff.inside).toBeGreaterThan(0);
+  });
+}
+
+for (const brand of PHONE_BRANDS) {
+  test(`independent layouts export each ${brand} model and version without changing pixels outside the frame`, async ({
+    page,
+  }, info) => {
+    test.setTimeout(180_000);
+    const errors: string[] = [];
+    page.on("pageerror", (e) => errors.push(e.message));
+    const original = await upload(page);
+    await confirm(page);
+    await page.getByRole("button", { name: "进入作图", exact: true }).click();
+    await page.getByRole("button", { name: "图层编辑", exact: true }).click();
+    await expect(page).toHaveURL(/\/editor\//);
+    if (
+      await page.getByRole("button", { name: "手机", exact: true }).isVisible()
+    )
+      await page.getByRole("button", { name: "手机", exact: true }).click();
+    await page.getByLabel("手机品牌", { exact: true }).selectOption(brand);
+    await page.getByRole("button", { name: "更多", exact: true }).click();
+    const metaEvent = page.waitForEvent("download");
+    await page
+      .getByRole("menuitem", { name: "导出模板文件（含图片）", exact: true })
+      .click();
+    const metaPath = info.outputPath("frame.json");
+    await (await metaEvent).saveAs(metaPath);
+    const frame = JSON.parse(await readFile(metaPath, "utf8")).doc
+      .statusLocation.bounds;
+    for (const model of PHONE_MODELS.filter((m) => m.brand === brand)) {
+      await page.getByLabel("手机型号", { exact: true }).selectOption(model.id);
+      for (const version of Object.keys(DEVICE_LAYOUTS[model.id].versions)) {
+        await page
+          .getByLabel("系统参考样式", { exact: true })
+          .selectOption(version);
+        await page.getByRole("button", { name: "导出", exact: true }).click();
+        const event = page.waitForEvent("download");
+        await page
+          .getByRole("dialog")
+          .getByRole("button", { name: "导出", exact: true })
+          .click();
+        const path = info.outputPath(`${model.id}-${version}.png`);
+        await (await event).saveAs(path);
+        const bytes = await readFile(path);
+        expect(bytes.readUInt32BE(16), model.id).toBe(400);
+        expect(bytes.readUInt32BE(20), model.id).toBe(860);
+        const changedOutside = await page.evaluate(
+          async ({ original, png, frame }) => {
+            async function pixels(s: string) {
+              const img = await createImageBitmap(
+                new Blob([Uint8Array.from(atob(s), (c) => c.charCodeAt(0))], {
+                  type: "image/png",
+                }),
+              );
+              const canvas = document.createElement("canvas");
+              canvas.width = img.width;
+              canvas.height = img.height;
+              const ctx = canvas.getContext("2d")!;
+              ctx.drawImage(img, 0, 0);
+              img.close();
+              return ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+            }
+            const a = await pixels(original),
+              b = await pixels(png);
+            let outside = 0;
+            for (let y = 0; y < 860; y++)
+              for (let x = 0; x < 400; x++) {
+                if (
+                  (x + 0.5) / 400 >= frame.x - 1e-7 &&
+                  (x + 0.5) / 400 <= frame.x + frame.width + 1e-7 &&
+                  (y + 0.5) / 860 >= frame.y - 1e-7 &&
+                  (y + 0.5) / 860 <= frame.y + frame.height + 1e-7
+                )
+                  continue;
+                const i = (y * 400 + x) * 4;
+                if ([0, 1, 2, 3].some((c) => a[i + c] !== b[i + c])) outside++;
+              }
+            return outside;
+          },
+          { original, png: bytes.toString("base64"), frame },
+        );
+        expect(changedOutside, `${model.id}/${version}`).toBe(0);
+      }
+    }
+    expect(errors).toEqual([]);
   });
 }

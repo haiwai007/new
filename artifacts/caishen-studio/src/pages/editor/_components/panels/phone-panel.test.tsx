@@ -35,7 +35,7 @@ describe("phone settings panel", () => {
     useEditor.getState().undo();
     expect(useEditor.getState().doc!.phone).toBeUndefined();
   });
-  it("resizes only on request, requires a new location confirmation and preserves size when removing effects", () => {
+  it("resizes only on request, retains the normalized outer-frame confirmation and preserves size when removing effects", () => {
     render(<PhonePanel />);
     fireEvent.change(screen.getByRole("combobox", { name: "手机品牌" }), {
       target: { value: "Google" },
@@ -49,7 +49,7 @@ describe("phone settings panel", () => {
       width: 1080,
       height: 2424,
     });
-    expect(useEditor.getState().doc!.statusLocation!.state).toBe("stale");
+    expect(useEditor.getState().doc!.statusLocation!.state).toBe("confirmed");
     fireEvent.click(screen.getByRole("button", { name: "移除手机状态栏" }));
     expect(useEditor.getState().doc!.phone).toBeUndefined();
     expect(useEditor.getState().doc!.canvas.height).toBe(2424);

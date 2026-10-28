@@ -1,3 +1,5 @@
+import { measureSourceGlyphs } from "./source-fit";
+import { boundaryBackground } from "./background";
 import type { TemplateDoc } from "../../types/template";
 import { renderDoc } from "../canvas/render";
 import {
@@ -26,7 +28,9 @@ export async function locationSnapshot(doc: TemplateDoc) {
   });
   if (result.warnings.some((w) => /丢失|加载失败/.test(w))) {
     result.canvas.width = result.canvas.height = 0;
-    throw new Error("原图资源未完整加载，暂时无法预览；仍可直接确认保存框选区域");
+    throw new Error(
+      "原图资源未完整加载，暂时无法预览；仍可直接确认保存框选区域",
+    );
   }
   return { base, canvas: result.canvas };
 }
@@ -160,10 +164,14 @@ export async function confirmStatusLocation(
   const location: StatusLocation = {
     ...structuredClone(draft),
     approval: "direct",
+    layout: "device",
+    protected: [],
     state: "confirmed",
     fills: [],
     sourceKey: locationSourceKey(base, draft.bounds),
     testKey: "",
+    backgroundPatch: undefined,
+    sourceFit: undefined,
   };
   let canvas: HTMLCanvasElement | undefined;
   try {
@@ -175,9 +183,38 @@ export async function confirmStatusLocation(
     ? base.canvas.backgroundColor
     : "#ffffff";
   try {
+    if (canvas) {
+      try {
+        const r = location.bounds,
+          x = Math.floor(r.x * canvas.width),
+          y = Math.floor(r.y * canvas.height);
+        const w = Math.max(
+            1,
+            Math.min(canvas.width - x, Math.ceil(r.width * canvas.width)),
+          ),
+          h = Math.max(
+            1,
+            Math.min(canvas.height - y, Math.ceil(r.height * canvas.height)),
+          );
+        location.sourceFit = measureSourceGlyphs(
+          canvas.getContext("2d")!.getImageData(x, y, w, h).data,
+          w,
+          h,
+        );
+      } catch {
+        /* Keep the model's own measured-reference proportions. */
+      }
+    }
+    if (canvas && location.background === "auto") {
+      try {
+        location.backgroundPatch = boundaryBackground(canvas, location.bounds);
+      } catch {
+        /* Fall back to sampled gradients without blocking confirmation. */
+      }
+    }
     for (const role of LOCATION_ROLES) {
-      const r = location[role];
-      if (!r) continue;
+      if (!location[role]) continue;
+      const r = location.bounds;
       let top = location.background === "solid" ? location.color : fallback,
         bottom = top;
       if (canvas && location.background === "auto") {
@@ -266,10 +303,11 @@ export async function testStatusLocation(
           height: 0,
         };
         if (
-          !LOCATION_ROLES.some(
-            (role) => location[role] && contains(location[role]!, pixel),
-          ) ||
-          location.protected.some((r) => contains(r, pixel))
+          location.layout !== "manual"
+            ? !contains(location.bounds, pixel)
+            : !LOCATION_ROLES.some(
+                (role) => location[role] && contains(location[role]!, pixel),
+              ) || location.protected.some((r) => contains(r, pixel))
         )
           outside++;
       }

@@ -110,9 +110,14 @@ export const locationTestKey = (l: StatusLocation) =>
     l.fills,
     l.sourceKey,
     ...(l.approval ? [l.approval] : []),
+    ...(l.layout ? [l.layout] : []),
+    ...(l.backgroundPatch ? [l.backgroundPatch] : []),
+    ...(l.sourceFit ? [l.sourceFit] : []),
   ]);
 export function isLocationConfirmed(doc: TemplateDoc) {
   const l = doc.statusLocation;
+  if (l && l.layout !== "manual")
+    return l.state === "confirmed" && l.testKey === locationTestKey(l);
   return (
     !!l &&
     l.state === "confirmed" &&
@@ -196,6 +201,7 @@ export function locationAppCapacity(
   iconRatio = 1,
 ) {
   const l = doc.statusLocation;
+  if (l && l.layout !== "manual") return 8;
   if (l?.approval === "direct") return 8;
   if (!l?.apps) return 0;
   const size = Math.min(

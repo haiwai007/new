@@ -26,19 +26,23 @@ export function locationPixelMask(
     bottom: Math.floor((r.y + r.height) * height - 0.5 + 1e-7) + 1,
   });
   const framePixels = centers(l.bounds);
-  const allowed = LOCATION_ROLES.flatMap((role) => {
-    if (!l[role]) return [];
-    const r = centers(l[role]!);
-    return [
-      {
-        left: Math.max(framePixels.left, r.left),
-        top: Math.max(framePixels.top, r.top),
-        right: Math.min(framePixels.right, r.right),
-        bottom: Math.min(framePixels.bottom, r.bottom),
-      },
-    ];
-  });
+  const device = l.layout !== "manual";
+  const allowed = device
+    ? [framePixels]
+    : LOCATION_ROLES.flatMap((role) => {
+        if (!l[role]) return [];
+        const r = centers(l[role]!);
+        return [
+          {
+            left: Math.max(framePixels.left, r.left),
+            top: Math.max(framePixels.top, r.top),
+            right: Math.min(framePixels.right, r.right),
+            bottom: Math.min(framePixels.bottom, r.bottom),
+          },
+        ];
+      });
   const home =
+    !device &&
     doc.phone?.showHomeIndicator &&
     doc.layers.find((layer) => layer.id === `${doc.phone!.groupId}_home`);
   if (home)
@@ -50,7 +54,7 @@ export function locationPixelMask(
         height: home.height / doc.canvas.height,
       }),
     );
-  const blocked = l.protected.map((r) => ({
+  const blocked = (device ? [] : l.protected).map((r) => ({
     left: Math.floor(r.x * width + 1e-7),
     top: Math.floor(r.y * height + 1e-7),
     right: Math.ceil((r.x + r.width) * width - 1e-7),

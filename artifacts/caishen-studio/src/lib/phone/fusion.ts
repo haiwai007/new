@@ -1,5 +1,7 @@
 import {
   isLocationConfirmed,
+  locationSourceKey,
+  smallHash,
   locationRenderKey,
 } from "../status-location/model";
 import { detectContentTop, detectStatusGeometry } from "./geometry-detection";
@@ -169,6 +171,10 @@ export function fusionReady(doc: TemplateDoc) {
     doc.phone.fusion.analysis?.sourceKey === designKey(removePhoneLayers(doc))
   );
 }
+const locatedAnalysisCache = new Map<
+  string,
+  Promise<import("../status-location/schema").StatusLocation>
+>();
 export async function fitPhoneToImage(
   doc: TemplateDoc,
   settings: PhoneSettings,
@@ -180,6 +186,43 @@ export async function fitPhoneToImage(
       throw new Error(
         "请先确认模板的状态栏定位，再执行替换；未定位时可保留原图或顶部新增",
       );
+    const base = removePhoneLayers(doc),
+      location = base.statusLocation!;
+    if (
+      location.layout !== "manual" &&
+      (location.layout !== "device" ||
+        location.sourceKey !== locationSourceKey(base, location.bounds) ||
+        (location.background === "auto" && !location.backgroundPatch))
+    ) {
+      const key = smallHash([
+        locationSourceKey(base, location.bounds),
+        location.bounds,
+        location.background,
+        location.color,
+      ]);
+      let pending = locatedAnalysisCache.get(key);
+      if (!pending) {
+        pending = import("../status-location/engine").then(
+          ({ confirmStatusLocation }) => confirmStatusLocation(base, location),
+        );
+        locatedAnalysisCache.set(key, pending);
+        if (locatedAnalysisCache.size > 12)
+          locatedAnalysisCache.delete(
+            locatedAnalysisCache.keys().next().value!,
+          );
+        pending.then(
+          (l) => {
+            if (l.background === "auto" && !l.backgroundPatch)
+              locatedAnalysisCache.delete(key);
+          },
+          () => locatedAnalysisCache.delete(key),
+        );
+      }
+      return applyPhoneLayers(
+        { ...base, statusLocation: await pending },
+        settings,
+      );
+    }
     return applyPhoneLayers(doc, settings);
   }
   const analysis = await analysePhoneBackground(doc);

@@ -78,3 +78,17 @@ describe("direct user-selected status regions", () => {
     expect(() => applyPhoneLayers(next, naturalPhoneSettings())).not.toThrow();
   });
 });
+
+it("upgrades a saved outer frame during automatic preview without asking the user to reconfirm", async () => {
+  const doc = original();
+  const saved = await confirmStatusLocation(doc, defaultStatusLocation(doc));
+  delete saved.layout; delete saved.backgroundPatch; delete saved.sourceFit;
+  const { locationTestKey } = await import("./model");
+  saved.testKey = locationTestKey(saved); doc.statusLocation = saved;
+  const { fitPhoneToImage } = await import("../phone/fusion");
+  const result = await fitPhoneToImage(doc, naturalPhoneSettings());
+  expect(result.statusLocation!.layout).toBe("device");
+  expect(result.statusLocation!.bounds).toEqual(saved.bounds);
+  expect(doc.statusLocation!.layout).toBeUndefined();
+  expect(isLocationConfirmed(result)).toBe(true);
+});

@@ -64,7 +64,7 @@ export default function StatusLocationControl({
         </span>
       </p>
       <p className="text-xs leading-relaxed text-muted-foreground">
-        模板只标记位置与保护区。确认后，单张和批量作图在原位置替换，不另加一套状态栏。
+        模板只框选状态栏外框。内部位置由具体手机型号与系统版本决定，外框之外保持原图。
       </p>
       <div className="flex flex-wrap gap-2">
         <Button
@@ -132,9 +132,11 @@ function LocationBody({
   onConfirm: (location: StatusLocation) => void;
 }) {
   const [source] = useState(doc),
-    [draft, setDraft] = useState<StatusLocation>(() =>
-      structuredClone(doc.statusLocation ?? defaultStatusLocation(doc)),
-    );
+    [draft, setDraft] = useState<StatusLocation>(() => ({
+      ...structuredClone(doc.statusLocation ?? defaultStatusLocation(doc)),
+      layout: "device",
+      protected: [],
+    }));
   const [image, setImage] = useState(""),
     [target, setTarget] = useState<Target>("bounds"),
     [mode, setMode] = useState<"move" | "draw">("move");
@@ -208,20 +210,6 @@ function LocationBody({
       return next;
     }
     return { ...l, [t]: r };
-  }
-  function add(t: Target) {
-    const r: LocationRect = {
-      x: draft.bounds.x + draft.bounds.width * 0.45,
-      y: draft.bounds.y + draft.bounds.height * 0.1,
-      width: draft.bounds.width * 0.1,
-      height: draft.bounds.height * 0.8,
-    };
-    const next = t.startsWith("protected-")
-      ? { ...draft, protected: [...draft.protected, r] }
-      : { ...draft, [t]: r };
-    change(next);
-    setTarget(t);
-    setMode("draw");
   }
   useEffect(() => {
     if (!source.statusLocation && source.source) void automatic();
@@ -360,15 +348,7 @@ function LocationBody({
       setEffect(false);
     }
   }
-  const all: [Target, LocationRect][] = [
-    ["bounds", draft.bounds],
-    ...LOCATION_ROLES.filter((role) => draft[role]).map(
-      (role) => [role, draft[role]!] as [Target, LocationRect],
-    ),
-    ...draft.protected.map(
-      (r, i) => [`protected-${i}`, r] as [Target, LocationRect],
-    ),
-  ];
+  const all: [Target, LocationRect][] = [["bounds", draft.bounds]];
   return (
     <div
       onKeyDownCapture={(e) => {
@@ -549,26 +529,9 @@ function LocationBody({
             </div>
           </div>
           <div className="min-w-0 space-y-3 text-xs">
-            <label className="block space-y-1">
-              精细定位
-              <select
-                aria-label="定位区域"
-                className="h-9 w-full rounded border bg-background px-2"
-                value={target}
-                onChange={(e) => {
-                  setTarget(e.target.value as Target);
-                  setEffect(false);
-                }}
-              >
-                {all.map(([t]) => (
-                  <option key={t} value={t}>
-                    {t.startsWith("protected-")
-                      ? `保护区 ${Number(t.split("-")[1]) + 1}`
-                      : names[t as keyof typeof names]}
-                  </option>
-                ))}
-              </select>
-            </label>
+            <p className="rounded border bg-muted/40 p-2 leading-relaxed">
+              只框选状态栏外框。时间、APP、信号和电池的位置由作图时选择的具体手机型号及系统版本自动决定，外框内旧内容会整体替换。
+            </p>
             {active && (
               <div className="grid grid-cols-2 gap-2">
                 {(["x", "y", "width", "height"] as const).map((key) => (
@@ -619,49 +582,6 @@ function LocationBody({
                 ))}
               </div>
             )}
-            <div className="flex flex-wrap gap-2">
-              {(["apps", "date", "carrier"] as const)
-                .filter((role) => !draft[role])
-                .map((role) => (
-                  <Button
-                    key={role}
-                    size="sm"
-                    variant="outline"
-                    onClick={() => add(role)}
-                  >
-                    添加{names[role]}区域
-                  </Button>
-                ))}
-              <Button
-                size="sm"
-                variant="outline"
-                disabled={draft.protected.length >= 16}
-                onClick={() => add(`protected-${draft.protected.length}`)}
-              >
-                添加保护区
-              </Button>
-            </div>
-            {(target.startsWith("protected-") ||
-              ["apps", "date", "carrier"].includes(target)) && (
-              <Button
-                size="sm"
-                variant="ghost"
-                onClick={() => {
-                  const next = target.startsWith("protected-")
-                    ? {
-                        ...draft,
-                        protected: draft.protected.filter(
-                          (_, i) => i !== Number(target.split("-")[1]),
-                        ),
-                      }
-                    : { ...draft, [target]: null };
-                  change(next);
-                  setTarget("bounds");
-                }}
-              >
-                删除当前区域
-              </Button>
-            )}
             <label className="block space-y-1">
               旧内容背景处理
               <select
@@ -692,7 +612,7 @@ function LocationBody({
               </label>
             )}
             <p className="leading-relaxed text-muted-foreground">
-              红框限定处理范围；蓝框标记内容；黄色框保留原图。框选后直接确认，不再进行识别或像素拦截。
+              红框是唯一替换范围，蓝色手柄用于调整边界。内部布局由型号与版本决定，框外保持原图。
             </p>
           </div>
         </div>
@@ -706,7 +626,7 @@ function LocationBody({
         </div>
         {result && (
           <p role="status" className="text-sm text-emerald-700">
-            预览已生成：边界与保护区外 {result.outside}{" "}
+            预览已生成：外框外 {result.outside}{" "}
             个像素变化，仅供参考。可直接确认保存。
           </p>
         )}

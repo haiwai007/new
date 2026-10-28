@@ -39,6 +39,7 @@ function confirmed() {
     backgroundImage: { kind: "asset", assetId: "original" },
   };
   const l = defaultStatusLocation(doc);
+  l.layout = "manual";
   l.bounds = { x: 0, y: 0.03, width: 1, height: 0.05 };
   l.time = { x: 0.025, y: 0.035, width: 0.13, height: 0.03 };
   l.apps = { x: 0.17, y: 0.035, width: 0.26, height: 0.03 };

@@ -25,6 +25,18 @@ export const statusLocationSchema = z.object({
   state: z.enum(["pending", "confirmed", "stale", "skipped"]),
   origin: z.enum(["auto", "manual"]),
   approval: z.literal("direct").optional(),
+  layout: z.enum(["device", "manual"]).optional(),
+  sourceFit: z
+    .object({
+      glyphRatio: z.number().min(0.18).max(0.85),
+      centerRatio: z.number().min(0).max(1),
+    })
+    .optional(),
+  backgroundPatch: z
+    .string()
+    .max(4_000_000)
+    .regex(/^data:image\/png;base64,[A-Za-z0-9+/=]+$/)
+    .optional(),
   bounds: locationRectSchema,
   time: locationRectSchema,
   apps: locationRectSchema.nullable(),

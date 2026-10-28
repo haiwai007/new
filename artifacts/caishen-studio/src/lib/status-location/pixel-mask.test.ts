@@ -9,6 +9,7 @@ describe.each([400, 720, 1179])(
     it("preserves original RGBA in gaps, fractional edges and protected pixels", () => {
       const doc = structuredClone(BUILTIN_TEMPLATES[0].doc);
       const l = defaultStatusLocation(doc);
+      l.layout = "manual";
       l.bounds = { x: 0, y: 0.01, width: 1, height: 0.08 };
       l.time = { x: 0.03127, y: 0.02073, width: 0.13459, height: 0.03519 };
       l.apps = null;

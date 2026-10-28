@@ -1,3 +1,4 @@
+import { renderDeviceLocation } from "./device-layout";
 import type { TemplateDoc, Layer, ImageSource } from "../../types/template";
 import type { PhoneSettings } from "../phone/schema";
 import {
@@ -38,6 +39,7 @@ export function renderLocatedPhone(
     throw new Error(
       "状态栏定位未确认或已失效，请先框选并直接确认保存；也可保留原图或选择顶部新增",
     );
+  if (l.layout !== "manual") return renderDeviceLocation(base, raw, helpers);
   const direct = l.approval === "direct";
   if (!direct && raw.showDate && !l.date)
     throw new Error(

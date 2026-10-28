@@ -191,7 +191,7 @@ export function effectiveProfile(settings: PhoneSettings): StatusProfile {
     battery:
       variant?.id === "oneui6"
         ? "vertical"
-        : variant?.id === "oneui7"
+        : (variant?.id === "oneui7" || variant?.id === "oneui8")
           ? "horizontal"
           : base.battery,
   };

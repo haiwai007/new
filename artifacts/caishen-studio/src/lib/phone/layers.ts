@@ -1,3 +1,4 @@
+import { DEVICE_LAYOUTS } from "./device-layouts";
 import { airplaneIcon } from "./airplane";
 import { isLocationConfirmed } from "../status-location/model";
 import { renderLocatedPhone } from "../status-location/render";
@@ -405,7 +406,11 @@ function renderPhoneLayers(doc: TemplateDoc, raw: PhoneSettings): TemplateDoc {
     groupId: doc.phone?.groupId ?? settings.groupId,
   };
   const model = phoneModel(phone.modelId);
-  const profile = effectiveProfile(phone);
+  const device = DEVICE_LAYOUTS[phone.modelId];
+  const version = phone.styleId === "auto" ? device.defaultStyle : phone.styleId;
+  const deviceLayout = device.versions[version];
+  if (!deviceLayout) throw new Error("该型号缺少所选版本的独立布局");
+  const profile = { ...effectiveProfile(phone), inset: deviceLayout.clockX, fontSize: deviceLayout.clockSize, gap: deviceLayout.systemGap };
   const W = doc.canvas.width;
   const H = doc.canvas.height;
   const s = Math.min(
@@ -731,7 +736,7 @@ function renderPhoneLayers(doc: TemplateDoc, raw: PhoneSettings): TemplateDoc {
       createShapeLayer(
         model.cutout === "hole" ? "ellipse" : "rect",
         {
-          x: (W - cutoutWidth * s) / 2,
+          x: model.cutoutPosition === "left" ? 8 * s : (W - cutoutWidth * s) / 2,
           y:
             model.cutout === "notch"
               ? 0
