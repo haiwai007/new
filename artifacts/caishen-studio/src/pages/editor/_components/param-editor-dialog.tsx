@@ -246,7 +246,7 @@ function Form({ param, layer: newLayer, onDone }: Props & { onDone: () => void }
         {type === "date" && <div className="space-y-1"><Label>日期精度（可选时间）</Label><Select value={datePrecision} onValueChange={v=>setDatePrecision(v as DatePrecision)}><SelectTrigger aria-label="日期参数精度"><SelectValue/></SelectTrigger><SelectContent>{DATE_PRECISIONS.map(p=><SelectItem key={p.id} value={p.id}>{p.label}</SelectItem>)}</SelectContent></Select></div>}
         {type === "card" && <CardRuleEditor value={card} onChange={setCard}/>}
         {type === "order" && <OrderRuleEditor value={order} onChange={setOrder}/>}
-        {isTextual && type !== "select" && type !== "order" && (
+        {isTextual && type !== "select" && type !== "order" && type !== "card" && (
           <>
             <div className="space-y-1">
               <Label>输入框提示文字</Label>
