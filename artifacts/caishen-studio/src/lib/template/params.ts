@@ -180,7 +180,11 @@ export function validateParamValue(
 }
 
 function coerce(param: TemplateParameter, value: ParamValue): ParamValue {
-  if(param.type==="number"&&param.rules.decimals!==undefined&&value!==null&&String(value).trim()!==""&&Number.isFinite(Number(value)))value=Number(value).toFixed(param.rules.decimals);
+  if (param.type === "number" && param.rules.decimals !== undefined && value !== null && String(value).trim() !== "" && Number.isFinite(Number(value))) {
+    // A leading plus is display content and must survive numeric rounding.
+    const plus = typeof value === "string" && value.trimStart().startsWith("+") ? "+" : "";
+    value = `${plus}${Number(value).toFixed(param.rules.decimals)}`;
+  }
   switch (param.property) {
     case "text":
     case "fill":

@@ -132,3 +132,30 @@ test("custom template entry, refresh and legacy batch links work on a phone with
     "原始内容",
   );
 });
+test("numeric random ranges preserve the plus prefix in exported and saved drawings", async ({ page }, info) => {
+  const doc = makeTemplate();
+  doc.name = "正号数字测试";
+  doc.parameters = [{ ...titleParam, type: "number", defaultValue: "0.00", rules: { decimals: 2 } }];
+  doc.layers = [textLayer(titleParam.layerId, "0.00")];
+  await page.goto("/works");
+  await page.locator('input[type="file"]').setInputFiles({
+    name: "numeric-prefix.json", mimeType: "application/json",
+    buffer: Buffer.from(JSON.stringify({ format: "caishen-template", formatVersion: 1, exportedAt: new Date().toISOString(), doc, assets: [] })),
+  });
+  await expect(page).toHaveURL(/\/editor\//);
+  await page.goto("/templates?category=custom");
+  await page.getByRole("button", { name: "使用模板", exact: true }).click();
+  await page.getByRole("button", { name: "随机区间", exact: true }).click();
+  await page.getByLabel("最小值", { exact: true }).fill("125000");
+  await page.getByLabel("最大值", { exact: true }).fill("375000");
+  await page.getByLabel("小数位", { exact: true }).fill("2");
+  await page.getByLabel("前缀", { exact: true }).fill("+");
+  await page.getByRole("button", { name: "生成预览", exact: true }).click();
+  await page.getByRole("button", { name: "生成 1 张图片", exact: true }).click();
+  const png = await download(page, info, "下载 PNG", "numeric-plus.png");
+  expect(png.subarray(1, 4).toString()).toBe("PNG");
+  await page.getByRole("button", { name: "图层编辑", exact: true }).click();
+  await expect(page).toHaveURL(/\/editor\//);
+  await page.getByRole("button", { name: "参数", exact: true }).click();
+  await expect(page.getByLabel("参数主标题", { exact: true }).locator("input").first()).toHaveValue(/^\+\d+\.\d{2}$/);
+});

@@ -10,6 +10,23 @@ const textOf = (doc: ReturnType<typeof makeTemplate>, id: string) => {
 };
 
 describe("batch rules", () => {
+  it("keeps a plus prefix on rounded numeric layers and their linked layers", () => {
+    const p: TemplateParameter = { ...priceParam, type: "number", rules: { decimals: 2 }, linkedLayerIds: ["linked-price"] };
+    const tpl = makeTemplate({ layers: [textLayer("layer-price", "0"), textLayer("linked-price", "0")], parameters: [p] });
+    for (const suffix of ["", "元"]) {
+      const items = generateItems(tpl, { [p.id]: { mode: "range", min: 125000, max: 375000, decimals: 2, prefix: "+", suffix } }, 61, 42);
+      expect(items.every(item => item.errors.length === 0)).toBe(true);
+      for (const item of items) {
+        const value = textOf(item.doc, "layer-price")!;
+        expect(value).toMatch(suffix ? /^\+\d+\.\d{2}元$/ : /^\+\d+\.\d{2}$/);
+        expect(textOf(item.doc, "linked-price")).toBe(value);
+        expect(Number(value.replace("元", ""))).toBeGreaterThanOrEqual(125000);
+        expect(Number(value.replace("元", ""))).toBeLessThanOrEqual(375000);
+      }
+    }
+    expect(textOf(tpl, "layer-price")).toBe("0");
+  });
+
   it("exports numeric display content with affixes without numeric-only restrictions", () => {
     const p: TemplateParameter = { ...priceParam, type: "number", rules: { min: 1, max: 100 } };
     const tpl = makeTemplate({ layers: [textLayer("layer-price", "0")], parameters: [p] });
