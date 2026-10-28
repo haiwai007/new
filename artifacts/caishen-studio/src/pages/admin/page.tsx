@@ -1,3 +1,4 @@
+import Submissions from "./submissions";
 import {
   useEffect,
   useState,
@@ -19,8 +20,8 @@ import {
   type PopupSettings,
 } from "@/lib/catalog-service/contracts";
 import { BUILTIN_TEMPLATES } from "@/lib/template/builtin";
-import { parseTemplateFile, mapImageSources } from "@/lib/template/package";
-import { renderDoc } from "@/lib/canvas/render";
+import { prepareSharedTemplate } from "@/lib/catalog-service/prepare-template";
+
 import { base64ToBlob } from "@/lib/storage/encoding";
 import { cloudConfig } from "@/lib/cloud-config";
 import { toast } from "sonner";
@@ -221,6 +222,10 @@ export default function AdminPage() {
             {[
               ["categories", "分类管理"],
               ["templates", "模板管理"],
+              [
+                "submissions",
+                `投稿审核${data.submissions?.filter((s) => s.status === "pending").length ? `（${data.submissions.filter((s) => s.status === "pending").length}）` : ""}`,
+              ],
               ["popup", "弹窗设置"],
               ["audit", "操作记录"],
               ["password", "修改密码"],
@@ -245,6 +250,14 @@ export default function AdminPage() {
             <Popup
               key={data.popup.revision}
               value={data.popup}
+              busy={busy}
+              mutate={mutate}
+            />
+          )}
+          {tab === "submissions" && (
+            <Submissions
+              submissions={data.submissions ?? []}
+              categories={data.categories}
               busy={busy}
               mutate={mutate}
             />
@@ -773,43 +786,11 @@ function Upload({
           setFile(null);
           setPreview("");
           try {
-            if (next.size > CMS_MAX_PACKAGE_BYTES)
-              throw new Error("模板文件不能超过 20MB");
-            const parsed = parseTemplateFile(JSON.parse(await next.text()));
-            if (!parsed.ok) throw new Error(parsed.error);
-            if (
-              parsed.assets.some(
-                (a) =>
-                  !["image/png", "image/jpeg", "image/webp"].includes(a.mime),
-              )
-            )
-              throw new Error("模板图片仅支持 PNG、JPEG 和 WebP");
-            const images = new Map(
-              parsed.assets.map((a) => [
-                a.id,
-                `data:${a.mime};base64,${a.data}`,
-              ]),
-            );
-            const doc = mapImageSources(parsed.doc, (src) => {
-              if (src.kind === "url" || !images.has(src.assetId))
-                throw new Error("请导出包含全部图片的完整模板文件");
-              return { kind: "url", url: images.get(src.assetId)! };
-            });
-            const { canvas } = await renderDoc(doc, {
-              multiplier: Math.min(
-                1,
-                480 / Math.max(doc.canvas.width, doc.canvas.height),
-              ),
-            });
-            let image = "";
-            try {
-              image = canvas.toDataURL("image/png");
-            } finally {
-              canvas.width = canvas.height = 0;
-            }
+            const prepared = await prepareSharedTemplate(next);
+            const image = prepared.preview;
             setPreview(image);
             setFile(next);
-            setName(parsed.doc.name.slice(0, 120));
+            setName(prepared.doc.name.slice(0, 120));
           } catch (e) {
             setError(e instanceof Error ? e.message : "模板读取失败");
           } finally {

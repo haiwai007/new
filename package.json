@@ -11,7 +11,7 @@
     "build:studio": "pnpm --filter @workspace/caishen-studio build",
     "test:studio": "pnpm --filter @workspace/caishen-studio test",
     "test:e2e": "pnpm --filter @workspace/caishen-studio test:e2e",
-    "test:cms": "CMS_E2E=1 E2E_PORT=5180 pnpm test:e2e cms.spec.ts",
+    "test:cms": "CMS_E2E=1 E2E_PORT=5180 pnpm test:e2e cms.spec.ts cms-submissions.spec.ts",
     "cms:password": "node scripts/create-admin-password.mjs"
   },
   "private": true,

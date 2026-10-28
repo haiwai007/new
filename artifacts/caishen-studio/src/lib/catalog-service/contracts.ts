@@ -67,7 +67,18 @@ export type PublicCatalogue = {
   message?: string;
 };
 export type AdminCatalogue = {
+  submissions?: ManagedSubmission[];
   categories: ManagedCategory[];
   templates: ManagedTemplate[];
   popup: PopupSettings;
+};
+
+export type ManagedSubmission = ManagedTemplate & {
+  status: "pending" | "published" | "rejected";
+  submitter: string;
+  contact: string;
+  note: string;
+  reviewNote: string;
+  submittedAt: number;
+  reviewedAt: number | null;
 };

@@ -139,11 +139,16 @@ export default function TemplatesPage() {
             个分类，可编辑图层，也可按参数批量生成。
           </p>
         </div>
-        <Button asChild>
-          <Link to="/custom">
-            <Upload className="size-4" /> 从图片生成模板
-          </Link>
-        </Button>
+        <div className="flex flex-wrap gap-2">
+          <Button asChild variant="outline">
+            <Link to="/submit">提交模板</Link>
+          </Button>
+          <Button asChild>
+            <Link to="/custom">
+              <Upload className="size-4" /> 从图片生成模板
+            </Link>
+          </Button>
+        </div>
       </div>
 
       <div className="mt-6 sm:hidden">

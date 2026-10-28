@@ -16,6 +16,7 @@ const EditorPage = lazy(() => import("./pages/editor/page.tsx"));
 
 const BackupPage = lazy(() => import("./pages/backup/page.tsx"));
 const AccountPage = lazy(() => import("./pages/account/page.tsx"));
+const SubmitTemplatePage = lazy(() => import("./pages/submit/page"));
 const AdminPage = lazy(() => import("./pages/admin/page.tsx"));
 const CloudAdminPage = lazy(() => import("./pages/admin/cloud-admin.tsx"));
 const AuthCallback = lazy(() => import("./pages/auth/Callback.tsx"));
@@ -84,6 +85,7 @@ function AppRoutes() {
           <Route element={<SiteLayout />}>
             <Route path="/" element={<Index />} />
             <Route path="/templates" element={<TemplatesPage />} />
+            <Route path="/submit" element={<SubmitTemplatePage />} />
             <Route path="/custom" element={<CustomTemplatePage />} />
             <Route path="/works" element={<WorksPage />} />
             <Route path="/batch" element={<BatchPage />} />

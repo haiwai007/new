@@ -534,3 +534,224 @@ it("supports a configured six-digit temporary credential and replacing it after 
     ).status,
   ).toBe(200);
 });
+describe("anonymous template submissions and review", () => {
+  async function submit(extra: Record<string, string> = {}) {
+    const form = uploadForm();
+    form.set("submitter", "活动设计者");
+    form.set("contact", "private-contact@example.test");
+    form.set("note", "仅给管理员看的备注");
+    return call("public/submissions", "POST", form, undefined, {
+      "Idempotency-Key": crypto.randomUUID(),
+      ...extra,
+    });
+  }
+  it("keeps submissions and contacts private until revision-checked approval publishes the template", async () => {
+    expect((await call("public/submissions/status")).status).toBe(200);
+    const key = crypto.randomUUID(),
+      response = await submit({ "Idempotency-Key": key });
+    expect(response.status).toBe(201);
+    const receipt = await response.json();
+    const again = await submit({ "Idempotency-Key": key });
+    expect(again.status).toBe(201);
+    expect((await again.json()).id).toBe(receipt.id);
+    expect(
+      (await (await call("public/catalog")).json()).templates,
+    ).toHaveLength(0);
+    expect((await call(`public/templates/${receipt.id}/package`)).status).toBe(
+      404,
+    );
+    expect((await call(`admin/templates/${receipt.id}/package`)).status).toBe(
+      401,
+    );
+    expect(
+      (
+        await call(`admin/submissions/${receipt.id}/approve`, "POST", {
+          revision: 1,
+        })
+      ).status,
+    ).toBe(401);
+    const session = await admin();
+    const catalogue = await (
+      await call("admin/catalog", "GET", undefined, session)
+    ).json();
+    expect(catalogue.templates).toHaveLength(0);
+    expect(catalogue.submissions).toHaveLength(1);
+    const record = catalogue.submissions[0];
+    expect(record).toMatchObject({
+      id: receipt.id,
+      status: "pending",
+      contact: "private-contact@example.test",
+      note: "仅给管理员看的备注",
+    });
+    expect(
+      (
+        await call(
+          record.packageUrl.replace("/api/", ""),
+          "GET",
+          undefined,
+          session,
+        )
+      ).status,
+    ).toBe(200);
+    expect(
+      (
+        await call(
+          `admin/templates/${receipt.id}`,
+          "PUT",
+          { ...record, published: true },
+          session,
+        )
+      ).status,
+    ).toBe(409);
+    expect(
+      (
+        await call(
+          `admin/submissions/${receipt.id}/approve`,
+          "POST",
+          { ...record, revision: 99 },
+          session,
+        )
+      ).status,
+    ).toBe(409);
+    expect(
+      (
+        await call(
+          `admin/submissions/${receipt.id}/approve`,
+          "POST",
+          { ...record, name: "审核通过的活动海报" },
+          session,
+        )
+      ).status,
+    ).toBe(200);
+    expect(
+      (
+        await call(
+          `admin/submissions/${receipt.id}/approve`,
+          "POST",
+          record,
+          session,
+        )
+      ).status,
+    ).toBe(409);
+    const visible = await (await call("public/catalog")).json();
+    expect(visible.templates).toHaveLength(1);
+    expect(visible.templates[0].name).toBe("审核通过的活动海报");
+    expect(JSON.stringify(visible)).not.toContain("private-contact");
+    expect(visible.submissions).toBeUndefined();
+    expect((await call(`public/templates/${receipt.id}/package`)).status).toBe(
+      200,
+    );
+  });
+  it("rejects privately, audits once, and deletion cascades review metadata and private files", async () => {
+    const receipt = await (await submit()).json(),
+      session = await admin();
+    const r = await call(
+      `admin/submissions/${receipt.id}/reject`,
+      "POST",
+      { revision: 1, reviewNote: "需要补充参数" },
+      session,
+    );
+    expect(r.status).toBe(200);
+    expect(
+      (
+        await call(
+          `admin/submissions/${receipt.id}/reject`,
+          "POST",
+          { revision: 1 },
+          session,
+        )
+      ).status,
+    ).toBe(409);
+    expect(
+      (await call(`public/templates/${receipt.id}/thumbnail`)).status,
+    ).toBe(404);
+    const catalogue = await (
+      await call("admin/catalog", "GET", undefined, session)
+    ).json();
+    expect(catalogue.submissions[0]).toMatchObject({
+      status: "rejected",
+      reviewNote: "需要补充参数",
+      revision: 2,
+    });
+    expect(
+      sqlite
+        .prepare(
+          "SELECT COUNT(*) AS n FROM cms_audit WHERE action='submission.reject'",
+        )
+        .get(),
+    ).toMatchObject({ n: 1 });
+    expect(
+      (
+        await call(
+          `admin/submissions/${receipt.id}/approve`,
+          "POST",
+          catalogue.submissions[0],
+          session,
+        )
+      ).status,
+    ).toBe(409);
+    expect(
+      (
+        await call(
+          `admin/templates/${receipt.id}`,
+          "DELETE",
+          { revision: 1 },
+          session,
+        )
+      ).status,
+    ).toBe(409);
+    expect(
+      (
+        await call(
+          `admin/templates/${receipt.id}`,
+          "DELETE",
+          { revision: 2 },
+          session,
+        )
+      ).status,
+    ).toBe(200);
+    expect(
+      sqlite.prepare("SELECT COUNT(*) AS n FROM cms_submissions").get(),
+    ).toMatchObject({ n: 0 });
+    expect(
+      await env.CATALOG_FILES!.get(`templates/${receipt.id}/package.json`),
+    ).toBeNull();
+  });
+  it("requires a configured service, same origin, valid category and idempotency key and limits anonymous uploads", async () => {
+    expect((await submit({ Origin: "https://other.test" })).status).toBe(403);
+    expect((await submit({ "Idempotency-Key": "bad-key" })).status).toBe(400);
+    const session = await admin();
+    const catalogue = await (
+      await call("admin/catalog", "GET", undefined, session)
+    ).json();
+    const c = catalogue.categories.find((c: any) => c.id === "huimin-15");
+    expect(
+      (
+        await call(
+          `admin/categories/${c.id}`,
+          "PUT",
+          { ...c, visible: false },
+          session,
+        )
+      ).status,
+    ).toBe(200);
+    expect((await submit()).status).toBe(400);
+    expect(
+      (
+        await call(
+          `admin/categories/${c.id}`,
+          "PUT",
+          { ...c, revision: c.revision + 1, visible: true },
+          session,
+        )
+      ).status,
+    ).toBe(200);
+    for (let i = 0; i < 4; i++) expect((await submit()).status).toBe(201);
+    expect((await submit()).status).toBe(429);
+    env.ADMIN_PASSWORD_HASH = undefined;
+    expect(
+      (await (await call("public/submissions/status")).json()).enabled,
+    ).toBe(false);
+    expect((await submit()).status).toBe(503);
+  });
+});

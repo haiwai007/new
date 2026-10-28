@@ -50,6 +50,7 @@ export const SECTIONS: Section[] = [
 ];
 
 export const MORE_LINKS = [
+  { to: "/submit", label: "提交模板" },
   { to: "/admin", label: "管理后台" },
   { to: "/assets", label: "素材库" },
   { to: "/backup", label: "备份与恢复" },

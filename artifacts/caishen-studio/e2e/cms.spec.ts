@@ -136,8 +136,10 @@ test("administrator publishes a categorized template and anonymous visitors crea
   const article = page.locator("article").filter({ hasText: "共享活动海报" });
   await expect(article).toContainText("草稿");
   expect(
-    (await (await page.request.get("/api/public/catalog")).json()).templates,
-  ).toHaveLength(0);
+    (
+      await (await page.request.get("/api/public/catalog")).json()
+    ).templates.some((t: { name: string }) => t.name === "共享活动海报"),
+  ).toBe(false);
   const visitor = await anonymous(browser, page);
   try {
     const front = await visitor.newPage();
@@ -254,6 +256,7 @@ test("administrator controls popup title, plain text, button, phrase, frequency 
 }) => {
   await login(page);
   await page.getByRole("button", { name: "弹窗设置", exact: true }).click();
+  await page.getByLabel("启用访问弹窗", { exact: true }).check();
   await page.getByLabel("弹窗标题", { exact: true }).fill("欢迎来到灵感工作室");
   await page
     .getByLabel("弹窗正文", { exact: true })
@@ -414,6 +417,20 @@ test("administrator changes password in the dashboard and old sessions lose acce
       page.getByRole("button", { name: "分类管理", exact: true }),
     ).toBeVisible();
     expect((await page.request.get("/api/public/catalog")).status()).toBe(200);
+    const currentSession = await (
+      await page.request.get("/api/admin/session")
+    ).json();
+    const reset = await page.request.post("/api/admin/password", {
+      headers: {
+        Origin: new URL(page.url()).origin,
+        "X-CSRF-Token": currentSession.csrf,
+      },
+      data: {
+        currentPassword: "New-Local-Cms-Password-931!",
+        newPassword: password,
+      },
+    });
+    expect(reset.status()).toBe(200);
   } finally {
     await other.close();
   }

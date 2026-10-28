@@ -1,4 +1,10 @@
 import {
+  ensureSubmissions,
+  submissionRateLimit,
+  submissionMeta,
+} from "./submissions";
+import { sameOrigin } from "./auth";
+import {
   categoryInput,
   templateInput,
   popupSchema,
@@ -92,6 +98,7 @@ async function popup(db: Database) {
     : DEFAULT_POPUP;
 }
 async function catalogue(db: Database, admin = false) {
+  if (admin) await ensureSubmissions(db);
   const categories = (
     await db
       .prepare(
@@ -106,9 +113,43 @@ async function catalogue(db: Database, admin = false) {
       )
       .all<TemplateRow>()
   ).results;
+  const submissions = admin
+    ? (
+        await db
+          .prepare(
+            "SELECT t.*,s.status,s.submitter,s.contact,s.note,s.review_note,s.submitted_at,s.reviewed_at FROM cms_submissions s JOIN cms_templates t ON t.id=s.template_id ORDER BY CASE WHEN s.status='pending' THEN 0 ELSE 1 END,s.submitted_at DESC LIMIT 1000",
+          )
+          .all<
+            TemplateRow & {
+              status: "pending" | "published" | "rejected";
+              submitter: string;
+              contact: string;
+              note: string;
+              review_note: string;
+              submitted_at: number;
+              reviewed_at: number | null;
+            }
+          >()
+      ).results.map((r) => ({
+        ...template(r, true),
+        status: r.status,
+        submitter: r.submitter,
+        contact: r.contact,
+        note: r.note,
+        reviewNote: r.review_note,
+        submittedAt: r.submitted_at,
+        reviewedAt: r.reviewed_at,
+      }))
+    : [];
+  const unpublished = new Set(
+    submissions.filter((s) => s.status !== "published").map((s) => s.id),
+  );
   return {
     categories,
-    templates: rows.map((r) => template(r, admin)),
+    ...(admin ? { submissions } : {}),
+    templates: rows
+      .filter((r) => !unpublished.has(r.id))
+      .map((r) => template(r, admin)),
     popup: await popup(db),
   };
 }
@@ -258,7 +299,30 @@ function checkAssets(pkg: {
   )
     throw new ApiError(400, "模板画布尺寸过大");
 }
-async function upload(request: Request, env: CmsEnv) {
+async function upload(request: Request, env: CmsEnv, isSubmission = false) {
+  await ensureSubmissions(env.CATALOG_DB!);
+  const requestKey = request.headers.get("Idempotency-Key") ?? "";
+  if (isSubmission) {
+    if (!/^[a-f0-9-]{36}$/.test(requestKey))
+      throw new ApiError(400, "提交编号无效，请刷新页面后重试");
+    const duplicate = await env
+      .CATALOG_DB!.prepare(
+        "SELECT template_id FROM cms_submissions WHERE request_key=?",
+      )
+      .bind(requestKey)
+      .first<{ template_id: string }>();
+    if (duplicate)
+      return json({ id: duplicate.template_id, submitted: true }, 201);
+    await submissionRateLimit(request, env.CATALOG_DB!);
+    if (
+      (await env
+        .CATALOG_DB!.prepare(
+          "SELECT COUNT(*) AS n FROM cms_submissions WHERE status!='published'",
+        )
+        .first<{ n: number }>())!.n >= 200
+    )
+      throw new ApiError(429, "投稿队列已满，请稍后再试", "QUEUE_FULL");
+  }
   const db = env.CATALOG_DB!,
     raw = await bounded(request, CMS_MAX_PACKAGE_BYTES + 3 * 1024 * 1024);
   const form = await new Request(request.url, {
@@ -290,7 +354,16 @@ async function upload(request: Request, env: CmsEnv) {
     published: false,
     revision: 0,
   });
-  await getCategory(db, meta.category);
+  const chosenCategory = await getCategory(db, meta.category);
+  if (isSubmission && !chosenCategory.visible)
+    throw new ApiError(400, "该分类暂不可投稿，请重新选择分类");
+  const submitted = isSubmission
+    ? parsed(submissionMeta, {
+        submitter: form.get("submitter") ?? "",
+        contact: form.get("contact") ?? "",
+        note: form.get("note") ?? "",
+      })
+    : null;
   if (
     (await db
       .prepare("SELECT COUNT(*) AS n FROM cms_templates")
@@ -329,10 +402,10 @@ async function upload(request: Request, env: CmsEnv) {
     await env.CATALOG_FILES!.put(thumbKey, thumb, {
       httpMetadata: { contentType: "image/png" },
     });
-    await db.batch([
+    const stored = await db.batch([
       db
         .prepare(
-          "INSERT INTO cms_templates(id,name,category,description,tags,position,published,revision,width,height,parameter_count,package_key,thumbnail_key,created_at,updated_at) VALUES(?,?,?,?,?,?,0,1,?,?,?,?,?,?,?)",
+          `INSERT INTO cms_templates(id,name,category,description,tags,position,published,revision,width,height,parameter_count,package_key,thumbnail_key,created_at,updated_at) SELECT ?,?,?,?,?,?,0,1,?,?,?,?,?,?,? WHERE (SELECT COUNT(*) FROM cms_templates)<1000 ${isSubmission ? "AND (SELECT COUNT(*) FROM cms_submissions WHERE status!='published')<200" : ""}`,
         )
         .bind(
           id,
@@ -349,13 +422,49 @@ async function upload(request: Request, env: CmsEnv) {
           now,
           now,
         ),
-      audit(db, "template.upload", id),
+      ...(submitted
+        ? [
+            db
+              .prepare(
+                "INSERT INTO cms_submissions(template_id,request_key,status,submitter,contact,note,submitted_at) SELECT ?,?,'pending',?,?,?,? WHERE EXISTS(SELECT 1 FROM cms_templates WHERE id=?)",
+              )
+              .bind(
+                id,
+                requestKey,
+                submitted.submitter,
+                submitted.contact,
+                submitted.note,
+                now,
+                id,
+              ),
+          ]
+        : []),
+      audit(db, isSubmission ? "submission.create" : "template.upload", id),
     ]);
+    if (!stored[0].meta.changes)
+      throw new ApiError(429, "模板投稿队列已满，请稍后再试", "QUEUE_FULL");
   } catch (error) {
     await env.CATALOG_FILES!.delete([key, thumbKey]).catch(() => undefined);
+    if (
+      isSubmission &&
+      error instanceof Error &&
+      error.message.includes("UNIQUE constraint")
+    ) {
+      const original = await db
+        .prepare("SELECT template_id FROM cms_submissions WHERE request_key=?")
+        .bind(requestKey)
+        .first<{ template_id: string }>();
+      if (original)
+        return json({ id: original.template_id, submitted: true }, 201);
+    }
     throw error;
   }
-  return json({ id, revision: 1, warnings: p.warnings }, 201);
+  return json(
+    isSubmission
+      ? { id, submitted: true }
+      : { id, revision: 1, warnings: p.warnings },
+    201,
+  );
 }
 export async function handleApi(
   request: Request,
@@ -397,6 +506,34 @@ export async function handleApi(
         },
         503,
       );
+    if (path === "public/submissions/status" && request.method === "GET") {
+      if (missing.length)
+        return json({
+          enabled: false,
+          message: "模板提交暂未启用，请管理员完成后台配置",
+        });
+      await ensureSubmissions(db);
+      const count = (await db
+        .prepare(
+          "SELECT COUNT(*) AS n FROM cms_submissions WHERE status!='published'",
+        )
+        .first<{ n: number }>())!.n;
+      return json({
+        enabled: count < 200,
+        maxBytes: CMS_MAX_PACKAGE_BYTES,
+        message: count >= 200 ? "投稿队列已满，请稍后再试" : "",
+      });
+    }
+    if (path === "public/submissions" && request.method === "POST") {
+      sameOrigin(request);
+      if (missing.length)
+        throw new ApiError(
+          503,
+          "模板提交暂未启用，请管理员完成后台配置",
+          "NOT_CONFIGURED",
+        );
+      return await upload(request, env, true);
+    }
     if (path === "public/catalog" && request.method === "GET")
       return json({ enabled: true, ...(await catalogue(db)) });
     if (!path.startsWith("admin/") && !path.startsWith("public/"))
@@ -531,8 +668,76 @@ export async function handleApi(
       }
       if (path === "admin/templates" && request.method === "POST")
         return await upload(request, env);
+      const review = path.match(
+        /^admin\/submissions\/([a-f0-9-]{36})\/(approve|reject)$/,
+      );
+      if (review && request.method === "POST") {
+        await ensureSubmissions(db);
+        const input = await body(request),
+          id = review[1],
+          now = Date.now();
+        const revision = input.revision;
+        if (!Number.isInteger(revision))
+          throw new ApiError(400, "缺少投稿版本");
+        const reviewing = db.prepare(
+          "UPDATE cms_submissions SET status=?,review_note=?,reviewed_at=? WHERE template_id=? AND status='pending' AND changes()>0",
+        );
+        let result;
+        if (review[2] === "approve") {
+          const data = parsed(templateInput, { ...input, published: true });
+          if (!(await getCategory(db, data.category)).visible)
+            throw new ApiError(400, "请先启用分类，或选择其他公开分类");
+          result = await db.batch([
+            db
+              .prepare(
+                "UPDATE cms_templates SET name=?,category=?,description=?,tags=?,position=?,published=1,revision=revision+1,updated_at=? WHERE id=? AND revision=? AND EXISTS(SELECT 1 FROM cms_submissions WHERE template_id=? AND status='pending')",
+              )
+              .bind(
+                data.name,
+                data.category,
+                data.description,
+                JSON.stringify(data.tags),
+                data.position,
+                now,
+                id,
+                revision,
+                id,
+              ),
+            reviewing.bind("published", "", now, id),
+            audit(db, "submission.approve", id),
+          ]);
+        } else {
+          const note =
+            typeof input.reviewNote === "string" ? input.reviewNote.trim() : "";
+          if (note.length > 500)
+            throw new ApiError(400, "审核备注最多 500 个字符");
+          result = await db.batch([
+            db
+              .prepare(
+                "UPDATE cms_templates SET revision=revision+1,updated_at=? WHERE id=? AND revision=? AND published=0 AND EXISTS(SELECT 1 FROM cms_submissions WHERE template_id=? AND status='pending')",
+              )
+              .bind(now, id, revision, id),
+            reviewing.bind("rejected", note, now, id),
+            audit(db, "submission.reject", id),
+          ]);
+        }
+        if (!result[0].meta.changes)
+          throw new ApiError(409, "投稿已被处理或修改，请刷新列表", "CONFLICT");
+        return json({ reviewed: true, revision: Number(revision) + 1 });
+      }
       const item = path.match(/^admin\/templates\/([a-f0-9-]{36})$/);
       if (item && request.method === "PUT") {
+        await ensureSubmissions(db);
+        const submission = await db
+          .prepare("SELECT status FROM cms_submissions WHERE template_id=?")
+          .bind(item[1])
+          .first<{ status: string }>();
+        if (submission && submission.status !== "published")
+          throw new ApiError(
+            409,
+            "请在投稿审核中处理该模板",
+            "REVIEW_REQUIRED",
+          );
         const data = parsed(templateInput, await body(request)),
           c = await getCategory(db, data.category);
         if (data.published && !c.visible)
