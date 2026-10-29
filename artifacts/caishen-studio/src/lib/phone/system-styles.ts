@@ -382,6 +382,28 @@ export const SYSTEM_STYLES: {
     wifiStroke: 2.2,
     airplane: "android",
   },
+  {
+    id: "ios1801",
+    label: "iOS 18.0.1 · 部分核对",
+    systems: ["ios"],
+    fontSize: 17,
+    weight: "bold",
+    batteryStyle: "inside",
+    radius: 4,
+    gap: 5,
+    inset: 26,
+  },
+  {
+    id: "oneui61",
+    label: "One UI 6.1 · 部分核对",
+    systems: ["oneui", "oneui7"],
+    fontSize: 13,
+    weight: "normal",
+    batteryStyle: "outline",
+    radius: 2,
+    gap: 4,
+    inset: 18,
+  },
 ];
 export function defaultSystemStyle(
   _system: PhoneSystem,

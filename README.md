@@ -4,7 +4,9 @@
 
 [在线使用](https://new-35o.pages.dev) · [详细部署手册](docs/DEPLOYMENT.zh-CN.md) · [作图与批量指南](docs/BATCH_DRAWING.zh-CN.md) · [验收记录](docs/ACCEPTANCE.md)
 
-文档更新：2026-10-28。
+文档更新：2026-10-29。
+
+新增[真机来源与测量记录](docs/phone-calibration/README.md)：覆盖 100 个型号的资料盘点；Pixel 9／Android 14、iPhone 16／iOS 18.0.1、Galaxy S24／One UI 6.1 完成样本位置部分核对。字体、完整布局和其他状态仍待校准，完整真机核准为 0。
 
 ## 项目定位
 

@@ -84,7 +84,9 @@ async function confirm(page: Page) {
   ).toBeEnabled();
   await dialog.getByRole("button", { name: "测试替换", exact: true }).click();
   await expect(dialog.getByText(/预览已生成：/)).toBeVisible();
-  await expect(dialog.getByText(/预览已生成：/)).toContainText("外框外 0 个像素变化");
+  await expect(dialog.getByText(/预览已生成：/)).toContainText(
+    "外框外 0 个像素变化",
+  );
   await dialog
     .getByRole("button", { name: "确认并保存定位", exact: true })
     .click();
@@ -549,6 +551,9 @@ for (const brand of PHONE_BRANDS) {
           .click();
         const path = info.outputPath(`${model.id}-${version}.png`);
         await (await event).saveAs(path);
+        // A download starts before export history is saved and the dialog closes.
+        // Wait for completion before opening the next export, avoiding a stale close.
+        await expect(page.getByRole("dialog")).toHaveCount(0);
         const bytes = await readFile(path);
         expect(bytes.readUInt32BE(16), model.id).toBe(400);
         expect(bytes.readUInt32BE(20), model.id).toBe(860);
@@ -593,3 +598,48 @@ for (const brand of PHONE_BRANDS) {
     expect(errors).toEqual([]);
   });
 }
+
+test("source status follows exact model and system version without inheriting approval", async ({
+  page,
+}) => {
+  await upload(page);
+  await confirm(page);
+  await page.getByRole("button", { name: "进入作图", exact: true }).click();
+  await page.getByRole("button", { name: "图层编辑", exact: true }).click();
+  await expect(page).toHaveURL(/\/editor\//);
+  await page.getByRole("button", { name: "手机", exact: true }).click();
+  const status = page.getByTestId("phone-layout-calibration");
+  for (const item of [
+    {
+      brand: "Apple",
+      model: "iphone16",
+      partial: "ios1801",
+      reference: "ios18",
+    },
+    {
+      brand: "Google",
+      model: "pixel9",
+      partial: "pixel14",
+      reference: "pixel15",
+    },
+    {
+      brand: "Samsung",
+      model: "galaxys24",
+      partial: "oneui61",
+      reference: "oneui7",
+    },
+  ]) {
+    await page.getByLabel("手机品牌", { exact: true }).selectOption(item.brand);
+    await page.getByLabel("手机型号", { exact: true }).selectOption(item.model);
+    const style = page.getByLabel("系统参考样式", { exact: true });
+    await style.selectOption(item.partial);
+    await expect(status).toContainText("部分核对（样本位置）");
+    await expect(status.getByRole("link")).toHaveAttribute(
+      "href",
+      /notebookcheck\.net/,
+    );
+    await style.selectOption(item.reference);
+    await expect(status).toContainText("参考适配（尚未真机核准）");
+    await expect(status.getByRole("link")).toHaveCount(0);
+  }
+});

@@ -63,6 +63,7 @@ export function ModelOptions({
         <PhoneModelPicker
           compact
           value={settings.modelId}
+          styleId={settings.styleId}
           onChange={(id) => {
             if (id)
               onChange({

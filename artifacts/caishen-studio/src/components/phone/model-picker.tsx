@@ -1,3 +1,5 @@
+import { calibrationFor } from "@/lib/phone/calibration-sources";
+import type { SystemStyleId } from "@/lib/phone/system-styles";
 import {
   PHONE_BRANDS,
   PHONE_MODELS,
@@ -13,14 +15,17 @@ export default function PhoneModelPicker({
   allowNone = false,
   disabled = false,
   compact = false,
+  styleId = "auto",
 }: {
   value: PhoneModelId | undefined;
   onChange: (value: PhoneModelId | undefined) => void;
   allowNone?: boolean;
   disabled?: boolean;
   compact?: boolean;
+  styleId?: SystemStyleId;
 }) {
   const brand = value ? phoneModel(value).brand : "";
+  const calibration = value ? calibrationFor(value, styleId) : undefined;
   return (
     <div className={compact ? "grid grid-cols-2 gap-2" : "space-y-2"}>
       <label className="block space-y-1 text-xs">
@@ -59,6 +64,37 @@ export default function PhoneModelPicker({
           ))}
         </select>
       </label>
+      {calibration && (
+        <div
+          data-testid="phone-layout-calibration"
+          className="col-span-2 text-[11px] leading-relaxed text-muted-foreground"
+        >
+          <span>
+            所选版本配置：
+            {calibration.status === "calibrated"
+              ? "真机核准"
+              : calibration.status === "partial"
+                ? "部分核对（样本位置）"
+                : "参考适配（尚未真机核准）"}
+          </span>
+          {calibration.status === "partial" && (
+            <p>
+              字体、完整布局及其他状态仍待校准。样本：
+              {calibration.sources[0]?.observedSystem}
+            </p>
+          )}
+          {calibration.sources[0] && (
+            <a
+              href={calibration.sources[0].reviewUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline underline-offset-2"
+            >
+              查看核对来源
+            </a>
+          )}
+        </div>
+      )}
       {!compact && value && (
         <p className="text-xs text-muted-foreground">
           机型默认：{statusProfile(value).label} · {phoneModel(value).width}×
@@ -67,7 +103,7 @@ export default function PhoneModelPicker({
       )}
       {!compact && (
         <p className="text-[11px] leading-relaxed text-muted-foreground">
-          读取具体型号与版本的独立布局；当前为参考适配，尚未经逐台真机截图标定。系统主题与显示缩放会影响实际外观。
+          具体型号与版本分别维护布局，核对状态如下；系统主题与显示缩放会影响实际外观。
         </p>
       )}
     </div>

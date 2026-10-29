@@ -163,6 +163,7 @@ export default function UploadPhone({
       <h2 className="font-medium">手机型号与状态栏</h2>
       <PhoneModelPicker
         value={phone?.modelId}
+        styleId={phone?.styleId}
         allowNone
         disabled={disabled || !image}
         onChange={(id) =>

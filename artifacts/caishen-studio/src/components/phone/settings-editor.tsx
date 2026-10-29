@@ -581,6 +581,7 @@ export default function PhoneSettingsEditor({
           <Section title="机型" open>
             <PhoneModelPicker
               value={draft.modelId}
+              styleId={draft.styleId}
               onChange={(id) => {
                 if (!id) return;
                 const next = settingsForModel(draft, id);

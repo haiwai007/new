@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 1,
+  "scope": "Partial sample-position review, not full device calibration",
+  "samples": [
+    {
+      "id": "pixel9-android14",
+      "modelId": "pixel9",
+      "styleId": "pixel14",
+      "width": 1080,
+      "height": 2424,
+      "stripHeight": 144,
+      "time": "10:01",
+      "battery": 69,
+      "charging": true,
+      "signal": 0,
+      "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Google/Pixel_9/Screenshot_20241012-100143.png",
+      "sha256": "0a5a79fde8ef1c8262c4d6ec64c190abb1b9b49e8a74af2ab14072de995926c3",
+      "clockBox": {
+        "left": 94,
+        "top": 59,
+        "right": 177,
+        "bottom": 85
+      },
+      "systemBox": {
+        "left": 821,
+        "top": 54,
+        "right": 986,
+        "bottom": 88
+      },
+      "method": "native RGB threshold in explicit ROIs; no image resizing; partial geometry evidence only"
+    },
+    {
+      "id": "iphone16-ios18.0.1",
+      "modelId": "iphone16",
+      "styleId": "ios1801",
+      "width": 1179,
+      "height": 2556,
+      "stripHeight": 177,
+      "time": "15:22",
+      "battery": 71,
+      "charging": true,
+      "signal": 0,
+      "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Apple/iPhone_16/Screenshots_OS_1.PNG",
+      "sha256": "f3a1cb40ecb9d1e0c9d162a0df70148289e8ce3d87e645852aa657aa89836b85",
+      "clockBox": {
+        "left": 151,
+        "top": 69,
+        "right": 279,
+        "bottom": 107
+      },
+      "systemBox": {
+        "left": 846,
+        "top": 67,
+        "right": 1081,
+        "bottom": 108
+      },
+      "method": "native RGB threshold in explicit ROIs; no image resizing; partial geometry evidence only"
+    },
+    {
+      "id": "galaxys24-oneui6.1",
+      "modelId": "galaxys24",
+      "styleId": "oneui61",
+      "width": 1080,
+      "height": 2340,
+      "stripHeight": 108,
+      "time": "12:56",
+      "battery": 94,
+      "charging": false,
+      "signal": 4,
+      "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Samsung/Galaxy_S24/Screenshot_20240225_125610_Settings.jpg",
+      "sha256": "d97a6db356bb7cfc0da69fb7a658b537a4fdf8999772a0f100ad31cdc3e6bc0e",
+      "clockBox": {
+        "left": 76,
+        "top": 43,
+        "right": 171,
+        "bottom": 71
+      },
+      "systemBox": {
+        "left": 799,
+        "top": 41,
+        "right": 1006,
+        "bottom": 72
+      },
+      "method": "native RGB threshold in explicit ROIs; no image resizing; partial geometry evidence only"
+    }
+  ]
+}

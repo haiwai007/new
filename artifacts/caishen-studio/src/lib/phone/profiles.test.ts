@@ -208,7 +208,7 @@ it("resolves an explicit compatible system style for every model and preserves u
       airplane: true,
       wifi: 3,
     });
-    expect(effectiveProfile(settings).label).toContain("参考");
+    expect(effectiveProfile(settings).label).toMatch(/参考|部分核对|真机核准/);
     const svg = statusIconsSvg(settings);
     expect(svg, model.id).toContain("data-airplane=");
     expect(svg, model.id).not.toMatch(/NaN|Infinity/);

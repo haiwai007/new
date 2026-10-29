@@ -1,0 +1,145 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-10-28T14:20:16.733Z",
+  "scope": "horizontal geometry only; not full device approval",
+  "results": [
+    {
+      "id": "pixel9-android14",
+      "modelId": "pixel9",
+      "styleId": "pixel14",
+      "referenceSha256": "0a5a79fde8ef1c8262c4d6ec64c190abb1b9b49e8a74af2ab14072de995926c3",
+      "referenceClock": {
+        "left": 94,
+        "top": 59,
+        "right": 177,
+        "bottom": 85
+      },
+      "referenceSystem": {
+        "left": 821,
+        "top": 54,
+        "right": 986,
+        "bottom": 88
+      },
+      "generatedClock": {
+        "left": 94,
+        "top": 62,
+        "right": 174,
+        "bottom": 85
+      },
+      "generatedSystem": {
+        "left": 811,
+        "top": 53,
+        "right": 986,
+        "bottom": 89
+      },
+      "clockLeftError": 0,
+      "clockBottomError": 0,
+      "systemRightError": 0,
+      "systemCenterError": 0,
+      "suggested": {
+        "clockCenterY": 0.5,
+        "systemCenterY": 0.5,
+        "clockX": 34.69259,
+        "rightInset": 34.69259
+      },
+      "knownGaps": [
+        "font identity and full outlines",
+        "OS build/display scaling",
+        "other states",
+        "complete vertical layout"
+      ]
+    },
+    {
+      "id": "iphone16-ios18.0.1",
+      "modelId": "iphone16",
+      "styleId": "ios1801",
+      "referenceSha256": "f3a1cb40ecb9d1e0c9d162a0df70148289e8ce3d87e645852aa657aa89836b85",
+      "referenceClock": {
+        "left": 151,
+        "top": 69,
+        "right": 279,
+        "bottom": 107
+      },
+      "referenceSystem": {
+        "left": 846,
+        "top": 67,
+        "right": 1081,
+        "bottom": 108
+      },
+      "generatedClock": {
+        "left": 151,
+        "top": 72,
+        "right": 276,
+        "bottom": 107
+      },
+      "generatedSystem": {
+        "left": 884,
+        "top": 69,
+        "right": 1081,
+        "bottom": 107
+      },
+      "clockLeftError": 0,
+      "clockBottomError": 0,
+      "systemRightError": 0,
+      "systemCenterError": 0.5,
+      "suggested": {
+        "clockCenterY": 0.49220339,
+        "systemCenterY": 0.49220339,
+        "clockX": 49.33333,
+        "rightInset": 32.66667
+      },
+      "knownGaps": [
+        "font identity and full outlines",
+        "OS build/display scaling",
+        "other states",
+        "complete vertical layout"
+      ]
+    },
+    {
+      "id": "galaxys24-oneui6.1",
+      "modelId": "galaxys24",
+      "styleId": "oneui61",
+      "referenceSha256": "d97a6db356bb7cfc0da69fb7a658b537a4fdf8999772a0f100ad31cdc3e6bc0e",
+      "referenceClock": {
+        "left": 76,
+        "top": 43,
+        "right": 171,
+        "bottom": 71
+      },
+      "referenceSystem": {
+        "left": 799,
+        "top": 41,
+        "right": 1006,
+        "bottom": 72
+      },
+      "generatedClock": {
+        "left": 76,
+        "top": 44,
+        "right": 169,
+        "bottom": 71
+      },
+      "generatedSystem": {
+        "left": 838,
+        "top": 36,
+        "right": 1006,
+        "bottom": 77
+      },
+      "clockLeftError": 0,
+      "clockBottomError": 0,
+      "systemRightError": 0,
+      "systemCenterError": 0,
+      "suggested": {
+        "clockCenterY": 0.51851852,
+        "systemCenterY": 0.53240741,
+        "clockX": 24.33333,
+        "rightInset": 22.33333
+      },
+      "knownGaps": [
+        "font identity and full outlines",
+        "OS build/display scaling",
+        "other states",
+        "complete vertical layout"
+      ]
+    }
+  ]
+}

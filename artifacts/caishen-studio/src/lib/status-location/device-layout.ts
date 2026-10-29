@@ -158,23 +158,27 @@ export function renderDeviceLocation(
     ),
   );
   const iconWidth = (nativeWidth * iconHeight) / 20;
-  const centerY =
-    frame.y +
-    Math.max(
-      iconHeight / 2,
-      Math.min(
-        primaryHeight - iconHeight / 2,
-        primaryHeight *
-          Math.max(
-            0.2,
-            Math.min(
-              0.8,
-              (location.sourceFit?.centerRatio ?? 0.5) + layout.centerY - 0.5,
-            ),
-          ) +
-          phone.offsetY * unit,
-      ),
+  function centerFor(ratio: number, glyphHeight: number) {
+    return (
+      frame.y +
+      Math.max(
+        glyphHeight / 2,
+        Math.min(
+          primaryHeight - glyphHeight / 2,
+          primaryHeight *
+            Math.max(
+              0.2,
+              Math.min(
+                0.8,
+                (location.sourceFit?.centerRatio ?? 0.5) + ratio - 0.5,
+              ),
+            ) +
+            phone.offsetY * unit,
+        ),
+      )
     );
+  }
+  const centerY = centerFor(layout.systemCenterY ?? layout.centerY, iconHeight);
   add(
     "icons",
     createImageLayer(
@@ -226,6 +230,10 @@ export function renderDeviceLocation(
       ? frame.x + (frame.width - timeWidth) / 2
       : left;
   const textHeight = Math.max(0.001, Math.min(primaryHeight, font * 1.4));
+  const clockCenter = centerFor(
+    layout.clockCenterY ?? layout.centerY,
+    textHeight,
+  );
   add(
     "time",
     createImageLayer(
@@ -235,7 +243,7 @@ export function renderDeviceLocation(
           frame.y,
           Math.min(
             frame.y + primaryHeight - textHeight,
-            centerY - textHeight / 2,
+            clockCenter - textHeight / 2,
           ),
         ),
         width: Math.max(0.001, timeWidth),
@@ -259,7 +267,11 @@ export function renderDeviceLocation(
           x: left + timeWidth + font * 0.35 + index * appSize * (1 + gapRatio),
           y: Math.max(
             frame.y,
-            Math.min(frame.y + primaryHeight - appSize, centerY - appSize / 2),
+            Math.min(
+              frame.y + primaryHeight - appSize,
+              centerFor(layout.clockCenterY ?? layout.centerY, appSize) -
+                appSize / 2,
+            ),
           ),
           width: appSize,
           height: appSize,

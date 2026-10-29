@@ -41,7 +41,7 @@ describe("per-device outer-frame layouts", () => {
       expect(record.modelId).toBe(model.id);
       expect(record.referenceSize).toEqual([model.width, model.height]);
       expect(record.versions[record.defaultStyle]).toBeDefined();
-      expect(record.calibration).toBe("reference");
+      expect(["reference", "partial", "calibrated"]).toContain(record.calibration);
     }
     expect(new Set(Object.values(DEVICE_LAYOUTS)).size).toBe(100);
   });

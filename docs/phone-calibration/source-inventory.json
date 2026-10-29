@@ -1,0 +1,2312 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-10-29T00:06:56.235Z",
+  "scope": "Public review discovery, not device calibration approval",
+  "searchBlocked": true,
+  "summary": {
+    "models": 100,
+    "nativeCandidates": 46,
+    "scaledOnly": 4,
+    "reviewsOnly": 15,
+    "missing": 35,
+    "fullyCalibrated": 0
+  },
+  "models": [
+    {
+      "modelId": "iphone17",
+      "name": "iPhone 17",
+      "review": {
+        "url": "https://www.notebookcheck.net/Apple-iPhone-17-smartphone-review-The-best-iPhone-of-the-year-is-unbelievably-close-to-an-iPhone-Pro.1129296.0.html",
+        "title": "Apple iPhone 17 smartphone review - The best iPhone of the year is unbelievably close to an iPhone Pro - Notebookcheck Review",
+        "sha256": "47404703b724ea0a6743835798a7a7c3038913067f46188c1813350daff29e75",
+        "reportedOs": "Apple iOS 26",
+        "checkedAt": "2026-10-29T00:06:37.384Z"
+      },
+      "screenshots": [
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Apple/iPhone_17/Screenshots_Apple_iPhone_17_OS_1.PNG",
+          "discovery": "publisher-original-path",
+          "contentType": "image/png",
+          "sha256": "862d0cbee01a4ecff69d6b42896c770c00b4c9cdb2e31055ed5f2d9ccda88430",
+          "width": 1206,
+          "height": 2622,
+          "nativeSizeMatch": true
+        }
+      ],
+      "status": "native-screenshot-candidate",
+      "calibration": "reference",
+      "missing": [
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "iphone17pro",
+      "name": "iPhone 17 Pro",
+      "review": {
+        "url": "https://www.notebookcheck.net/Apple-iPhone-17-Pro-review-Faster-longer-further-Is-that-enough.1140998.0.html",
+        "title": "Apple iPhone 17 Pro review – Faster, longer, further. Is that enough? - Notebookcheck Review",
+        "sha256": "e9b9e29f851a6ac0267db8292fc5240da43c0b51dbfbf4ca9cfb5284b4f0d40c",
+        "reportedOs": "Apple iOS 26",
+        "checkedAt": "2026-10-28T14:01:08.074Z"
+      },
+      "screenshots": [],
+      "status": "review-only",
+      "calibration": "reference",
+      "missing": [
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "iphone17promax",
+      "name": "iPhone 17 Pro Max",
+      "review": {
+        "url": "https://www.notebookcheck.net/Setting-new-battery-life-records-Apple-iPhone-17-Pro-Max-smartphone-review.1148795.0.html",
+        "title": "Setting new battery life records - Apple iPhone 17 Pro Max smartphone review - Notebookcheck Review",
+        "sha256": "fc9b8e503400a41f3b2b1804d8e8435491680d4be4c76471e8624e09b0ef91a1",
+        "reportedOs": "Apple iOS 26",
+        "checkedAt": "2026-10-28T14:01:06.366Z"
+      },
+      "screenshots": [
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Apple/iPhone_17_Pro_Max/Screenshots_Apple_iPhone_17_Pro_Max_OS_1.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "1c513a84e1286d997a30a83cc3d05a3466ebe9f2d3329df370fe15bdb3f98056",
+          "width": 1320,
+          "height": 2868,
+          "nativeSizeMatch": true
+        }
+      ],
+      "status": "native-screenshot-candidate",
+      "calibration": "reference",
+      "missing": [
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "iphone16",
+      "name": "iPhone 16",
+      "review": {
+        "url": "https://www.notebookcheck.net/Apple-iPhone-16-smartphone-review-More-innovations-than-one-would-think.908118.0.html",
+        "title": "Apple iPhone 16 smartphone review - More innovations than one would think - Notebookcheck Review",
+        "sha256": "1c313ac7a9c4b7dbe24ebb67bcfc39c7761ba083b127b6c9839448aa0fc04131",
+        "reportedOs": "Apple iOS 18",
+        "checkedAt": "2026-10-28T14:01:03.001Z"
+      },
+      "screenshots": [
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Apple/iPhone_16/Screenshots_OS_1.PNG",
+          "discovery": "publisher-original-path",
+          "contentType": "image/png",
+          "sha256": "f3a1cb40ecb9d1e0c9d162a0df70148289e8ce3d87e645852aa657aa89836b85",
+          "width": 1179,
+          "height": 2556,
+          "nativeSizeMatch": true
+        }
+      ],
+      "status": "native-screenshot-candidate",
+      "calibration": "reference",
+      "missing": [
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "iphone16pro",
+      "name": "iPhone 16 Pro",
+      "review": {
+        "url": "https://www.notebookcheck.net/Apple-iPhone-16-Pro-smartphone-review-The-small-Pro-phone-with-the-big-display.899301.0.html",
+        "title": "Apple iPhone 16 Pro smartphone review - The small Pro phone with the big display - Notebookcheck Review",
+        "sha256": "99832aa1f76f73696c4a4e9cc43e9c3f37ab09709c6fc2cccce6126dc5824485",
+        "reportedOs": "Apple iOS 18",
+        "checkedAt": "2026-10-28T14:01:04.194Z"
+      },
+      "screenshots": [
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Apple/iPhone_16_Pro/Screenshots_OS_1.PNG",
+          "discovery": "publisher-original-path",
+          "contentType": "image/png",
+          "sha256": "473740914e3960516891321c04aa201b78603a6ecc025e7483fff1ce4414d7b8",
+          "width": 1206,
+          "height": 2622,
+          "nativeSizeMatch": true
+        }
+      ],
+      "status": "native-screenshot-candidate",
+      "calibration": "reference",
+      "missing": [
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "iphone16promax",
+      "name": "iPhone 16 Pro Max",
+      "review": {
+        "url": "https://www.notebookcheck.net/Apple-iPhone-16-Pro-Max-review-Lots-of-small-improvements-for-the-top-smartphone.900028.0.html",
+        "title": "Apple iPhone 16 Pro Max review - Lots of small improvements for the top smartphone - Notebookcheck Review",
+        "sha256": "90f3ea9701f8c97aed56fa87858231b10027052d9783d84047867d8111d45914",
+        "reportedOs": "Apple iOS 18",
+        "checkedAt": "2026-10-28T14:01:11.830Z"
+      },
+      "screenshots": [],
+      "status": "review-only",
+      "calibration": "reference",
+      "missing": [
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "iphone15",
+      "name": "iPhone 15",
+      "review": {
+        "url": "https://www.notebookcheck.net/Apple-iPhone-15-smartphone-in-review-The-Apple-phone-finally-zooms-in-closer.762555.0.html",
+        "title": "Apple iPhone 15 smartphone in review - The Apple phone finally zooms in closer - Notebookcheck Review",
+        "sha256": "86afe1b7a1b7a14556faae5244f11eaa1a8de11f9a31cc790255e5cddbb3e26e",
+        "reportedOs": "Apple iOS 17",
+        "checkedAt": "2026-10-28T14:01:12.414Z"
+      },
+      "screenshots": [],
+      "status": "review-only",
+      "calibration": "reference",
+      "missing": [
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "iphone15promax",
+      "name": "iPhone 15 Pro Max",
+      "review": {
+        "url": "https://www.notebookcheck.net/Apple-iPhone-15-Pro-Max-review-More-camera-power-and-titanium-for-Apple-s-biggest-smartphone.756855.0.html",
+        "title": "Apple iPhone 15 Pro Max review - More camera power and titanium for Apple's biggest smartphone - Notebookcheck Review",
+        "sha256": "cc15112a6877e1999a9b10274a8ce179548c4511846f395f71ed5b2bb621f72c",
+        "reportedOs": "Apple iOS 17",
+        "checkedAt": "2026-10-28T14:01:13.016Z"
+      },
+      "screenshots": [],
+      "status": "review-only",
+      "calibration": "reference",
+      "missing": [
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "iphone13",
+      "name": "iPhone 13",
+      "review": {
+        "url": "https://www.notebookcheck.net/Apple-iPhone-13-Smartphone-Review-High-quality-Apple-phone-with-an-even-brighter-display.572153.0.html",
+        "title": "Apple iPhone 13 Smartphone Review - High-quality Apple phone with an even brighter display - Notebookcheck Review",
+        "sha256": "c51e2fb563109a05dcaee06e89c7a9015c2da7d45acaf0e7f2ecc857428f6ad6",
+        "reportedOs": "Apple iOS 15",
+        "checkedAt": "2026-10-29T00:05:52.967Z"
+      },
+      "screenshots": [],
+      "status": "review-only",
+      "calibration": "reference",
+      "missing": [
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "iphone14",
+      "name": "iPhone 14",
+      "review": {
+        "url": "https://www.notebookcheck.net/Apple-iPhone-14-smartphone-review-Small-upgrades-for-the-Apple-phone.661760.0.html",
+        "title": "Apple iPhone 14 smartphone review - Small upgrades for the Apple phone - Notebookcheck Review",
+        "sha256": "6b0e0d4b9da8694154c9b96020200adb0af6884b38b6f543941491a5e90dbd13",
+        "reportedOs": "Apple iOS 16",
+        "checkedAt": "2026-10-28T14:01:16.179Z"
+      },
+      "screenshots": [
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Apple/iPhone_14/Screenshots_OS_1.PNG",
+          "discovery": "publisher-original-path",
+          "contentType": "image/png",
+          "sha256": "4d44f29854fdbc2deb154683dfd69e7b246fc85955c6cb09421465945d84113d",
+          "width": 1170,
+          "height": 2532,
+          "nativeSizeMatch": true
+        }
+      ],
+      "status": "native-screenshot-candidate",
+      "calibration": "reference",
+      "missing": [
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "iphonese",
+      "name": "iPhone SE（第 3 代）",
+      "status": "no-verified-source",
+      "calibration": "reference",
+      "review": null,
+      "screenshots": [],
+      "missing": [
+        "model-specific-review",
+        "native-screenshot",
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "pixel8",
+      "name": "Google Pixel 8",
+      "review": {
+        "url": "https://www.notebookcheck.net/Google-Pixel-8-smartphone-review-Compact-and-with-7-years-of-updates.768436.0.html",
+        "title": "Google Pixel 8 smartphone review: Compact and with 7 years of updates - Notebookcheck Review",
+        "sha256": "8cbd278c24e133662bc0a90b38c29a00d6508e69312a01e0a8ff449e50786359",
+        "reportedOs": "Android 14",
+        "checkedAt": "2026-10-28T14:01:18.634Z"
+      },
+      "screenshots": [],
+      "status": "review-only",
+      "calibration": "reference",
+      "missing": [
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "pixel8pro",
+      "name": "Google Pixel 8 Pro",
+      "review": {
+        "url": "https://www.notebookcheck.net/Google-Pixel-8-Pro-review-Powerful-Android-smartphone-with-seven-years-of-updates.765989.0.html",
+        "title": "Google Pixel 8 Pro review - Powerful Android smartphone with seven years of updates - Notebookcheck Review",
+        "sha256": "aa0cbb1c0cf860d1f3e361a626a1524b2ef97337f0357fb6ec4f039712358069",
+        "reportedOs": "Android 14",
+        "checkedAt": "2026-10-28T14:01:19.236Z"
+      },
+      "screenshots": [
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/_processed_/d/3/csm_Screenshot_20231106-145342_3158345342.png",
+          "discovery": "linked-scaled-image",
+          "contentType": "image/png",
+          "sha256": "4fcc289aea2c44bef1d6f21f1570dffa2345d084f2c3c6d1305803670e335110",
+          "width": 539,
+          "height": 1200,
+          "nativeSizeMatch": false
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/_processed_/d/0/csm_Screenshot_20231106-145359_dc8df7f287.png",
+          "discovery": "linked-scaled-image",
+          "contentType": "image/png",
+          "sha256": "704170e135ce53a331cb423b05ec645da64b879c3c1fcd3d038ee376cf0341f6",
+          "width": 539,
+          "height": 1200,
+          "nativeSizeMatch": false
+        }
+      ],
+      "status": "scaled-screenshot-only",
+      "calibration": "reference",
+      "missing": [
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "pixel9",
+      "name": "Google Pixel 9",
+      "review": {
+        "url": "https://www.notebookcheck.net/Google-Pixel-9-review-The-small-Google-smartphone-has-taken-the-wrong-path.907380.0.html",
+        "title": "Google Pixel 9 review - The small Google smartphone has taken the wrong path - Notebookcheck Review",
+        "sha256": "fcb5677de8e324d32c86c27eefcef0432ea2e7896d861afcdc97cee31bd7f791",
+        "reportedOs": "Android 14",
+        "checkedAt": "2026-10-28T14:01:02.475Z"
+      },
+      "screenshots": [
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Google/Pixel_9/Screenshot_20241012-100143.png",
+          "discovery": "publisher-original-path",
+          "contentType": "image/png",
+          "sha256": "0a5a79fde8ef1c8262c4d6ec64c190abb1b9b49e8a74af2ab14072de995926c3",
+          "width": 1080,
+          "height": 2424,
+          "nativeSizeMatch": true
+        }
+      ],
+      "status": "native-screenshot-candidate",
+      "calibration": "reference",
+      "missing": [
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "pixel9pro",
+      "name": "Google Pixel 9 Pro",
+      "review": {
+        "url": "https://www.notebookcheck.net/Google-Pixel-9-Pro-smartphone-review-The-compact-flagship-with-great-cameras.927082.0.html",
+        "title": "Google Pixel 9 Pro smartphone review - The compact flagship with great cameras - Notebookcheck Review",
+        "sha256": "620418c1a5d56294fc6a5d98d47cf7afa0de8a1d794a94051c7ff627b94e8433",
+        "reportedOs": "Android 14",
+        "checkedAt": "2026-10-29T00:06:38.990Z"
+      },
+      "screenshots": [
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Google/Pixel_9_Pro/Screenshots_OS_1.png",
+          "discovery": "publisher-original-path",
+          "contentType": "image/png",
+          "sha256": "53dfdf47f06d22685081f597e2fca4ba696d9140829e038d2fe93a2074b8dbfd",
+          "width": 1280,
+          "height": 2856,
+          "nativeSizeMatch": true
+        }
+      ],
+      "status": "native-screenshot-candidate",
+      "calibration": "reference",
+      "missing": [
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "pixel9proxl",
+      "name": "Google Pixel 9 Pro XL",
+      "review": {
+        "url": "https://www.notebookcheck.net/Google-Pixel-9-Pro-XL-review-Top-smartphone-with-more-of-a-high-end-feeling-also-in-terms-of-price.911586.0.html",
+        "title": "Google Pixel 9 Pro XL review - Top smartphone with more of a high-end feeling, also in terms of price - Notebookcheck Review",
+        "sha256": "dc7b9b4434080509a332d562d922a74b2fb71193af231f06cb54fb3f9becfd58",
+        "reportedOs": "Android 14",
+        "checkedAt": "2026-10-28T14:01:24.593Z"
+      },
+      "screenshots": [],
+      "status": "review-only",
+      "calibration": "reference",
+      "missing": [
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "galaxys23",
+      "name": "Samsung Galaxy S23",
+      "review": {
+        "url": "https://www.notebookcheck.net/Samsung-Galaxy-S23-review-The-small-S23-smartphone-makes-the-biggest-leap.700018.0.html",
+        "title": "Samsung Galaxy S23 review: The small S23 smartphone makes the biggest leap - Notebookcheck Review",
+        "sha256": "b582ff6aea55747801e6b602799bfee2e8a1aa5c5492a1073f8ca94acafb8111",
+        "reportedOs": "Android 13",
+        "checkedAt": "2026-10-28T14:01:29.434Z"
+      },
+      "screenshots": [
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Samsung/Galaxy_S23/Screenshot_20230224_095114_One_UI_Home.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "addfbe986c1eaeabbecf92cd9b776433e0784fdc11b9ad659625558dc3c483a1",
+          "width": 1080,
+          "height": 2340,
+          "nativeSizeMatch": true
+        }
+      ],
+      "status": "native-screenshot-candidate",
+      "calibration": "reference",
+      "missing": [
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "galaxys24",
+      "name": "Samsung Galaxy S24",
+      "review": {
+        "url": "https://www.notebookcheck.net/Samsung-Galaxy-S24-review-The-best-small-Android-smartphone-gets-cheaper-but-not-better.809474.0.html",
+        "title": "Samsung Galaxy S24 review - The best small Android smartphone gets cheaper but not better - Notebookcheck Review",
+        "sha256": "e2cead3002168e78e60eea3e682ece4dd527faf72f732774bc02d4f899e23e5d",
+        "reportedOs": "Android 14",
+        "checkedAt": "2026-10-28T14:01:03.570Z"
+      },
+      "screenshots": [
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Samsung/Galaxy_S24/Screenshot_20240225_125610_Settings.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "d97a6db356bb7cfc0da69fb7a658b537a4fdf8999772a0f100ad31cdc3e6bc0e",
+          "width": 1080,
+          "height": 2340,
+          "nativeSizeMatch": true
+        }
+      ],
+      "status": "native-screenshot-candidate",
+      "calibration": "reference",
+      "missing": [
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "galaxys24plus",
+      "name": "Samsung Galaxy S24+",
+      "review": {
+        "url": "https://www.notebookcheck.net/Samsung-Galaxy-S24-smartphone-review-The-big-Galaxy-S24-inches-closer-to-the-S24-Ultra.811860.0.html",
+        "title": "Samsung Galaxy S24+ smartphone review: The big Galaxy S24 inches closer to the S24 Ultra - Notebookcheck Review",
+        "sha256": "41359a6522c3f65da312519da12481affe60b5b0773518fa6f7e2657c7111e52",
+        "reportedOs": "Android 14",
+        "checkedAt": "2026-10-28T14:01:31.201Z"
+      },
+      "screenshots": [
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Samsung/Galaxy_S24_Plus/Screenshot_20240302_102048_Settings.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "95532545a6af9baf4f0cf0fd54c4a8ce3951608d1831011c59fe77b1c7bef2cb",
+          "width": 1440,
+          "height": 3120,
+          "nativeSizeMatch": true
+        }
+      ],
+      "status": "native-screenshot-candidate",
+      "calibration": "reference",
+      "missing": [
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "galaxys24ultra",
+      "name": "Samsung Galaxy S24 Ultra",
+      "review": {
+        "url": "https://www.notebookcheck.net/Samsung-Galaxy-S24-Ultra-review-The-ultimate-smartphone-becomes-an-AI-smartphone.809187.0.html",
+        "title": "Samsung Galaxy S24 Ultra review: The ultimate smartphone becomes an AI smartphone - Notebookcheck Review",
+        "sha256": "d30acb145db44e1a0ef27cfc9c54d1ee399d55e3a2563d92acf82420c6536fcf",
+        "reportedOs": "Android 14",
+        "checkedAt": "2026-10-28T14:01:32.435Z"
+      },
+      "screenshots": [
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Samsung/Galaxy_S24_Ultra/Screenshot_20240223_112031_One-UI-Home.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "701b9a68a88f68eadb1ec7d8380dda6817e143baaf7c6c38bf36ed37df18fe8d",
+          "width": 1440,
+          "height": 3120,
+          "nativeSizeMatch": true
+        }
+      ],
+      "status": "native-screenshot-candidate",
+      "calibration": "reference",
+      "missing": [
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "galaxys25",
+      "name": "Samsung Galaxy S25",
+      "review": {
+        "url": "https://www.notebookcheck.net/Samsung-Galaxy-S25-review-The-star-among-compact-smartphones-is-losing-ground.989246.0.html",
+        "title": "Samsung Galaxy S25 review - The star among compact smartphones is losing ground - Notebookcheck Review",
+        "sha256": "3736cc930c7faebe789cac23daf843c2730fc6b5d9509e68408b653d318a44bb",
+        "reportedOs": "Android 15",
+        "checkedAt": "2026-10-29T00:06:40.326Z"
+      },
+      "screenshots": [
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Samsung/Galaxy_S25/Screenshot_20250321_160249_One-UI-Home.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "a8d4b9df0457c07b077784786ef9ddbbde5160cc154d8cbc8822f3027ab3f159",
+          "width": 1080,
+          "height": 2340,
+          "nativeSizeMatch": true
+        }
+      ],
+      "status": "native-screenshot-candidate",
+      "calibration": "reference",
+      "missing": [
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "galaxys25ultra",
+      "name": "Samsung Galaxy S25 Ultra",
+      "review": {
+        "url": "https://www.notebookcheck.net/Samsung-Galaxy-S25-Ultra-review-The-AI-phone-relies-fully-on-artificial-intelligence-and-small-hardware-upgrades.968346.0.html",
+        "title": "Samsung Galaxy S25 Ultra review - The AI phone relies fully on artificial intelligence and small hardware upgrades - Notebookcheck Review",
+        "sha256": "5e5bee2acc4aab6b07c96ee86282f4b5081a2e3171d14ab90a4f2780f3e0041a",
+        "reportedOs": "Android 15",
+        "checkedAt": "2026-10-28T14:01:34.818Z"
+      },
+      "screenshots": [
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Samsung/Galaxy_S25_Ultra/Screenshot_20250224_173550_One-UI-Home.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "56f727ca3f111409928b0ddfaac0cdb041ef50878dc85c285cec5cebc61d0544",
+          "width": 1440,
+          "height": 3120,
+          "nativeSizeMatch": true
+        }
+      ],
+      "status": "native-screenshot-candidate",
+      "calibration": "reference",
+      "missing": [
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "xiaomi13",
+      "name": "小米 13",
+      "review": {
+        "url": "https://www.notebookcheck.net/Xiaomi-13-review-Compact-powerhouse-with-Leica-camera.691574.0.html",
+        "title": "Xiaomi 13 review - Compact powerhouse with Leica camera - Notebookcheck Review",
+        "sha256": "23deacca97d609b8245b0ac0ad67e3dc0b7d805443cb34b7def7d02ee0b0ce7b",
+        "reportedOs": "Android 13",
+        "checkedAt": "2026-10-28T14:01:36.063Z"
+      },
+      "screenshots": [
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Xiaomi/13/Screenshot_2023_02_03_11_54_00_238_com.miui.home.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "5201a66a2ccf61a95d9de2d78549fae7408c4fcfc0cd3668dff16b97218cd3c4",
+          "width": 1080,
+          "height": 2400,
+          "nativeSizeMatch": true
+        }
+      ],
+      "status": "native-screenshot-candidate",
+      "calibration": "reference",
+      "missing": [
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "xiaomi14",
+      "name": "小米 14",
+      "review": {
+        "url": "https://www.notebookcheck.net/Xiaomi-14-review-New-top-model-and-fastest-compact-Android-smartphone.797218.0.html",
+        "title": "Xiaomi 14 review: New top model and fastest compact Android smartphone - Notebookcheck Review",
+        "sha256": "9ecc08b695459863ac5ddc7eeca41dd5ebe5c88d48468bfee37f7bfc1225115a",
+        "reportedOs": "Android 14",
+        "checkedAt": "2026-10-28T14:01:37.206Z"
+      },
+      "screenshots": [
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Xiaomi/14/Screenshots_OS_1.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "5df440904f967feefe9db9e42f5eb774e2ed9c731f6c08eae8d043d8ae575c0a",
+          "width": 1200,
+          "height": 2670,
+          "nativeSizeMatch": true
+        }
+      ],
+      "status": "native-screenshot-candidate",
+      "calibration": "reference",
+      "missing": [
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "xiaomi14pro",
+      "name": "小米 14 Pro",
+      "review": {
+        "url": "https://www.notebookcheck.net/Xiaomi-14-Pro-review-Leica-camera-smartphone-with-a-great-display-leaves-some-questions.788160.0.html",
+        "title": "Xiaomi 14 Pro review - Leica camera smartphone with a great display leaves some questions - Notebookcheck Review",
+        "sha256": "68e62ac97408ae2cd9a75492c8564a873c1acc0a66e75f0e6eead8ac3208bb8e",
+        "reportedOs": "Android 14",
+        "checkedAt": "2026-10-28T14:01:38.401Z"
+      },
+      "screenshots": [
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Xiaomi/14_Pro/Screenshot_2023-12-22-14-05-14-258_com.miui.home84.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "b48b27c5ef3cd335c2171a6c9486a82eea39f20ff936c39bc8370ddc38804355",
+          "width": 1440,
+          "height": 3200,
+          "nativeSizeMatch": true
+        }
+      ],
+      "status": "native-screenshot-candidate",
+      "calibration": "reference",
+      "missing": [
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "xiaomi14ultra",
+      "name": "小米 14 Ultra",
+      "review": {
+        "url": "https://www.notebookcheck.net/Xiaomi-14-Ultra-review-The-Leica-phone-comes-up-trumps.830640.0.html",
+        "title": "Xiaomi 14 Ultra review - The Leica phone comes up trumps - Notebookcheck Review",
+        "sha256": "bee11508933b9995ebdfc5147905dcb353e8eff83d85b363a7d4780f39710398",
+        "reportedOs": "Android 14",
+        "checkedAt": "2026-10-28T14:01:39.595Z"
+      },
+      "screenshots": [
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Xiaomi/14_Ultra/Screenshot_2024-04-19-12-40-44-794_com.miui.home.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "91defd4a5af3902b4281a3fd385bb3cca7b989125e0a1f043150284ef974631a",
+          "width": 1440,
+          "height": 3200,
+          "nativeSizeMatch": true
+        }
+      ],
+      "status": "native-screenshot-candidate",
+      "calibration": "reference",
+      "missing": [
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "xiaomi15",
+      "name": "小米 15",
+      "review": {
+        "url": "https://www.notebookcheck.net/Xiaomi-15-smartphone-review-Xiaomi-s-flagship-phone-sets-new-benchmarks-for-performance-and-battery-life.931175.0.html",
+        "title": "Xiaomi 15 smartphone review - Xiaomi's flagship phone sets new benchmarks for performance and battery life - Notebookcheck Review",
+        "sha256": "7d1ee69aaaaa95a6e1f23782559c5209a45748566ddac874dfec10d661e2e859",
+        "reportedOs": "Android 15",
+        "checkedAt": "2026-10-28T14:01:41.036Z"
+      },
+      "screenshots": [
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Xiaomi/15/Screenshots_OS_1.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "bced8f07a93597a2969de56818562b4f2f9bda629cdf20b115956478e0375858",
+          "width": 1200,
+          "height": 2670,
+          "nativeSizeMatch": true
+        }
+      ],
+      "status": "native-screenshot-candidate",
+      "calibration": "reference",
+      "missing": [
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "redmik70",
+      "name": "Redmi K70",
+      "status": "no-verified-source",
+      "calibration": "reference",
+      "review": null,
+      "screenshots": [],
+      "missing": [
+        "model-specific-review",
+        "native-screenshot",
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "redmik70pro",
+      "name": "Redmi K70 Pro",
+      "status": "no-verified-source",
+      "calibration": "reference",
+      "review": null,
+      "screenshots": [],
+      "missing": [
+        "model-specific-review",
+        "native-screenshot",
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "redmik80",
+      "name": "Redmi K80",
+      "status": "no-verified-source",
+      "calibration": "reference",
+      "review": null,
+      "screenshots": [],
+      "missing": [
+        "model-specific-review",
+        "native-screenshot",
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "redminote13pro",
+      "name": "Redmi Note 13 Pro 5G",
+      "review": {
+        "url": "https://www.notebookcheck.net/Xiaomi-Redmi-Note-13-Pro-5G-smartphone-review-A-modern-midrange-phone-with-a-fabulous-screen.796965.0.html",
+        "title": "Xiaomi Redmi Note 13 Pro 5G smartphone review – A modern midrange phone with a fabulous screen - Notebookcheck Review",
+        "sha256": "5891b1a70c69336285ab6cd0f9721b1fb4ac481b2071d5dbb838e6e4ae797c8e",
+        "reportedOs": "Android 13",
+        "checkedAt": "2026-10-28T14:13:45.065Z"
+      },
+      "screenshots": [
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Xiaomi/Redmi_Note_13_Pro_5G/Screenshot_2024-01-21-11-04-44-852_com.miui.home.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "e1c5cd2a4513859c170dccc9404a379feee45306f52e018dee99103c36b0e271",
+          "width": 1220,
+          "height": 2712,
+          "nativeSizeMatch": true
+        }
+      ],
+      "status": "native-screenshot-candidate",
+      "calibration": "reference",
+      "missing": [
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "huaweip60pro",
+      "name": "华为 P60 Pro",
+      "review": {
+        "url": "https://www.notebookcheck.net/Huawei-P60-Pro-review-A-strong-camera-smartphone-even-without-Leica.723069.0.html",
+        "title": "Huawei P60 Pro review - A strong camera smartphone even without Leica - Notebookcheck Review",
+        "sha256": "bc58dc6f967cc5955202f5c326512859aa927a5beeaa6779009f61a9c93fa9c1",
+        "reportedOs": "Huawei HarmonyOS",
+        "checkedAt": "2026-10-28T14:01:42.680Z"
+      },
+      "screenshots": [
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Huawei/P60_Pro/Screenshot_20230526_110458_com.huawei.android.launcher.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "c08f297382e78ed0b81ecfc0ae8e8480be380b4760af580e16dd8727499d0952",
+          "width": 1220,
+          "height": 2700,
+          "nativeSizeMatch": true
+        }
+      ],
+      "status": "native-screenshot-candidate",
+      "calibration": "reference",
+      "missing": [
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "huaweipura70",
+      "name": "华为 Pura 70",
+      "status": "no-verified-source",
+      "calibration": "reference",
+      "review": null,
+      "screenshots": [],
+      "missing": [
+        "model-specific-review",
+        "native-screenshot",
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "huaweipura70pro",
+      "name": "华为 Pura 70 Pro",
+      "status": "no-verified-source",
+      "calibration": "reference",
+      "review": null,
+      "screenshots": [],
+      "missing": [
+        "model-specific-review",
+        "native-screenshot",
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "huaweimate60",
+      "name": "华为 Mate 60",
+      "status": "no-verified-source",
+      "calibration": "reference",
+      "review": null,
+      "screenshots": [],
+      "missing": [
+        "model-specific-review",
+        "native-screenshot",
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "huaweimate60pro",
+      "name": "华为 Mate 60 Pro",
+      "status": "no-verified-source",
+      "calibration": "reference",
+      "review": null,
+      "screenshots": [],
+      "missing": [
+        "model-specific-review",
+        "native-screenshot",
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "huaweimate70",
+      "name": "华为 Mate 70",
+      "status": "no-verified-source",
+      "calibration": "reference",
+      "review": null,
+      "screenshots": [],
+      "missing": [
+        "model-specific-review",
+        "native-screenshot",
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "huaweimate70pro",
+      "name": "华为 Mate 70 Pro",
+      "status": "no-verified-source",
+      "calibration": "reference",
+      "review": null,
+      "screenshots": [],
+      "missing": [
+        "model-specific-review",
+        "native-screenshot",
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "honor90",
+      "name": "荣耀 90",
+      "review": {
+        "url": "https://www.notebookcheck.net/Honor-90-5G-smartphone-review-Display-and-storage-giant.743377.0.html",
+        "title": "Honor 90 5G smartphone review: Display- and storage giant - Notebookcheck Review",
+        "sha256": "2919c5e732681f36897f39588885035170e661dc410f568e2f884ea18aa8b166",
+        "reportedOs": "Android 13",
+        "checkedAt": "2026-10-28T14:13:30.569Z"
+      },
+      "screenshots": [],
+      "status": "review-only",
+      "calibration": "reference",
+      "missing": [
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "honor200",
+      "name": "荣耀 200",
+      "status": "no-verified-source",
+      "calibration": "reference",
+      "review": null,
+      "screenshots": [],
+      "missing": [
+        "model-specific-review",
+        "native-screenshot",
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "honormagic6",
+      "name": "荣耀 Magic6",
+      "status": "no-verified-source",
+      "calibration": "reference",
+      "review": null,
+      "screenshots": [],
+      "missing": [
+        "model-specific-review",
+        "native-screenshot",
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "honormagic6pro",
+      "name": "荣耀 Magic6 Pro",
+      "review": {
+        "url": "https://www.notebookcheck.net/Honor-Magic6-Pro-review-The-smartphone-with-magical-battery-life.817062.0.html",
+        "title": "Honor Magic6 Pro review - The smartphone with magical battery life - Notebookcheck Review",
+        "sha256": "d3f7226c7b7f68268ea74b2cf21b8deeb447a8a64cb19bee8ad1fb3d3e095ce3",
+        "reportedOs": "Android 14",
+        "checkedAt": "2026-10-28T14:01:43.866Z"
+      },
+      "screenshots": [
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Honor/Magic6_Pro/Screenshot_20240320_152308_com.hihonor.android.launcher.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "1f871daa2cab98e9eba1a8745a672297fce83888195651322a3f1ae2b1a704f3",
+          "width": 1280,
+          "height": 2800,
+          "nativeSizeMatch": true
+        }
+      ],
+      "status": "native-screenshot-candidate",
+      "calibration": "reference",
+      "missing": [
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "honormagic7pro",
+      "name": "荣耀 Magic7 Pro",
+      "review": {
+        "url": "https://www.notebookcheck.net/Honor-Magic7-Pro-review-A-powerful-camera-smartphone-with-lots-of-features.948829.0.html",
+        "title": "Honor Magic7 Pro review - A powerful camera smartphone with lots of features - Notebookcheck Review",
+        "sha256": "835890d4acffd22c322eab658a6d3fedb4dcbf3ff9471c55f44a1127ad1b0216",
+        "reportedOs": "Android 15",
+        "checkedAt": "2026-10-28T14:01:45.245Z"
+      },
+      "screenshots": [
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Honor/Magic7_Pro/Screenshot_20250110_134402_com_hihonor_android_launcher_UniHomeLauncher.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "637a5d535eb3e70d58efde03e937eac375ab5e14f0c26222e61732b0cee4d299",
+          "width": 1280,
+          "height": 2800,
+          "nativeSizeMatch": true
+        }
+      ],
+      "status": "native-screenshot-candidate",
+      "calibration": "reference",
+      "missing": [
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "oppofindx7",
+      "name": "OPPO Find X7",
+      "status": "no-verified-source",
+      "calibration": "reference",
+      "review": null,
+      "screenshots": [],
+      "missing": [
+        "model-specific-review",
+        "native-screenshot",
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "oppofindx7ultra",
+      "name": "OPPO Find X7 Ultra",
+      "review": {
+        "url": "https://www.notebookcheck.net/Oppo-Find-X7-Ultra-review-Best-camera-in-an-Android-smartphone.824202.0.html",
+        "title": "Oppo Find X7 Ultra review - Best camera in an Android smartphone? - Notebookcheck Review",
+        "sha256": "2417af9740e0632f3aa410890bfb3e0e2fd405886aa1eb058bcc7ed0197a2b54",
+        "reportedOs": "Android 14",
+        "checkedAt": "2026-10-28T14:13:31.760Z"
+      },
+      "screenshots": [
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/_processed_/5/3/csm_Screenshots_OS_1_a19ed47377.jpg",
+          "discovery": "linked-scaled-image",
+          "contentType": "image/jpeg",
+          "sha256": "c15e5ca451fbef47cfa482cb4f8be67cff4b41d1dd4a759a2a32f67494868c79",
+          "width": 545,
+          "height": 1200,
+          "nativeSizeMatch": false
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/_processed_/8/9/csm_Screenshots_OS_2_1a9b90ca6c.jpg",
+          "discovery": "linked-scaled-image",
+          "contentType": "image/jpeg",
+          "sha256": "4b4c27e8cc1abcb828b26bac80afe142575d0df8990b3ead89a5129149793bda",
+          "width": 545,
+          "height": 1200,
+          "nativeSizeMatch": false
+        }
+      ],
+      "status": "scaled-screenshot-only",
+      "calibration": "reference",
+      "missing": [
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "oppofindx8",
+      "name": "OPPO Find X8",
+      "status": "no-verified-source",
+      "calibration": "reference",
+      "review": null,
+      "screenshots": [],
+      "missing": [
+        "model-specific-review",
+        "native-screenshot",
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "oppofindx8pro",
+      "name": "OPPO Find X8 Pro",
+      "review": {
+        "url": "https://www.notebookcheck.net/Oppo-Find-X8-Pro-smartphone-review-Attack-on-the-iPhone-with-innovative-battery-technology.924091.0.html",
+        "title": "Oppo Find X8 Pro smartphone review - Attack on the iPhone with innovative battery technology - Notebookcheck Review",
+        "sha256": "6c102a208a02a484516184943451208ab4cde6d14be673525626643a39e32800",
+        "reportedOs": "Android 15",
+        "checkedAt": "2026-10-28T14:01:46.312Z"
+      },
+      "screenshots": [
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/_processed_/9/b/csm_Screenshot_2024-11-26-12-22-35-16_fc704e6b13c4fb26bf5e411f75da84f2_36069ad94a.jpg",
+          "discovery": "linked-scaled-image",
+          "contentType": "image/jpeg",
+          "sha256": "1695674e463bb2eca37a3545ebe0bb8a176ed4ff918889bab42e1ea4873ef5bf",
+          "width": 545,
+          "height": 1200,
+          "nativeSizeMatch": false
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/_processed_/f/6/csm_Screenshot_2024-11-26-12-23-12-27_b783bf344239542886fee7b48fa4b892_20a516eb1d.jpg",
+          "discovery": "linked-scaled-image",
+          "contentType": "image/jpeg",
+          "sha256": "e9f11f695a80330d1b5520e2be0a2fc51bb3afbee8d8797b59046d4aafa26e1c",
+          "width": 545,
+          "height": 1200,
+          "nativeSizeMatch": false
+        }
+      ],
+      "status": "scaled-screenshot-only",
+      "calibration": "reference",
+      "missing": [
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "opporeno12",
+      "name": "OPPO Reno12",
+      "status": "no-verified-source",
+      "calibration": "reference",
+      "review": null,
+      "screenshots": [],
+      "missing": [
+        "model-specific-review",
+        "native-screenshot",
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "oneplus12",
+      "name": "一加 12",
+      "review": {
+        "url": "https://www.notebookcheck.net/OnePlus-12-5G-Smartphone-Review-Near-Galaxy-S24-Ultra-flagship-experience-for-half-the-price.849177.0.html",
+        "title": "OnePlus 12 5G Smartphone Review: Near-Galaxy S24 Ultra flagship experience for half the price - Notebookcheck Review",
+        "sha256": "4c5d81e489788cc8abd1eb77eed331f2f96c3c0df48576b3f2713971f76bb830",
+        "reportedOs": "Android 14",
+        "checkedAt": "2026-10-28T14:01:49.365Z"
+      },
+      "screenshots": [
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/OnePlus/12/Screenshot_2024-06-23-22-43-40-86_b783bf344239542886fee7b48fa4b892.jpg",
+          "discovery": "linked-scaled-image",
+          "contentType": "image/jpeg",
+          "sha256": "c864d412c48f881f39a4d70883187a19e39da242afa6f4de09523cddd787219c",
+          "width": 1440,
+          "height": 3168,
+          "nativeSizeMatch": true
+        }
+      ],
+      "status": "native-screenshot-candidate",
+      "calibration": "reference",
+      "missing": [
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "oneplus13",
+      "name": "一加 13",
+      "review": {
+        "url": "https://www.notebookcheck.net/OnePlus-13-Smartphone-Review-Let-the-battery-revolution-begin.932327.0.html",
+        "title": "OnePlus 13 Smartphone Review: Let the battery revolution begin - Notebookcheck Review",
+        "sha256": "83ae0b646ae3b5a331881d0067a556165cc470ce7c91d64fb3ccb9a1acd78267",
+        "reportedOs": "Android 15",
+        "checkedAt": "2026-10-29T00:06:34.421Z"
+      },
+      "screenshots": [
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/OnePlus/13/Screenshot_2024-12-05-16-37-15-40_b783bf344239542886fee7b48fa4b892.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "c6865fb0166030ee5005742530b3f32741b198e852a507f2dd13e2275b6ded42",
+          "width": 1440,
+          "height": 3168,
+          "nativeSizeMatch": true
+        }
+      ],
+      "status": "native-screenshot-candidate",
+      "calibration": "reference",
+      "missing": [
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "oneplusace3",
+      "name": "一加 Ace 3",
+      "status": "no-verified-source",
+      "calibration": "reference",
+      "review": null,
+      "screenshots": [],
+      "missing": [
+        "model-specific-review",
+        "native-screenshot",
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "vivox100",
+      "name": "vivo X100",
+      "status": "no-verified-source",
+      "calibration": "reference",
+      "review": null,
+      "screenshots": [],
+      "missing": [
+        "model-specific-review",
+        "native-screenshot",
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "vivox100pro",
+      "name": "vivo X100 Pro",
+      "review": {
+        "url": "https://www.notebookcheck.net/Vivo-X100-Pro-review-Impressive-premium-smartphone-with-Zeiss-camera.812013.0.html",
+        "title": "Vivo X100 Pro review - Impressive premium smartphone with Zeiss camera - Notebookcheck Review",
+        "sha256": "abab14da5f458a0660a0a17905b07bf59382f3d7fdeaa9a4c98be05aac62d82a",
+        "reportedOs": "Android 14",
+        "checkedAt": "2026-10-28T14:01:53.647Z"
+      },
+      "screenshots": [
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Vivo/X100_Pro/Screenshot_20240305_163011.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "0821a89097f456afa348da0e05a0fae1c51c99d9706078726b6cd2878ed592a5",
+          "width": 1260,
+          "height": 2800,
+          "nativeSizeMatch": true
+        }
+      ],
+      "status": "native-screenshot-candidate",
+      "calibration": "reference",
+      "missing": [
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "vivox200",
+      "name": "vivo X200",
+      "status": "no-verified-source",
+      "calibration": "reference",
+      "review": null,
+      "screenshots": [],
+      "missing": [
+        "model-specific-review",
+        "native-screenshot",
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "vivox200pro",
+      "name": "vivo X200 Pro",
+      "review": {
+        "url": "https://www.notebookcheck.net/The-best-photo-smartphone-of-2024-comes-with-Android-Vivo-X200-Pro-review.935687.0.html",
+        "title": "The best photo smartphone of 2024 comes with Android - Vivo X200 Pro review - Notebookcheck Review",
+        "sha256": "5566b5436785b1a962c4c2d699365a8529dd96c4fb89b88bf375b1a589105d41",
+        "reportedOs": "Android 15",
+        "checkedAt": "2026-10-28T14:01:54.890Z"
+      },
+      "screenshots": [
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Vivo/X200_Pro/Screenshot_20241212_151435.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "2b755b3d64e88d3e2ddf7dfecddece26f59df0ab7350bd558495a3b390ae2b46",
+          "width": 1260,
+          "height": 2800,
+          "nativeSizeMatch": true
+        }
+      ],
+      "status": "native-screenshot-candidate",
+      "calibration": "reference",
+      "missing": [
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "vivox200promini",
+      "name": "vivo X200 Pro mini",
+      "review": {
+        "url": "https://www.notebookcheck.net/The-best-compact-smartphone-for-photography-Vivo-X200-Pro-Mini-review.965620.0.html",
+        "title": "The best compact smartphone for photography - Vivo X200 Pro Mini review - Notebookcheck Review",
+        "sha256": "b2346bb3bcadaba1e81ab7d7aa5b2de64ffec2a30508b3ea2147075071a211ca",
+        "reportedOs": "Android 15",
+        "checkedAt": "2026-10-28T14:13:40.766Z"
+      },
+      "screenshots": [
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Vivo/X200_Pro_Mini/Screenshot_20250215_190237.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "06621552fa497f48496d4e3594c9f81a9e0bd7570b58369b908d724c0efc0d9d",
+          "width": 1216,
+          "height": 2640,
+          "nativeSizeMatch": true
+        }
+      ],
+      "status": "native-screenshot-candidate",
+      "calibration": "reference",
+      "missing": [
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "iqoo12",
+      "name": "iQOO 12",
+      "status": "no-verified-source",
+      "calibration": "reference",
+      "review": null,
+      "screenshots": [],
+      "missing": [
+        "model-specific-review",
+        "native-screenshot",
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "iqoo13",
+      "name": "iQOO 13",
+      "status": "no-verified-source",
+      "calibration": "reference",
+      "review": null,
+      "screenshots": [],
+      "missing": [
+        "model-specific-review",
+        "native-screenshot",
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "iqooneo9",
+      "name": "iQOO Neo9",
+      "status": "no-verified-source",
+      "calibration": "reference",
+      "review": null,
+      "screenshots": [],
+      "missing": [
+        "model-specific-review",
+        "native-screenshot",
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "realmegt5",
+      "name": "realme GT5",
+      "review": {
+        "url": "https://www.notebookcheck.net/Realme-GT5-review-A-midrange-smartphone-with-24-GB-of-RAM-a-Snapdragon-8-Gen-2-and-a-144-Hz-OLED-panel.795188.0.html",
+        "title": "Realme GT5 review - A midrange smartphone with 24 GB of RAM, a Snapdragon 8 Gen 2 and a 144 Hz OLED panel - Notebookcheck Review",
+        "sha256": "5b4c234b4b6a5bce728d0c49fb23ac16e8971072d9a8776b0688c27a3652cb19",
+        "reportedOs": "Android 13",
+        "checkedAt": "2026-10-28T14:01:56.072Z"
+      },
+      "screenshots": [
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Realme/GT5/Screenshot_2024-01-13-09-49-12-24_fc704e6b13c4fb26bf5e411f75da84f2.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "f3492376d3568a4e6c95dd7e4d0b402a41d605ef75c74380f14030446d94e3f6",
+          "width": 1240,
+          "height": 2772,
+          "nativeSizeMatch": true
+        }
+      ],
+      "status": "native-screenshot-candidate",
+      "calibration": "reference",
+      "missing": [
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "realmegt6",
+      "name": "realme GT6",
+      "status": "no-verified-source",
+      "calibration": "reference",
+      "review": null,
+      "screenshots": [],
+      "missing": [
+        "model-specific-review",
+        "native-screenshot",
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "realmegt7pro",
+      "name": "realme GT7 Pro",
+      "status": "no-verified-source",
+      "calibration": "reference",
+      "review": null,
+      "screenshots": [],
+      "missing": [
+        "model-specific-review",
+        "native-screenshot",
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "iphone15pro",
+      "name": "iPhone 15 Pro",
+      "review": {
+        "url": "https://www.notebookcheck.net/Apple-iPhone-15-Pro-smartphone-in-review-High-end-phone-as-a-replacement-for-the-PlayStation.761070.0.html",
+        "title": "Apple iPhone 15 Pro smartphone in review - High-end phone as a replacement for the PlayStation? - Notebookcheck Review",
+        "sha256": "0308146a0fbdd36faf56b942d3ba00127ebea846ac7a30e90ba0dc918a8ea74a",
+        "reportedOs": "Apple iOS 17",
+        "checkedAt": "2026-10-28T14:01:57.256Z"
+      },
+      "screenshots": [],
+      "status": "review-only",
+      "calibration": "reference",
+      "missing": [
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "iphone15plus",
+      "name": "iPhone 15 Plus",
+      "review": {
+        "url": "https://www.notebookcheck.net/Apple-iPhone-15-Plus-review-The-iPhone-with-an-extra-large-display-and-powerful-battery.764945.0.html",
+        "title": "Apple iPhone 15 Plus review – The iPhone with an extra-large display and powerful battery - Notebookcheck Review",
+        "sha256": "2220eae91acd0886755c75878b57c0bc7c17f99ad8d96e5a9c2daee78194afb8",
+        "reportedOs": "Apple iOS 17",
+        "checkedAt": "2026-10-28T14:01:57.843Z"
+      },
+      "screenshots": [],
+      "status": "review-only",
+      "calibration": "reference",
+      "missing": [
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "iphone14pro",
+      "name": "iPhone 14 Pro",
+      "review": {
+        "url": "https://www.notebookcheck.net/Apple-iPhone-14-Pro-review-The-Apple-smartphone-is-ready-for-the-island.659550.0.html",
+        "title": "Apple iPhone 14 Pro review - The Apple smartphone is ready for the island - Notebookcheck Review",
+        "sha256": "7cd5ea74324394f52a412fe298b954eb642bcc5d2fdb2d79f1b4ca0b20eebe25",
+        "reportedOs": "Apple iOS 16",
+        "checkedAt": "2026-10-28T14:01:58.495Z"
+      },
+      "screenshots": [],
+      "status": "review-only",
+      "calibration": "reference",
+      "missing": [
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "iphone14promax",
+      "name": "iPhone 14 Pro Max",
+      "review": {
+        "url": "https://www.notebookcheck.net/Apple-iPhone-14-Pro-Max-review-A-gigantic-brawny-smartphone.659750.0.html",
+        "title": "Apple iPhone 14 Pro Max review: A gigantic, brawny smartphone - Notebookcheck Review",
+        "sha256": "728ec17e123ba32d99f44bb2cbd76ea326b5ef8cc75c0c6a60cf31dd3ce843a9",
+        "reportedOs": "Apple iOS 16",
+        "checkedAt": "2026-10-28T14:01:59.075Z"
+      },
+      "screenshots": [],
+      "status": "review-only",
+      "calibration": "reference",
+      "missing": [
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "iphone13pro",
+      "name": "iPhone 13 Pro",
+      "review": {
+        "url": "https://www.notebookcheck.net/Apple-iPhone-13-Pro-Review-Bombastic-smartphone-with-minor-weaknesses.572211.0.html",
+        "title": "Apple iPhone 13 Pro Review - Bombastic smartphone with minor weaknesses - Notebookcheck Review",
+        "sha256": "04e3c19696561fe8f62c6e2d33a6e65536dc6c01f16f96bd9408fa1c9351a405",
+        "reportedOs": "Apple iOS 15",
+        "checkedAt": "2026-10-28T14:01:59.649Z"
+      },
+      "screenshots": [],
+      "status": "review-only",
+      "calibration": "reference",
+      "missing": [
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "iphone13promax",
+      "name": "iPhone 13 Pro Max",
+      "review": {
+        "url": "https://www.notebookcheck.net/Apple-iPhone-13-Pro-Max-smartphone-review-Powerful-large-and-full-of-features.575239.0.html",
+        "title": "Apple iPhone 13 Pro Max smartphone review – Powerful, large, and full of features - Notebookcheck Review",
+        "sha256": "1b6e1f9a0a660fd0478842900f400aa3beb058c0efbe5af74a2a9c32baad76ca",
+        "reportedOs": "Apple iOS 15",
+        "checkedAt": "2026-10-28T14:01:14.377Z"
+      },
+      "screenshots": [],
+      "status": "review-only",
+      "calibration": "reference",
+      "missing": [
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "iphone16plus",
+      "name": "iPhone 16 Plus",
+      "review": {
+        "url": "https://www.notebookcheck.net/Apple-iPhone-16-Plus-smartphone-review-The-big-one-with-a-new-design-and-lots-of-buttons.895629.0.html",
+        "title": "Apple iPhone 16 Plus smartphone review – The big one with a new design and lots of buttons - Notebookcheck Review",
+        "sha256": "4f6c2911640d470f04fc0b2d5f8ef5cd804d4528617c8dd35b96f98032354620",
+        "reportedOs": "Apple iOS 18",
+        "checkedAt": "2026-10-28T14:01:04.804Z"
+      },
+      "screenshots": [],
+      "status": "review-only",
+      "calibration": "reference",
+      "missing": [
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "iphone16e",
+      "name": "iPhone 16e",
+      "review": {
+        "url": "https://www.notebookcheck.net/Apple-s-new-budget-wonder-weapon-against-the-competition-Apple-iPhone-16e-review.1009234.0.html",
+        "title": "Apple's new budget wonder weapon against the competition: Apple iPhone 16e review - Notebookcheck Review",
+        "sha256": "f88f4766eefbe4e1a795afb87d1aefba667b25ffe89cac24384e73fe12f5d91c",
+        "reportedOs": "Apple iOS 18",
+        "checkedAt": "2026-10-28T14:02:00.237Z"
+      },
+      "screenshots": [
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Apple/iPhone_16e/Screenshots_Apple_iPhone_16e_OS_1.PNG",
+          "discovery": "publisher-original-path",
+          "contentType": "image/png",
+          "sha256": "c57e356b8f90003feddae0b90db32451db7d71e11a01317b7b4f3cf9429e220c",
+          "width": 1170,
+          "height": 2532,
+          "nativeSizeMatch": true
+        }
+      ],
+      "status": "native-screenshot-candidate",
+      "calibration": "reference",
+      "missing": [
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "galaxys23plus",
+      "name": "Samsung Galaxy S23+",
+      "review": {
+        "url": "https://www.notebookcheck.net/Samsung-Galaxy-S23-smartphone-review-The-better-Galaxy-S23.700333.0.html",
+        "title": "Samsung Galaxy S23+ smartphone review – The better Galaxy S23 - Notebookcheck Review",
+        "sha256": "f6073d3d81d6e82d9546dd5b0953def85cc9c0697b9d646c374f4927a8cad479",
+        "reportedOs": "Android 13",
+        "checkedAt": "2026-10-28T14:02:02.041Z"
+      },
+      "screenshots": [
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Samsung/Galaxy_S23_Plus/Screenshot_OS_1.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "54ae7918272073d7d53968c5135fe2b3264fcc165e9673fe646e73c742cc31d0",
+          "width": 1080,
+          "height": 2340,
+          "nativeSizeMatch": true
+        }
+      ],
+      "status": "native-screenshot-candidate",
+      "calibration": "reference",
+      "missing": [
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "galaxys23ultra",
+      "name": "Samsung Galaxy S23 Ultra",
+      "review": {
+        "url": "https://www.notebookcheck.net/Samsung-Galaxy-S23-Ultra-review-The-smartphone-with-galactic-power-and-a-200-MP-camera.698336.0.html",
+        "title": "Samsung Galaxy S23 Ultra review: The smartphone with galactic power and a 200 MP camera - Notebookcheck Review",
+        "sha256": "b7407777759b354155e939e6245548de2df9d1e49ee095d8ddf5e45105481ce3",
+        "reportedOs": "Android 13",
+        "checkedAt": "2026-10-28T14:02:03.290Z"
+      },
+      "screenshots": [
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Samsung/Galaxy_S23_Ultra/Screenshot_20230223_114209_One_UI_Home.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "1a25e488c370d372ec9d5313fd85ce3298016974201f90e694fb312bd7f2b069",
+          "width": 1440,
+          "height": 3088,
+          "nativeSizeMatch": true
+        }
+      ],
+      "status": "native-screenshot-candidate",
+      "calibration": "reference",
+      "missing": [
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "galaxys25plus",
+      "name": "Samsung Galaxy S25+",
+      "review": {
+        "url": "https://www.notebookcheck.net/Samsung-Galaxy-S25-review-Still-one-of-the-best-Android-smartphones-despite-an-innovation-standstill.978765.0.html",
+        "title": "Samsung Galaxy S25+ review: Still one of the best Android smartphones despite an innovation standstill - Notebookcheck Review",
+        "sha256": "19a0d803eb69382aa202e6ed071736c2939b4d19b7f7c47858fa248f025b2720",
+        "reportedOs": "Android 15",
+        "checkedAt": "2026-10-28T14:02:04.850Z"
+      },
+      "screenshots": [
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/_processed_/9/7/csm_Screenshots_Samsung_Galaxy_S25_Plus_OS_1_3f89686c58.jpg",
+          "discovery": "linked-scaled-image",
+          "contentType": "image/jpeg",
+          "sha256": "c188fb8bcbe6274cfe3cdd67016894397433a4ea4253411e3e87ee336ac5eeed",
+          "width": 554,
+          "height": 1200,
+          "nativeSizeMatch": false
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/_processed_/f/4/csm_Screenshots_Samsung_Galaxy_S25_Plus_OS_2_0a064e08a0.jpg",
+          "discovery": "linked-scaled-image",
+          "contentType": "image/jpeg",
+          "sha256": "4953657feb141b302a6754283cdeaa639d6c914f830d5f6aec5bf75b1a5a8d19",
+          "width": 554,
+          "height": 1200,
+          "nativeSizeMatch": false
+        }
+      ],
+      "status": "scaled-screenshot-only",
+      "calibration": "reference",
+      "missing": [
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "galaxya55",
+      "name": "Samsung Galaxy A55",
+      "review": {
+        "url": "https://www.notebookcheck.net/Samsung-Galaxy-A55-5G-review-A-lot-of-premium-features-in-a-midrange-smartphone.835803.0.html",
+        "title": "Samsung Galaxy A55 5G review - A lot of premium features in a midrange smartphone - Notebookcheck Review",
+        "sha256": "e74ae5f64921fec1fc1aab8a294a1c4b5e271c91b6d2497bd66aaa359f3baa1e",
+        "reportedOs": "Android 14",
+        "checkedAt": "2026-10-28T14:13:41.940Z"
+      },
+      "screenshots": [
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Samsung/Galaxy_A55_5G/Screenshot_20240503_152342_One-UI-Home.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "27864694221a416e982d6091f68afa31b26e9bacc524c7db05bb0affeebcbab5",
+          "width": 1080,
+          "height": 2340,
+          "nativeSizeMatch": true
+        }
+      ],
+      "status": "native-screenshot-candidate",
+      "calibration": "reference",
+      "missing": [
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "galaxya54",
+      "name": "Samsung Galaxy A54",
+      "review": {
+        "url": "https://www.notebookcheck.net/Samsung-Galaxy-A54-5G-review-A-powerful-mid-range-smartphone-with-many-upgrades.710600.0.html",
+        "title": "Samsung Galaxy A54 5G review - A powerful, mid-range smartphone with many upgrades - Notebookcheck Review",
+        "sha256": "94d08c0cd0de9be38af1d5065aeac4ae9d51a69d5a202fdf3e1bc8e5736060b3",
+        "reportedOs": "Android 13",
+        "checkedAt": "2026-10-28T14:02:07.845Z"
+      },
+      "screenshots": [
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Samsung/Galaxy_A54_5G/Screenshot_20230425_155834_One_UI_Home.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "1e08964d46b4854258a6df8d31067bb391a58a8f00ca5f5635901e12263c7c8f",
+          "width": 1080,
+          "height": 2340,
+          "nativeSizeMatch": true
+        }
+      ],
+      "status": "native-screenshot-candidate",
+      "calibration": "reference",
+      "missing": [
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "pixel7",
+      "name": "Google Pixel 7",
+      "review": {
+        "url": "https://www.notebookcheck.net/Google-Pixel-7-review-Compact-Google-smartphone-without-big-trade-offs.669267.0.html",
+        "title": "Google Pixel 7 review - Compact Google smartphone without big trade-offs - Notebookcheck Review",
+        "sha256": "bef93551ead388f9f0c5caab8d7ae9dd6eac9c34e725784d3a9c8535c633d42e",
+        "reportedOs": "Android 13",
+        "checkedAt": "2026-10-28T14:02:09.024Z"
+      },
+      "screenshots": [
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Google/Pixel_7/Screenshot_20221117_145137.png",
+          "discovery": "publisher-original-path",
+          "contentType": "image/png",
+          "sha256": "a0980ce0fef2650ab34293f676d5036f5ea03720e049a3cbd2adeb701f806928",
+          "width": 1080,
+          "height": 2400,
+          "nativeSizeMatch": true
+        }
+      ],
+      "status": "native-screenshot-candidate",
+      "calibration": "reference",
+      "missing": [
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "pixel7pro",
+      "name": "Google Pixel 7 Pro",
+      "review": {
+        "url": "https://www.notebookcheck.net/Google-Pixel-7-Pro-review-Premium-smartphone-with-stock-Android.669256.0.html",
+        "title": "Google Pixel 7 Pro review: Premium smartphone with stock Android - Notebookcheck Review",
+        "sha256": "257a9d5f84a3c8165f5ad0eebc7633ad5f0b7bdd0e406a1285e6b7461776e8a2",
+        "reportedOs": "Android 13",
+        "checkedAt": "2026-10-28T14:02:10.419Z"
+      },
+      "screenshots": [
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Google/Pixel_7_Pro/Screenshot_20221114_114856.png",
+          "discovery": "publisher-original-path",
+          "contentType": "image/png",
+          "sha256": "2413aae96915048094c158817baa22fe7f0ab256cdf3a9c5aa6ff60a5dee1dc6",
+          "width": 1440,
+          "height": 3120,
+          "nativeSizeMatch": true
+        }
+      ],
+      "status": "native-screenshot-candidate",
+      "calibration": "reference",
+      "missing": [
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "pixel8a",
+      "name": "Google Pixel 8a",
+      "review": {
+        "url": "https://www.notebookcheck.net/Google-Pixel-8a-review-The-small-Google-smartphone-is-unique-within-the-mid-range-segment.853973.0.html",
+        "title": "Google Pixel 8a review - The small Google smartphone is unique within the mid-range segment - Notebookcheck Review",
+        "sha256": "0cc69c2cc84a92c02fbe7e8b4e17fdcbad9824a83dc5ad598def5eeb56d08124",
+        "reportedOs": "Android 14",
+        "checkedAt": "2026-10-28T14:02:11.581Z"
+      },
+      "screenshots": [
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Google/Pixel_8a/Screenshot_20240622-172238.png",
+          "discovery": "publisher-original-path",
+          "contentType": "image/png",
+          "sha256": "d47c577646a4e92195dcb9db85ace66a1f9408b52c60c54b1c93b74055afbf3b",
+          "width": 1080,
+          "height": 2400,
+          "nativeSizeMatch": true
+        }
+      ],
+      "status": "native-screenshot-candidate",
+      "calibration": "reference",
+      "missing": [
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "pixel9a",
+      "name": "Google Pixel 9a",
+      "review": {
+        "url": "https://www.notebookcheck.net/Great-battery-life-and-a-handy-size-Google-Pixel-9a-review.1039364.0.html",
+        "title": "Great battery life and a handy size - Google Pixel 9a review - Notebookcheck Review",
+        "sha256": "f35ee8e7625f28204ce0ddad947916addad2fb777529d1525d04403d6a37844a",
+        "reportedOs": "Android 15",
+        "checkedAt": "2026-10-29T00:07:00.822Z"
+      },
+      "screenshots": [
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Google/Pixel_9a/Screenshot_20250612-154901.png",
+          "discovery": "publisher-original-path",
+          "contentType": "image/png",
+          "sha256": "b3def8b5d361e3155d6fb9c81e9ddfedf55f39e92de30810b53972713faeb7c8",
+          "width": 1080,
+          "height": 2424,
+          "nativeSizeMatch": true
+        }
+      ],
+      "status": "native-screenshot-candidate",
+      "calibration": "reference",
+      "missing": [
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "xiaomi15pro",
+      "name": "小米 15 Pro",
+      "review": {
+        "url": "https://www.notebookcheck.net/Xiaomi-15-Pro-review-One-of-the-most-efficient-flagship-smartphones-thanks-to-a-special-display.939116.0.html",
+        "title": "Xiaomi 15 Pro review - One of the most efficient flagship smartphones thanks to a special display - Notebookcheck Review",
+        "sha256": "1c0c6a2981cbc32bb39d6ad6f4d05e00e87874dd2b5749a42b91f7904241a771",
+        "reportedOs": "Android 15",
+        "checkedAt": "2026-10-28T14:02:13.740Z"
+      },
+      "screenshots": [
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Xiaomi/15_Pro/Screenshot_2024-12-27-13-38-23-754_com.android.settings.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "5da79c2780567f4df6ea141cf52f2f555bff88140bc6dbfce1734390280dca7c",
+          "width": 1440,
+          "height": 3200,
+          "nativeSizeMatch": true
+        }
+      ],
+      "status": "native-screenshot-candidate",
+      "calibration": "reference",
+      "missing": [
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "xiaomi15ultra",
+      "name": "小米 15 Ultra",
+      "review": {
+        "url": "https://www.notebookcheck.net/Xiaomi-15-Ultra-review-Leica-powered-powerhouse.975197.0.html",
+        "title": "Xiaomi 15 Ultra review – Leica-powered powerhouse - Notebookcheck Review",
+        "sha256": "0ca3f0b713d74fb29251ca88924f51d5c2ad22bbdc5f6e43ee8b3650a6347710",
+        "reportedOs": "Android 15",
+        "checkedAt": "2026-10-28T14:02:14.982Z"
+      },
+      "screenshots": [
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Xiaomi/15_Ultra/Screenshot_2025-03-07-11-12-45-914_com.miui.home.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "38e4e0d52ad241481511890361501833fe1e727bc3be1152261aed4d7b9ed8c2",
+          "width": 1440,
+          "height": 3200,
+          "nativeSizeMatch": true
+        }
+      ],
+      "status": "native-screenshot-candidate",
+      "calibration": "reference",
+      "missing": [
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "redmik80pro",
+      "name": "Redmi K80 Pro",
+      "status": "no-verified-source",
+      "calibration": "reference",
+      "review": null,
+      "screenshots": [],
+      "missing": [
+        "model-specific-review",
+        "native-screenshot",
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "redminote14proplus",
+      "name": "Redmi Note 14 Pro+",
+      "review": {
+        "url": "https://www.notebookcheck.net/Xiaomi-Redmi-Note-14-Pro-5G-review-Mid-range-heavyweight-with-a-200-MPix-camera.963252.0.html",
+        "title": "Xiaomi Redmi Note 14 Pro+ 5G review - Mid-range heavyweight with a 200 MPix camera - Notebookcheck Review",
+        "sha256": "c841e40d5ed344dcae371f22e036f293d2d219d4fac934f23566146649195c8d",
+        "reportedOs": "Android 14",
+        "checkedAt": "2026-10-29T00:07:02.074Z"
+      },
+      "screenshots": [
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Xiaomi/Redmi_Note_14_Pro_Plus_5G/Screenshot_2025-02-14-11-39-38-152_com.miui.home.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "b4bd85c4b85d338cd4f14a128c7fc0e78baaba8d2ab40a21c69af99c9f8ee250",
+          "width": 1220,
+          "height": 2712,
+          "nativeSizeMatch": true
+        }
+      ],
+      "status": "native-screenshot-candidate",
+      "calibration": "reference",
+      "missing": [
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "huaweipura70ultra",
+      "name": "华为 Pura 70 Ultra",
+      "review": {
+        "url": "https://www.notebookcheck.net/Huawei-Pura-70-Ultra-review-The-powerful-smartphone-with-a-killer-camera-and-some-limitations.861164.0.html",
+        "title": "Huawei Pura 70 Ultra review - The powerful smartphone with a killer camera and some limitations - Notebookcheck Review",
+        "sha256": "d1838cfbf96565a9d854bcc51c73a4ac3c6fde32b57e02df95de8abcec0058c5",
+        "reportedOs": "Android 12",
+        "checkedAt": "2026-10-28T14:02:15.797Z"
+      },
+      "screenshots": [
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Huawei/Pura_70_Ultra/Screenshot_20240710_101743_com.huawei.android.launcher.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "93a81dee3ea0bcfc7ae7611d99c0a83d6018755a060fe20918bf44f0a0aef465",
+          "width": 1260,
+          "height": 2844,
+          "nativeSizeMatch": true
+        }
+      ],
+      "status": "native-screenshot-candidate",
+      "calibration": "reference",
+      "missing": [
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "huaweimate50pro",
+      "name": "华为 Mate 50 Pro",
+      "review": {
+        "url": "https://www.notebookcheck.net/Huawei-Mate-50-Pro-smartphone-review-The-camera-star-has-problems.669547.0.html",
+        "title": "Huawei Mate 50 Pro smartphone review: The camera star has problems - Notebookcheck Review",
+        "sha256": "27cdfe9a1e0c2b10b2fa1a021ef67b96b722e1ac4bd6e863dd333e81da18affd",
+        "reportedOs": "Android 12",
+        "checkedAt": "2026-10-28T14:02:17.089Z"
+      },
+      "screenshots": [
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Huawei/Mate_50_Pro/Screenshot_20221118_122736_com.android.settings.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "b9f5e47a9439b9423b4b9863ee3f57c75a8eabc1a7cdb7b4ebd69b59162b0a0a",
+          "width": 1212,
+          "height": 2616,
+          "nativeSizeMatch": true
+        }
+      ],
+      "status": "native-screenshot-candidate",
+      "calibration": "reference",
+      "missing": [
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "huaweip60",
+      "name": "华为 P60",
+      "status": "no-verified-source",
+      "calibration": "reference",
+      "review": null,
+      "screenshots": [],
+      "missing": [
+        "model-specific-review",
+        "native-screenshot",
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "honormagic5",
+      "name": "荣耀 Magic5",
+      "status": "no-verified-source",
+      "calibration": "reference",
+      "review": null,
+      "screenshots": [],
+      "missing": [
+        "model-specific-review",
+        "native-screenshot",
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "honormagic5pro",
+      "name": "荣耀 Magic5 Pro",
+      "review": {
+        "url": "https://www.notebookcheck.net/Honor-Magic5-Pro-review-The-smartphone-with-the-full-high-end-experience.706174.0.html",
+        "title": "Honor Magic5 Pro review - The smartphone with the full high-end experience - Notebookcheck Review",
+        "sha256": "0dac06311e942c1cccf0f3d409b6243ab8f256cce56aaae65ca4a993b2dc334e",
+        "reportedOs": "Android 13",
+        "checkedAt": "2026-10-28T14:02:18.815Z"
+      },
+      "screenshots": [
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Honor/Magic5_Pro/Screenshot_20230406_130115.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "73f98152a2676f4352e4ed4b7ea41894e26a7bdf1d62d2a5f44a07683a11a3b7",
+          "width": 1312,
+          "height": 2848,
+          "nativeSizeMatch": true
+        }
+      ],
+      "status": "native-screenshot-candidate",
+      "calibration": "reference",
+      "missing": [
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "honormagic7",
+      "name": "荣耀 Magic7",
+      "status": "no-verified-source",
+      "calibration": "reference",
+      "review": null,
+      "screenshots": [],
+      "missing": [
+        "model-specific-review",
+        "native-screenshot",
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "honor200pro",
+      "name": "荣耀 200 Pro",
+      "review": {
+        "url": "https://www.notebookcheck.net/Honor-200-Pro-review-Can-an-upper-class-smartphone-with-2D-face-recognition-outshine-its-shortcomings.868481.0.html",
+        "title": "Honor 200 Pro review - Can an upper-class smartphone with 2D face recognition outshine its shortcomings? - Notebookcheck Review",
+        "sha256": "06f2bcda5188022a2b48996c480f0f8d1fd3d0d6a14417343f99c8ec08d91163",
+        "reportedOs": "Android 14",
+        "checkedAt": "2026-10-28T14:02:20.603Z"
+      },
+      "screenshots": [
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Honor/200_Pro/Screenshot_20240717_171632_com.hihonor.android.launcher41.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "5d3c87ac20db454cdf77726e89e6a9de10a4803244de6a6eb7ac626390c1250a",
+          "width": 1224,
+          "height": 2700,
+          "nativeSizeMatch": true
+        }
+      ],
+      "status": "native-screenshot-candidate",
+      "calibration": "reference",
+      "missing": [
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "oppofindx6",
+      "name": "OPPO Find X6",
+      "status": "no-verified-source",
+      "calibration": "reference",
+      "review": null,
+      "screenshots": [],
+      "missing": [
+        "model-specific-review",
+        "native-screenshot",
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "oppofindx6pro",
+      "name": "OPPO Find X6 Pro",
+      "review": {
+        "url": "https://www.notebookcheck.net/Oppo-Find-X6-Pro-review-Imposing-flagship-smartphone-with-improved-Hasselblad-cameras.720549.0.html",
+        "title": "Oppo Find X6 Pro review: Imposing flagship smartphone with improved Hasselblad cameras - Notebookcheck Review",
+        "sha256": "5451b86448ceed1816dc38ef70f729423463691dda89b9b76c1d48bc73b4b6e6",
+        "reportedOs": "Android 13",
+        "checkedAt": "2026-10-28T14:13:43.709Z"
+      },
+      "screenshots": [
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Oppo/Find_X6_Pro/Screenshot_2023_05_17_15_38_43_47_fc704e6b13c4fb26bf5e411f75da84f2.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "4ea3f36b8d4acb9c09f1ac8577b92116d99447ef2beb3c007bd2f0010417d76b",
+          "width": 1440,
+          "height": 3168,
+          "nativeSizeMatch": true
+        }
+      ],
+      "status": "native-screenshot-candidate",
+      "calibration": "reference",
+      "missing": [
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "opporeno11pro",
+      "name": "OPPO Reno11 Pro",
+      "status": "no-verified-source",
+      "calibration": "reference",
+      "review": null,
+      "screenshots": [],
+      "missing": [
+        "model-specific-review",
+        "native-screenshot",
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "opporeno12pro",
+      "name": "OPPO Reno12 Pro",
+      "status": "no-verified-source",
+      "calibration": "reference",
+      "review": null,
+      "screenshots": [],
+      "missing": [
+        "model-specific-review",
+        "native-screenshot",
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "oneplus11",
+      "name": "一加 11",
+      "review": {
+        "url": "https://www.notebookcheck.net/OnePlus-11-5G-Smartphone-Review-A-competitive-Snapdragon-8-Gen-2-flagship-with-some-unmissable-quirks.710431.0.html",
+        "title": "OnePlus 11 5G Smartphone Review: A competitive Snapdragon 8 Gen 2 flagship with some unmissable quirks - Notebookcheck Review",
+        "sha256": "0c9141643ef555f16d324d074b14deb6c18bd735264dc1f5e3ef8429e8d1a5b8",
+        "reportedOs": "Android 13",
+        "checkedAt": "2026-10-28T14:02:21.899Z"
+      },
+      "screenshots": [
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/OnePlus/11_5G/Screenshot_2023_04_30_22_34_08_95_b783bf344239542886fee7b48fa4b892.jpg",
+          "discovery": "linked-scaled-image",
+          "contentType": "image/jpeg",
+          "sha256": "b010d27c465e964498a0ab1431125364b2f51c945b055628c1308feeed0aa3a5",
+          "width": 1440,
+          "height": 3216,
+          "nativeSizeMatch": true
+        }
+      ],
+      "status": "native-screenshot-candidate",
+      "calibration": "reference",
+      "missing": [
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "oneplusace3pro",
+      "name": "一加 Ace 3 Pro",
+      "status": "no-verified-source",
+      "calibration": "reference",
+      "review": null,
+      "screenshots": [],
+      "missing": [
+        "model-specific-review",
+        "native-screenshot",
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "vivox90",
+      "name": "vivo X90",
+      "status": "no-verified-source",
+      "calibration": "reference",
+      "review": null,
+      "screenshots": [],
+      "missing": [
+        "model-specific-review",
+        "native-screenshot",
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "vivox100ultra",
+      "name": "vivo X100 Ultra",
+      "status": "no-verified-source",
+      "calibration": "reference",
+      "review": null,
+      "screenshots": [],
+      "missing": [
+        "model-specific-review",
+        "native-screenshot",
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "iqoo12pro",
+      "name": "iQOO 12 Pro",
+      "status": "no-verified-source",
+      "calibration": "reference",
+      "review": null,
+      "screenshots": [],
+      "missing": [
+        "model-specific-review",
+        "native-screenshot",
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    },
+    {
+      "modelId": "realmegt5pro",
+      "name": "realme GT5 Pro",
+      "status": "no-verified-source",
+      "calibration": "reference",
+      "review": null,
+      "screenshots": [],
+      "missing": [
+        "model-specific-review",
+        "native-screenshot",
+        "exact-build-and-display-settings",
+        "state-coverage",
+        "rendered-overlay-comparison"
+      ]
+    }
+  ]
+}
