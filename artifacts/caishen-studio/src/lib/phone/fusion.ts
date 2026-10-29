@@ -1,5 +1,6 @@
 import {
   isLocationConfirmed,
+  deviceLocationDoc,
   locationSourceKey,
   smallHash,
   locationRenderKey,
@@ -186,7 +187,7 @@ export async function fitPhoneToImage(
       throw new Error(
         "请先确认模板的状态栏定位，再执行替换；未定位时可保留原图或顶部新增",
       );
-    const base = removePhoneLayers(doc),
+    const base = deviceLocationDoc(removePhoneLayers(doc)),
       location = base.statusLocation!;
     if (
       location.layout !== "manual" &&

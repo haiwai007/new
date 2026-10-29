@@ -221,9 +221,11 @@ export function settingsForModel(
   modelId: PhoneSettings["modelId"],
 ): PhoneSettings {
   const system = phoneModel(modelId).system;
-  const styleId = compatibleStyle(settings.styleId, system, modelId)
-    ? settings.styleId
-    : "auto";
+  const styleId =
+    settings.modelId === modelId &&
+    compatibleStyle(settings.styleId, system, modelId)
+      ? settings.styleId
+      : "auto";
   const profile = effectiveProfile({ ...settings, modelId, styleId });
   return {
     ...settings,

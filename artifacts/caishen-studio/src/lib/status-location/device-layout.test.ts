@@ -41,7 +41,9 @@ describe("per-device outer-frame layouts", () => {
       expect(record.modelId).toBe(model.id);
       expect(record.referenceSize).toEqual([model.width, model.height]);
       expect(record.versions[record.defaultStyle]).toBeDefined();
-      expect(["reference", "partial", "calibrated"]).toContain(record.calibration);
+      expect(["reference", "partial", "calibrated"]).toContain(
+        record.calibration,
+      );
     }
     expect(new Set(Object.values(DEVICE_LAYOUTS)).size).toBe(100);
   });
@@ -147,4 +149,53 @@ describe("per-device outer-frame layouts", () => {
         );
       }
   });
+});
+it("keeps model typography distinct when automatically matching the same source bar", () => {
+  const doc = fixture();
+  doc.statusLocation!.sourceFit = { glyphRatio: 0.35, centerRatio: 0.5 };
+  doc.statusLocation!.testKey = locationTestKey(doc.statusLocation!);
+  const a = applyPhoneLayers(
+    doc,
+    settingsForModel(naturalPhoneSettings(), "iphone16"),
+  );
+  const b = applyPhoneLayers(
+    doc,
+    settingsForModel(naturalPhoneSettings(), "pixel9"),
+  );
+  const time = (d: typeof a) => d.layers.find((l) => l.id.endsWith("_time"))!;
+  expect(time(a).height / time(b).height).toBeGreaterThan(1.12);
+  expect(a.layers.find((l) => l.id.endsWith("_icons"))).not.toEqual(
+    b.layers.find((l) => l.id.endsWith("_icons")),
+  );
+});
+it("upgrades confirmed old manual slots to the selected-model outer frame without mutating the source", () => {
+  const doc = fixture();
+  doc.statusLocation!.layout = "manual";
+  doc.statusLocation!.testKey = locationTestKey(doc.statusLocation!);
+  const old = structuredClone(doc);
+  const a = applyPhoneLayers(
+    doc,
+    settingsForModel(naturalPhoneSettings(), "iphone16"),
+  );
+  const b = applyPhoneLayers(
+    doc,
+    settingsForModel(naturalPhoneSettings(), "pixel9"),
+  );
+  expect(a.statusLocation!.layout).toBe("device");
+  expect(b.statusLocation!.bounds).toEqual(old.statusLocation!.bounds);
+  expect(isLocationConfirmed(a)).toBe(true);
+  expect(doc).toEqual(old);
+  expect(a.layers.find((l) => l.id.endsWith("_time"))!.x).not.toBeCloseTo(
+    b.layers.find((l) => l.id.endsWith("_time"))!.x,
+  );
+});
+it("switches to the new model's default OS instead of leaking the previous model's explicit version", () => {
+  const s25 = {
+    ...settingsForModel(naturalPhoneSettings(), "galaxys25"),
+    styleId: "oneui7" as const,
+  };
+  const s24 = settingsForModel(s25, "galaxys24");
+  expect(s24.styleId).toBe("auto");
+  expect(DEVICE_LAYOUTS[s24.modelId].defaultStyle).toBe("oneui61");
+  expect(settingsForModel(s25, "galaxys25").styleId).toBe("oneui7");
 });

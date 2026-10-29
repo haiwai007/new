@@ -167,7 +167,7 @@ PORT=4173 pnpm --filter @workspace/caishen-studio serve
 pnpm --filter @workspace/caishen-studio exec playwright install chromium
 ```
 
-本轮验收：**54 个测试文件、341 项单元测试、7 项资料检索与测量完整性检查、24 项相关浏览器用例通过**，并通过类型检查、生产构建和 Pages Functions 编译。逐型号实际 PNG 导出覆盖 100 个型号、268 组版本，框外像素变化为 0；这不等同于真机外观核准。详细范围与此前验收见[验收记录](docs/ACCEPTANCE.md)。
+本轮验收：**54 个测试文件、344 项单元测试、7 项资料检索与测量完整性检查、24 项相关浏览器用例通过**，并通过类型检查、生产构建和 Pages Functions 编译。逐型号实际 PNG 导出覆盖 100 个型号、268 组版本，框外像素变化为 0；这不等同于真机外观核准。详细范围与此前验收见[验收记录](docs/ACCEPTANCE.md)。
 
 ## Cloudflare Pages 部署
 
@@ -258,3 +258,5 @@ docs/                    功能、部署和验收说明
 逐型号配置与真机标定状态见 [DEVICE_LAYOUT_AUDIT](docs/DEVICE_LAYOUT_AUDIT.zh-CN.md)。当前为独立参考适配，未宣称逐台真机像素级核准。
 
 APP 图标扩充与分类：新增 30 个国内应用／服务图标，内置共 90 个（国内 48、国外 42）。选择界面支持分类和搜索，切换分类保留已选；批量候选另有“自定义”。[完整说明与来源](docs/app-icons/README.md)。本轮 4 项图标浏览器用例通过。
+
+已修复旧手动布局覆盖型号、原图字高适配抵消型号字号，以及切换型号继承旧系统版本的问题。旧模板在自然替换时自动使用所选型号布局；更新后重新生成预览即可。[状态栏说明](docs/STATUS_BAR_FUSION.zh-CN.md)。

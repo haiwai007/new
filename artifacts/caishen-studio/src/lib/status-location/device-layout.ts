@@ -133,7 +133,9 @@ export function renderDeviceLocation(
   );
   const icons = helpers.icons({ ...phone, customColor: colour });
   const nativeWidth = Number(icons.match(/\bwidth="([\d.]+)"/)?.[1] ?? 100);
-  const nativeFont = layout.clockSize * unit;
+  // Fit the source once against a fixed reference, not each model’s own font.
+  // Dividing by layout.clockSize would cancel the selected model’s typography.
+  const nativeFont = 13 * (frame.width / 360);
   const fitScale = location.sourceFit
     ? Math.max(
         0.6,

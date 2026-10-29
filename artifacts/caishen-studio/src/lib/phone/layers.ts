@@ -12,7 +12,10 @@ import {
 } from "./aosp-glyphs";
 import { DEVICE_LAYOUTS } from "./device-layouts";
 import { airplaneIcon } from "./airplane";
-import { isLocationConfirmed } from "../status-location/model";
+import {
+  isLocationConfirmed,
+  deviceLocationDoc,
+} from "../status-location/model";
 import { renderLocatedPhone } from "../status-location/render";
 import { builtinAppIconSource } from "./app-icon-catalog";
 import { effectiveProfile } from "./profiles";
@@ -929,7 +932,13 @@ export function applyPhoneLayers(
   raw: PhoneSettings,
 ): TemplateDoc {
   const parsed = phoneSettingsSchema.parse(raw);
-  const base = removePhoneLayers(doc);
+  const original = removePhoneLayers(doc);
+  const base =
+    parsed.rendering === "natural" &&
+    parsed.fusion.enabled &&
+    parsed.placement === "overlay"
+      ? deviceLocationDoc(original)
+      : original;
   if (
     parsed.placement === "overlay" &&
     base.statusLocation &&

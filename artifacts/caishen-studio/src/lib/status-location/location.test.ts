@@ -91,19 +91,23 @@ describe("template-bound status locations", () => {
       ),
     ).toThrow("定位未确认");
   });
-  it("places time at the saved original row and never changes canvas or source pixels", () => {
+  it("uses the model within the saved outer frame without changing canvas or source pixels", () => {
     const doc = confirmed(),
       before = structuredClone(doc),
       settings = naturalPhoneSettings();
     settings.modelId = "galaxys24ultra";
     const result = applyPhoneLayers(doc, settings),
       time = result.layers.find((l) => l.id.endsWith("_time"))!;
-    expect(time.y).toBeCloseTo(28);
-    expect(time.height).toBeCloseTo(24);
-    expect(time.x).toBeCloseTo(10);
+    expect(time.y).toBeGreaterThanOrEqual(24);
+    expect(time.y + time.height).toBeLessThanOrEqual(64 + 1e-7);
+    expect(time.y).not.toBeCloseTo(28);
+    expect(result.statusLocation!.layout).toBe("device");
     expect(result.canvas).toEqual(doc.canvas);
     expect(doc).toEqual(before);
-    expect(removePhoneLayers(result)).toEqual(doc);
+    expect(removePhoneLayers(result)).toEqual({
+      ...doc,
+      statusLocation: result.statusLocation,
+    });
     const second = applyPhoneLayers(result, { ...settings, time: "22:30" });
     expect(second.layers.filter((l) => l.id.endsWith("_time"))).toHaveLength(1);
     expect(second.layers.find((l) => l.id.endsWith("_time"))!.y).toBe(time.y);
@@ -150,7 +154,9 @@ describe("template-bound status locations", () => {
     expect(isLocationConfirmed(larger)).toBe(true);
     const rendered = applyPhoneLayers(larger, naturalPhoneSettings());
     expect(rendered.layers.find((l) => l.id.endsWith("_time"))!.y).toBeCloseTo(
-      56,
+      applyPhoneLayers(doc, naturalPhoneSettings()).layers.find((l) =>
+        l.id.endsWith("_time"),
+      )!.y * 2,
     );
     expect(resizeDoc(doc, 800, 1200, "scale").statusLocation!.state).toBe(
       "stale",
@@ -205,7 +211,11 @@ describe("template-bound status locations", () => {
     for (const item of items)
       expect(
         item.doc.layers.find((l) => l.id.endsWith("_time"))!.y,
-      ).toBeCloseTo(28);
+      ).toBeCloseTo(
+        applyPhoneLayers(doc, naturalPhoneSettings()).layers.find((l) =>
+          l.id.endsWith("_time"),
+        )!.y,
+      );
     expect(doc).toEqual(before);
     expect(locationAppCapacity(doc)).toBeGreaterThan(0);
   });
@@ -270,7 +280,7 @@ it("rejects exports when phone settings or generated pixels no longer match the 
   expect(fusionReady(old)).toBe(false);
 });
 
-it("rejects enlarged APP icons that would leave their authorized small region", () => {
+it("fits APPs, dates and carrier within the outer frame instead of enforcing obsolete inner slots", () => {
   const doc = confirmed();
   doc.statusLocation!.apps!.width = 0.12;
   doc.statusLocation!.testKey = locationTestKey(doc.statusLocation!);
@@ -283,19 +293,19 @@ it("rejects enlarged APP icons that would leave their authorized small region", 
     name: id,
     visible: true,
   }));
-  expect(locationAppCapacity(doc, 100, phone.appIconGap / 20, 20 / 12)).toBe(1);
-  expect(() => applyPhoneLayers(doc, phone)).toThrow("超出模板定位空间");
-  phone.appIcons = phone.appIcons.slice(0, 1);
-  const result = applyPhoneLayers(doc, phone);
-  const app = result.layers.find((l) => l.id.includes("_app_"))!;
-  expect(app.x + app.width).toBeLessThanOrEqual(
-    (doc.statusLocation!.apps!.x + doc.statusLocation!.apps!.width) *
-      doc.canvas.width,
-  );
-  expect(() => applyPhoneLayers(doc, { ...phone, showDate: true })).toThrow(
-    "没有日期区域",
-  );
-  expect(() => applyPhoneLayers(doc, { ...phone, showCarrier: true })).toThrow(
-    "没有运营商区域",
-  );
+  expect(locationAppCapacity(doc)).toBe(8);
+  const result = applyPhoneLayers(doc, {
+    ...phone,
+    showDate: true,
+    showCarrier: true,
+  });
+  expect(result.layers.filter((l) => l.id.includes("_app_"))).toHaveLength(2);
+  for (const layer of result.layers.filter(
+    (l) => l.groupId === result.phone!.groupId,
+  )) {
+    expect(layer.x).toBeGreaterThanOrEqual(0);
+    expect(layer.x + layer.width).toBeLessThanOrEqual(400);
+    expect(layer.y).toBeGreaterThanOrEqual(24);
+    expect(layer.y + layer.height).toBeLessThanOrEqual(64 + 1e-7);
+  }
 });

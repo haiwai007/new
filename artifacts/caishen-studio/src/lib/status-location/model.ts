@@ -133,6 +133,14 @@ export function isLocationConfirmed(doc: TemplateDoc) {
     l.fills.every((f) => !!l[f.role])
   );
 }
+/** Upgrade a confirmed historical slot layout to the selected-model outer-frame renderer. */
+export function deviceLocationDoc(doc: TemplateDoc): TemplateDoc {
+  const old = doc.statusLocation;
+  if (!old || old.layout !== "manual" || !isLocationConfirmed(doc)) return doc;
+  const location = { ...old, layout: "device" as const };
+  location.testKey = locationTestKey(location);
+  return { ...doc, statusLocation: location };
+}
 export function locationState(doc: TemplateDoc) {
   return doc.statusLocation?.state === "confirmed" && !isLocationConfirmed(doc)
     ? "stale"
@@ -201,7 +209,7 @@ export function locationAppCapacity(
   iconRatio = 1,
 ) {
   const l = doc.statusLocation;
-  if (l && l.layout !== "manual") return 8;
+  if (l && (l.layout !== "manual" || isLocationConfirmed(doc))) return 8;
   if (l?.approval === "direct") return 8;
   if (!l?.apps) return 0;
   const size = Math.min(

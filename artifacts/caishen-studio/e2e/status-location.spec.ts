@@ -1,7 +1,9 @@
+import { createHash } from "node:crypto";
 import { PHONE_MODELS, PHONE_BRANDS } from "../src/lib/phone/models";
 import { DEVICE_LAYOUTS } from "../src/lib/phone/device-layouts";
 import { test, expect, type Page } from "@playwright/test";
-import { readFile } from "node:fs/promises";
+import { readFile, writeFile } from "node:fs/promises";
+import { locationTestKey } from "../src/lib/status-location/model";
 test.beforeEach(async ({ context }) => {
   await context.addInitScript(() =>
     sessionStorage.setItem("haishen.entry-confirmed.v1", "yes"),
@@ -786,4 +788,89 @@ test("source status follows exact model and system version without inheriting ap
     .getByLabel("手机型号", { exact: true })
     .selectOption("iphone17pro");
   await expect(status).toContainText("参考适配（尚未真机核准）");
+});
+
+test("old manual templates with source fitting render different model layouts and reset inherited OS versions", async ({
+  page,
+}, info) => {
+  test.setTimeout(120000);
+  await upload(page);
+  await confirm(page);
+  await page.getByRole("button", { name: "更多", exact: true }).click();
+  const download = page.waitForEvent("download");
+  await page
+    .getByRole("menuitem", { name: "导出模板文件（含图片）", exact: true })
+    .click();
+  const file = info.outputPath("old-manual.json");
+  await (await download).saveAs(file);
+  const packaged = JSON.parse(await readFile(file, "utf8"));
+  packaged.doc.statusLocation.layout = "manual";
+  packaged.doc.statusLocation.sourceFit = {
+    glyphRatio: 0.35,
+    centerRatio: 0.5,
+  };
+  packaged.doc.statusLocation.testKey = locationTestKey(
+    packaged.doc.statusLocation,
+  );
+  await writeFile(file, JSON.stringify(packaged));
+  await page.goto("/works");
+  await page.locator('input[type="file"]').setInputFiles(file);
+  await expect(page).toHaveURL(/\/editor\//);
+  await page.getByRole("button", { name: "进入作图", exact: true }).click();
+  await page.getByRole("button", { name: "图层编辑", exact: true }).click();
+  await page.getByRole("button", { name: "手机", exact: true }).click();
+  const layouts: any[] = [];
+  const pngHashes: string[] = [];
+  for (const [brand, model] of [
+    ["Apple", "iphone16"],
+    ["Google", "pixel9"],
+    ["Samsung", "galaxys25"],
+    ["Samsung", "galaxys24"],
+  ]) {
+    await page.getByLabel("手机品牌", { exact: true }).selectOption(brand);
+    await page.getByLabel("手机型号", { exact: true }).selectOption(model);
+    if (model === "galaxys25")
+      await page
+        .getByLabel("系统参考样式", { exact: true })
+        .selectOption("oneui7");
+    await page.getByRole("button", { name: "更多", exact: true }).click();
+    const event = page.waitForEvent("download");
+    await page
+      .getByRole("menuitem", { name: "导出模板文件（含图片）", exact: true })
+      .click();
+    const path = info.outputPath(model + ".json");
+    await (await event).saveAs(path);
+    const doc = JSON.parse(await readFile(path, "utf8")).doc;
+    expect(doc.statusLocation.layout).toBe("device");
+    expect(doc.phone.modelId).toBe(model);
+    if (model === "galaxys24") expect(doc.phone.styleId).toBe("auto");
+    await page.getByRole("button", { name: "导出", exact: true }).click();
+    const png = page.waitForEvent("download");
+    await page
+      .getByRole("dialog")
+      .getByRole("button", { name: "导出", exact: true })
+      .click();
+    const pngPath = info.outputPath(model + ".png");
+    await (await png).saveAs(pngPath);
+    await expect(page.getByRole("dialog")).toHaveCount(0);
+    pngHashes.push(
+      createHash("sha256")
+        .update(await readFile(pngPath))
+        .digest("hex"),
+    );
+
+    layouts.push({
+      time: doc.layers.find((l: any) => l.id.endsWith("_time")),
+      icons: doc.layers.find((l: any) => l.id.endsWith("_icons")),
+    });
+  }
+  expect(new Set(pngHashes).size).toBe(4);
+  expect(layouts[0].time.height / layouts[1].time.height).toBeGreaterThan(1.12);
+  expect(
+    new Set(
+      layouts.map((l) =>
+        JSON.stringify([l.time.x, l.time.y, l.time.height, l.icons.src]),
+      ),
+    ).size,
+  ).toBe(4);
 });
