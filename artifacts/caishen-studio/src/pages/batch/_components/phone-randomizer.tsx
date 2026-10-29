@@ -78,7 +78,7 @@ export default function PhoneRandomizer({
         onChange={(signal) => change({ signal })}
       />
       <Toggle
-        label="随机 Wi-Fi（关闭或 1–3 格）"
+        label="随机 Wi-Fi（关闭或按系统选择信号强度）"
         checked={value.enabled && value.wifi}
         onChange={(wifi) => change({ wifi })}
       />

@@ -13,6 +13,7 @@ export type StatusProfile = {
   weight: "normal" | "bold";
   signal: "bars" | "triangle" | "rounded" | "thin";
   wifi: "arc" | "fan";
+  glyphSource?: "aosp14" | "aosp15";
   wifiStroke: number;
   airplane: "ios" | "android" | "samsung" | "harmony";
   battery: "horizontal" | "vertical";
@@ -187,11 +188,12 @@ export function effectiveProfile(settings: PhoneSettings): StatusProfile {
   if (settings.rendering !== "natural") return base;
   const variant = resolvedStyle(settings);
   const record = DEVICE_LAYOUTS[settings.modelId];
-  const deviceWeight =
-    record.versions[variant?.id ?? record.defaultStyle]?.clockWeight;
+  const deviceLayout = record.versions[variant?.id ?? record.defaultStyle];
+  const deviceWeight = deviceLayout?.clockWeight;
   return {
     ...base,
     ...(variant ?? {}),
+    ...(deviceLayout?.clockFont ? { fontSize: deviceLayout.clockSize } : {}),
     ...(deviceWeight !== undefined
       ? {
           weight: deviceWeight >= 600 ? ("bold" as const) : ("normal" as const),
@@ -210,6 +212,9 @@ export function systemStyleLabel(settings: PhoneSettings) {
     resolvedStyle(settings)?.label ?? statusProfile(settings.modelId).label
   );
 }
+export function maximumWifiLevel(settings: PhoneSettings) {
+  return effectiveProfile(settings).glyphSource ? 4 : 3;
+}
 /** Apply model typography and icon defaults, retaining content, theme and stable layer IDs. */
 export function settingsForModel(
   settings: PhoneSettings,
@@ -225,6 +230,7 @@ export function settingsForModel(
     modelId,
     styleId,
     timeWeight: profile.weight,
+    wifi: Math.min(settings.wifi, profile.glyphSource ? 4 : 3),
     batteryStyle: profile.batteryStyle,
     scale: settings.fusion?.locks.includes("geometry") ? settings.scale : 100,
     offsetY: settings.fusion?.locks.includes("geometry") ? settings.offsetY : 0,

@@ -7,6 +7,12 @@ const require = createRequire(
 );
 const { chromium } = require("@playwright/test");
 const rows = JSON.parse(await fs.readFile(process.argv[2], "utf8"));
+if (process.env.CALIBRATION_COMPARE_GLYPHS === "1")
+  for (const row of rows) {
+    if (row.file && ["pixel9", "pixel8a", "pixel9a"].includes(row.modelId))
+      row.referenceImageData = (await fs.readFile(row.file)).toString("base64");
+    row.referenceArial = process.env.CALIBRATION_REFERENCE_ARIAL === "1";
+  }
 const browser = await chromium.launch({
   executablePath:
     process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH ?? "/usr/bin/chromium",
@@ -14,6 +20,19 @@ const browser = await chromium.launch({
 });
 try {
   const page = await browser.newPage();
+  if (process.env.CALIBRATION_REFERENCE_ARIAL === "1")
+    await page.route("**/src/lib/phone/device-layouts.ts*", async (route) => {
+      const response = await route.fetch();
+      let body = await response.text();
+      body = body
+        .replace(/"?clockFont"?\s*:\s*"google-sans[^"]*"\s*,?/g, "")
+        .replace(
+          /("?clockSize"?\s*:\s*)(?:13\.75|13\.85|14\.05)(?=\s*[,}])/g,
+          (_match, prefix) => prefix + "13",
+        )
+        .replace(/"?clockWeight"?\s*:\s*500\s*,?/g, "");
+      await route.fulfill({ response, body });
+    });
   await page.addInitScript(() =>
     sessionStorage.setItem("haishen.entry-confirmed.v1", "yes"),
   );
@@ -32,6 +51,17 @@ try {
     const { phoneModel } = await import("/src/lib/phone/models.ts");
     const output = [];
     for (const row of rows) {
+      const variant = DEVICE_LAYOUTS[row.modelId].versions[row.styleId];
+      const originalFont = {
+        clockFont: variant.clockFont,
+        clockSize: variant.clockSize,
+        clockWeight: variant.clockWeight,
+      };
+      if (row.referenceArial && variant.clockFont) {
+        delete variant.clockFont;
+        variant.clockSize = 13;
+        delete variant.clockWeight;
+      }
       const doc = structuredClone(
         BUILTIN_TEMPLATES.find((t) => t.id === "blank_portrait").doc,
       );
@@ -73,7 +103,9 @@ try {
         charging: row.charging,
         signal: row.signal,
         showBatteryPercent: row.showBatteryPercent ?? true,
-        wifi: 3,
+        wifi: row.wifi ?? 3,
+        showCellular: row.showCellular ?? true,
+        spaceBeforePercent: row.spaceBeforePercent ?? false,
         network: "none",
         appIcons: [],
         showDate: false,
@@ -121,11 +153,62 @@ try {
           b = box(system),
           layout = DEVICE_LAYOUTS[row.modelId].versions[row.styleId],
           unit = row.width / phoneModel(row.modelId).points;
+        let clockGlyphIoU;
+        if (row.referenceImageData) {
+          const bitmap = await createImageBitmap(
+            new Blob([
+              Uint8Array.from(atob(row.referenceImageData), (c) =>
+                c.charCodeAt(0),
+              ),
+            ]),
+          );
+          const sourceCanvas = document.createElement("canvas");
+          sourceCanvas.width = row.width;
+          sourceCanvas.height = row.stripHeight;
+          const ctx = sourceCanvas.getContext("2d");
+          ctx.drawImage(bitmap, 0, 0);
+          bitmap.close();
+          const pixels = ctx.getImageData(
+            0,
+            0,
+            row.width,
+            row.stripHeight,
+          ).data;
+          const expected = new Set();
+          const rb = row.clockBox;
+          for (let y = rb.top; y < rb.bottom; y++)
+            for (let x = rb.left; x < rb.right; x++) {
+              const i = (y * row.width + x) * 4;
+              const values = [pixels[i], pixels[i + 1], pixels[i + 2]];
+              const neutral = Math.max(...values) - Math.min(...values) < 45;
+              const glyph = row.light
+                ? Math.min(...values) > 180 && neutral
+                : Math.max(...values) < 170 && neutral;
+              if (glyph) expected.add(x - rb.left + "," + (rb.bottom - y));
+            }
+          const actual = new Set(
+            clock.map(([x, y]) => x - a.left + "," + (a.bottom - y)),
+          );
+          let intersection = 0;
+          for (const point of actual) if (expected.has(point)) intersection++;
+          clockGlyphIoU =
+            intersection / (actual.size + expected.size - intersection);
+          sourceCanvas.width = sourceCanvas.height = 0;
+        }
         output.push({
           id: row.id,
           modelId: row.modelId,
           styleId: row.styleId,
           referenceSha256: row.sha256,
+          ...(clockGlyphIoU !== undefined
+            ? {
+                clockGlyphIoU,
+                clockFont: layout.clockFont ?? "Arial",
+                clockSize: layout.clockSize,
+                glyphComparison:
+                  "native binary silhouette IoU, aligned by left and bottom; not full typography approval",
+              }
+            : {}),
           referenceClock: row.clockBox,
           referenceSystem: row.systemBox,
           generatedClock: a,
@@ -168,6 +251,7 @@ try {
         });
       } finally {
         canvas.width = canvas.height = 0;
+        Object.assign(variant, originalFont);
       }
     }
     return output;
@@ -178,7 +262,7 @@ try {
       {
         schemaVersion: 1,
         checkedAt: new Date().toISOString(),
-        scope: "horizontal geometry only; not full device approval",
+        scope: "controlled sample anchors and optional clock silhouette; not full device approval",
         results,
       },
       null,

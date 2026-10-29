@@ -15,6 +15,7 @@ export const SYSTEM_STYLES: {
   inset: number;
   signal?: "bars" | "triangle" | "rounded" | "thin";
   wifiStroke?: number;
+  glyphSource?: "aosp14" | "aosp15";
   airplane?: "ios" | "android" | "samsung" | "harmony";
 }[] = [
   {
@@ -132,13 +133,14 @@ export const SYSTEM_STYLES: {
   },
   {
     id: "pixel14",
+    glyphSource: "aosp14",
     label: "Android 14 / Pixel 参考",
     systems: ["pixel"],
     fontSize: 13,
     weight: "normal",
     batteryStyle: "outline",
     radius: 1,
-    gap: 6,
+    gap: 6.6666666667,
     inset: 16,
     signal: "triangle",
     wifiStroke: 2,
@@ -146,13 +148,14 @@ export const SYSTEM_STYLES: {
   },
   {
     id: "pixel15",
+    glyphSource: "aosp15",
     label: "Android 15 / Pixel 参考",
     systems: ["pixel"],
     fontSize: 13,
     weight: "normal",
     batteryStyle: "outline",
     radius: 1.5,
-    gap: 5.5,
+    gap: 6.6666666667,
     inset: 17,
     signal: "triangle",
     wifiStroke: 2.2,

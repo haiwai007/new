@@ -2,7 +2,11 @@ import { locationAppCapacity } from "../status-location/model";
 import { naturalAppCapacity } from "../phone/fusion-metrics";
 import { z } from "zod";
 import { PHONE_MODELS, phoneModel } from "../phone/models";
-import { settingsForModel, statusProfile } from "../phone/profiles";
+import {
+  settingsForModel,
+  statusProfile,
+  maximumWifiLevel,
+} from "../phone/profiles";
 import { MAX_APP_ICONS } from "../phone/app-icon-catalog";
 import {
   phoneAppIconSchema,
@@ -220,7 +224,8 @@ export function applyPhoneBatchRules(
   if (rules.enabled && rules.battery.enabled)
     phone.battery = integer(rules.battery.min, rules.battery.max, rng);
   if (rules.enabled && rules.signal) phone.signal = integer(0, 4, rng);
-  if (rules.enabled && rules.wifi) phone.wifi = integer(0, 3, rng);
+  if (rules.enabled && rules.wifi)
+    phone.wifi = integer(0, maximumWifiLevel(phone), rng);
   if (rules.enabled && rules.network.enabled)
     phone.network =
       rules.network.options[integer(0, rules.network.options.length - 1, rng)];

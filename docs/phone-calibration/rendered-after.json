@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "checkedAt": "2026-10-29T02:09:46.230Z",
+  "checkedAt": "2026-10-29T05:01:32.964Z",
   "scope": "horizontal geometry only; not full device approval",
   "results": [
     {
@@ -8,6 +8,10 @@
       "modelId": "pixel9",
       "styleId": "pixel14",
       "referenceSha256": "0a5a79fde8ef1c8262c4d6ec64c190abb1b9b49e8a74af2ab14072de995926c3",
+      "clockGlyphIoU": 0.7377450980392157,
+      "clockFont": "google-sans-17-500",
+      "clockSize": 13.75,
+      "glyphComparison": "native binary silhouette IoU, aligned by left and bottom; not full typography approval",
       "referenceClock": {
         "left": 94,
         "top": 59,
@@ -22,25 +26,25 @@
       },
       "generatedClock": {
         "left": 94,
-        "top": 62,
-        "right": 174,
+        "top": 59,
+        "right": 177,
         "bottom": 85
       },
       "generatedSystem": {
-        "left": 811,
-        "top": 53,
+        "left": 825,
+        "top": 54,
         "right": 986,
-        "bottom": 89
+        "bottom": 88
       },
       "clockLeftError": 0,
       "clockBottomError": 0,
       "systemRightError": 0,
       "systemCenterError": 0,
       "suggested": {
-        "clockCenterY": 0.5,
-        "systemCenterY": 0.5,
-        "clockX": 34.69259,
-        "rightInset": 34.69259
+        "clockCenterY": 0.49305556,
+        "systemCenterY": 0.49305556,
+        "clockX": 35.07407,
+        "rightInset": 33.54815
       },
       "knownGaps": [
         "font identity and full outlines",
@@ -146,6 +150,10 @@
       "modelId": "pixel8a",
       "styleId": "pixel14",
       "referenceSha256": "d47c577646a4e92195dcb9db85ace66a1f9408b52c60c54b1c93b74055afbf3b",
+      "clockGlyphIoU": 0.6975,
+      "clockFont": "google-sans-18-500",
+      "clockSize": 13.85,
+      "glyphComparison": "native binary silhouette IoU, aligned by left and bottom; not full typography approval",
       "referenceClock": {
         "left": 94,
         "top": 48,
@@ -160,24 +168,24 @@
       },
       "generatedClock": {
         "left": 94,
-        "top": 51,
+        "top": 48,
         "right": 174,
         "bottom": 74
       },
       "generatedSystem": {
-        "left": 833,
-        "top": 43,
+        "left": 825,
+        "top": 44,
         "right": 986,
-        "bottom": 79
+        "bottom": 78
       },
       "clockLeftError": 0,
       "clockBottomError": 0,
       "systemRightError": 0,
       "systemCenterError": 0,
       "suggested": {
-        "clockCenterY": 0.42361111,
-        "systemCenterY": 0.43055556,
-        "clockX": 34.69259,
+        "clockCenterY": 0.41666667,
+        "systemCenterY": 0.42361112,
+        "clockX": 35.07407,
         "rightInset": 33.54815
       },
       "knownGaps": [
@@ -192,6 +200,10 @@
       "modelId": "pixel9a",
       "styleId": "pixel15",
       "referenceSha256": "b3def8b5d361e3155d6fb9c81e9ddfedf55f39e92de30810b53972713faeb7c8",
+      "clockGlyphIoU": 0.7328918322295805,
+      "clockFont": "google-sans-18-500",
+      "clockSize": 14.05,
+      "glyphComparison": "native binary silhouette IoU, aligned by left and bottom; not full typography approval",
       "referenceClock": {
         "left": 94,
         "top": 64,
@@ -206,25 +218,25 @@
       },
       "generatedClock": {
         "left": 94,
-        "top": 68,
-        "right": 174,
+        "top": 64,
+        "right": 180,
         "bottom": 91
       },
       "generatedSystem": {
-        "left": 879,
-        "top": 59,
+        "left": 913,
+        "top": 60,
         "right": 988,
-        "bottom": 95
+        "bottom": 94
       },
       "clockLeftError": 0,
       "clockBottomError": 0,
       "systemRightError": 0,
       "systemCenterError": 0,
       "suggested": {
-        "clockCenterY": 0.54166667,
-        "systemCenterY": 0.54166667,
-        "clockX": 34.69259,
-        "rightInset": 32.78519
+        "clockCenterY": 0.52777778,
+        "systemCenterY": 0.53472223,
+        "clockX": 35.07407,
+        "rightInset": 33.92963
       },
       "knownGaps": [
         "font identity and full outlines",

@@ -205,3 +205,11 @@ Haishen Studio scales and rotates the silhouette for system reference layouts.
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
+
+Additional source-backed Android 14/15 status signal, Wi-Fi, airplane and battery
+contours are derived from Android Open Source Project resources (Apache-2.0).
+Numeric Roboto contours: Copyright 2011 Google Inc., Apache-2.0.
+Pinned source URLs, revisions and SHA-256 hashes are recorded in
+ docs/phone-calibration/aosp-glyph-sources.json and font-sources.json.
+Google Sans numeric contours: Copyright 2025 The Google Sans Project Authors,
+SIL Open Font License 1.1; see google-sans-glyphs-OFL.txt for the complete license.

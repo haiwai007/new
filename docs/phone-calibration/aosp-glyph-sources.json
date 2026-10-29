@@ -1,0 +1,364 @@
+{
+  "schemaVersion": 1,
+  "scope": "Pinned AOSP core vector paths; Android 14/15 resources stored separately, including clip paths. Not OEM calibration approval.",
+  "changedFiles": [
+    "ic_signal_cellular_1_4_bar.xml",
+    "ic_signal_cellular_2_4_bar.xml",
+    "ic_signal_cellular_3_4_bar.xml"
+  ],
+  "batterySources": [
+    {
+      "androidVersion": 14,
+      "url": "https://android.googlesource.com/platform/frameworks/base/+/android-14.0.0_r1/core/res/res/values/config.xml?format=TEXT",
+      "sha256": "2c2b0f1642f6585f6e26ff80be17494157fabf0b976de46549b074fbe74354bb",
+      "paths": {
+        "perimeter": "M3.5,2 v0 H1.33 C0.6,2 0,2.6 0,3.33 V13v5.67 C0,19.4 0.6,20 1.33,20 h9.33 C11.4,20 12,19.4 12,18.67 V13V3.33 C12,2.6 11.4,2 10.67,2 H8.5 V0 H3.5 z M2,18v-7V4h8v9v5H2L2,18z",
+        "fillMask": "M2,18 v-14 h8 v14 z",
+        "bolt": "M5,17.5 V12 H3 L7,4.5 V10 h2 L5,17.5 z",
+        "plus": "M9,10l-2,0l0,-2l-2,0l0,2l-2,0l0,2l2,0l0,2l2,0l0,-2l2,0z"
+      }
+    },
+    {
+      "androidVersion": 15,
+      "url": "https://android.googlesource.com/platform/frameworks/base/+/android-15.0.0_r1/core/res/res/values/config.xml?format=TEXT",
+      "sha256": "e18a2015076c80b900c7b3b149fe21c453694b1b3d7a5d144edf3f4f297be353",
+      "paths": {
+        "perimeter": "M3.5,2 v0 H1.33 C0.6,2 0,2.6 0,3.33 V13v5.67 C0,19.4 0.6,20 1.33,20 h9.33 C11.4,20 12,19.4 12,18.67 V13V3.33 C12,2.6 11.4,2 10.67,2 H8.5 V0 H3.5 z M2,18v-7V4h8v9v5H2L2,18z",
+        "fillMask": "M2,18 v-14 h8 v14 z",
+        "bolt": "M5,17.5 V12 H3 L7,4.5 V10 h2 L5,17.5 z",
+        "plus": "M9,10l-2,0l0,-2l-2,0l0,2l-2,0l0,2l2,0l0,2l2,0l0,-2l2,0z"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "androidVersion": 14,
+      "file": "ic_wifi_signal_0.xml",
+      "url": "https://android.googlesource.com/platform/frameworks/base/+/android-14.0.0_r1/core/res/res/drawable/ic_wifi_signal_0.xml?format=TEXT",
+      "sha256": "5064528712ec8d635c8b750b4e02658eb936714594f1865b6d171d9fe6cf369c",
+      "paths": [
+        {
+          "d": "M12,4c3.42,0,6.73,1.27,9.3,3.53L12,18.85L2.7,7.53C5.27,5.27,8.58,4,12,4 M12,2C7.25,2,2.97,4.08,0,7.39L12,22L24,7.39 C21.03,4.08,16.75,2,12,2L12,2z",
+          "fillRule": "nonZero"
+        }
+      ]
+    },
+    {
+      "androidVersion": 14,
+      "file": "ic_wifi_signal_1.xml",
+      "url": "https://android.googlesource.com/platform/frameworks/base/+/android-14.0.0_r1/core/res/res/drawable/ic_wifi_signal_1.xml?format=TEXT",
+      "sha256": "da7700c95a771182d519494a3a2769e79cc392ebe9cecb0345207d8ef8374179",
+      "paths": [
+        {
+          "d": "M12,2.01c-4.75,0-9.03,2.08-12,5.39L12,22L24,7.4C21.03,4.09,16.75,2.01,12,2.01z M12,18.86L2.7,7.54 C5.27,5.28,8.58,4.01,12,4.01s6.73,1.27,9.3,3.53L12,18.86z",
+          "fillRule": "nonZero"
+        },
+        {
+          "d": "M16.42,16.63L12,22l-4.42-5.37c0.15-0.74,0.48-1.43,0.95-1.99C9.35,13.64,10.6,13,12,13s2.65,0.64,3.47,1.64 C15.94,15.2,16.27,15.89,16.42,16.63z",
+          "fillRule": "nonZero"
+        }
+      ]
+    },
+    {
+      "androidVersion": 14,
+      "file": "ic_wifi_signal_2.xml",
+      "url": "https://android.googlesource.com/platform/frameworks/base/+/android-14.0.0_r1/core/res/res/drawable/ic_wifi_signal_2.xml?format=TEXT",
+      "sha256": "95203e4d316b095baf8bbff25b97b581c63c399da4ef97419ff842b7d412c774",
+      "paths": [
+        {
+          "d": "M12,2C7.25,2,2.97,4.08,0,7.39L12,22L24,7.39C21.03,4.08,16.75,2,12,2z M12,18.85L2.7,7.53C5.27,5.27,8.58,4,12,4 s6.73,1.27,9.3,3.53L12,18.85z",
+          "fillRule": "nonZero"
+        },
+        {
+          "d": "M18.61,13.95L12,22l-6.61-8.05c0.33-0.61,0.74-1.17,1.22-1.66c1.36-1.42,3.27-2.3,5.39-2.3s4.03,0.88,5.39,2.3 C17.87,12.78,18.28,13.34,18.61,13.95z",
+          "fillRule": "nonZero"
+        }
+      ]
+    },
+    {
+      "androidVersion": 14,
+      "file": "ic_wifi_signal_3.xml",
+      "url": "https://android.googlesource.com/platform/frameworks/base/+/android-14.0.0_r1/core/res/res/drawable/ic_wifi_signal_3.xml?format=TEXT",
+      "sha256": "c655b6508f88d32bf0c525ca12de3df48077f86b67d0ed133b90c09a56477421",
+      "paths": [
+        {
+          "d": "M12,2C7.25,2,2.97,4.08,0,7.39L12,22L24,7.39C21.03,4.08,16.75,2,12,2z M12,18.85L2.7,7.53C5.27,5.27,8.58,4,12,4 s6.73,1.27,9.3,3.53L12,18.85z",
+          "fillRule": "nonZero"
+        },
+        {
+          "d": "M20.7,11.41L12,22L3.3,11.41c0.38-0.52,0.8-0.99,1.26-1.43C6.49,8.13,9.1,6.99,12,6.99s5.51,1.13,7.44,2.99 C19.9,10.41,20.33,10.89,20.7,11.41z",
+          "fillRule": "nonZero"
+        }
+      ]
+    },
+    {
+      "androidVersion": 14,
+      "file": "ic_wifi_signal_4.xml",
+      "url": "https://android.googlesource.com/platform/frameworks/base/+/android-14.0.0_r1/core/res/res/drawable/ic_wifi_signal_4.xml?format=TEXT",
+      "sha256": "30a7c683f7334ddd6a5dd1a0c4c5556cd1c822d198d523fd0a954d9f045162f9",
+      "paths": [
+        {
+          "d": "M24,7.39L12,22L0,7.39C2.97,4.08,7.25,2,12,2S21.03,4.08,24,7.39z",
+          "fillRule": "nonZero"
+        }
+      ]
+    },
+    {
+      "androidVersion": 14,
+      "file": "ic_signal_cellular_0_4_bar.xml",
+      "url": "https://android.googlesource.com/platform/frameworks/base/+/android-14.0.0_r1/core/res/res/drawable/ic_signal_cellular_0_4_bar.xml?format=TEXT",
+      "sha256": "d03f427eb09b1f1ba75c3c1840fd7de9a9df6655ca020181b6011115bca4da9c",
+      "paths": [
+        {
+          "d": "M20,7v13H7L20,7 M22,2L2,22h20V2L22,2z",
+          "fillRule": "nonZero"
+        }
+      ]
+    },
+    {
+      "androidVersion": 14,
+      "file": "ic_signal_cellular_1_4_bar.xml",
+      "url": "https://android.googlesource.com/platform/frameworks/base/+/android-14.0.0_r1/core/res/res/drawable/ic_signal_cellular_1_4_bar.xml?format=TEXT",
+      "sha256": "bee81b8a4dfdef533f165f3a3fb4c5acc047c5de16d19475c9f720f57a201f4b",
+      "paths": [
+        {
+          "d": "M20,7v13H7L20,7 M22,2L2,22h20V2L22,2z",
+          "fillRule": "nonZero"
+        },
+        {
+          "d": "M 11 13 L 2 22 L 11 22 Z",
+          "fillRule": "nonZero"
+        }
+      ]
+    },
+    {
+      "androidVersion": 14,
+      "file": "ic_signal_cellular_2_4_bar.xml",
+      "url": "https://android.googlesource.com/platform/frameworks/base/+/android-14.0.0_r1/core/res/res/drawable/ic_signal_cellular_2_4_bar.xml?format=TEXT",
+      "sha256": "a6395c0598a3d18ff9093acfc0879ce322acce2073190643b53b7843ad19e50d",
+      "paths": [
+        {
+          "d": "M20,7v13H7L20,7 M22,2L2,22h20V2L22,2z",
+          "fillRule": "nonZero"
+        },
+        {
+          "d": "M 13 11 L 2 22 L 13 22 Z",
+          "fillRule": "nonZero"
+        }
+      ]
+    },
+    {
+      "androidVersion": 14,
+      "file": "ic_signal_cellular_3_4_bar.xml",
+      "url": "https://android.googlesource.com/platform/frameworks/base/+/android-14.0.0_r1/core/res/res/drawable/ic_signal_cellular_3_4_bar.xml?format=TEXT",
+      "sha256": "126e0f518b89f409790fae8836f09a90cbefa51d8635d68a2faaad9c0aa58362",
+      "paths": [
+        {
+          "d": "M20,7v13H7L20,7 M22,2L2,22h20V2L22,2z",
+          "fillRule": "nonZero"
+        },
+        {
+          "d": "M 2 22 L 16 22 L 16 21 L 16 20 L 16 11 L 16 10 L 16 8 Z",
+          "fillRule": "nonZero"
+        }
+      ]
+    },
+    {
+      "androidVersion": 14,
+      "file": "ic_signal_cellular_4_4_bar.xml",
+      "url": "https://android.googlesource.com/platform/frameworks/base/+/android-14.0.0_r1/core/res/res/drawable/ic_signal_cellular_4_4_bar.xml?format=TEXT",
+      "sha256": "a4a293a1be5657367f66fce1e8379e3df903fc624e7509184f8411bc9d32a9dc",
+      "paths": [
+        {
+          "d": "M22,2L2,22h20V2L22,2z",
+          "fillRule": "nonZero"
+        }
+      ]
+    },
+    {
+      "androidVersion": 14,
+      "file": "ic_qs_airplane.xml",
+      "url": "https://android.googlesource.com/platform/frameworks/base/+/android-14.0.0_r1/core/res/res/drawable/ic_qs_airplane.xml?format=TEXT",
+      "sha256": "856c9d38886082e4b6e0143e529fcdc95f728712c95ab992fa454b7174472233",
+      "paths": [
+        {
+          "d": "M21,16v-2l-8-5V3.5C13,2.67,12.33,2,11.5,2S10,2.67,10,3.5V9l-8,5v2l8-2.5V19l-2,1.5V22l3.5-1l3.5,1v-1.5L13,19v-5.5L21,16z",
+          "fillRule": "nonZero"
+        }
+      ]
+    },
+    {
+      "androidVersion": 14,
+      "file": "ic_signal_cellular.xml",
+      "url": "https://android.googlesource.com/platform/frameworks/base/+/android-14.0.0_r1/core/res/res/drawable/ic_signal_cellular.xml?format=TEXT",
+      "sha256": "392b7a93d5781bff868dd08d864bc16904d6ff0eecf39a84b44755a2571f0f26",
+      "paths": []
+    },
+    {
+      "androidVersion": 15,
+      "file": "ic_wifi_signal_0.xml",
+      "url": "https://android.googlesource.com/platform/frameworks/base/+/android-15.0.0_r1/core/res/res/drawable/ic_wifi_signal_0.xml?format=TEXT",
+      "sha256": "5064528712ec8d635c8b750b4e02658eb936714594f1865b6d171d9fe6cf369c",
+      "paths": [
+        {
+          "d": "M12,4c3.42,0,6.73,1.27,9.3,3.53L12,18.85L2.7,7.53C5.27,5.27,8.58,4,12,4 M12,2C7.25,2,2.97,4.08,0,7.39L12,22L24,7.39 C21.03,4.08,16.75,2,12,2L12,2z",
+          "fillRule": "nonZero"
+        }
+      ]
+    },
+    {
+      "androidVersion": 15,
+      "file": "ic_wifi_signal_1.xml",
+      "url": "https://android.googlesource.com/platform/frameworks/base/+/android-15.0.0_r1/core/res/res/drawable/ic_wifi_signal_1.xml?format=TEXT",
+      "sha256": "da7700c95a771182d519494a3a2769e79cc392ebe9cecb0345207d8ef8374179",
+      "paths": [
+        {
+          "d": "M12,2.01c-4.75,0-9.03,2.08-12,5.39L12,22L24,7.4C21.03,4.09,16.75,2.01,12,2.01z M12,18.86L2.7,7.54 C5.27,5.28,8.58,4.01,12,4.01s6.73,1.27,9.3,3.53L12,18.86z",
+          "fillRule": "nonZero"
+        },
+        {
+          "d": "M16.42,16.63L12,22l-4.42-5.37c0.15-0.74,0.48-1.43,0.95-1.99C9.35,13.64,10.6,13,12,13s2.65,0.64,3.47,1.64 C15.94,15.2,16.27,15.89,16.42,16.63z",
+          "fillRule": "nonZero"
+        }
+      ]
+    },
+    {
+      "androidVersion": 15,
+      "file": "ic_wifi_signal_2.xml",
+      "url": "https://android.googlesource.com/platform/frameworks/base/+/android-15.0.0_r1/core/res/res/drawable/ic_wifi_signal_2.xml?format=TEXT",
+      "sha256": "95203e4d316b095baf8bbff25b97b581c63c399da4ef97419ff842b7d412c774",
+      "paths": [
+        {
+          "d": "M12,2C7.25,2,2.97,4.08,0,7.39L12,22L24,7.39C21.03,4.08,16.75,2,12,2z M12,18.85L2.7,7.53C5.27,5.27,8.58,4,12,4 s6.73,1.27,9.3,3.53L12,18.85z",
+          "fillRule": "nonZero"
+        },
+        {
+          "d": "M18.61,13.95L12,22l-6.61-8.05c0.33-0.61,0.74-1.17,1.22-1.66c1.36-1.42,3.27-2.3,5.39-2.3s4.03,0.88,5.39,2.3 C17.87,12.78,18.28,13.34,18.61,13.95z",
+          "fillRule": "nonZero"
+        }
+      ]
+    },
+    {
+      "androidVersion": 15,
+      "file": "ic_wifi_signal_3.xml",
+      "url": "https://android.googlesource.com/platform/frameworks/base/+/android-15.0.0_r1/core/res/res/drawable/ic_wifi_signal_3.xml?format=TEXT",
+      "sha256": "c655b6508f88d32bf0c525ca12de3df48077f86b67d0ed133b90c09a56477421",
+      "paths": [
+        {
+          "d": "M12,2C7.25,2,2.97,4.08,0,7.39L12,22L24,7.39C21.03,4.08,16.75,2,12,2z M12,18.85L2.7,7.53C5.27,5.27,8.58,4,12,4 s6.73,1.27,9.3,3.53L12,18.85z",
+          "fillRule": "nonZero"
+        },
+        {
+          "d": "M20.7,11.41L12,22L3.3,11.41c0.38-0.52,0.8-0.99,1.26-1.43C6.49,8.13,9.1,6.99,12,6.99s5.51,1.13,7.44,2.99 C19.9,10.41,20.33,10.89,20.7,11.41z",
+          "fillRule": "nonZero"
+        }
+      ]
+    },
+    {
+      "androidVersion": 15,
+      "file": "ic_wifi_signal_4.xml",
+      "url": "https://android.googlesource.com/platform/frameworks/base/+/android-15.0.0_r1/core/res/res/drawable/ic_wifi_signal_4.xml?format=TEXT",
+      "sha256": "30a7c683f7334ddd6a5dd1a0c4c5556cd1c822d198d523fd0a954d9f045162f9",
+      "paths": [
+        {
+          "d": "M24,7.39L12,22L0,7.39C2.97,4.08,7.25,2,12,2S21.03,4.08,24,7.39z",
+          "fillRule": "nonZero"
+        }
+      ]
+    },
+    {
+      "androidVersion": 15,
+      "file": "ic_signal_cellular_0_4_bar.xml",
+      "url": "https://android.googlesource.com/platform/frameworks/base/+/android-15.0.0_r1/core/res/res/drawable/ic_signal_cellular_0_4_bar.xml?format=TEXT",
+      "sha256": "d03f427eb09b1f1ba75c3c1840fd7de9a9df6655ca020181b6011115bca4da9c",
+      "paths": [
+        {
+          "d": "M20,7v13H7L20,7 M22,2L2,22h20V2L22,2z",
+          "fillRule": "nonZero"
+        }
+      ]
+    },
+    {
+      "androidVersion": 15,
+      "file": "ic_signal_cellular_1_4_bar.xml",
+      "url": "https://android.googlesource.com/platform/frameworks/base/+/android-15.0.0_r1/core/res/res/drawable/ic_signal_cellular_1_4_bar.xml?format=TEXT",
+      "sha256": "9cd264ec11bd958b10e03f011dcfe1bf3dc2e55fab2a9ba281923c0258f3fc23",
+      "paths": [
+        {
+          "d": "M20,7v13H7L20,7 M22,2L2,22h20V2L22,2z",
+          "fillRule": "nonZero"
+        },
+        {
+          "d": "M0,0 H11 V24 H0 z",
+          "fillRule": "nonZero",
+          "clipD": "M21,5 V21 H5 z"
+        }
+      ]
+    },
+    {
+      "androidVersion": 15,
+      "file": "ic_signal_cellular_2_4_bar.xml",
+      "url": "https://android.googlesource.com/platform/frameworks/base/+/android-15.0.0_r1/core/res/res/drawable/ic_signal_cellular_2_4_bar.xml?format=TEXT",
+      "sha256": "d47dd29ba35baaf30bb7045835f200c875b9b42401d591244d57b28046489244",
+      "paths": [
+        {
+          "d": "M20,7v13H7L20,7 M22,2L2,22h20V2L22,2z",
+          "fillRule": "nonZero"
+        },
+        {
+          "d": "M0,0 H14 V24 H0 z",
+          "fillRule": "nonZero",
+          "clipD": "M21,5 V21 H5 z"
+        }
+      ]
+    },
+    {
+      "androidVersion": 15,
+      "file": "ic_signal_cellular_3_4_bar.xml",
+      "url": "https://android.googlesource.com/platform/frameworks/base/+/android-15.0.0_r1/core/res/res/drawable/ic_signal_cellular_3_4_bar.xml?format=TEXT",
+      "sha256": "3c3c0aa6ca0960a1eee69cdb5b7ca5331a8f1a7dc999ac5900c0b6939ca16116",
+      "paths": [
+        {
+          "d": "M20,7v13H7L20,7 M22,2L2,22h20V2L22,2z",
+          "fillRule": "nonZero"
+        },
+        {
+          "d": "M0,0 H17 V24 H0 z",
+          "fillRule": "nonZero",
+          "clipD": "M21,5 V21 H5 z"
+        }
+      ]
+    },
+    {
+      "androidVersion": 15,
+      "file": "ic_signal_cellular_4_4_bar.xml",
+      "url": "https://android.googlesource.com/platform/frameworks/base/+/android-15.0.0_r1/core/res/res/drawable/ic_signal_cellular_4_4_bar.xml?format=TEXT",
+      "sha256": "a4a293a1be5657367f66fce1e8379e3df903fc624e7509184f8411bc9d32a9dc",
+      "paths": [
+        {
+          "d": "M22,2L2,22h20V2L22,2z",
+          "fillRule": "nonZero"
+        }
+      ]
+    },
+    {
+      "androidVersion": 15,
+      "file": "ic_qs_airplane.xml",
+      "url": "https://android.googlesource.com/platform/frameworks/base/+/android-15.0.0_r1/core/res/res/drawable/ic_qs_airplane.xml?format=TEXT",
+      "sha256": "856c9d38886082e4b6e0143e529fcdc95f728712c95ab992fa454b7174472233",
+      "paths": [
+        {
+          "d": "M21,16v-2l-8-5V3.5C13,2.67,12.33,2,11.5,2S10,2.67,10,3.5V9l-8,5v2l8-2.5V19l-2,1.5V22l3.5-1l3.5,1v-1.5L13,19v-5.5L21,16z",
+          "fillRule": "nonZero"
+        }
+      ]
+    },
+    {
+      "androidVersion": 15,
+      "file": "ic_signal_cellular.xml",
+      "url": "https://android.googlesource.com/platform/frameworks/base/+/android-15.0.0_r1/core/res/res/drawable/ic_signal_cellular.xml?format=TEXT",
+      "sha256": "392b7a93d5781bff868dd08d864bc16904d6ff0eecf39a84b44755a2571f0f26",
+      "paths": []
+    }
+  ]
+}

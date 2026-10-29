@@ -1,3 +1,8 @@
+import {
+  clockFontForSettings,
+  numericAdvance,
+  numericSvg,
+} from "@/lib/phone/numeric-font";
 import { applyLocationToWork } from "@/lib/status-location/apply";
 import StatusLocationControl from "./status-location-control";
 import {
@@ -14,7 +19,7 @@ import { fitPhoneToImage } from "@/lib/phone/fusion";
 import { uploadCoverRatio } from "@/lib/phone/upload-fit";
 import AppIconsEditor from "@/components/phone/app-icons-editor";
 import PhoneModelPicker from "@/components/phone/model-picker";
-import { settingsForModel } from "@/lib/phone/profiles";
+import { settingsForModel, maximumWifiLevel } from "@/lib/phone/profiles";
 import { useEffect, useRef, useState } from "react";
 import {
   Clock,
@@ -540,7 +545,17 @@ export default function PhoneSettingsEditor({
                 className="text-[13px] tabular-nums"
                 style={{ fontWeight: draft.timeWeight === "bold" ? 700 : 400 }}
               >
-                {valid.success ? phoneTime(draft) : "--:--"}
+                {valid.success && clockFontForSettings(draft) ? (
+                  <img
+                    alt="时间预览"
+                    className="h-[18px]"
+                    src={`data:image/svg+xml;charset=utf-8,${encodeURIComponent(numericSvg(clockFontForSettings(draft)!, phoneTime(draft), 13, 18, (numericAdvance(clockFontForSettings(draft)!, phoneTime(draft)) + 0.15) * 13, iconColor))}`}
+                  />
+                ) : valid.success ? (
+                  phoneTime(draft)
+                ) : (
+                  "--:--"
+                )}
               </span>
               <img
                 alt="状态图标预览"
@@ -910,20 +925,35 @@ export default function PhoneSettingsEditor({
         />
       </Section>
 
+      {draft.showBatteryPercent && draft.batteryStyle === "outline" && (
+        <SwitchRow
+          label="百分号前留空格"
+          checked={draft.spaceBeforePercent}
+          onChange={(value) => set("spaceBeforePercent", value)}
+        />
+      )}
       <Section title="信号与网络">
+        <SwitchRow
+          label="显示蜂窝信号"
+          checked={draft.showCellular}
+          onChange={(value) => set("showCellular", value)}
+        />
         <Segmented
           label="蜂窝信号"
           value={draft.signal}
           options={[0, 1, 2, 3, 4].map((n) => ({
             value: n,
-            label: n === 0 ? "无" : `${n}格`,
+            label: `${n}格`,
           }))}
           onChange={(v) => set("signal", v)}
         />
         <Segmented
           label="Wi-Fi"
           value={draft.wifi}
-          options={[0, 1, 2, 3].map((n) => ({
+          options={Array.from(
+            { length: maximumWifiLevel(draft) + 1 },
+            (_, n) => n,
+          ).map((n) => ({
             value: n,
             label: n === 0 ? "关" : `${n}格`,
           }))}

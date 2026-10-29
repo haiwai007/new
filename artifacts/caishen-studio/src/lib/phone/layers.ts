@@ -1,3 +1,15 @@
+import {
+  clockFontForSettings,
+  numericAdvance,
+  numericSvg,
+} from "./numeric-font";
+import {
+  aospSignal,
+  aospWifi,
+  aospAirplane,
+  aospBattery,
+  type AospVersion,
+} from "./aosp-glyphs";
 import { DEVICE_LAYOUTS } from "./device-layouts";
 import { airplaneIcon } from "./airplane";
 import { isLocationConfirmed } from "../status-location/model";
@@ -74,6 +86,8 @@ export function defaultPhoneSettings(): PhoneSettings {
     lowPower: false,
     hd: false,
     dualSim: false,
+    showCellular: true,
+    spaceBeforePercent: false,
     location: false,
     alarm: false,
     mute: false,
@@ -136,7 +150,9 @@ function signalBars(
   level: number,
   small = false,
   style: "bars" | "triangle" | "rounded" | "thin" = "bars",
+  stockVersion?: AospVersion,
 ): IconPart {
+  if (stockVersion) return aospSignal(level, stockVersion, small);
   if (style === "triangle") {
     const f = level / 4;
     return {
@@ -223,13 +239,21 @@ function androidBatteryPart(
   battery: number,
 ): IconPart {
   const profile = effectiveProfile(settings);
+  if (settings.batteryStyle === "outline" && profile.glyphSource)
+    return aospBattery(
+      settings,
+      color,
+      profile.glyphSource === "aosp14" ? 14 : 15,
+    );
   const vertical = profile.battery === "vertical";
   const w = vertical ? 10 : 25,
     h = vertical ? 16 : 12;
   const y = (20 - h) / 2;
   const outside =
     settings.showBatteryPercent && settings.batteryStyle === "outline";
-  const prefix = outside ? String(battery).length * 6 + 9 : 0;
+  const prefix = outside
+    ? String(battery).length * 6 + 9 + (settings.spaceBeforePercent ? 3 : 0)
+    : 0;
   const fill = settings.charging
     ? "#22c55e"
     : settings.lowPower
@@ -255,7 +279,7 @@ function androidBatteryPart(
     width: prefix + w + (vertical ? 2 : 3) + (settings.charging ? 10 : 0),
     svg: () => {
       const percent = outside
-        ? `<text x="${prefix - 3}" y="14" text-anchor="end" font-family="Arial,sans-serif" font-size="10.5" fill="${color}">${battery}%</text>`
+        ? `<text x="${prefix - 3}" y="14" text-anchor="end" font-family="Arial,sans-serif" font-size="10.5" fill="${color}">${battery}${settings.spaceBeforePercent ? " " : ""}%</text>`
         : "";
       const innerW = w - 4,
         innerH = h - 4;
@@ -314,14 +338,14 @@ function batteryPart(
     };
   }
   const percent = settings.showBatteryPercent
-    ? battery.toString().length * 6 + 9
+    ? battery.toString().length * 6 + 9 + (settings.spaceBeforePercent ? 3 : 0)
     : 0;
   return {
     width: percent + 26,
     svg: () => {
       let out = "";
       if (percent)
-        out += `<text x="${percent - 3}" y="14" text-anchor="end" font-family="Arial,sans-serif" font-size="10.5" fill="${color}">${battery}%</text>`;
+        out += `<text x="${percent - 3}" y="14" text-anchor="end" font-family="Arial,sans-serif" font-size="10.5" fill="${color}">${battery}${settings.spaceBeforePercent ? " " : ""}%</text>`;
       out += `<g transform="translate(${percent} 0)"><rect x=".5" y="4" width="23" height="12" rx="3" fill="none" stroke="${color}" stroke-width="1" opacity=".55"/><rect x="24.5" y="8" width="1.5" height="4" rx=".7" fill="${color}" opacity=".55"/>`;
       if (battery > 0)
         out += `<rect x="2.5" y="6" width="${(19 * battery) / 100}" height="8" rx="1.2" fill="${level}"/>`;
@@ -349,13 +373,31 @@ export function statusIcons(settings: PhoneSettings): {
     if (settings[key]) parts.push(SMALL_ICONS[key]);
   if (settings.vpn) parts.push(textBadge("VPN", true));
   const cellular: IconPart[] = [];
-  if (settings.airplane) cellular.push(airplaneIcon(profile.airplane));
-  else {
+  const stockVersion =
+    profile.glyphSource === "aosp14"
+      ? 14
+      : profile.glyphSource === "aosp15"
+        ? 15
+        : undefined;
+  if (settings.airplane)
+    cellular.push(
+      stockVersion
+        ? aospAirplane(stockVersion)
+        : airplaneIcon(profile.airplane),
+    );
+  else if (settings.showCellular !== false) {
     if (settings.hd) cellular.push(textBadge("HD", true));
-    cellular.push(signalBars(settings.signal, false, profile.signal));
+    cellular.push(
+      signalBars(settings.signal, false, profile.signal, stockVersion),
+    );
     if (settings.dualSim)
       cellular.push(
-        signalBars(Math.max(0, settings.signal - 1), true, profile.signal),
+        signalBars(
+          Math.max(0, settings.signal - 1),
+          true,
+          profile.signal,
+          stockVersion,
+        ),
       );
     if (
       settings.wifi === 0 &&
@@ -367,27 +409,31 @@ export function statusIcons(settings: PhoneSettings): {
   const wifi: IconPart[] =
     settings.wifi > 0
       ? [
-          {
-            width: 18,
-            svg: (c) =>
-              profile.wifi === "fan"
-                ? `<path d="M0 6Q9 -1 18 6L9 18Z" fill="${c}" ${settings.wifi === 3 ? "" : DIM}/>${settings.wifi < 3 ? `<path d="${settings.wifi === 2 ? "M4 10Q9 6 14 10L9 18Z" : "M7 14Q9 12 11 14L9 18Z"}" fill="${c}"/>` : ""}`
-                : `<g fill="none" stroke-width="${profile.wifiStroke}" stroke-linecap="round"><path d="M1 7Q9 0 17 7" stroke="${c}" ${settings.wifi >= 3 ? "" : DIM}/><path d="M3.8 10.6Q9 6 14.2 10.6" stroke="${c}" ${settings.wifi >= 2 ? "" : DIM}/><path d="M6.6 14Q9 12 11.4 14" stroke="${c}"/></g><circle cx="9" cy="16.6" r="1.3" fill="${c}"/>`,
-          },
+          stockVersion
+            ? aospWifi(settings.wifi, stockVersion)
+            : {
+                width: 18,
+                svg: (c) =>
+                  profile.wifi === "fan"
+                    ? `<path d="M0 6Q9 -1 18 6L9 18Z" fill="${c}" ${settings.wifi >= 3 ? "" : DIM}/>${settings.wifi < 3 ? `<path d="${settings.wifi === 2 ? "M4 10Q9 6 14 10L9 18Z" : "M7 14Q9 12 11 14L9 18Z"}" fill="${c}"/>` : ""}`
+                    : `<g fill="none" stroke-width="${profile.wifiStroke}" stroke-linecap="round"><path d="M1 7Q9 0 17 7" stroke="${c}" ${settings.wifi >= 3 ? "" : DIM}/><path d="M3.8 10.6Q9 6 14.2 10.6" stroke="${c}" ${settings.wifi >= 2 ? "" : DIM}/><path d="M6.6 14Q9 12 11.4 14" stroke="${c}"/></g><circle cx="9" cy="16.6" r="1.3" fill="${c}"/>`,
+              },
         ]
       : [];
   parts.push(
     ...(profile.wifiFirst ? [...wifi, ...cellular] : [...cellular, ...wifi]),
   );
-  parts.push(batteryPart(settings, color, battery));
+  const batteryIcon = batteryPart(settings, color, battery);
+  parts.push(batteryIcon);
   const gap = profile.gap;
   let x = 0;
   let content = "";
-  for (const part of parts) {
+  for (const [index, part] of parts.entries()) {
+    if (index) x += stockVersion && part === batteryIcon ? 8 : gap;
     content += `<g transform="translate(${x} 0)">${part.svg(color)}</g>`;
-    x += part.width + gap;
+    x += part.width;
   }
-  const width = Math.ceil(x - gap + 1);
+  const width = Math.ceil(x + 1);
   return {
     width,
     svg: `<svg xmlns="http://www.w3.org/2000/svg" data-system="${phoneModel(settings.modelId).system}" width="${width}" height="20" viewBox="0 0 ${width} 20">${content}</svg>`,
@@ -508,22 +554,25 @@ function renderPhoneLayers(doc: TemplateDoc, raw: PhoneSettings): TemplateDoc {
     fontSize: number,
     extra: Partial<TextLayer> = {},
   ) => {
-    const units = [...value].reduce(
-      (n, ch) =>
-        n +
-        (phone.rendering === "natural" && role === "time"
-          ? /\d/.test(ch)
-            ? 0.56
-            : ch === ":" || ch === " "
-              ? 0.28
-              : 0.68
-          : /[^\x00-\xff]/.test(ch)
-            ? 1.1
-            : ch === " "
-              ? 0.4
-              : 0.75),
-      0,
-    );
+    const clockFont = role === "time" ? clockFontForSettings(phone) : undefined;
+    const units = clockFont
+      ? numericAdvance(clockFont, value)
+      : [...value].reduce(
+          (n, ch) =>
+            n +
+            (phone.rendering === "natural" && role === "time"
+              ? /\d/.test(ch)
+                ? 0.56
+                : ch === ":" || ch === " "
+                  ? 0.28
+                  : 0.68
+              : /[^\x00-\xff]/.test(ch)
+                ? 1.1
+                : ch === " "
+                  ? 0.4
+                  : 0.75),
+          0,
+        );
     const fittedFont = Math.min(
       fontSize,
       box.width / Math.max(1, units),
@@ -531,6 +580,23 @@ function renderPhoneLayers(doc: TemplateDoc, raw: PhoneSettings): TemplateDoc {
     );
     const textY = box.y + (fontSize - fittedFont) * 0.7;
 
+    if (clockFont) {
+      const height = fittedFont * 1.4;
+      return layer(
+        role,
+        createImageLayer(
+          {
+            ...box,
+            y: bounded ? Math.max(0, Math.min(textY, bar - height)) : textY,
+            height,
+          },
+          svgSource(
+            numericSvg(clockFont, value, fittedFont, height, box.width, color),
+          ),
+          { name, fit: "stretch", autoFocus: false },
+        ),
+      );
+    }
     return layer(
       role,
       createTextLayer(

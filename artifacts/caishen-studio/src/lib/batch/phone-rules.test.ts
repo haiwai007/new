@@ -254,3 +254,20 @@ it("retains existing single-drawing fixed preset values when batch rules are dis
   expect(next.phone!.battery).toBe(80);
   expect(next.phone!.lowPower).toBe(true);
 });
+
+it("samples the target model's actual Wi-Fi range after a random model switch", async () => {
+  const { naturalPhoneSettings } = await import("../phone/layers");
+  const { settingsForModel } = await import("../phone/profiles");
+  const phone = settingsForModel(naturalPhoneSettings(), "pixel9");
+  const doc = applyPhoneLayers(
+    structuredClone(BUILTIN_TEMPLATES[0].doc),
+    phone,
+  );
+  const rules = { ...defaultPhoneBatchRules(phone), enabled: true, wifi: true };
+  expect(
+    applyPhoneBatchRules(doc, rules, () => 0.999, "pixel9").phone!.wifi,
+  ).toBe(4);
+  expect(
+    applyPhoneBatchRules(doc, rules, () => 0.999, "galaxys25").phone!.wifi,
+  ).toBe(3);
+});

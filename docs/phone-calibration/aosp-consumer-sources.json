@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "rows": [
+    {
+      "url": "https://android.googlesource.com/platform/frameworks/base/+/android-14.0.0_r1/packages/SettingsLib/src/com/android/settingslib/graph/SignalDrawable.java?format=TEXT",
+      "sha256": "2c0509d4ac2ceda78455d0b24daeaa117d27a56464143d71d52d5790ee43fa7a",
+      "scope": "Pinned upstream consumer implementation; not OEM approval"
+    },
+    {
+      "url": "https://android.googlesource.com/platform/frameworks/base/+/android-14.0.0_r1/packages/SettingsLib/src/com/android/settingslib/graph/ThemedBatteryDrawable.kt?format=TEXT",
+      "sha256": "af847ae75bcacd69bccef68db74633f06911bea4563f22c4b156fa3a19da87f8",
+      "scope": "Pinned upstream consumer implementation; not OEM approval"
+    },
+    {
+      "url": "https://android.googlesource.com/platform/frameworks/base/+/android-14.0.0_r1/packages/SystemUI/src/com/android/systemui/battery/BatteryMeterView.java?format=TEXT",
+      "sha256": "938902a70b5ca6bc460006b93479bdbdd3215cfe33a5008847f9ac84c7c50d89",
+      "scope": "Pinned upstream consumer implementation; not OEM approval"
+    },
+    {
+      "url": "https://android.googlesource.com/platform/frameworks/base/+/android-14.0.0_r1/packages/SystemUI/src/com/android/systemui/statusbar/connectivity/WifiIcons.java?format=TEXT",
+      "sha256": "7691e756c7b9d100962fd0c0f85f15967c0f0fba5dbe3c40aa018fae430ebfd8",
+      "scope": "Pinned upstream consumer implementation; not OEM approval"
+    },
+    {
+      "url": "https://android.googlesource.com/platform/frameworks/base/+/android-14.0.0_r1/packages/SystemUI/res/layout/battery_percentage_view.xml?format=TEXT",
+      "sha256": "0b73887379527271a73438e44672f0ad40a2484e572aaef53d535adad52d4d09",
+      "scope": "Pinned upstream consumer implementation; not OEM approval"
+    },
+    {
+      "url": "https://android.googlesource.com/platform/frameworks/base/+/android-14.0.0_r1/packages/SystemUI/res/values/dimens.xml?format=TEXT",
+      "sha256": "b8a29bebc591ddcc67e229dcb80bc466d6dda15c55c454780c5e0d85b14fa192",
+      "scope": "Battery icon height 13dp, width 7.8dp, percent padding 4dp and icon spacing; not OEM approval"
+    },
+    {
+      "url": "https://android.googlesource.com/platform/frameworks/base/+/android-15.0.0_r1/packages/SystemUI/res/values/dimens.xml?format=TEXT",
+      "sha256": "b9b08c1d9a934ddef7a097df0fe981a84e2305b833ecbd461ed940e55bdd1248",
+      "scope": "Battery icon height 13dp, width 7.8dp, percent padding 4dp and icon spacing; not OEM approval"
+    }
+  ]
+}

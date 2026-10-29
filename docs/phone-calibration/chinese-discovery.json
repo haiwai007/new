@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "scope": "Public search results only; verify exact model, ROM, version and screenshot before calibration",
+  "rows": [
+    {
+      "modelId": "redmik70",
+      "name": "Redmi K70",
+      "query": "红米 K70 评测 系统 界面",
+      "searchUrl": "https://www.baidu.com/s?wd=%E7%BA%A2%E7%B1%B3%20K70%20%E8%AF%84%E6%B5%8B%20%E7%B3%BB%E7%BB%9F%20%E7%95%8C%E9%9D%A2",
+      "httpStatus": 200,
+      "blocked": false,
+      "checkedAt": "2026-10-29T03:02:21.989Z",
+      "results": [
+        {
+          "title": "一直想要个 红米 到✋一星期 体验感棒 屏幕清晰 游戏流畅 续航给力",
+          "url": "https://www.xiaomi.cn/post/44364898"
+        },
+        {
+          "title": "Redmi K70",
+          "url": "https://www.mi.com/redmi-k70"
+        },
+        {
+          "title": "实测 Redmi K70 :骁龙8 Gen2+澎湃OS,2K价位段的性能小钢炮?_手机_什么值得买",
+          "url": "https://post.smzdm.com/p/a243rwx2/"
+        },
+        {
+          "title": "红米K70 澎湃OS别只会开机就用,这套设置能把体验拉开差距",
+          "url": "https://baijiahao.baidu.com/s?id=1874570725403692944&wfr=spider&for=pc"
+        },
+        {
+          "title": "红米K70 升级记🎉",
+          "url": "https://mbd.baidu.com/newspage/data/dtlandingsuper?nid=dt_4975246776068497559"
+        },
+        {
+          "title": "红米K70 澎湃OS 3.0.302.0.WNKCNXM大升级:动画、相机、互联全进化_手机_什么值得买",
+          "url": "https://post.smzdm.com/p/al35pmng"
+        },
+        {
+          "title": "红米安卓手机怎么样 红米K70 更新 系统 啦!!!_什么值得买",
+          "url": "https://post.smzdm.com/zz/p/al4ke66e/"
+        }
+      ]
+    },
+    {
+      "modelId": "redmik70pro",
+      "name": "Redmi K70 Pro",
+      "query": "红米 K70 Pro 评测 系统 界面",
+      "searchUrl": "https://www.baidu.com/s?wd=%E7%BA%A2%E7%B1%B3%20K70%20Pro%20%E8%AF%84%E6%B5%8B%20%E7%B3%BB%E7%BB%9F%20%E7%95%8C%E9%9D%A2",
+      "httpStatus": 200,
+      "blocked": true,
+      "checkedAt": "2026-10-29T03:02:25.839Z",
+      "results": []
+    }
+  ]
+}

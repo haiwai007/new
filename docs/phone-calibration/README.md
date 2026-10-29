@@ -64,3 +64,13 @@ node --test scripts/phone-calibration/model-match.test.mjs
 python3 scripts/phone-calibration/measure-screenshots.test.py
 node scripts/phone-calibration/audit-coverage.mjs
 ```
+
+## 补充公开来源与实际渲染修正
+
+前轮缺少可用标定资料的 33 个型号均补到了有效的官方硬件页面；继续检索厂商官网、支持页与 Gizmochina 公开评测，记录于 `official-device-pages.json`、`gizmo-discovery.json` 和 `gizmo-phrase-discovery.json`。官网确认硬件身份、新闻确认发布信息，均不能替代对应版本的原生状态栏截图。检索遇到验证时停止，失败请求不算有效资料。
+
+从 AOSP 固定版本 `android-14.0.0_r1`、`android-15.0.0_r1` 分别提取 24 个信号、Wi-Fi、飞行模式资源，保留 Android 15 的裁剪路径差异。原生 Android 14／15 样式修正弱信号填充方向、四级 Wi-Fi、电池在前百分比在后及电池内充电符号；其他系统不直接套用。新增隐藏蜂窝信号和百分号前留空格选项。随机 Wi-Fi 的有效范围跟随实际系统样式。
+
+使用固定提交、开放许可的 Google Sans 数字轮廓改善三个已测 Pixel 样本的时钟，Roboto 数字轮廓用于原生 Android 电量百分比。通过内嵌 SVG 路径统一预览和导出，不依赖运行设备是否安装字体，也不在运行时下载字体。三个样本的时钟二值轮廓重合度由约 18%～34% 提升为 70%～74%，具体指标见 `pixel-font-comparison.json`。这不是完整字形或所有系统版本的核准。27 个样本的位置重新渲染核对，数据见 `rendered-after.json`。
+
+复现字体：先运行 `NODE_USE_ENV_PROXY=1 node scripts/phone-calibration/collect-fonts.mjs /tmp/phone-font-sources`，再运行 `python3 scripts/phone-calibration/build-numeric-fonts.py /tmp/phone-font-sources`（需要 fontTools）。脚本核验字体及许可证哈希。出处和完整许可证随项目保留。

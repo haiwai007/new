@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "scope": "Licensed numeric outline sources. Font source identity does not approve every OEM model.",
+  "rows": [
+    {
+      "id": "google-sans",
+      "file": "GoogleSans.ttf",
+      "url": "https://raw.githubusercontent.com/google/fonts/d4eb04601981780781306966afb88e876652bab4/ofl/googlesans/GoogleSans%5BGRAD%2Copsz%2Cwght%5D.ttf",
+      "revision": "d4eb04601981780781306966afb88e876652bab4",
+      "license": "OFL-1.1",
+      "licenseUrl": "https://raw.githubusercontent.com/google/fonts/d4eb04601981780781306966afb88e876652bab4/ofl/googlesans/OFL.txt",
+      "licenseFile": "GoogleSans-OFL.txt",
+      "sha256": "d0a87d835a944b8b40d0e82a5651bb59ab97b936a2aeed5946eb57e7b2a3a90a",
+      "licenseSha256": "2b75ef20f13d83a7514aee452c4782c20cdc9ff2dee17600f44d37a06d4fb958"
+    },
+    {
+      "id": "roboto",
+      "file": "aosp14-Roboto-Regular.ttf",
+      "url": "https://android.googlesource.com/platform/external/roboto-fonts/+/android-14.0.0_r1/Roboto-Regular.ttf?format=TEXT",
+      "revision": "android-14.0.0_r1",
+      "license": "Apache-2.0",
+      "licenseUrl": "https://android.googlesource.com/platform/external/roboto-fonts/+/android-14.0.0_r1/NOTICE?format=TEXT",
+      "licenseFile": "aosp14-NOTICE",
+      "sha256": "9ca9debb09459bf4e3e7f826f5cd0f35f253902b85684921fce2ba3f28dd0f50",
+      "licenseSha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "matchingAndroid15Source": {
+        "url": "https://android.googlesource.com/platform/external/roboto-fonts/+/android-15.0.0_r1/Roboto-Regular.ttf?format=TEXT",
+        "sha256": "9ca9debb09459bf4e3e7f826f5cd0f35f253902b85684921fce2ba3f28dd0f50"
+      }
+    }
+  ]
+}

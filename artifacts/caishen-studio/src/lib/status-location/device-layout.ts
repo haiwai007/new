@@ -1,3 +1,4 @@
+import { numericAdvance, numericSvg } from "../phone/numeric-font";
 import type { TemplateDoc, Layer, ImageSource } from "../../types/template";
 import type { PhoneSettings } from "../phone/schema";
 import { phoneModel } from "../phone/models";
@@ -195,11 +196,14 @@ export function renderDeviceLocation(
   const visibleApps = phone.appIcons.filter((icon) => icon.visible);
   const time = helpers.time(phone),
     units =
-      [...time].reduce(
-        (n, ch) =>
-          n + (/\d/.test(ch) ? 0.56 : ch === ":" || ch === " " ? 0.28 : 0.68),
-        0,
-      ) + 0.15;
+      (layout.clockFont
+        ? numericAdvance(layout.clockFont, time)
+        : [...time].reduce(
+            (n, ch) =>
+              n +
+              (/\d/.test(ch) ? 0.56 : ch === ":" || ch === " " ? 0.28 : 0.68),
+            0,
+          )) + 0.15;
   const leftEnd = Math.max(
     left + 0.001,
     Math.min(
@@ -250,7 +254,16 @@ export function renderDeviceLocation(
         height: textHeight,
       },
       source(
-        `<svg xmlns="http://www.w3.org/2000/svg" width="${Math.max(1, Math.ceil(timeWidth))}" height="${Math.max(1, Math.ceil(textHeight))}" viewBox="0 0 ${timeWidth} ${textHeight}"><text x="0" y="${textHeight * 0.78}" font-family="Arial,sans-serif" font-size="${font}" font-weight="${layout.clockWeight ?? (profile.weight === "bold" ? 700 : 400)}" fill="${colour}">${escape(time)}</text></svg>`,
+        layout.clockFont
+          ? numericSvg(
+              layout.clockFont,
+              time,
+              font,
+              textHeight,
+              timeWidth,
+              colour,
+            )
+          : `<svg xmlns="http://www.w3.org/2000/svg" width="${Math.max(1, Math.ceil(timeWidth))}" height="${Math.max(1, Math.ceil(textHeight))}" viewBox="0 0 ${timeWidth} ${textHeight}"><text x="0" y="${textHeight * 0.78}" font-family="Arial,sans-serif" font-size="${font}" font-weight="${layout.clockWeight ?? (profile.weight === "bold" ? 700 : 400)}" fill="${colour}">${escape(time)}</text></svg>`,
       ),
       { name: "时间", fit: "stretch", autoFocus: false },
     ),

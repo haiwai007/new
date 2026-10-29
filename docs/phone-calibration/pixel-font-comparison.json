@@ -1,0 +1,29 @@
+{
+  "scope": "Actual browser binary clock silhouette IoU, left/bottom aligned. Controlled sample only; not full typography approval.",
+  "results": [
+    {
+      "id": "pixel9-android14",
+      "referenceSha256": "0a5a79fde8ef1c8262c4d6ec64c190abb1b9b49e8a74af2ab14072de995926c3",
+      "baselineArialIoU": 0.18181818181818182,
+      "licensedOutlineIoU": 0.7377450980392157,
+      "clockFont": "google-sans-17-500",
+      "clockSize": 13.75
+    },
+    {
+      "id": "pixel8a-pixel14",
+      "referenceSha256": "d47c577646a4e92195dcb9db85ace66a1f9408b52c60c54b1c93b74055afbf3b",
+      "baselineArialIoU": 0.34225844004656575,
+      "licensedOutlineIoU": 0.6975,
+      "clockFont": "google-sans-18-500",
+      "clockSize": 13.85
+    },
+    {
+      "id": "pixel9a-pixel15",
+      "referenceSha256": "b3def8b5d361e3155d6fb9c81e9ddfedf55f39e92de30810b53972713faeb7c8",
+      "baselineArialIoU": 0.2577903682719547,
+      "licensedOutlineIoU": 0.7328918322295805,
+      "clockFont": "google-sans-18-500",
+      "clockSize": 14.05
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 # 逐型号公开来源清单
 
-由 source-inventory.json 生成。资料候选不等于真机布局核准；完整真机核准仍为 0。原始尺寸候选 47 个型号、258 张文件；其他为 4 个仅缩略图、16 个仅评测页、33 个本轮未取得可靠资料。
+由 source-inventory.json 生成。资料候选不等于真机布局核准；完整真机核准仍为 0。原始尺寸候选 47 个型号、258 张文件；其他为 4 个仅缩略图、16 个仅评测页、33 个前轮未取得可用于标定的资料。
 
 | 型号 | 资料层级 | 原始尺寸候选数 | 页面 |
 |---|---|---|---|
@@ -104,3 +104,43 @@
 | vivo X100 Ultra | 本轮未取得可靠资料 | 0 | 待补充 |
 | iQOO 12 Pro | 本轮未取得可靠资料 | 0 | 待补充 |
 | realme GT5 Pro | 本轮未取得可靠资料 | 0 | 待补充 |
+
+## 厂商官方硬件页面补查
+
+以下 33 个型号已逐一核验官方页面标题和型号，记录页面哈希；这些页面确认硬件身份，尚不足以核准具体系统版本的状态栏。网页失效或系统不符均不得作为真实布局依据。详见 [官方页面记录](official-device-pages.json) 与 [补充公开评测候选](gizmo-discovery.json)。
+
+| 型号 | 官方页面 | 状态栏证据 |
+|---|---|---|
+| Redmi K70 | [厂商页面](https://www.mi.com/redmi-k70) | 未据此核准 |
+| Redmi K70 Pro | [厂商页面](https://www.mi.com/redmi-k70-pro) | 未据此核准 |
+| Redmi K80 | [厂商页面](https://www.mi.com/prod/redmi-k80) | 未据此核准 |
+| 华为 Pura 70 | [厂商页面](https://consumer.huawei.com/cn/support/phones/pura70/) | 未据此核准 |
+| 华为 Pura 70 Pro | [厂商页面](https://consumer.huawei.com/cn/support/phones/pura70-pro/) | 未据此核准 |
+| 华为 Mate 60 | [厂商页面](https://consumer.huawei.com/cn/support/phones/mate60/) | 未据此核准 |
+| 华为 Mate 60 Pro | [厂商页面](https://consumer.huawei.com/cn/support/phones/mate60-pro/) | 未据此核准 |
+| 华为 Mate 70 | [厂商页面](https://consumer.huawei.com/cn/phones/mate70/) | 未据此核准 |
+| 华为 Mate 70 Pro | [厂商页面](https://consumer.huawei.com/cn/phones/mate70-pro/) | 未据此核准 |
+| 荣耀 200 | [厂商页面](https://www.honor.com/cn/phones/honor-200/) | 未据此核准 |
+| 荣耀 Magic6 | [厂商页面](https://www.honor.com/cn/phones/honor-magic6/) | 未据此核准 |
+| OPPO Find X7 | [厂商页面](https://www.oppo.com/cn/smartphones/series-find-x/find-x7/) | 未据此核准 |
+| OPPO Find X8 | [厂商页面](https://www.oppo.com/cn/smartphones/series-find-x/find-x8/) | 未据此核准 |
+| OPPO Reno12 | [厂商页面](https://www.oppo.com/cn/smartphones/series-reno/reno12/) | 未据此核准 |
+| 一加 Ace 3 | [厂商页面](https://www.oneplus.com/cn/ace-3) | 未据此核准 |
+| vivo X100 | [厂商页面](https://www.vivo.com.cn/vivo/x100) | 未据此核准 |
+| vivo X200 | [厂商页面](https://www.vivo.com.cn/vivo/x200) | 未据此核准 |
+| iQOO 12 | [厂商页面](https://www.vivo.com.cn/vivo/param/iqoo12) | 未据此核准 |
+| iQOO 13 | [厂商页面](https://www.vivo.com.cn/vivo/param/iqoo13) | 未据此核准 |
+| iQOO Neo9 | [厂商页面](https://www.vivo.com.cn/vivo/param/iqooneo9) | 未据此核准 |
+| realme GT7 Pro | [厂商页面](https://www.realme.com/cn/realme-gt-7-pro) | 未据此核准 |
+| Redmi K80 Pro | [厂商页面](https://www.mi.com/prod/redmi-k80-pro) | 未据此核准 |
+| 华为 P60 | [厂商页面](https://consumer.huawei.com/cn/support/phones/p60/) | 未据此核准 |
+| 荣耀 Magic5 | [厂商页面](https://www.honor.com/cn/phones/honor-magic5/) | 未据此核准 |
+| 荣耀 Magic7 | [厂商页面](https://www.honor.com/cn/phones/honor-magic7/) | 未据此核准 |
+| OPPO Find X6 | [厂商页面](https://www.oppo.com/cn/smartphones/series-find-x/find-x6/) | 未据此核准 |
+| OPPO Reno11 Pro | [厂商页面](https://www.oppo.com/cn/smartphones/series-reno/reno11-pro/) | 未据此核准 |
+| OPPO Reno12 Pro | [厂商页面](https://www.oppo.com/cn/smartphones/series-reno/reno12-pro/) | 未据此核准 |
+| 一加 Ace 3 Pro | [厂商页面](https://www.oneplus.com/cn/ace-3-pro) | 未据此核准 |
+| vivo X90 | [厂商页面](https://www.vivo.com.cn/vivo/x90) | 未据此核准 |
+| vivo X100 Ultra | [厂商页面](https://www.vivo.com.cn/vivo/x100ultra) | 未据此核准 |
+| iQOO 12 Pro | [厂商页面](https://www.vivo.com.cn/vivo/param/iqoo12pro) | 未据此核准 |
+| realme GT5 Pro | [厂商页面](https://www.realme.com/cn/realme-gt-5-pro) | 未据此核准 |

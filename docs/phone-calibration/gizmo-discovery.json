@@ -1,0 +1,1800 @@
+{
+  "schemaVersion": 1,
+  "scope": "Publisher search candidates only; inspect model, firmware, region and images before use",
+  "rows": [
+    {
+      "modelId": "redmik70",
+      "name": "Redmi K70",
+      "query": "Redmi K70 review",
+      "searchUrl": "https://www.gizmochina.com/wp-json/wp/v2/posts?search=Redmi%20K70%20review&orderby=relevance&per_page=5&_fields=id,link,title,date,content",
+      "httpStatus": 200,
+      "blocked": false,
+      "checkedAt": "2026-10-29T03:04:52.612Z",
+      "candidates": [
+        {
+          "title": "Redmi K70 Ultra Review: Yes, it disrupted the market again",
+          "url": "https://www.gizmochina.com/2024/07/24/redmi-k70-ultra-review-yes-it-disrupted-the-market-again/",
+          "publishedAt": "2024-07-24T10:17:36",
+          "id": 640856,
+          "contentHash": "1980d7cf14d04b7bfe644ebbc6b2a601c3384433366b353f25697dcea2b236eb",
+          "exactModelMatch": false,
+          "reviewTitle": true
+        },
+        {
+          "title": "Redmi K70 SD & Pro Full Review: Best 2K straight screen phones to buy",
+          "url": "https://www.gizmochina.com/2023/12/06/redmi-k70-sd-pro-full-review-best-2k-straight-screen-phones-to-buy/",
+          "publishedAt": "2023-12-06T10:03:10",
+          "id": 588335,
+          "contentHash": "478e9e03d14574fba213010deaead757759c4e0785ca93029a3135f1cec74335",
+          "exactModelMatch": true,
+          "reviewTitle": true
+        },
+        {
+          "title": "Redmi K80 series poised for price hike, hints Redmi executive",
+          "url": "https://www.gizmochina.com/2024/10/11/redmi-k80-k80-pro-price-hike/",
+          "publishedAt": "2024-10-11T05:03:07",
+          "id": 654681,
+          "contentHash": "4d71040a9f552be5924bbd50b0fda21736ddd884a77c775549028cb0641c2660",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "Redmi Note 14 Pro+ tops chart in reviewer&#8217;s extreme battery life tests",
+          "url": "https://www.gizmochina.com/2024/09/24/redmi-note-14-pro-tops-the-chart-in-reviewers-extreme-battery-life-tests/",
+          "publishedAt": "2024-09-24T12:13:37",
+          "id": 651779,
+          "contentHash": "3e0452d8e66af99cc776556d4e05a4c4bc98b451d331ac778531ca698887b672",
+          "exactModelMatch": false,
+          "reviewTitle": true
+        },
+        {
+          "title": "Redmi K70 Ultra vs Redmi K70 Pro: Similar price but which should you buy?",
+          "url": "https://www.gizmochina.com/2024/07/25/redmi-k70-ultra-vs-k70-pro-which-should-you-buy/",
+          "publishedAt": "2024-07-25T14:40:40",
+          "id": 641329,
+          "contentHash": "46aabe86ca9180641fbf6368f5e54ca070a298fcd2b22ae8282995fbb8f01827",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        }
+      ]
+    },
+    {
+      "modelId": "redmik70pro",
+      "name": "Redmi K70 Pro",
+      "query": "Redmi K70 Pro review",
+      "searchUrl": "https://www.gizmochina.com/wp-json/wp/v2/posts?search=Redmi%20K70%20Pro%20review&orderby=relevance&per_page=5&_fields=id,link,title,date,content",
+      "httpStatus": 200,
+      "blocked": false,
+      "checkedAt": "2026-10-29T03:05:00.875Z",
+      "candidates": [
+        {
+          "title": "Redmi K70 SD & Pro Full Review: Best 2K straight screen phones to buy",
+          "url": "https://www.gizmochina.com/2023/12/06/redmi-k70-sd-pro-full-review-best-2k-straight-screen-phones-to-buy/",
+          "publishedAt": "2023-12-06T10:03:10",
+          "id": 588335,
+          "contentHash": "478e9e03d14574fba213010deaead757759c4e0785ca93029a3135f1cec74335",
+          "exactModelMatch": false,
+          "reviewTitle": true
+        },
+        {
+          "title": "Redmi K80 series poised for price hike, hints Redmi executive",
+          "url": "https://www.gizmochina.com/2024/10/11/redmi-k80-k80-pro-price-hike/",
+          "publishedAt": "2024-10-11T05:03:07",
+          "id": 654681,
+          "contentHash": "4d71040a9f552be5924bbd50b0fda21736ddd884a77c775549028cb0641c2660",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "Redmi Note 14 Pro+ tops chart in reviewer&#8217;s extreme battery life tests",
+          "url": "https://www.gizmochina.com/2024/09/24/redmi-note-14-pro-tops-the-chart-in-reviewers-extreme-battery-life-tests/",
+          "publishedAt": "2024-09-24T12:13:37",
+          "id": 651779,
+          "contentHash": "3e0452d8e66af99cc776556d4e05a4c4bc98b451d331ac778531ca698887b672",
+          "exactModelMatch": false,
+          "reviewTitle": true
+        },
+        {
+          "title": "GC Daily: Pixel 9 Pro XL auto-brightness issue, Snapdragon 8 Gen4 Clock speed",
+          "url": "https://www.gizmochina.com/2024/09/04/gc-daily-pixel-9-pro-xl-auto-brightness-issue-snapdragon-8-gen4-clock-speed/",
+          "publishedAt": "2024-09-04T04:27:21",
+          "id": 648494,
+          "contentHash": "6cda78a76a42644af6f7ef64375effea05868d962949c576a790a1497e681bda",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "Red Magic 9S Pro+ claims AnTuTu&#8217;s performance crown for August",
+          "url": "https://www.gizmochina.com/2024/09/03/antutu-top-10-performing-smartphones-august-2024/",
+          "publishedAt": "2024-09-03T08:04:31",
+          "id": 648290,
+          "contentHash": "b768abaf96f79e56427841c8cd1953dceb00a832c22f83a63761ec3a8152a385",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        }
+      ]
+    },
+    {
+      "modelId": "redmik80",
+      "name": "Redmi K80",
+      "query": "Redmi K80 review",
+      "searchUrl": "https://www.gizmochina.com/wp-json/wp/v2/posts?search=Redmi%20K80%20review&orderby=relevance&per_page=5&_fields=id,link,title,date,content",
+      "httpStatus": 200,
+      "blocked": false,
+      "checkedAt": "2026-10-29T03:05:09.225Z",
+      "candidates": [
+        {
+          "title": "REDMI K90 Pro Max Review: Apple Took Away the Plus, REDMI Brought It Back.",
+          "url": "https://www.gizmochina.com/2025/10/31/redmi-k90-pro-max-review-apple-took-away-the-plus-redmi-brought-it-back/",
+          "publishedAt": "2025-10-31T11:59:19",
+          "id": 713325,
+          "contentHash": "6faab3e86ea4a299cba00762178b46af996aac43a553f0cec07cefc46e8aad55",
+          "exactModelMatch": false,
+          "reviewTitle": true
+        },
+        {
+          "title": "Latest HyperOS Bug Report Highlights Issues on Xiaomi 15, POCO F7, and Redmi Note 12 Pro",
+          "url": "https://www.gizmochina.com/2025/10/29/xiaomi-hyperos-weekly-bug-report-wifi-charging-fixes/",
+          "publishedAt": "2025-10-29T16:53:33",
+          "id": 713150,
+          "contentHash": "d503d1451d18c03beb270d42f66255f01120ff650809bd30e778681be350bc8d",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "POCO X7 Review: Impressive Overall, But the Performance Needs Work",
+          "url": "https://www.gizmochina.com/2025/01/10/poco-x7-review-impressive-overall-but-the-performance-needs-work/",
+          "publishedAt": "2025-01-10T11:28:02",
+          "id": 668165,
+          "contentHash": "641fe212eefab56293705b57bcf35d52153910493b8e074603bb8f70988f8839",
+          "exactModelMatch": false,
+          "reviewTitle": true
+        },
+        {
+          "title": "POCO X7 Pro Review: The Best New Year&#8217;s gift from POCO",
+          "url": "https://www.gizmochina.com/2025/01/09/poco-x7-pro-review-the-best-new-years-gift-from-poco/",
+          "publishedAt": "2025-01-09T12:15:32",
+          "id": 667978,
+          "contentHash": "0b2205479af7ece928ab72d85098e9f9e5ab2284726ab552c1b6d36d43997bc7",
+          "exactModelMatch": false,
+          "reviewTitle": true
+        },
+        {
+          "title": "We unboxed the new Redmi K80 and K80 Pro",
+          "url": "https://www.gizmochina.com/2024/11/29/we-unboxed-the-new-redmi-k80-and-k80-pro/",
+          "publishedAt": "2024-11-29T06:42:11",
+          "id": 662328,
+          "contentHash": "0d0dab26acd3bf61729a36c5533a02c8c350f9230991352ef341ed762dba3d02",
+          "exactModelMatch": true,
+          "reviewTitle": false
+        }
+      ]
+    },
+    {
+      "modelId": "huaweipura70",
+      "name": "华为 Pura 70",
+      "query": "Huawei Pura 70 review",
+      "searchUrl": "https://www.gizmochina.com/wp-json/wp/v2/posts?search=Huawei%20Pura%2070%20review&orderby=relevance&per_page=5&_fields=id,link,title,date,content",
+      "httpStatus": 200,
+      "blocked": false,
+      "checkedAt": "2026-10-29T03:05:17.236Z",
+      "candidates": [
+        {
+          "title": "Huawei FreeClip 2 dual-color is official: Louder drivers, NPU AI, and colors that refuse to blend in",
+          "url": "https://www.gizmochina.com/2026/10/28/huawei-freeclip-2-dual-color-is-official-louder-drivers-npu/",
+          "publishedAt": "2026-10-28T08:23:56",
+          "id": 761130,
+          "contentHash": "99b060b4288d3aed226dd88d01b0ac97bba1f894e1d686358cf479bfdde89cb8",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "Huawei might be ready to give compact phones another chance",
+          "url": "https://www.gizmochina.com/2026/10/10/huawei-is-working-on-a-compact-6-17-inch-smartphone/",
+          "publishedAt": "2026-10-10T03:00:41",
+          "id": 758068,
+          "contentHash": "663aceb0a63f1dead2d70b48f2b772d43ba9d9b70dd2fd7d2c46e763727a7440",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "HUAWEI Pura X View Hands-On: It Is Wide!",
+          "url": "https://www.gizmochina.com/2026/09/20/huawei-pura-x-view-hands-on-it-is-wide/",
+          "publishedAt": "2026-09-20T10:59:33",
+          "id": 755141,
+          "contentHash": "11a2de9bf9db7c8f351bea2e4aaf6beee7d66fffdd47ec0b11a1ab04aa6d0dbf",
+          "exactModelMatch": false,
+          "reviewTitle": true
+        },
+        {
+          "title": "Apple iPhone 18 Pro takes second place in DXOMARK&#8217;s camera ranking, lagging behind Huawei Pura 80 Ultra",
+          "url": "https://www.gizmochina.com/2026/09/19/apple-iphone-18-pro-takes-second-place-in-dxomarks-camera-ranking-lagging-behind-huawei-pura-80-ultra/",
+          "publishedAt": "2026-09-19T17:14:24",
+          "id": 755034,
+          "contentHash": "0eb28edf7f48f4d535edb1a77bfb39d6992126019f5883c8ded2d962c7d7bc51",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "Huawei shows off new Mate XT 2 in purple and U-shaped foldable design",
+          "url": "https://www.gizmochina.com/2026/08/29/huawei-shows-off-new-mate-xt-2-in-purple-and-u-shaped-foldable-design/",
+          "publishedAt": "2026-08-29T07:47:46",
+          "id": 751478,
+          "contentHash": "253e1e109f344e88a6bbba7a86a5687b498c5d10e18718b0e8cf6aa839b1981c",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        }
+      ]
+    },
+    {
+      "modelId": "huaweipura70pro",
+      "name": "华为 Pura 70 Pro",
+      "query": "Huawei Pura 70 Pro review",
+      "searchUrl": "https://www.gizmochina.com/wp-json/wp/v2/posts?search=Huawei%20Pura%2070%20Pro%20review&orderby=relevance&per_page=5&_fields=id,link,title,date,content",
+      "httpStatus": 200,
+      "blocked": false,
+      "checkedAt": "2026-10-29T03:05:25.150Z",
+      "candidates": [
+        {
+          "title": "Huawei FreeClip 2 dual-color is official: Louder drivers, NPU AI, and colors that refuse to blend in",
+          "url": "https://www.gizmochina.com/2026/10/28/huawei-freeclip-2-dual-color-is-official-louder-drivers-npu/",
+          "publishedAt": "2026-10-28T08:23:56",
+          "id": 761130,
+          "contentHash": "99b060b4288d3aed226dd88d01b0ac97bba1f894e1d686358cf479bfdde89cb8",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "Huawei might be ready to give compact phones another chance",
+          "url": "https://www.gizmochina.com/2026/10/10/huawei-is-working-on-a-compact-6-17-inch-smartphone/",
+          "publishedAt": "2026-10-10T03:00:41",
+          "id": 758068,
+          "contentHash": "663aceb0a63f1dead2d70b48f2b772d43ba9d9b70dd2fd7d2c46e763727a7440",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "HUAWEI Pura X View Hands-On: It Is Wide!",
+          "url": "https://www.gizmochina.com/2026/09/20/huawei-pura-x-view-hands-on-it-is-wide/",
+          "publishedAt": "2026-09-20T10:59:33",
+          "id": 755141,
+          "contentHash": "11a2de9bf9db7c8f351bea2e4aaf6beee7d66fffdd47ec0b11a1ab04aa6d0dbf",
+          "exactModelMatch": false,
+          "reviewTitle": true
+        },
+        {
+          "title": "Apple iPhone 18 Pro takes second place in DXOMARK&#8217;s camera ranking, lagging behind Huawei Pura 80 Ultra",
+          "url": "https://www.gizmochina.com/2026/09/19/apple-iphone-18-pro-takes-second-place-in-dxomarks-camera-ranking-lagging-behind-huawei-pura-80-ultra/",
+          "publishedAt": "2026-09-19T17:14:24",
+          "id": 755034,
+          "contentHash": "0eb28edf7f48f4d535edb1a77bfb39d6992126019f5883c8ded2d962c7d7bc51",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "Apple launches its first foldable iPhone Duo with dual 120Hz displays, titanium build & A20 Pro chip",
+          "url": "https://www.gizmochina.com/2026/09/09/apple-iphone-duo-launched-specs-price/",
+          "publishedAt": "2026-09-09T19:51:16",
+          "id": 753550,
+          "contentHash": "ee9bb45ee48580965da155f59647411a7b8919df39b10a98a712a454c63e0351",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        }
+      ]
+    },
+    {
+      "modelId": "huaweimate60",
+      "name": "华为 Mate 60",
+      "query": "Huawei Mate 60 review",
+      "searchUrl": "https://www.gizmochina.com/wp-json/wp/v2/posts?search=Huawei%20Mate%2060%20review&orderby=relevance&per_page=5&_fields=id,link,title,date,content",
+      "httpStatus": 200,
+      "blocked": false,
+      "checkedAt": "2026-10-29T03:05:33.176Z",
+      "candidates": [
+        {
+          "title": "Huawei might be ready to give compact phones another chance",
+          "url": "https://www.gizmochina.com/2026/10/10/huawei-is-working-on-a-compact-6-17-inch-smartphone/",
+          "publishedAt": "2026-10-10T03:00:41",
+          "id": 758068,
+          "contentHash": "663aceb0a63f1dead2d70b48f2b772d43ba9d9b70dd2fd7d2c46e763727a7440",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "Huawei MatePad Air Z arrives in two versions with a 12-inch 144Hz PaperMatte display",
+          "url": "https://www.gizmochina.com/2026/09/25/huawei-matepad-air-z-arrives-in-two-versions-with-a-12-inch-144hz-papermatte-display/",
+          "publishedAt": "2026-09-25T08:42:45",
+          "id": 756103,
+          "contentHash": "f941301b246ce83803f429f471196b6f6e83a6e5a0d220c54ced81e44266c7db",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "Huawei&#8217;s China-bound MatePad Air is switching to OLED, and the MatePad Mini 2 isn&#8217;t far behind",
+          "url": "https://www.gizmochina.com/2026/09/01/huawei-matepad-air-china-oled-kirin-t93-matepad-mini-2-leak/",
+          "publishedAt": "2026-09-01T10:29:25",
+          "id": 751986,
+          "contentHash": "bdba083a2dadf22379c30bd4a9808869143e17eb06ef2779dcffe8120b722505",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "Huawei MatePad Pro 12&#8243; teaser highlights 4.7mm thin, 454g lightweight design ahead of September 2 global launch",
+          "url": "https://www.gizmochina.com/2026/08/31/huawei-matepad-pro-12-teaser-highlights-4-7mm-thin-454g-lightweight-design-ahead-of-september-2-global-launch/",
+          "publishedAt": "2026-08-31T23:27:22",
+          "id": 751866,
+          "contentHash": "0000123b4598d4b4becf1197f04ae7eed3d1383b12844af200228601b386200c",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "Huawei shows off new Mate XT 2 in purple and U-shaped foldable design",
+          "url": "https://www.gizmochina.com/2026/08/29/huawei-shows-off-new-mate-xt-2-in-purple-and-u-shaped-foldable-design/",
+          "publishedAt": "2026-08-29T07:47:46",
+          "id": 751478,
+          "contentHash": "253e1e109f344e88a6bbba7a86a5687b498c5d10e18718b0e8cf6aa839b1981c",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        }
+      ]
+    },
+    {
+      "modelId": "huaweimate60pro",
+      "name": "华为 Mate 60 Pro",
+      "query": "Huawei Mate 60 Pro review",
+      "searchUrl": "https://www.gizmochina.com/wp-json/wp/v2/posts?search=Huawei%20Mate%2060%20Pro%20review&orderby=relevance&per_page=5&_fields=id,link,title,date,content",
+      "httpStatus": 200,
+      "blocked": false,
+      "checkedAt": "2026-10-29T03:05:41.104Z",
+      "candidates": [
+        {
+          "title": "Huawei might be ready to give compact phones another chance",
+          "url": "https://www.gizmochina.com/2026/10/10/huawei-is-working-on-a-compact-6-17-inch-smartphone/",
+          "publishedAt": "2026-10-10T03:00:41",
+          "id": 758068,
+          "contentHash": "663aceb0a63f1dead2d70b48f2b772d43ba9d9b70dd2fd7d2c46e763727a7440",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "Huawei MatePad Air Z arrives in two versions with a 12-inch 144Hz PaperMatte display",
+          "url": "https://www.gizmochina.com/2026/09/25/huawei-matepad-air-z-arrives-in-two-versions-with-a-12-inch-144hz-papermatte-display/",
+          "publishedAt": "2026-09-25T08:42:45",
+          "id": 756103,
+          "contentHash": "f941301b246ce83803f429f471196b6f6e83a6e5a0d220c54ced81e44266c7db",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "Huawei&#8217;s China-bound MatePad Air is switching to OLED, and the MatePad Mini 2 isn&#8217;t far behind",
+          "url": "https://www.gizmochina.com/2026/09/01/huawei-matepad-air-china-oled-kirin-t93-matepad-mini-2-leak/",
+          "publishedAt": "2026-09-01T10:29:25",
+          "id": 751986,
+          "contentHash": "bdba083a2dadf22379c30bd4a9808869143e17eb06ef2779dcffe8120b722505",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "Huawei MatePad Pro 12&#8243; teaser highlights 4.7mm thin, 454g lightweight design ahead of September 2 global launch",
+          "url": "https://www.gizmochina.com/2026/08/31/huawei-matepad-pro-12-teaser-highlights-4-7mm-thin-454g-lightweight-design-ahead-of-september-2-global-launch/",
+          "publishedAt": "2026-08-31T23:27:22",
+          "id": 751866,
+          "contentHash": "0000123b4598d4b4becf1197f04ae7eed3d1383b12844af200228601b386200c",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "Huawei shows off new Mate XT 2 in purple and U-shaped foldable design",
+          "url": "https://www.gizmochina.com/2026/08/29/huawei-shows-off-new-mate-xt-2-in-purple-and-u-shaped-foldable-design/",
+          "publishedAt": "2026-08-29T07:47:46",
+          "id": 751478,
+          "contentHash": "253e1e109f344e88a6bbba7a86a5687b498c5d10e18718b0e8cf6aa839b1981c",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        }
+      ]
+    },
+    {
+      "modelId": "huaweimate70",
+      "name": "华为 Mate 70",
+      "query": "Huawei Mate 70 review",
+      "searchUrl": "https://www.gizmochina.com/wp-json/wp/v2/posts?search=Huawei%20Mate%2070%20review&orderby=relevance&per_page=5&_fields=id,link,title,date,content",
+      "httpStatus": 200,
+      "blocked": false,
+      "checkedAt": "2026-10-29T03:05:49.071Z",
+      "candidates": [
+        {
+          "title": "Huawei might be ready to give compact phones another chance",
+          "url": "https://www.gizmochina.com/2026/10/10/huawei-is-working-on-a-compact-6-17-inch-smartphone/",
+          "publishedAt": "2026-10-10T03:00:41",
+          "id": 758068,
+          "contentHash": "663aceb0a63f1dead2d70b48f2b772d43ba9d9b70dd2fd7d2c46e763727a7440",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "Huawei MatePad Air Z arrives in two versions with a 12-inch 144Hz PaperMatte display",
+          "url": "https://www.gizmochina.com/2026/09/25/huawei-matepad-air-z-arrives-in-two-versions-with-a-12-inch-144hz-papermatte-display/",
+          "publishedAt": "2026-09-25T08:42:45",
+          "id": 756103,
+          "contentHash": "f941301b246ce83803f429f471196b6f6e83a6e5a0d220c54ced81e44266c7db",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "Huawei&#8217;s China-bound MatePad Air is switching to OLED, and the MatePad Mini 2 isn&#8217;t far behind",
+          "url": "https://www.gizmochina.com/2026/09/01/huawei-matepad-air-china-oled-kirin-t93-matepad-mini-2-leak/",
+          "publishedAt": "2026-09-01T10:29:25",
+          "id": 751986,
+          "contentHash": "bdba083a2dadf22379c30bd4a9808869143e17eb06ef2779dcffe8120b722505",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "Huawei MatePad Pro 12&#8243; teaser highlights 4.7mm thin, 454g lightweight design ahead of September 2 global launch",
+          "url": "https://www.gizmochina.com/2026/08/31/huawei-matepad-pro-12-teaser-highlights-4-7mm-thin-454g-lightweight-design-ahead-of-september-2-global-launch/",
+          "publishedAt": "2026-08-31T23:27:22",
+          "id": 751866,
+          "contentHash": "0000123b4598d4b4becf1197f04ae7eed3d1383b12844af200228601b386200c",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "Huawei shows off new Mate XT 2 in purple and U-shaped foldable design",
+          "url": "https://www.gizmochina.com/2026/08/29/huawei-shows-off-new-mate-xt-2-in-purple-and-u-shaped-foldable-design/",
+          "publishedAt": "2026-08-29T07:47:46",
+          "id": 751478,
+          "contentHash": "253e1e109f344e88a6bbba7a86a5687b498c5d10e18718b0e8cf6aa839b1981c",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        }
+      ]
+    },
+    {
+      "modelId": "huaweimate70pro",
+      "name": "华为 Mate 70 Pro",
+      "query": "Huawei Mate 70 Pro review",
+      "searchUrl": "https://www.gizmochina.com/wp-json/wp/v2/posts?search=Huawei%20Mate%2070%20Pro%20review&orderby=relevance&per_page=5&_fields=id,link,title,date,content",
+      "httpStatus": 200,
+      "blocked": false,
+      "checkedAt": "2026-10-29T03:05:56.971Z",
+      "candidates": [
+        {
+          "title": "Huawei might be ready to give compact phones another chance",
+          "url": "https://www.gizmochina.com/2026/10/10/huawei-is-working-on-a-compact-6-17-inch-smartphone/",
+          "publishedAt": "2026-10-10T03:00:41",
+          "id": 758068,
+          "contentHash": "663aceb0a63f1dead2d70b48f2b772d43ba9d9b70dd2fd7d2c46e763727a7440",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "Huawei MatePad Air Z arrives in two versions with a 12-inch 144Hz PaperMatte display",
+          "url": "https://www.gizmochina.com/2026/09/25/huawei-matepad-air-z-arrives-in-two-versions-with-a-12-inch-144hz-papermatte-display/",
+          "publishedAt": "2026-09-25T08:42:45",
+          "id": 756103,
+          "contentHash": "f941301b246ce83803f429f471196b6f6e83a6e5a0d220c54ced81e44266c7db",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "Huawei&#8217;s China-bound MatePad Air is switching to OLED, and the MatePad Mini 2 isn&#8217;t far behind",
+          "url": "https://www.gizmochina.com/2026/09/01/huawei-matepad-air-china-oled-kirin-t93-matepad-mini-2-leak/",
+          "publishedAt": "2026-09-01T10:29:25",
+          "id": 751986,
+          "contentHash": "bdba083a2dadf22379c30bd4a9808869143e17eb06ef2779dcffe8120b722505",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "Huawei MatePad Pro 12&#8243; teaser highlights 4.7mm thin, 454g lightweight design ahead of September 2 global launch",
+          "url": "https://www.gizmochina.com/2026/08/31/huawei-matepad-pro-12-teaser-highlights-4-7mm-thin-454g-lightweight-design-ahead-of-september-2-global-launch/",
+          "publishedAt": "2026-08-31T23:27:22",
+          "id": 751866,
+          "contentHash": "0000123b4598d4b4becf1197f04ae7eed3d1383b12844af200228601b386200c",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "Huawei shows off new Mate XT 2 in purple and U-shaped foldable design",
+          "url": "https://www.gizmochina.com/2026/08/29/huawei-shows-off-new-mate-xt-2-in-purple-and-u-shaped-foldable-design/",
+          "publishedAt": "2026-08-29T07:47:46",
+          "id": 751478,
+          "contentHash": "253e1e109f344e88a6bbba7a86a5687b498c5d10e18718b0e8cf6aa839b1981c",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        }
+      ]
+    },
+    {
+      "modelId": "honor200",
+      "name": "荣耀 200",
+      "query": "Honor 200 review",
+      "searchUrl": "https://www.gizmochina.com/wp-json/wp/v2/posts?search=Honor%20200%20review&orderby=relevance&per_page=5&_fields=id,link,title,date,content",
+      "httpStatus": 200,
+      "blocked": false,
+      "checkedAt": "2026-10-29T03:06:04.888Z",
+      "candidates": [
+        {
+          "title": "Honor 200 Pro Review: Shoot A Studio Portrait With Ease",
+          "url": "https://www.gizmochina.com/2024/06/13/honor-200-pro-review-shoot-a-studio-portrait-with-ease/",
+          "publishedAt": "2024-06-13T06:32:20",
+          "id": 631478,
+          "contentHash": "ae3075161320b90c25e6cb83ea7958ceed7c4669743abe5c1d54befba064d1db",
+          "exactModelMatch": false,
+          "reviewTitle": true
+        },
+        {
+          "title": "OPPO Find X10 Pro Max Review: Pro Max? Ultra Lite!",
+          "url": "https://www.gizmochina.com/2026/10/26/oppo-find-x10-pro-max-review-pro-max-ultra-lite/",
+          "publishedAt": "2026-10-26T11:00:25",
+          "id": 757887,
+          "contentHash": "5877e48b70329f9c9536d1fdecc0a92e0a76b46216ad73e35ba10ef75cb28ced",
+          "exactModelMatch": false,
+          "reviewTitle": true
+        },
+        {
+          "title": "Honor Win RT vs POCO F8 Pro: One Has a 10,000mAh Battery, But Which Is Better?",
+          "url": "https://www.gizmochina.com/2026/10/23/honor-win-rt-vs-poco-f8-pro/",
+          "publishedAt": "2026-10-23T14:29:08",
+          "id": 760054,
+          "contentHash": "d8ed35321ac2abad5af3bdf157bad47cce05e43b29d4851edd7f8d5db58624b5",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "Honor Magic 9 Pro Max vs Vivo X500 Pro Max: What’s Different?",
+          "url": "https://www.gizmochina.com/2026/09/28/honor-magic-9-pro-max-vs-vivo-x500-pro-max-whats-different/",
+          "publishedAt": "2026-09-28T19:43:52",
+          "id": 756644,
+          "contentHash": "3c134b68bc599dae48b4eeeac5469127104bf351880a46869eb340ec0ffd3274",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "Honor 700 Pro may bring a Xiaomi-like rear display and 200MP camera",
+          "url": "https://www.gizmochina.com/2026/09/18/honor-700-pro-may-bring-a-xiaomi-like-rear-display-and-200mp-camera/",
+          "publishedAt": "2026-09-18T08:40:58",
+          "id": 754897,
+          "contentHash": "5884388492b0253d6fa4ab2f538922b9ef05bd85b54ac4cd5f71b295b83636c1",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        }
+      ]
+    },
+    {
+      "modelId": "honormagic6",
+      "name": "荣耀 Magic6",
+      "query": "Honor Magic6 review",
+      "searchUrl": "https://www.gizmochina.com/wp-json/wp/v2/posts?search=Honor%20Magic6%20review&orderby=relevance&per_page=5&_fields=id,link,title,date,content",
+      "httpStatus": 200,
+      "blocked": false,
+      "checkedAt": "2026-10-29T03:06:12.537Z",
+      "candidates": [
+        {
+          "title": "Honor Magic 6 Pro claims top spot in DxOMark&#8217;s ultra-premium camera rankings",
+          "url": "https://www.gizmochina.com/2024/03/20/honor-magic-6-pro-dxomark-camera-rankings/",
+          "publishedAt": "2024-03-20T12:55:08",
+          "id": 612319,
+          "contentHash": "f50270b5b747a466079ea4ceac5e50dac225f5ddfc6f9c1ae5398f2a8c5ee4a4",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "Honor to launch Band 9 and new watch alongside smartphones on March 18",
+          "url": "https://www.gizmochina.com/2024/03/12/honor-to-launch-band-9-and-new-watch-alongside-smartphones-on-march-18/",
+          "publishedAt": "2024-03-12T05:44:32",
+          "id": 610665,
+          "contentHash": "ccf204825ac3d3ec185396fa307f4af7f8bb9164f6598c1c1f288395a113b2ba",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "Honor Magic 6 Pro outclasses Galaxy S24 Ultra & iPhone in DxOMark tests",
+          "url": "https://www.gizmochina.com/2024/02/26/honor-magic-6-pro-outclasses-galaxy-s24-ultra-iphone-in-dxomark-tests/",
+          "publishedAt": "2024-02-26T05:23:10",
+          "id": 607117,
+          "contentHash": "95583b49e8c72039de73b14a07ad8632db547de62f5ecfd8180ea2920297cae0",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "Honor Magic 6 Pro EU & UK prices leak out ahead of MWC launch",
+          "url": "https://www.gizmochina.com/2024/02/15/honor-magic-6-pro-eu-uk-prices-leak-out-ahead-of-mwc-launch/",
+          "publishedAt": "2024-02-15T01:16:53",
+          "id": 604820,
+          "contentHash": "22900903736a86ac43ecf30e27e28064ffbf016648d1945bfa596ec6dcfddcf3",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "Honor Magic 6 Lite launched in the UK with Snapdragon 6 Gen 1, 5300mAh battery",
+          "url": "https://www.gizmochina.com/2024/01/11/honor-magic-6-lite-launched-in-the-uk-with-snapdragon-6-gen-1-5300mah-battery/",
+          "publishedAt": "2024-01-11T08:18:13",
+          "id": 597402,
+          "contentHash": "02f13bdd64fcca34aa2798ff3522007d8c7309235fe63de84f345bdf5a3719f6",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        }
+      ]
+    },
+    {
+      "modelId": "oppofindx7",
+      "name": "OPPO Find X7",
+      "query": "OPPO Find X7 review",
+      "searchUrl": "https://www.gizmochina.com/wp-json/wp/v2/posts?search=OPPO%20Find%20X7%20review&orderby=relevance&per_page=5&_fields=id,link,title,date,content",
+      "httpStatus": 200,
+      "blocked": false,
+      "checkedAt": "2026-10-29T03:06:20.904Z",
+      "candidates": [
+        {
+          "title": "Aecooly Cold Air & Cold Air Ultra Review: I Wasn’t Expecting Them to Cool This Well",
+          "url": "https://www.gizmochina.com/2026/10/02/aecooly-cold-air-and-cold-air-ultra-full-review/",
+          "publishedAt": "2026-10-02T20:35:50",
+          "id": 757095,
+          "contentHash": "126b75513b33aab97a69d4780c153a20aaff1d2a848cd04cf15a747f7bc8b206",
+          "exactModelMatch": false,
+          "reviewTitle": true
+        },
+        {
+          "title": "Here’s when ColorOS 17 update is coming to your Oppo, OnePlus, or Realme phone",
+          "url": "https://www.gizmochina.com/2026/09/18/coloros-17-update-timeline-for-oppo-oneplus-realme-phones/",
+          "publishedAt": "2026-09-18T06:28:17",
+          "id": 754882,
+          "contentHash": "82db4efb7733ca608e297a2d1877c49f9803cc3fd7a6f583d961756499ba9c53",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "Oppo ColorOS 17 (Android 17) update: Supported devices, release date, and major upgrades",
+          "url": "https://www.gizmochina.com/2026/09/10/oppo-coloros-17-android-17-update-supported-devices-release-date-and-major-upgrades/",
+          "publishedAt": "2026-09-10T09:27:12",
+          "id": 753650,
+          "contentHash": "37b433adc7bb0a7778c57a92345f610c88452843261550847d2060b117ff30a6",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "Oppo Reno 16 Review: A Compact Camera Phone That Gets Almost Everything Right",
+          "url": "https://www.gizmochina.com/2026/07/12/oppo-reno-16-review/",
+          "publishedAt": "2026-07-12T19:26:03",
+          "id": 744876,
+          "contentHash": "b708dd292038f30c9cc60f2256d11c18eb7eea499cdc0a71e7ae64643147498a",
+          "exactModelMatch": false,
+          "reviewTitle": true
+        },
+        {
+          "title": "Oppo Reno 16 Pro, Reno 16, Reno 16F launched with Oppo Bubble accessory, topnotch cameras, Snap Key",
+          "url": "https://www.gizmochina.com/2026/06/25/oppo-reno-16-series-launched-price-specifications/",
+          "publishedAt": "2026-06-25T13:11:22",
+          "id": 743003,
+          "contentHash": "157dbb73f73a1e582e865e87c4bfeded3ec5b7f8db2d01332b987191ee8edcf8",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        }
+      ]
+    },
+    {
+      "modelId": "oppofindx8",
+      "name": "OPPO Find X8",
+      "query": "OPPO Find X8 review",
+      "searchUrl": "https://www.gizmochina.com/wp-json/wp/v2/posts?search=OPPO%20Find%20X8%20review&orderby=relevance&per_page=5&_fields=id,link,title,date,content",
+      "httpStatus": 200,
+      "blocked": false,
+      "checkedAt": "2026-10-29T03:06:29.447Z",
+      "candidates": [
+        {
+          "title": "Oppo Find X8 Pro review: Perfect blend of camera prowess, design, and performance",
+          "url": "https://www.gizmochina.com/2024/12/20/oppo-find-x8-pro-review/",
+          "publishedAt": "2024-12-20T10:44:07",
+          "id": 663212,
+          "contentHash": "8bbe5d8f06c686cd4494245de671641a1929f2d25039421eda8f54a44a33e5a1",
+          "exactModelMatch": false,
+          "reviewTitle": true
+        },
+        {
+          "title": "Here’s when ColorOS 17 update is coming to your Oppo, OnePlus, or Realme phone",
+          "url": "https://www.gizmochina.com/2026/09/18/coloros-17-update-timeline-for-oppo-oneplus-realme-phones/",
+          "publishedAt": "2026-09-18T06:28:17",
+          "id": 754882,
+          "contentHash": "82db4efb7733ca608e297a2d1877c49f9803cc3fd7a6f583d961756499ba9c53",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "Oppo ColorOS 17 (Android 17) update: Supported devices, release date, and major upgrades",
+          "url": "https://www.gizmochina.com/2026/09/10/oppo-coloros-17-android-17-update-supported-devices-release-date-and-major-upgrades/",
+          "publishedAt": "2026-09-10T09:27:12",
+          "id": 753650,
+          "contentHash": "37b433adc7bb0a7778c57a92345f610c88452843261550847d2060b117ff30a6",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "Best Oppo Phones of 2026",
+          "url": "https://www.gizmochina.com/2026/08/30/best-oppo-phones/",
+          "publishedAt": "2026-08-30T19:34:34",
+          "id": 751716,
+          "contentHash": "20e977febe76a7c80a6e30c131553bc3403d5dfa7c22c2c12d8bff99a1130490",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "OPPO Find X9 Ultra Global Version Camera Test: The Best Smartphone for Travel",
+          "url": "https://www.gizmochina.com/2026/06/04/oppo-find-x9-ultra-global-version-camera-test-the-best-smartphone-for-travel/",
+          "publishedAt": "2026-06-04T08:40:10",
+          "id": 739101,
+          "contentHash": "b7b14b34ce5a914385815c10dd5dc28e9743cf8a4d74ff7fe1d67a648efdeeb2",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        }
+      ]
+    },
+    {
+      "modelId": "opporeno12",
+      "name": "OPPO Reno12",
+      "query": "OPPO Reno12 review",
+      "searchUrl": "https://www.gizmochina.com/wp-json/wp/v2/posts?search=OPPO%20Reno12%20review&orderby=relevance&per_page=5&_fields=id,link,title,date,content",
+      "httpStatus": 200,
+      "blocked": false,
+      "checkedAt": "2026-10-29T03:06:37.794Z",
+      "candidates": [
+        {
+          "title": "Oppo Reno 12 5G review: Generative AI, New Features Steal the Show in Absence of a Portrait Camera",
+          "url": "https://www.gizmochina.com/2024/07/15/oppo-reno-12-5g-review/",
+          "publishedAt": "2024-07-15T01:23:00",
+          "id": 638382,
+          "contentHash": "4162c5da9c5f05913308a9e7c44eed9dfdf4150b65b4ad5b32e1d6ab2ce8ba29",
+          "exactModelMatch": true,
+          "reviewTitle": true
+        },
+        {
+          "title": "Oppo Reno 12 series global launch this month, next Find X series to launch outside China",
+          "url": "https://www.gizmochina.com/2024/06/06/oppo-reno-12-series-global-launch-this-month-next-find-x-series-to-launch-outside-china/",
+          "publishedAt": "2024-06-06T01:25:00",
+          "id": 630051,
+          "contentHash": "50bc31c793f16da003df93e3e73c634d534a6fc84a7ab14157855a666c8e1c37",
+          "exactModelMatch": true,
+          "reviewTitle": false
+        }
+      ]
+    },
+    {
+      "modelId": "oneplusace3",
+      "name": "一加 Ace 3",
+      "query": "OnePlus Ace 3 review",
+      "searchUrl": "https://www.gizmochina.com/wp-json/wp/v2/posts?search=OnePlus%20Ace%203%20review&orderby=relevance&per_page=5&_fields=id,link,title,date,content",
+      "httpStatus": 200,
+      "blocked": false,
+      "checkedAt": "2026-10-29T03:06:46.597Z",
+      "candidates": [
+        {
+          "title": "OnePlus ACE 3 Pro Review: The Imperfect Flagship Killer",
+          "url": "https://www.gizmochina.com/2024/07/05/oneplus-ace-3-pro-review-the-imperfect-flagship-killer/",
+          "publishedAt": "2024-07-05T11:56:12",
+          "id": 636460,
+          "contentHash": "9f3fc89b42f45d197021fb07535a3576229b3e0607b13192c4c110807fb09123",
+          "exactModelMatch": false,
+          "reviewTitle": true
+        },
+        {
+          "title": "OnePlus Ace 3V Review: An upgraded POCO F5 With Snapdragon 7+ Gen 3?",
+          "url": "https://www.gizmochina.com/2024/04/03/oneplus-ace-3v-review-an-upgraded-poco-f5-with-snapdragon-7-gen-3/",
+          "publishedAt": "2024-04-03T12:08:01",
+          "id": 615830,
+          "contentHash": "e7abb4a2c64e40ca80bfed509fbdce024596e38d671ce4107f9ef907eb6a2dee",
+          "exactModelMatch": false,
+          "reviewTitle": true
+        },
+        {
+          "title": "OnePlus Ace 3 Full Review: Nothing spectacular, but a worthwhile phone.",
+          "url": "https://www.gizmochina.com/2024/01/09/oneplus-ace-3-full-review-nothing-spectacular-but-a-worthwhile-phone/",
+          "publishedAt": "2024-01-09T07:25:21",
+          "id": 596808,
+          "contentHash": "7cd54136a5274eae323c1b1b59c727ea0d78ed6369e622509a9bec4f3737059e",
+          "exactModelMatch": true,
+          "reviewTitle": true
+        },
+        {
+          "title": "OnePlus launches its first clip-on earbuds with Dynaudio-tuned dual drivers & 40h battery life",
+          "url": "https://www.gizmochina.com/2026/10/26/oneplus-buds-clip-open-ear-earbuds-launched-specs-price/",
+          "publishedAt": "2026-10-26T18:02:24",
+          "id": 760636,
+          "contentHash": "3b4bc6333c99612e9021da211ee6f252314e5cc8d229cb2a60a65124e86f3e16",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "Oppo Enco X4 launches in India with dual-driver setup, up to 13h/53h battery life, dual-device pairing",
+          "url": "https://www.gizmochina.com/2026/10/23/oppo-enco-x4-launches-in-india-with-dual-driver-setup-13h-53h-battery-life-dual-device-pairing/",
+          "publishedAt": "2026-10-23T12:26:27",
+          "id": 760038,
+          "contentHash": "15610f95a9fe514f22a634165411e3a8f34224be4291f3b780bcfbc1c3e599ea",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        }
+      ]
+    },
+    {
+      "modelId": "vivox100",
+      "name": "vivo X100",
+      "query": "vivo X100 review",
+      "searchUrl": "https://www.gizmochina.com/wp-json/wp/v2/posts?search=vivo%20X100%20review&orderby=relevance&per_page=5&_fields=id,link,title,date,content",
+      "httpStatus": 200,
+      "blocked": false,
+      "checkedAt": "2026-10-29T03:06:53.953Z",
+      "candidates": [
+        {
+          "title": "vivo X100 Ultra Full Review: From Micro to Macro, Capture Every Moment in the World",
+          "url": "https://www.gizmochina.com/2024/05/24/vivo-x100-ultra-full-review-from-micro-to-macro-capture-every-moment-in-the-world/",
+          "publishedAt": "2024-05-24T08:58:00",
+          "id": 627395,
+          "contentHash": "f8939761b83b529904f77075b1d7ce3fc2a90db06e735d9b79fc77f89a3e986d",
+          "exactModelMatch": false,
+          "reviewTitle": true
+        },
+        {
+          "title": "Here&#8217;s when OriginOS 7 update will reach Vivo and iQOO devices",
+          "url": "https://www.gizmochina.com/2026/09/19/originos-7-update-timeline-for-vivo-and-iqoo-devices/",
+          "publishedAt": "2026-09-19T06:23:03",
+          "id": 754947,
+          "contentHash": "a5c601eb42fb848203db2ec5605fafde2f6883209ddcbda7205e10803960573b",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "Vivo Android 17 update: Complete list of supported devices",
+          "url": "https://www.gizmochina.com/2026/05/21/vivo-android-17-update-complete-list-of-supported-devices/",
+          "publishedAt": "2026-05-21T07:41:53",
+          "id": 739117,
+          "contentHash": "67453fe7a079a220b1bb0509c73fdc75dfbd3d8d4d5265b6f6a6c3b77cb56bbc",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "Vivo, iQOO phones eligible for Android 17 (OriginOS 7) update",
+          "url": "https://www.gizmochina.com/2026/04/10/vivo-iqoo-phones-eligible-for-android-17-originos-7-update/",
+          "publishedAt": "2026-04-10T12:03:44",
+          "id": 734154,
+          "contentHash": "133e39f58b219893a2e1addb330c9dcface0c6c1d737bdf0c4c7fcee0acb03dd",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "Vivo, iQOO devices getting the OriginOS 6 (Android 16) update",
+          "url": "https://www.gizmochina.com/2025/12/20/vivo-iqoo-devices-getting-the-originos-6-android-16-update/",
+          "publishedAt": "2025-12-20T07:34:30",
+          "id": 720102,
+          "contentHash": "48140eebf2a356d011b82f7ff57bb8c9b40e876e9eb1d410c2bdd2a7c092ab51",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        }
+      ]
+    },
+    {
+      "modelId": "vivox200",
+      "name": "vivo X200",
+      "query": "vivo X200 review",
+      "searchUrl": "https://www.gizmochina.com/wp-json/wp/v2/posts?search=vivo%20X200%20review&orderby=relevance&per_page=5&_fields=id,link,title,date,content",
+      "httpStatus": 200,
+      "blocked": false,
+      "checkedAt": "2026-10-29T03:07:01.286Z",
+      "candidates": [
+        {
+          "title": "Still The King of Camera Phones? vivo X300 Ultra Review vs X200 Ultra",
+          "url": "https://www.gizmochina.com/2026/05/08/still-the-king-of-camera-phones-vivo-x300-ultra-review-vs-x200-ultra/",
+          "publishedAt": "2026-05-08T08:10:59",
+          "id": 733776,
+          "contentHash": "02ed103ff00be60bc34ef16889bfc0e35303e741f49f836c2f1c80dfeea0a829",
+          "exactModelMatch": false,
+          "reviewTitle": true
+        },
+        {
+          "title": "Vivo Imagine Smartphone Photography Awards return for fourth edition with new short film category",
+          "url": "https://www.gizmochina.com/2026/09/24/vivo-imagine-awards-2026-short-film-category-rs-5-lakh-prize/",
+          "publishedAt": "2026-09-24T12:08:33",
+          "id": 756019,
+          "contentHash": "0a3c05dcd62ae2d2e8ebbc1a18a524e2221546cb22c263d0f2c844a40aaf7b0e",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "Here&#8217;s when OriginOS 7 update will reach Vivo and iQOO devices",
+          "url": "https://www.gizmochina.com/2026/09/19/originos-7-update-timeline-for-vivo-and-iqoo-devices/",
+          "publishedAt": "2026-09-19T06:23:03",
+          "id": 754947,
+          "contentHash": "a5c601eb42fb848203db2ec5605fafde2f6883209ddcbda7205e10803960573b",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "Vivo X500 Pro Max teased with 3-degree gimbal stabilization for its main camera",
+          "url": "https://www.gizmochina.com/2026/08/25/vivo-x500-pro-max-teased-with-3-degree-gimbal-stabilization-for-its-main-camera/",
+          "publishedAt": "2026-08-25T08:46:09",
+          "id": 750761,
+          "contentHash": "0346a1939a6b82e20a6bdd98b7318b42eaa27934c650bac20c4c070012dbafe0",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "Vivo X300 FE sees another price hike in India, now starts at ₹89,999",
+          "url": "https://www.gizmochina.com/2026/08/10/vivo-x300-fe-sees-another-price-hike-in-india-now-starts-at-%e2%82%b989999/",
+          "publishedAt": "2026-08-10T13:27:26",
+          "id": 748531,
+          "contentHash": "94b890972989e3eb4514960d06b32ba99cacd00c528055ce2d9f39ce2ae1c6cb",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        }
+      ]
+    },
+    {
+      "modelId": "iqoo12",
+      "name": "iQOO 12",
+      "query": "iQOO 12 review",
+      "searchUrl": "https://www.gizmochina.com/wp-json/wp/v2/posts?search=iQOO%2012%20review&orderby=relevance&per_page=5&_fields=id,link,title,date,content",
+      "httpStatus": 200,
+      "blocked": false,
+      "checkedAt": "2026-10-29T03:07:09.224Z",
+      "candidates": [
+        {
+          "title": "iQOO 12 Pro Review: When The Muscle Guy Dressed Up As A Gentleman",
+          "url": "https://www.gizmochina.com/2023/11/24/iqoo-12-pro-review-when-the-muscle-guy-dressed-up-as-a-gentleman/",
+          "publishedAt": "2023-11-24T04:23:30",
+          "id": 584632,
+          "contentHash": "95bce974deb397eb17bb0703ad43804182ecd4f477f70e206ca80823ca1de4fd",
+          "exactModelMatch": false,
+          "reviewTitle": true
+        },
+        {
+          "title": "iQOO 10 Pro Review: Xiaomi 12S Pro&#8217;s most threatening competitor",
+          "url": "https://www.gizmochina.com/2022/08/21/iqoo-10-pro-review/",
+          "publishedAt": "2022-08-21T11:22:26",
+          "id": 475949,
+          "contentHash": "72cadff15edcc7049caee734f9f8f2cb279c314ac8f3fd0d8b504c25a63aacdb",
+          "exactModelMatch": false,
+          "reviewTitle": true
+        },
+        {
+          "title": "Ayaneo launches Konkr Pocket Block retro handheld with 4:3 display & Android 12",
+          "url": "https://www.gizmochina.com/2026/09/29/ayaneo-konkr-pocket-block-retro-handheld-launched-specs-price/",
+          "publishedAt": "2026-09-29T00:08:40",
+          "id": 756660,
+          "contentHash": "14dc32ab7cb1e6479f566a5fb4c632bc6fdc5a54b2284468b42d6dca3c981e61",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "Here&#8217;s when OriginOS 7 update will reach Vivo and iQOO devices",
+          "url": "https://www.gizmochina.com/2026/09/19/originos-7-update-timeline-for-vivo-and-iqoo-devices/",
+          "publishedAt": "2026-09-19T06:23:03",
+          "id": 754947,
+          "contentHash": "a5c601eb42fb848203db2ec5605fafde2f6883209ddcbda7205e10803960573b",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "iQOO Z11 Review: A Battery-Focused Mid-Ranger That Gets Most Things Right",
+          "url": "https://www.gizmochina.com/2026/08/31/iqoo-z11-review/",
+          "publishedAt": "2026-08-31T18:27:50",
+          "id": 751805,
+          "contentHash": "d9f36d43c23951488cfa8a9197b342e1404e173a53e7a64ff6a66208b245559a",
+          "exactModelMatch": false,
+          "reviewTitle": true
+        }
+      ]
+    },
+    {
+      "modelId": "iqoo13",
+      "name": "iQOO 13",
+      "query": "iQOO 13 review",
+      "searchUrl": "https://www.gizmochina.com/wp-json/wp/v2/posts?search=iQOO%2013%20review&orderby=relevance&per_page=5&_fields=id,link,title,date,content",
+      "httpStatus": 200,
+      "blocked": false,
+      "checkedAt": "2026-10-29T03:07:17.001Z",
+      "candidates": [
+        {
+          "title": "Vivo X80 Pro & iQOO 9 Pro Android 13 Preview rolls out on August 23, Here&#8217;s the details",
+          "url": "https://www.gizmochina.com/2022/08/17/vivo-x80-pro-iqoo-9-pro-android-13-preview-august-23/",
+          "publishedAt": "2022-08-17T09:45:32",
+          "id": 475733,
+          "contentHash": "72f0edfbc1557d798a9b61e5282cb11c10f43f0f5a9b06ac2d1683df37645106",
+          "exactModelMatch": false,
+          "reviewTitle": true
+        },
+        {
+          "title": "Here&#8217;s when OriginOS 7 update will reach Vivo and iQOO devices",
+          "url": "https://www.gizmochina.com/2026/09/19/originos-7-update-timeline-for-vivo-and-iqoo-devices/",
+          "publishedAt": "2026-09-19T06:23:03",
+          "id": 754947,
+          "contentHash": "a5c601eb42fb848203db2ec5605fafde2f6883209ddcbda7205e10803960573b",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "iQOO Z11 Review: A Battery-Focused Mid-Ranger That Gets Most Things Right",
+          "url": "https://www.gizmochina.com/2026/08/31/iqoo-z11-review/",
+          "publishedAt": "2026-08-31T18:27:50",
+          "id": 751805,
+          "contentHash": "d9f36d43c23951488cfa8a9197b342e1404e173a53e7a64ff6a66208b245559a",
+          "exactModelMatch": false,
+          "reviewTitle": true
+        },
+        {
+          "title": "REDMI Turbo 5, iQOO 15, 15R, Neo 10 prices go up by up to ₹10,000",
+          "url": "https://www.gizmochina.com/2026/08/15/redmi-turbo-5-iqoo-15-15r-neo-10-prices-go-up-by-up-to-%e2%82%b910000/",
+          "publishedAt": "2026-08-15T09:02:38",
+          "id": 749242,
+          "contentHash": "1dc8da4cb7a881ff701602ad6645de8b759407729fac182c03a504f1788d0f24",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "iQOO Z11 Hands-On: Testing Its AI Features, Curved AMOLED Display and 7,050mAh Battery",
+          "url": "https://www.gizmochina.com/2026/08/13/iqoo-z11-hands-on/",
+          "publishedAt": "2026-08-13T12:39:27",
+          "id": 748988,
+          "contentHash": "bdefba3de24cba8b523ad896cf58abe2babc184d6c361e5cc699b65748bdf9ff",
+          "exactModelMatch": false,
+          "reviewTitle": true
+        }
+      ]
+    },
+    {
+      "modelId": "iqooneo9",
+      "name": "iQOO Neo9",
+      "query": "iQOO Neo9 review",
+      "searchUrl": "https://www.gizmochina.com/wp-json/wp/v2/posts?search=iQOO%20Neo9%20review&orderby=relevance&per_page=5&_fields=id,link,title,date,content",
+      "httpStatus": 200,
+      "blocked": false,
+      "checkedAt": "2026-10-29T03:07:24.746Z",
+      "candidates": [
+        {
+          "title": "iQOO Neo9 Pro Review: I heard it whisper in my ear: &#8220;I&#8217;ll kill everyone under $450&#8221;",
+          "url": "https://www.gizmochina.com/2024/01/05/iqoo-neo9-pro-review-i-heard-it-whisper-in-my-ear-ill-kill-everyone-under-450/",
+          "publishedAt": "2024-01-05T09:58:13",
+          "id": 596057,
+          "contentHash": "eacdfe3113a01f551a107cb3f696ac15edfca000e0fc13b964e67efe960c0d29",
+          "exactModelMatch": false,
+          "reviewTitle": true
+        },
+        {
+          "title": "Here&#8217;s when OriginOS 7 update will reach Vivo and iQOO devices",
+          "url": "https://www.gizmochina.com/2026/09/19/originos-7-update-timeline-for-vivo-and-iqoo-devices/",
+          "publishedAt": "2026-09-19T06:23:03",
+          "id": 754947,
+          "contentHash": "a5c601eb42fb848203db2ec5605fafde2f6883209ddcbda7205e10803960573b",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "iQOO Neo10 series hinted to include iQOO 13&#8217;s SuperComputing Chip Q2 for &#8216;stronger&#8217; performance",
+          "url": "https://www.gizmochina.com/2024/11/12/iqoo-neo10-series-confirmed-to-offer-a-stronger-dual-chip-system-possibly-includes-iqoo-13s-q2-gaming-chip/",
+          "publishedAt": "2024-11-12T06:20:33",
+          "id": 659643,
+          "contentHash": "d4811fcb180497689bb660bb3bdba78f6c3b40abae5324f1a6c44a99ffa4ace5",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "OnePlus Ace 3 Full Review: Nothing spectacular, but a worthwhile phone.",
+          "url": "https://www.gizmochina.com/2024/01/09/oneplus-ace-3-full-review-nothing-spectacular-but-a-worthwhile-phone/",
+          "publishedAt": "2024-01-09T07:25:21",
+          "id": 596808,
+          "contentHash": "7cd54136a5274eae323c1b1b59c727ea0d78ed6369e622509a9bec4f3737059e",
+          "exactModelMatch": false,
+          "reviewTitle": true
+        },
+        {
+          "title": "Tranya Nova Lite Review: A Good Pair of TWS Earbuds in Budget",
+          "url": "https://www.gizmochina.com/2024/01/08/tranya-nova-lite-review-a-good-pair-of-tws-earbuds-in-budget/",
+          "publishedAt": "2024-01-08T22:01:27",
+          "id": 596411,
+          "contentHash": "e395b00b0afd20e2bd93d9d5e3914d27657c0157aef31ccfece6776291c6263e",
+          "exactModelMatch": false,
+          "reviewTitle": true
+        }
+      ]
+    },
+    {
+      "modelId": "realmegt7pro",
+      "name": "realme GT7 Pro",
+      "query": "realme GT7 Pro review",
+      "searchUrl": "https://www.gizmochina.com/wp-json/wp/v2/posts?search=realme%20GT7%20Pro%20review&orderby=relevance&per_page=5&_fields=id,link,title,date,content",
+      "httpStatus": 200,
+      "blocked": false,
+      "checkedAt": "2026-10-29T03:07:32.499Z",
+      "candidates": [
+        {
+          "title": "realme GT7 Pro Review: The cheapest Snapdragon 8 Elite phone is here",
+          "url": "https://www.gizmochina.com/2024/11/09/realme-gt7-pro-review-the-cheapest-snapdragon-8-elite-phone-is-here/",
+          "publishedAt": "2024-11-09T14:41:49",
+          "id": 659176,
+          "contentHash": "4f6a78bdab8536b981e12f58320b1084ace223131a9afbe7cbbbb178081c2ff1",
+          "exactModelMatch": true,
+          "reviewTitle": true
+        },
+        {
+          "title": "Realme GT7 Pro review is up: 2024’s Affordable Flagship Killer for power users",
+          "url": "https://www.gizmochina.com/2024/11/09/realme-gt-7-pro-review-2024s-affordable-flagship-killer-for-power-users/",
+          "publishedAt": "2024-11-09T14:12:01",
+          "id": 659316,
+          "contentHash": "2b66183ba31385de7bc7f44fa1d7690ff4a77d748a1b1d0778de6c4cf50cecbe",
+          "exactModelMatch": true,
+          "reviewTitle": true
+        },
+        {
+          "title": "Here’s when ColorOS 17 update is coming to your Oppo, OnePlus, or Realme phone",
+          "url": "https://www.gizmochina.com/2026/09/18/coloros-17-update-timeline-for-oppo-oneplus-realme-phones/",
+          "publishedAt": "2026-09-18T06:28:17",
+          "id": 754882,
+          "contentHash": "82db4efb7733ca608e297a2d1877c49f9803cc3fd7a6f583d961756499ba9c53",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "Realme GT 8 Pro could pack anti-glare display tech similar to S25 Ultra",
+          "url": "https://www.gizmochina.com/2025/06/23/realme-gt-8-pro-could-pack-anti-glare-display-tech-seen-on-galaxy-s25-ultra/",
+          "publishedAt": "2025-06-23T21:06:00",
+          "id": 693871,
+          "contentHash": "ac3807155117b6ecff20fb0717af4c40a21dbb78ce5c2fffacadff2d99c249ff",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "Deal: Get $50 off on the Realme GT 7 Pro at Geekwills",
+          "url": "https://www.gizmochina.com/2025/02/13/deal-get-50-off-on-the-realme-gt-7-pro-at-giztop-coupon/",
+          "publishedAt": "2025-02-13T04:09:25",
+          "id": 673040,
+          "contentHash": "ba405eea1771205fe5621985f960aa942cfc8e65c263ca26d3706c30b3d8044d",
+          "exactModelMatch": true,
+          "reviewTitle": false
+        }
+      ]
+    },
+    {
+      "modelId": "redmik80pro",
+      "name": "Redmi K80 Pro",
+      "query": "Redmi K80 Pro review",
+      "searchUrl": "https://www.gizmochina.com/wp-json/wp/v2/posts?search=Redmi%20K80%20Pro%20review&orderby=relevance&per_page=5&_fields=id,link,title,date,content",
+      "httpStatus": 200,
+      "blocked": false,
+      "checkedAt": "2026-10-29T03:07:40.717Z",
+      "candidates": [
+        {
+          "title": "REDMI K90 Pro Max Review: Apple Took Away the Plus, REDMI Brought It Back.",
+          "url": "https://www.gizmochina.com/2025/10/31/redmi-k90-pro-max-review-apple-took-away-the-plus-redmi-brought-it-back/",
+          "publishedAt": "2025-10-31T11:59:19",
+          "id": 713325,
+          "contentHash": "6faab3e86ea4a299cba00762178b46af996aac43a553f0cec07cefc46e8aad55",
+          "exactModelMatch": false,
+          "reviewTitle": true
+        },
+        {
+          "title": "Latest HyperOS Bug Report Highlights Issues on Xiaomi 15, POCO F7, and Redmi Note 12 Pro",
+          "url": "https://www.gizmochina.com/2025/10/29/xiaomi-hyperos-weekly-bug-report-wifi-charging-fixes/",
+          "publishedAt": "2025-10-29T16:53:33",
+          "id": 713150,
+          "contentHash": "d503d1451d18c03beb270d42f66255f01120ff650809bd30e778681be350bc8d",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "Poco F7 Pro and F7 Ultra appear on regulatory listing ahead of launch",
+          "url": "https://www.gizmochina.com/2025/01/14/poco-f7-pro-and-f7-ultra-appear-on-regulatory-listing-ahead-of-launch/",
+          "publishedAt": "2025-01-14T09:56:24",
+          "id": 668609,
+          "contentHash": "02f23a90e8f4f38c8ccfe66d8325e3c6dee2064ab364a52dd2de77a674f87438",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "POCO X7 Review: Impressive Overall, But the Performance Needs Work",
+          "url": "https://www.gizmochina.com/2025/01/10/poco-x7-review-impressive-overall-but-the-performance-needs-work/",
+          "publishedAt": "2025-01-10T11:28:02",
+          "id": 668165,
+          "contentHash": "641fe212eefab56293705b57bcf35d52153910493b8e074603bb8f70988f8839",
+          "exactModelMatch": false,
+          "reviewTitle": true
+        },
+        {
+          "title": "POCO X7 Pro Review: The Best New Year&#8217;s gift from POCO",
+          "url": "https://www.gizmochina.com/2025/01/09/poco-x7-pro-review-the-best-new-years-gift-from-poco/",
+          "publishedAt": "2025-01-09T12:15:32",
+          "id": 667978,
+          "contentHash": "0b2205479af7ece928ab72d85098e9f9e5ab2284726ab552c1b6d36d43997bc7",
+          "exactModelMatch": false,
+          "reviewTitle": true
+        }
+      ]
+    },
+    {
+      "modelId": "huaweip60",
+      "name": "华为 P60",
+      "query": "Huawei P60 review",
+      "searchUrl": "https://www.gizmochina.com/wp-json/wp/v2/posts?search=Huawei%20P60%20review&orderby=relevance&per_page=5&_fields=id,link,title,date,content",
+      "httpStatus": 200,
+      "blocked": false,
+      "checkedAt": "2026-10-29T03:07:48.409Z",
+      "candidates": [
+        {
+          "title": "Huawei’s new Kirin 9010 chip tested in real-life gaming, performs much better than expected with no overheating",
+          "url": "https://www.gizmochina.com/2024/04/19/huawei-kirin-9010-chip-benchmark-gaming/",
+          "publishedAt": "2024-04-19T10:02:58",
+          "id": 619866,
+          "contentHash": "e1eccb6b1a677b73b6d4bf81c265f29a306729c31c0a478aa5a69acea8272d20",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "GC Daily: We go hands on with Huawei Pura, HMD has a &#8216;Boring&#8217; phone",
+          "url": "https://www.gizmochina.com/2024/04/19/gc-daily-huawei-pura-hands-on-hmd-boring-phone/",
+          "publishedAt": "2024-04-19T04:40:19",
+          "id": 619772,
+          "contentHash": "bc09dc0ae9602fa2d4f8f20ddb4a04963611f246bc30ce249c92517654294d4c",
+          "exactModelMatch": false,
+          "reviewTitle": true
+        },
+        {
+          "title": "We unbox the Huawei Pura 70 Ultra [VIDEO]",
+          "url": "https://www.gizmochina.com/2024/04/18/huawei-pura-70-ultra-unboxing/",
+          "publishedAt": "2024-04-18T12:54:39",
+          "id": 619651,
+          "contentHash": "d147506f9cf5c3372874853b11298be7cfaf13bf95b1831c6be0485514dcecd6",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "Huawei introduces Pura branding: Pura 70, Pura 70 Pro, Pura 70 Pro+, Pura 70 Ultra coming soon",
+          "url": "https://www.gizmochina.com/2024/04/15/huawei-pura-branding-launched/",
+          "publishedAt": "2024-04-15T02:43:46",
+          "id": 618717,
+          "contentHash": "9a584d0aad5d2a0e1bcce6c5cb6b905cc6c92465096a09e6e584d9f63660e859",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "Huawei Enjoy 70 launched with 6.75-inch display, 6,000mAh battery, 50MP dual cameras",
+          "url": "https://www.gizmochina.com/2023/12/05/huawei-enjoy-70-launched-with-6-75-inch-display-6000mah-battery-50mp-dual-cameras/",
+          "publishedAt": "2023-12-05T02:57:55",
+          "id": 587927,
+          "contentHash": "acd0880a5df5a711f2eac1cd09995617fd07c99c65dd6aa2d31f94ec87cb3b0c",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        }
+      ]
+    },
+    {
+      "modelId": "honormagic5",
+      "name": "荣耀 Magic5",
+      "query": "Honor Magic5 review",
+      "searchUrl": "https://www.gizmochina.com/wp-json/wp/v2/posts?search=Honor%20Magic5%20review&orderby=relevance&per_page=5&_fields=id,link,title,date,content",
+      "httpStatus": 200,
+      "blocked": false,
+      "checkedAt": "2026-10-29T03:07:56.105Z",
+      "candidates": [
+        {
+          "title": "Honor Play 8T launch date, key specifications confirmed",
+          "url": "https://www.gizmochina.com/2023/10/17/honor-play-8t-launch-date-key-specifications-confirmed/",
+          "publishedAt": "2023-10-17T04:40:07",
+          "id": 575527,
+          "contentHash": "c12ddf39bc5381723a9f6f0922edb3d63682567420d861396f731cb61318d198",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "Huawei’s next flagship phone to be similar to Honor Magic 5 Pro",
+          "url": "https://www.gizmochina.com/2023/10/12/huaweis-next-flagship-phone-to-be-similar-to-honor-magic-5-pro/",
+          "publishedAt": "2023-10-12T04:36:49",
+          "id": 574373,
+          "contentHash": "2dc0f13818e1e1b62fe6374b28dc8be741e2a0c280cc6a26e4ca93e0245ba6b8",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "HTech to begin manufacturing Honor smartphones in India in early 2024: Madhav Sheth",
+          "url": "https://www.gizmochina.com/2023/10/09/honor-make-phones-india-early-2023/",
+          "publishedAt": "2023-10-09T10:10:48",
+          "id": 573388,
+          "contentHash": "1da9e239673b835bd384112f1411d13b8573f7d865c32e20dc39eb349fce96de",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "Honor Play 50 Plus launch date, key specifications, design confirmed",
+          "url": "https://www.gizmochina.com/2023/10/09/honor-play-50-plus-launch-date-confirmed-key-specifications-design-confirmed/",
+          "publishedAt": "2023-10-09T05:27:06",
+          "id": 573317,
+          "contentHash": "366cdf66a2f95c47f136e5962215c952ec245b48de48accbe422572b25aeeff7",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "Honor Magic 5 global launch soon as its receives approval from IMDA authority",
+          "url": "https://www.gizmochina.com/2023/06/15/honor-magic-5-global-launch-soon-as-its-receives-approval-from-imda-authority/",
+          "publishedAt": "2023-06-15T01:17:00",
+          "id": 544388,
+          "contentHash": "fcc6043fd213ad25703dcb03031d14f28e8932fabd4c03c76147cf1f5568d7b9",
+          "exactModelMatch": true,
+          "reviewTitle": false
+        }
+      ]
+    },
+    {
+      "modelId": "honormagic7",
+      "name": "荣耀 Magic7",
+      "query": "Honor Magic7 review",
+      "searchUrl": "https://www.gizmochina.com/wp-json/wp/v2/posts?search=Honor%20Magic7%20review&orderby=relevance&per_page=5&_fields=id,link,title,date,content",
+      "httpStatus": 200,
+      "blocked": false,
+      "checkedAt": "2026-10-29T03:08:03.846Z",
+      "candidates": [
+        {
+          "title": "Old Manchester United photos revived with Honor Magic 7 Pro&#8217;s AI upscaling",
+          "url": "https://www.gizmochina.com/2025/02/24/old-manchester-united-photos-revived-with-honor-magic-7-pros-ai-upscaling/",
+          "publishedAt": "2025-02-24T03:17:00",
+          "id": 674547,
+          "contentHash": "e240974adf77c68dfa750bbe6349f806d3626406f2e33ffe4eff129886d591fe",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "Honor Magic 7 Pro Review: This is Honor&#8217;s Best Phone yet",
+          "url": "https://www.gizmochina.com/2025/01/24/honor-magic-7-pro-review-this-is-honors-best-phone-yet/",
+          "publishedAt": "2025-01-24T10:26:33",
+          "id": 669899,
+          "contentHash": "f75cfc84345f18f5fa410f3634cccbcb3acea7a2e842e213a38ba9aaefbf893a",
+          "exactModelMatch": false,
+          "reviewTitle": true
+        },
+        {
+          "title": "Honor Magic 7 Pro and Magic 7 Lite launched in Europe with Qualcomm SoCs",
+          "url": "https://www.gizmochina.com/2025/01/15/honor-magic-7-pro-and-magic-7-lite-launched-in-europe-with-qualcomm-socs/",
+          "publishedAt": "2025-01-15T10:53:06",
+          "id": 668770,
+          "contentHash": "7477c0c0a9ba2453a7ed8ac7932673e9544577cab9f62a95461aca32597748a0",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "Honor Magic 7 Lite Review: Give the MagicOS a Tough but Light Try",
+          "url": "https://www.gizmochina.com/2025/01/08/honor-magic-7-lite-review-give-the-magicos-a-tough-but-light-try/",
+          "publishedAt": "2025-01-08T06:56:44",
+          "id": 667586,
+          "contentHash": "96694d9b03c0f7c8123e3a9440a38ce7908d48c1de79910cdfcb8b2d2524b819",
+          "exactModelMatch": false,
+          "reviewTitle": true
+        },
+        {
+          "title": "Android 16 beta is now available for these devices",
+          "url": "https://www.gizmochina.com/2025/04/11/android-16-beta-is-now-available-for-these-devices/",
+          "publishedAt": "2025-04-11T12:38:01",
+          "id": 681567,
+          "contentHash": "ec99764d0a7605e79c1f3377dc047b36f2282d5f49022a397025f2d370fadbd4",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        }
+      ]
+    },
+    {
+      "modelId": "oppofindx6",
+      "name": "OPPO Find X6",
+      "query": "OPPO Find X6 review",
+      "searchUrl": "https://www.gizmochina.com/wp-json/wp/v2/posts?search=OPPO%20Find%20X6%20review&orderby=relevance&per_page=5&_fields=id,link,title,date,content",
+      "httpStatus": 200,
+      "blocked": false,
+      "checkedAt": "2026-10-29T03:08:12.586Z",
+      "candidates": [
+        {
+          "title": "OPPO FIND X6 PRO Review Part 1: Triple Main Cameras, All In One",
+          "url": "https://www.gizmochina.com/2023/03/22/oppo-find-x6-pro-review-part-1-triple-main-cameras-all-in-one/",
+          "publishedAt": "2023-03-22T08:05:29",
+          "id": 524273,
+          "contentHash": "2058ff0dd47c5a19a173f0521ab67c4ba8d8c8458d20d73f143172f6f9c80248",
+          "exactModelMatch": false,
+          "reviewTitle": true
+        },
+        {
+          "title": "Vivo X500 Pro Max vs Oppo Find X10 Pro Max: Which Flagship is Better?",
+          "url": "https://www.gizmochina.com/2026/09/23/vivo-x500-pro-max-vs-oppo-find-x10-pro-max-which-flagship-is-better/",
+          "publishedAt": "2026-09-23T04:46:29",
+          "id": 755661,
+          "contentHash": "0d9805b1c70765a56867fc70e533d4afa001b899bd90924a8ca52da6fae4d7ff",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "Here’s when ColorOS 17 update is coming to your Oppo, OnePlus, or Realme phone",
+          "url": "https://www.gizmochina.com/2026/09/18/coloros-17-update-timeline-for-oppo-oneplus-realme-phones/",
+          "publishedAt": "2026-09-18T06:28:17",
+          "id": 754882,
+          "contentHash": "82db4efb7733ca608e297a2d1877c49f9803cc3fd7a6f583d961756499ba9c53",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "Oppo ColorOS 17 (Android 17) update: Supported devices, release date, and major upgrades",
+          "url": "https://www.gizmochina.com/2026/09/10/oppo-coloros-17-android-17-update-supported-devices-release-date-and-major-upgrades/",
+          "publishedAt": "2026-09-10T09:27:12",
+          "id": 753650,
+          "contentHash": "37b433adc7bb0a7778c57a92345f610c88452843261550847d2060b117ff30a6",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "Best Oppo Phones of 2026",
+          "url": "https://www.gizmochina.com/2026/08/30/best-oppo-phones/",
+          "publishedAt": "2026-08-30T19:34:34",
+          "id": 751716,
+          "contentHash": "20e977febe76a7c80a6e30c131553bc3403d5dfa7c22c2c12d8bff99a1130490",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        }
+      ]
+    },
+    {
+      "modelId": "opporeno11pro",
+      "name": "OPPO Reno11 Pro",
+      "query": "OPPO Reno11 Pro review",
+      "searchUrl": "https://www.gizmochina.com/wp-json/wp/v2/posts?search=OPPO%20Reno11%20Pro%20review&orderby=relevance&per_page=5&_fields=id,link,title,date,content",
+      "httpStatus": 200,
+      "blocked": false,
+      "checkedAt": "2026-10-29T03:08:20.875Z",
+      "candidates": [
+        {
+          "title": "OPPO Reno 11F 5G appears on Geekbench, up for pre-order in Indonesia",
+          "url": "https://www.gizmochina.com/2024/02/05/oppo-reno-11f-5g-geekbench/",
+          "publishedAt": "2024-02-05T16:58:55",
+          "id": 602908,
+          "contentHash": "a69b2523a3b1f865f5f3156efb1bfe5e561c36ee89302a4ccd9b7e45032c8e56",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "Enhancing Experiences: ColorOS 14 Unveils Exciting Features and Beta Program for Eligible Device",
+          "url": "https://www.gizmochina.com/2024/01/24/oppo-coloros-14-new-features-eligible-devices/",
+          "publishedAt": "2024-01-24T16:12:18",
+          "id": 600345,
+          "contentHash": "1cde31c76bb08e9a7a7d6d05efe53c4d55c6950ad4e624a362120cd66e132b36",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "Google launches Gemini AI Nano, Pro, Ultra, empowering Bard with Gemini Pro to challenge ChatGPT",
+          "url": "https://www.gizmochina.com/2023/12/07/google-launches-gemini-ai-nano-pro-ultra-empowering-bard-with-gemini-pro-to-challenge-chatgpt/",
+          "publishedAt": "2023-12-07T03:31:55",
+          "id": 588538,
+          "contentHash": "e9b241f78e9d5e4e9eaefd9b75e8a95ac19c55c63f52c01f3a865191b1c4e04a",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "Vivo S18 Pro specifications leak, revealing 6.78-inch AMOLED display, Dimensity 9200+ SoC and more",
+          "url": "https://www.gizmochina.com/2023/12/04/vivo-s18-pro-specifications-leak-revealing-6-78-inch-amoled-display-dimensity-9200-soc-and-more/",
+          "publishedAt": "2023-12-04T07:58:36",
+          "id": 587730,
+          "contentHash": "5bcd9d2e95777ab071ed98a1c92ef02dea42ead22063cf884578ef186a4da5e4",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "Vivo S18e, S18, S18 Pro, TWS 3e launch date, key specifications confirmed, camera samples released",
+          "url": "https://www.gizmochina.com/2023/12/04/vivo-s18e-s18-s18-pro-tws-3e-launch-date-key-specifications-confirmed-camera-samples-released/",
+          "publishedAt": "2023-12-04T03:21:18",
+          "id": 587667,
+          "contentHash": "9f9ec058267561f7ca640c314970e444acb896ea0e2c360c4fa2c73111ac7014",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        }
+      ]
+    },
+    {
+      "modelId": "opporeno12pro",
+      "name": "OPPO Reno12 Pro",
+      "query": "OPPO Reno12 Pro review",
+      "searchUrl": "https://www.gizmochina.com/wp-json/wp/v2/posts?search=OPPO%20Reno12%20Pro%20review&orderby=relevance&per_page=5&_fields=id,link,title,date,content",
+      "httpStatus": 200,
+      "blocked": false,
+      "checkedAt": "2026-10-29T03:08:29.278Z",
+      "candidates": [
+        {
+          "title": "Oppo Reno 12 5G review: Generative AI, New Features Steal the Show in Absence of a Portrait Camera",
+          "url": "https://www.gizmochina.com/2024/07/15/oppo-reno-12-5g-review/",
+          "publishedAt": "2024-07-15T01:23:00",
+          "id": 638382,
+          "contentHash": "4162c5da9c5f05913308a9e7c44eed9dfdf4150b65b4ad5b32e1d6ab2ce8ba29",
+          "exactModelMatch": false,
+          "reviewTitle": true
+        },
+        {
+          "title": "Oppo Reno 12 series global launch this month, next Find X series to launch outside China",
+          "url": "https://www.gizmochina.com/2024/06/06/oppo-reno-12-series-global-launch-this-month-next-find-x-series-to-launch-outside-china/",
+          "publishedAt": "2024-06-06T01:25:00",
+          "id": 630051,
+          "contentHash": "50bc31c793f16da003df93e3e73c634d534a6fc84a7ab14157855a666c8e1c37",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        }
+      ]
+    },
+    {
+      "modelId": "oneplusace3pro",
+      "name": "一加 Ace 3 Pro",
+      "query": "OnePlus Ace 3 Pro review",
+      "searchUrl": "https://www.gizmochina.com/wp-json/wp/v2/posts?search=OnePlus%20Ace%203%20Pro%20review&orderby=relevance&per_page=5&_fields=id,link,title,date,content",
+      "httpStatus": 200,
+      "blocked": false,
+      "checkedAt": "2026-10-29T03:08:38.011Z",
+      "candidates": [
+        {
+          "title": "OnePlus ACE 3 Pro Review: The Imperfect Flagship Killer",
+          "url": "https://www.gizmochina.com/2024/07/05/oneplus-ace-3-pro-review-the-imperfect-flagship-killer/",
+          "publishedAt": "2024-07-05T11:56:12",
+          "id": 636460,
+          "contentHash": "9f3fc89b42f45d197021fb07535a3576229b3e0607b13192c4c110807fb09123",
+          "exactModelMatch": true,
+          "reviewTitle": true
+        },
+        {
+          "title": "OnePlus launches its first clip-on earbuds with Dynaudio-tuned dual drivers & 40h battery life",
+          "url": "https://www.gizmochina.com/2026/10/26/oneplus-buds-clip-open-ear-earbuds-launched-specs-price/",
+          "publishedAt": "2026-10-26T18:02:24",
+          "id": 760636,
+          "contentHash": "3b4bc6333c99612e9021da211ee6f252314e5cc8d229cb2a60a65124e86f3e16",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "Honor Win RT vs POCO F8 Pro: One Has a 10,000mAh Battery, But Which Is Better?",
+          "url": "https://www.gizmochina.com/2026/10/23/honor-win-rt-vs-poco-f8-pro/",
+          "publishedAt": "2026-10-23T14:29:08",
+          "id": 760054,
+          "contentHash": "d8ed35321ac2abad5af3bdf157bad47cce05e43b29d4851edd7f8d5db58624b5",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "Oppo Enco X4 launches in India with dual-driver setup, up to 13h/53h battery life, dual-device pairing",
+          "url": "https://www.gizmochina.com/2026/10/23/oppo-enco-x4-launches-in-india-with-dual-driver-setup-13h-53h-battery-life-dual-device-pairing/",
+          "publishedAt": "2026-10-23T12:26:27",
+          "id": 760038,
+          "contentHash": "15610f95a9fe514f22a634165411e3a8f34224be4291f3b780bcfbc1c3e599ea",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "iPhone 18 Pro vs iPhone 18 Pro Max: Is the Max Really Worth $100 More?",
+          "url": "https://www.gizmochina.com/2026/10/22/iphone-18-pro-vs-iphone-18-pro-max/",
+          "publishedAt": "2026-10-22T12:03:40",
+          "id": 759853,
+          "contentHash": "87efcf472c1eace0ef1e57d50369e55d60dc2242ed6a066c59b229472b2b8ee6",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        }
+      ]
+    },
+    {
+      "modelId": "vivox90",
+      "name": "vivo X90",
+      "query": "vivo X90 review",
+      "searchUrl": "https://www.gizmochina.com/wp-json/wp/v2/posts?search=vivo%20X90%20review&orderby=relevance&per_page=5&_fields=id,link,title,date,content",
+      "httpStatus": 200,
+      "blocked": false,
+      "checkedAt": "2026-10-29T03:08:45.263Z",
+      "candidates": [
+        {
+          "title": "VIVO X90 Review: The Best Competitor against Xiaomi 13?",
+          "url": "https://www.gizmochina.com/2022/12/10/vivo-x90-review-the-best-competitor-against-xiaomi-13/",
+          "publishedAt": "2022-12-10T07:21:48",
+          "id": 501327,
+          "contentHash": "01d4a7ddee785541f25cd6da5a4a4d6abe71ab2923e7cb52079d2e0edc32cf49",
+          "exactModelMatch": false,
+          "reviewTitle": true
+        },
+        {
+          "title": "Vivo X90 Pro Android 14 Preview announced for India, Check details",
+          "url": "https://www.gizmochina.com/2023/09/12/vivo-x90-pro-android-14-preview/",
+          "publishedAt": "2023-09-12T08:58:28",
+          "id": 565969,
+          "contentHash": "1fb034e0c0b8251c8bf21f52775cfe970c749d250cfd74889fc60067c8d20e2d",
+          "exactModelMatch": false,
+          "reviewTitle": true
+        },
+        {
+          "title": "Here&#8217;s when OriginOS 7 update will reach Vivo and iQOO devices",
+          "url": "https://www.gizmochina.com/2026/09/19/originos-7-update-timeline-for-vivo-and-iqoo-devices/",
+          "publishedAt": "2026-09-19T06:23:03",
+          "id": 754947,
+          "contentHash": "a5c601eb42fb848203db2ec5605fafde2f6883209ddcbda7205e10803960573b",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "Vivo OriginOS 6 (Android 16) eligible devices list: check if your phone is getting this major upgrade",
+          "url": "https://www.gizmochina.com/2025/10/07/vivo-originos-6-android-16-eligible-devices-list/",
+          "publishedAt": "2025-10-07T09:53:55",
+          "id": 709755,
+          "contentHash": "1710b494a68dddbadb19e4f392a8b18c564777b93a4b4e022a373cdf0cef657a",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "Android 16 will be the last major upgrade for these Vivo phones",
+          "url": "https://www.gizmochina.com/2025/08/13/android-16-will-be-the-last-major-upgrade-for-these-vivo-phones/",
+          "publishedAt": "2025-08-13T08:11:01",
+          "id": 701333,
+          "contentHash": "2aef7e372463997b4f24ffbeec7687163d61abded46b4c35ef2881675758dc1b",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        }
+      ]
+    },
+    {
+      "modelId": "vivox100ultra",
+      "name": "vivo X100 Ultra",
+      "query": "vivo X100 Ultra review",
+      "searchUrl": "https://www.gizmochina.com/wp-json/wp/v2/posts?search=vivo%20X100%20Ultra%20review&orderby=relevance&per_page=5&_fields=id,link,title,date,content",
+      "httpStatus": 200,
+      "blocked": false,
+      "checkedAt": "2026-10-29T03:08:52.669Z",
+      "candidates": [
+        {
+          "title": "vivo X100 Ultra Full Review: From Micro to Macro, Capture Every Moment in the World",
+          "url": "https://www.gizmochina.com/2024/05/24/vivo-x100-ultra-full-review-from-micro-to-macro-capture-every-moment-in-the-world/",
+          "publishedAt": "2024-05-24T08:58:00",
+          "id": 627395,
+          "contentHash": "f8939761b83b529904f77075b1d7ce3fc2a90db06e735d9b79fc77f89a3e986d",
+          "exactModelMatch": true,
+          "reviewTitle": true
+        },
+        {
+          "title": "Here&#8217;s when OriginOS 7 update will reach Vivo and iQOO devices",
+          "url": "https://www.gizmochina.com/2026/09/19/originos-7-update-timeline-for-vivo-and-iqoo-devices/",
+          "publishedAt": "2026-09-19T06:23:03",
+          "id": 754947,
+          "contentHash": "a5c601eb42fb848203db2ec5605fafde2f6883209ddcbda7205e10803960573b",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "Vivo Android 17 update: Complete list of supported devices",
+          "url": "https://www.gizmochina.com/2026/05/21/vivo-android-17-update-complete-list-of-supported-devices/",
+          "publishedAt": "2026-05-21T07:41:53",
+          "id": 739117,
+          "contentHash": "67453fe7a079a220b1bb0509c73fdc75dfbd3d8d4d5265b6f6a6c3b77cb56bbc",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "Vivo, iQOO phones eligible for Android 17 (OriginOS 7) update",
+          "url": "https://www.gizmochina.com/2026/04/10/vivo-iqoo-phones-eligible-for-android-17-originos-7-update/",
+          "publishedAt": "2026-04-10T12:03:44",
+          "id": 734154,
+          "contentHash": "133e39f58b219893a2e1addb330c9dcface0c6c1d737bdf0c4c7fcee0acb03dd",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "Vivo, iQOO devices getting the OriginOS 6 (Android 16) update",
+          "url": "https://www.gizmochina.com/2025/12/20/vivo-iqoo-devices-getting-the-originos-6-android-16-update/",
+          "publishedAt": "2025-12-20T07:34:30",
+          "id": 720102,
+          "contentHash": "48140eebf2a356d011b82f7ff57bb8c9b40e876e9eb1d410c2bdd2a7c092ab51",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        }
+      ]
+    },
+    {
+      "modelId": "iqoo12pro",
+      "name": "iQOO 12 Pro",
+      "query": "iQOO 12 Pro review",
+      "searchUrl": "https://www.gizmochina.com/wp-json/wp/v2/posts?search=iQOO%2012%20Pro%20review&orderby=relevance&per_page=5&_fields=id,link,title,date,content",
+      "httpStatus": 200,
+      "blocked": false,
+      "checkedAt": "2026-10-29T03:09:00.464Z",
+      "candidates": [
+        {
+          "title": "iQOO 12 Pro Review: When The Muscle Guy Dressed Up As A Gentleman",
+          "url": "https://www.gizmochina.com/2023/11/24/iqoo-12-pro-review-when-the-muscle-guy-dressed-up-as-a-gentleman/",
+          "publishedAt": "2023-11-24T04:23:30",
+          "id": 584632,
+          "contentHash": "95bce974deb397eb17bb0703ad43804182ecd4f477f70e206ca80823ca1de4fd",
+          "exactModelMatch": true,
+          "reviewTitle": true
+        },
+        {
+          "title": "iQOO 10 Pro Review: Xiaomi 12S Pro&#8217;s most threatening competitor",
+          "url": "https://www.gizmochina.com/2022/08/21/iqoo-10-pro-review/",
+          "publishedAt": "2022-08-21T11:22:26",
+          "id": 475949,
+          "contentHash": "72cadff15edcc7049caee734f9f8f2cb279c314ac8f3fd0d8b504c25a63aacdb",
+          "exactModelMatch": false,
+          "reviewTitle": true
+        },
+        {
+          "title": "Ayaneo launches Konkr Pocket Block retro handheld with 4:3 display & Android 12",
+          "url": "https://www.gizmochina.com/2026/09/29/ayaneo-konkr-pocket-block-retro-handheld-launched-specs-price/",
+          "publishedAt": "2026-09-29T00:08:40",
+          "id": 756660,
+          "contentHash": "14dc32ab7cb1e6479f566a5fb4c632bc6fdc5a54b2284468b42d6dca3c981e61",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "Here&#8217;s when OriginOS 7 update will reach Vivo and iQOO devices",
+          "url": "https://www.gizmochina.com/2026/09/19/originos-7-update-timeline-for-vivo-and-iqoo-devices/",
+          "publishedAt": "2026-09-19T06:23:03",
+          "id": 754947,
+          "contentHash": "a5c601eb42fb848203db2ec5605fafde2f6883209ddcbda7205e10803960573b",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "iQOO Z11 Review: A Battery-Focused Mid-Ranger That Gets Most Things Right",
+          "url": "https://www.gizmochina.com/2026/08/31/iqoo-z11-review/",
+          "publishedAt": "2026-08-31T18:27:50",
+          "id": 751805,
+          "contentHash": "d9f36d43c23951488cfa8a9197b342e1404e173a53e7a64ff6a66208b245559a",
+          "exactModelMatch": false,
+          "reviewTitle": true
+        }
+      ]
+    },
+    {
+      "modelId": "realmegt5pro",
+      "name": "realme GT5 Pro",
+      "query": "realme GT5 Pro review",
+      "searchUrl": "https://www.gizmochina.com/wp-json/wp/v2/posts?search=realme%20GT5%20Pro%20review&orderby=relevance&per_page=5&_fields=id,link,title,date,content",
+      "httpStatus": 200,
+      "blocked": false,
+      "checkedAt": "2026-10-29T03:09:08.504Z",
+      "candidates": [
+        {
+          "title": "Realme GT5 Pro Review: The Hidden Flagship Killer is Here",
+          "url": "https://www.gizmochina.com/2023/12/07/realme-gt5-pro-review-the-hidden-flagship-killer-is-here/",
+          "publishedAt": "2023-12-07T11:01:43",
+          "id": 588711,
+          "contentHash": "9ab959552070031133dc81d8d09bc7580773039d5de09fb5aa0f19f68d4bf5b4",
+          "exactModelMatch": true,
+          "reviewTitle": true
+        },
+        {
+          "title": "Realme GT 5 Pro gets major Realme UI 6 update with AI features & multitasking upgrades",
+          "url": "https://www.gizmochina.com/2025/08/31/realme-gt-5-pro-gets-realme-ui-6-15-0-0-1210-update/",
+          "publishedAt": "2025-08-31T15:29:53",
+          "id": 704436,
+          "contentHash": "316ac240816ea2b4591e06ad37a35b7bea012b4138d391e310bc1bfa089bfeff",
+          "exactModelMatch": true,
+          "reviewTitle": false
+        },
+        {
+          "title": "realme GT7 Pro Review: The cheapest Snapdragon 8 Elite phone is here",
+          "url": "https://www.gizmochina.com/2024/11/09/realme-gt7-pro-review-the-cheapest-snapdragon-8-elite-phone-is-here/",
+          "publishedAt": "2024-11-09T14:41:49",
+          "id": 659176,
+          "contentHash": "4f6a78bdab8536b981e12f58320b1084ace223131a9afbe7cbbbb178081c2ff1",
+          "exactModelMatch": false,
+          "reviewTitle": true
+        },
+        {
+          "title": "Realme to announce world&#8217;s fastest 320W SuperSonic charge this week",
+          "url": "https://www.gizmochina.com/2024/08/12/realme-320w-supersonic-charge/",
+          "publishedAt": "2024-08-12T10:44:46",
+          "id": 644721,
+          "contentHash": "1d90391ccf07134178a1305f8521fe3575e2d5699aab9b98461b7bc975e7c928",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        },
+        {
+          "title": "Realme GT 7 Pro may feature ultrasonic in-screen fingerprint scanner, periscope camera",
+          "url": "https://www.gizmochina.com/2024/06/02/realme-gt-7-pro-may-feature-ultrasonic-in-screen-fingerprint-scanner-periscope-camera/",
+          "publishedAt": "2024-06-02T06:45:12",
+          "id": 629181,
+          "contentHash": "1ec7c51dc701cdefa63b907523abb15beb0efb566a3a6e8c9ebffb5fec3fb9b6",
+          "exactModelMatch": false,
+          "reviewTitle": false
+        }
+      ]
+    }
+  ]
+}

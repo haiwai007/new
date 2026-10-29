@@ -84,7 +84,7 @@ describe("simplified batch step 04", () => {
     await user.click(screen.getByText("更多设置", { exact: true }));
     for (const name of [
       "随机蜂窝信号（0–4 格）",
-      "随机 Wi-Fi（关闭或 1–3 格）",
+      "随机 Wi-Fi（关闭或按系统选择信号强度）",
       "随机网络类型",
       "随机充电",
       "随机飞行模式",
