@@ -104,7 +104,7 @@
 
 ### 4.5.1 APP 通知图标
 
-单张作图手机面板与批量作图提供 APP 图标设置。内置快手、抖音、微信、QQ 等 60 种彩色图标，支持中英文搜索和滚动选择；也可以上传 PNG、JPEG 或 WebP 自定义图标。
+单张作图手机面板与批量作图提供 APP 图标设置。内置快手、抖音、微信、QQ 等 90 种彩色图标，按国内（48 个）／国外（42 个）分类，支持分类内中英文搜索和滚动选择；也可以上传 PNG、JPEG 或 WebP 自定义图标。
 
 新增图标包括小红书、淘宝、美团、知乎、豆瓣、百度、网易云音乐、钉钉、阿里旺旺，以及 WhatsApp、Instagram、Facebook、Messenger、YouTube、Spotify、Discord、LINE、X、Zoom 和 Snapchat。另增加搜狗输入法、1688、Trip.com、Chrome、Gmail、Google 地图／云端硬盘／相册／翻译、Firefox、Opera、Brave、Safari、DuckDuckGo、Signal、Viber、Pinterest、Reddit、Twitch、Netflix、Apple Music／播客、Shazam、SoundCloud、Steam、Notion、Dropbox、GitHub、多邻国、Figma、Todoist、印象笔记。
 

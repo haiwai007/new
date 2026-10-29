@@ -1,0 +1,200 @@
+{
+  "lobeRevision": "8b7bbc433d38437fa2b0cca58ae896917162b812",
+  "reactIconsVersion": "5.7.0",
+  "scope": "Small notification renditions of app/service brand marks; not full official application icons.",
+  "sources": [
+    {
+      "id": "dianping",
+      "provider": "Simple Icons via react-icons",
+      "exportName": "SiDazhongdianping",
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "wegame",
+      "provider": "Simple Icons via react-icons",
+      "exportName": "SiWegame",
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "railway12306",
+      "provider": "Simple Icons via react-icons",
+      "exportName": "SiChinarailway",
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "airchina",
+      "provider": "Simple Icons via react-icons",
+      "exportName": "SiAirchina",
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "chinaeastern",
+      "provider": "Simple Icons via react-icons",
+      "exportName": "SiChinaeasternairlines",
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "chinasouthern",
+      "provider": "Simple Icons via react-icons",
+      "exportName": "SiChinasouthernairlines",
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "csdn",
+      "provider": "Simple Icons via react-icons",
+      "exportName": "SiCsdn",
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "juejin",
+      "provider": "Simple Icons via react-icons",
+      "exportName": "SiJuejin",
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "gitee",
+      "provider": "Simple Icons via react-icons",
+      "exportName": "SiGitee",
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "gitcode",
+      "provider": "Simple Icons via react-icons",
+      "exportName": "SiGitcode",
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "doubanread",
+      "provider": "Simple Icons via react-icons",
+      "exportName": "SiDoubanread",
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "deepseek",
+      "provider": "Simple Icons via react-icons",
+      "exportName": "SiDeepseek",
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "qwen",
+      "provider": "Simple Icons via react-icons",
+      "exportName": "SiQwen",
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "hailuo",
+      "provider": "Simple Icons via react-icons",
+      "exportName": "SiMinimax",
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "coze",
+      "provider": "Simple Icons via react-icons",
+      "exportName": "SiCoze",
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "aliyun",
+      "provider": "Simple Icons via react-icons",
+      "exportName": "SiAlibabacloud",
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "renren",
+      "provider": "Simple Icons via react-icons",
+      "exportName": "SiRenren",
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "doubao",
+      "provider": "Lobe Icons",
+      "url": "https://raw.githubusercontent.com/lobehub/lobe-icons/8b7bbc433d38437fa2b0cca58ae896917162b812/packages/static-svg/icons/doubao-color.svg",
+      "license": "MIT",
+      "sha256": "3cd31ba03ae44b8c29561597a3b863809efecb13fcdfd08407a086df86a69b55"
+    },
+    {
+      "id": "kimi",
+      "provider": "Lobe Icons",
+      "url": "https://raw.githubusercontent.com/lobehub/lobe-icons/8b7bbc433d38437fa2b0cca58ae896917162b812/packages/static-svg/icons/kimi-color.svg",
+      "license": "MIT",
+      "sha256": "0bdb95375d7c6e90a1850e91cd36770da2bc98fa33ec2d783f4a8fed027da85f"
+    },
+    {
+      "id": "wenxin",
+      "provider": "Lobe Icons",
+      "url": "https://raw.githubusercontent.com/lobehub/lobe-icons/8b7bbc433d38437fa2b0cca58ae896917162b812/packages/static-svg/icons/wenxin-color.svg",
+      "license": "MIT",
+      "sha256": "9fb88d8b6f7be470ddb07f0574ec276b08a35ba96d73ec5f2f3b6fc338da5cb6"
+    },
+    {
+      "id": "spark",
+      "provider": "Lobe Icons",
+      "url": "https://raw.githubusercontent.com/lobehub/lobe-icons/8b7bbc433d38437fa2b0cca58ae896917162b812/packages/static-svg/icons/spark-color.svg",
+      "license": "MIT",
+      "sha256": "4068581452b808e4d9f8c5b43b42d324512d6801de26e57cf848125c28db85bc"
+    },
+    {
+      "id": "chatglm",
+      "provider": "Lobe Icons",
+      "url": "https://raw.githubusercontent.com/lobehub/lobe-icons/8b7bbc433d38437fa2b0cca58ae896917162b812/packages/static-svg/icons/chatglm-color.svg",
+      "license": "MIT",
+      "sha256": "6e935f6ccad7a776edef259b33bbbfe5b51d6486318d4a0f423708ffe2a27287"
+    },
+    {
+      "id": "yuanbao",
+      "provider": "Lobe Icons",
+      "url": "https://raw.githubusercontent.com/lobehub/lobe-icons/8b7bbc433d38437fa2b0cca58ae896917162b812/packages/static-svg/icons/yuanbao-color.svg",
+      "license": "MIT",
+      "sha256": "522b9c3ee6f4136b3dd2f5e844a2273b6d599ae614329dbcaf96c74375b0fdd5"
+    },
+    {
+      "id": "jimeng",
+      "provider": "Lobe Icons",
+      "url": "https://raw.githubusercontent.com/lobehub/lobe-icons/8b7bbc433d38437fa2b0cca58ae896917162b812/packages/static-svg/icons/jimeng-color.svg",
+      "license": "MIT",
+      "sha256": "a9afc64b9afae1990e3c9fa967b349927c3f6a148647ac5c6f016b1a31b39167"
+    },
+    {
+      "id": "kling",
+      "provider": "Lobe Icons",
+      "url": "https://raw.githubusercontent.com/lobehub/lobe-icons/8b7bbc433d38437fa2b0cca58ae896917162b812/packages/static-svg/icons/kling-color.svg",
+      "license": "MIT",
+      "sha256": "a8aa4def0eb1c3ca0f0528597d28fa495249aa710aa403d3c571c47c81c6150c"
+    },
+    {
+      "id": "hunyuan",
+      "provider": "Lobe Icons",
+      "url": "https://raw.githubusercontent.com/lobehub/lobe-icons/8b7bbc433d38437fa2b0cca58ae896917162b812/packages/static-svg/icons/hunyuan-color.svg",
+      "license": "MIT",
+      "sha256": "510e7bb438506b5aadfaf8b9551d1606efd5b4171161a64a64204c72a453658a"
+    },
+    {
+      "id": "stepfun",
+      "provider": "Lobe Icons",
+      "url": "https://raw.githubusercontent.com/lobehub/lobe-icons/8b7bbc433d38437fa2b0cca58ae896917162b812/packages/static-svg/icons/stepfun-color.svg",
+      "license": "MIT",
+      "sha256": "f55afc0e6004c8854f76bd5bbcc0fce9fc0ed9316691d54fb02d088c24fab40d"
+    },
+    {
+      "id": "baiducloud",
+      "provider": "Lobe Icons",
+      "url": "https://raw.githubusercontent.com/lobehub/lobe-icons/8b7bbc433d38437fa2b0cca58ae896917162b812/packages/static-svg/icons/baiducloud-color.svg",
+      "license": "MIT",
+      "sha256": "2269f4c82a3a810f42691c82d0d5086961c2b684a2dcc1e7523cd9f8564e2f35"
+    },
+    {
+      "id": "tencentcloud",
+      "provider": "Lobe Icons",
+      "url": "https://raw.githubusercontent.com/lobehub/lobe-icons/8b7bbc433d38437fa2b0cca58ae896917162b812/packages/static-svg/icons/tencentcloud-color.svg",
+      "license": "MIT",
+      "sha256": "f860dae064a3afd24970efd2bc5892f39438526bf52c3a9748f61fc05c1cfd58"
+    },
+    {
+      "id": "baichuan",
+      "provider": "Lobe Icons",
+      "url": "https://raw.githubusercontent.com/lobehub/lobe-icons/8b7bbc433d38437fa2b0cca58ae896917162b812/packages/static-svg/icons/baichuan-color.svg",
+      "license": "MIT",
+      "sha256": "7d49311206402734850ed9dc112759780429bb363dcee31eccb5a92f428532a6"
+    }
+  ]
+}

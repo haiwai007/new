@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   APP_ICONS,
+  matchesAppIconRegion,
   MAX_APP_ICONS,
   builtinAppIconSource,
 } from "./app-icon-catalog";
@@ -201,7 +202,7 @@ it("can randomize a legacy IndexedDB work before its missing APP defaults have b
 it("keeps existing IDs and persists the expanded colour library in portable templates", async () => {
   const { buildPackage, parseTemplateFile } =
     await import("../template/package");
-  expect(APP_ICONS).toHaveLength(60);
+  expect(APP_ICONS).toHaveLength(90);
   expect(APP_ICONS.slice(0, 8).map((icon) => icon.id)).toEqual([
     "kuaishou",
     "douyin",
@@ -212,10 +213,10 @@ it("keeps existing IDs and persists the expanded colour library in portable temp
     "alipay",
     "telegram",
   ]);
-  expect(new Set(APP_ICONS.map((icon) => icon.id)).size).toBe(60);
-  expect(new Set(APP_ICONS.map((icon) => icon.name)).size).toBe(60);
+  expect(new Set(APP_ICONS.map((icon) => icon.id)).size).toBe(90);
+  expect(new Set(APP_ICONS.map((icon) => icon.name)).size).toBe(90);
   const added = APP_ICONS.slice(8);
-  expect(added).toHaveLength(52);
+  expect(added).toHaveLength(82);
   for (let index = 0; index < added.length; index += MAX_APP_ICONS) {
     const icons = added.slice(index, index + MAX_APP_ICONS).map((icon, i) => ({
       id: `app_${i.toString(36).padStart(10, "a")}`,
@@ -236,4 +237,16 @@ it("keeps existing IDs and persists the expanded colour library in portable temp
       imported.doc.layers.filter((layer) => layer.id.includes("_app_")),
     ).toHaveLength(icons.length);
   }
+});
+
+it("classifies every builtin once and keeps custom uploads separate", () => {
+  expect(APP_ICONS.filter((i) => i.region === "domestic")).toHaveLength(48);
+  expect(APP_ICONS.filter((i) => i.region === "international")).toHaveLength(
+    42,
+  );
+  expect(matchesAppIconRegion("domestic", "doubao")).toBe(true);
+  expect(matchesAppIconRegion("international", "whatsapp")).toBe(true);
+  expect(matchesAppIconRegion("domestic", undefined)).toBe(false);
+  expect(matchesAppIconRegion("custom", undefined)).toBe(true);
+  expect(matchesAppIconRegion("custom", "wechat")).toBe(false);
 });

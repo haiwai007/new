@@ -1,3 +1,4 @@
+import AppIconRegionFilter from "./app-icon-region-filter";
 import { naturalAppCapacity } from "@/lib/phone/fusion-metrics";
 import { useEffect, useRef, useState } from "react";
 import { ArrowDown, ArrowUp, Loader2, Trash2, Upload } from "lucide-react";
@@ -6,6 +7,8 @@ import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import {
   APP_ICONS,
+  matchesAppIconRegion,
+  type AppIconFilter,
   MAX_APP_ICONS,
   builtinAppIconSource,
 } from "@/lib/phone/app-icon-catalog";
@@ -77,6 +80,7 @@ export default function AppIconsEditor({
 }) {
   const [error, setError] = useState("");
   const [query, setQuery] = useState("");
+  const [region, setRegion] = useState<AppIconFilter>("all");
   const [busy, setBusy] = useState(false);
   const input = useRef<HTMLInputElement>(null);
   const alive = useRef(true);
@@ -99,7 +103,8 @@ export default function AppIconsEditor({
   const keyword = query.trim().toLowerCase();
   const choices = APP_ICONS.filter(
     (app) =>
-      app.name.toLowerCase().includes(keyword) || app.id.includes(keyword),
+      matchesAppIconRegion(region, app.id) &&
+      (app.name.toLowerCase().includes(keyword) || app.id.includes(keyword)),
   );
   function change(next: PhoneSettings) {
     setError("");
@@ -172,9 +177,21 @@ export default function AppIconsEditor({
         {settings.rendering === "natural"
           ? "空间不足时请调整大小或数量。"
           : "旧版布局空间不足时自动缩小。"}
-        内置 60 种图标保留品牌配色，自定义图标保留上传颜色。
+        内置 {APP_ICONS.length} 种图标保留品牌配色，自定义图标保留上传颜色。
       </p>
       <fieldset disabled={disabled} className="min-w-0 space-y-3">
+        <AppIconRegionFilter
+          value={region}
+          onChange={setRegion}
+          counts={{
+            all: APP_ICONS.length,
+            domestic: APP_ICONS.filter((app) => app.region === "domestic")
+              .length,
+            international: APP_ICONS.filter(
+              (app) => app.region === "international",
+            ).length,
+          }}
+        />
         <Input
           aria-label="搜索 APP 图标"
           placeholder="搜索 APP，如小红书、QQ、WhatsApp"
@@ -189,6 +206,11 @@ export default function AppIconsEditor({
           aria-label="内置 APP 图标"
           className="grid max-h-64 grid-cols-2 gap-2 overflow-y-auto pr-1"
         >
+          {!choices.length && (
+            <p className="col-span-full py-4 text-center text-xs text-muted-foreground">
+              没有找到匹配图标，请尝试其他分类或关键词。
+            </p>
+          )}
           {choices.map((app) => {
             const selected = settings.appIcons.some(
               (icon) => icon.kind === "builtin" && icon.builtinId === app.id,

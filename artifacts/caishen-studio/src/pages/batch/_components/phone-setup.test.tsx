@@ -104,3 +104,29 @@ describe("simplified batch step 04", () => {
     expect(doc).toEqual(BUILTIN_TEMPLATES[0].doc);
   });
 });
+it("keeps random candidates selected across domestic, international, search and custom filters", async () => {
+  render(<Harness />);
+  const user = userEvent.setup();
+  await user.click(screen.getByRole("button", { name: "状态栏修改状态栏" }));
+  await user.click(screen.getByRole("button", { name: "APP 图标随机" }));
+  await user.click(screen.getByRole("button", { name: "国内APP图标" }));
+  await user.click(screen.getByLabelText("候选 APP 豆包"));
+  await user.click(screen.getByRole("button", { name: "国外APP图标" }));
+  expect(screen.queryByLabelText("候选 APP 豆包")).not.toBeInTheDocument();
+  await user.click(screen.getByLabelText("候选 APP WhatsApp"));
+  await user.click(screen.getByRole("button", { name: "国内APP图标" }));
+  expect(screen.getByLabelText("候选 APP 豆包")).toBeChecked();
+  await user.type(screen.getByLabelText("搜索随机 APP 图标"), "不存在的图标");
+  expect(
+    screen.getByText("没有找到匹配图标，请尝试其他分类或关键词。"),
+  ).toBeVisible();
+  await user.clear(screen.getByLabelText("搜索随机 APP 图标"));
+  await user.click(screen.getByRole("button", { name: "全部APP图标" }));
+  await user.click(screen.getByLabelText("只看已选"));
+  expect(screen.getByLabelText("候选 APP 豆包")).toBeChecked();
+  expect(screen.getByLabelText("候选 APP WhatsApp")).toBeChecked();
+  await user.click(screen.getByRole("button", { name: "自定义APP图标" }));
+  expect(
+    screen.getByText("没有找到匹配图标，请尝试其他分类或关键词。"),
+  ).toBeVisible();
+});

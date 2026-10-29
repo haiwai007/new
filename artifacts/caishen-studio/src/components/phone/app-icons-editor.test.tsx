@@ -124,7 +124,7 @@ it("merges a pending upload with the latest icon settings instead of reverting c
   expect(mocks.remove).not.toHaveBeenCalled();
 });
 
-it("offers 60 built-ins and searches Chinese names or case-insensitive English IDs", () => {
+it("offers 90 built-ins and searches Chinese names or case-insensitive English IDs", () => {
   const onChange = vi.fn();
   render(
     <AppIconsEditor
@@ -134,7 +134,7 @@ it("offers 60 built-ins and searches Chinese names or case-insensitive English I
     />,
   );
   const choices = screen.getByRole("group", { name: "内置 APP 图标" });
-  expect(choices.querySelectorAll("button")).toHaveLength(60);
+  expect(choices.querySelectorAll("button")).toHaveLength(90);
   fireEvent.change(screen.getByLabelText("搜索 APP 图标"), {
     target: { value: "小红书" },
   });
@@ -160,4 +160,53 @@ it("offers 60 built-ins and searches Chinese names or case-insensitive English I
   expect(
     screen.getByText("未找到匹配的 APP，可上传自定义图标。"),
   ).toBeInTheDocument();
+});
+it("filters domestic and international icons without changing the selection, and searches inside the category", () => {
+  const onChange = vi.fn();
+  render(
+    <AppIconsEditor
+      settings={{
+        ...defaultPhoneSettings(),
+        appIcons: [
+          {
+            id: "app_existing",
+            kind: "builtin",
+            builtinId: "wechat",
+            name: "微信",
+            visible: true,
+          },
+        ],
+      }}
+      onChange={onChange}
+      scopeKey="regions"
+    />,
+  );
+  fireEvent.click(screen.getByRole("button", { name: "国内APP图标" }));
+  expect(
+    screen.getByRole("button", { name: "移除微信图标" }),
+  ).toBeInTheDocument();
+  expect(
+    screen.queryByRole("button", { name: "添加WhatsApp图标" }),
+  ).not.toBeInTheDocument();
+  fireEvent.change(screen.getByLabelText("搜索 APP 图标"), {
+    target: { value: "deepseek" },
+  });
+  fireEvent.click(screen.getByRole("button", { name: "添加DeepSeek图标" }));
+  expect(onChange).toHaveBeenCalledOnce();
+  expect(
+    onChange.mock.calls[0][0].appIcons.map(
+      (i: { builtinId: string }) => i.builtinId,
+    ),
+  ).toEqual(["wechat", "deepseek"]);
+  fireEvent.click(screen.getByRole("button", { name: "国外APP图标" }));
+  expect(
+    screen.getByText("没有找到匹配图标，请尝试其他分类或关键词。"),
+  ).toBeInTheDocument();
+  fireEvent.change(screen.getByLabelText("搜索 APP 图标"), {
+    target: { value: "" },
+  });
+  expect(
+    screen.getByRole("button", { name: "添加WhatsApp图标" }),
+  ).toBeInTheDocument();
+  expect(onChange).toHaveBeenCalledOnce();
 });

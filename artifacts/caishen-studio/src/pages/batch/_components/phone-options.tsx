@@ -1,3 +1,4 @@
+import AppIconRegionFilter from "@/components/phone/app-icon-region-filter";
 import type { TemplateDoc } from "@/types/template";
 import PhoneModeSwitch from "./phone-mode-switch";
 import PhoneModelPicker from "@/components/phone/model-picker";
@@ -7,7 +8,12 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { PHONE_BRANDS, PHONE_MODELS } from "@/lib/phone/models";
-import { APP_ICONS, builtinAppIconSource } from "@/lib/phone/app-icon-catalog";
+import {
+  APP_ICONS,
+  builtinAppIconSource,
+  matchesAppIconRegion,
+  type AppIconFilter,
+} from "@/lib/phone/app-icon-catalog";
 import { uploadAppIcon } from "@/lib/phone/app-icon-upload";
 import { deleteAsset } from "@/lib/storage/assets";
 import { newId } from "@/lib/template/ids";
@@ -217,6 +223,7 @@ export function AppOptions({
   onBusyChange: (busy: boolean) => void;
   doc?: TemplateDoc;
 }) {
+  const [region, setRegion] = useState<AppIconFilter>("all");
   const [query, setQuery] = useState(""),
     [selectedOnly, setSelectedOnly] = useState(false),
     [busy, setBusy] = useState(false),
@@ -273,7 +280,11 @@ export function AppOptions({
       `${i.name} ${i.kind === "builtin" ? i.builtinId : ""}`
         .toLowerCase()
         .includes(query.trim().toLowerCase()) &&
-      (!selectedOnly || role(i) !== "none"),
+      (!selectedOnly || role(i) !== "none") &&
+      matchesAppIconRegion(
+        region,
+        i.kind === "builtin" ? i.builtinId : undefined,
+      ),
   );
   const patch = (next: Partial<NonNullable<PhoneBatchRules["apps"]>>) =>
     onChange({ ...value, apps: { ...apps, ...next } });
@@ -349,6 +360,27 @@ export function AppOptions({
               修改 APP 选择
             </summary>
             <fieldset disabled={busy} className="mt-3 min-w-0 space-y-3">
+              <AppIconRegionFilter
+                value={region}
+                onChange={setRegion}
+                includeCustom
+                counts={{
+                  all: all.length,
+                  domestic: all.filter((i) =>
+                    matchesAppIconRegion(
+                      "domestic",
+                      i.kind === "builtin" ? i.builtinId : undefined,
+                    ),
+                  ).length,
+                  international: all.filter((i) =>
+                    matchesAppIconRegion(
+                      "international",
+                      i.kind === "builtin" ? i.builtinId : undefined,
+                    ),
+                  ).length,
+                  custom: all.filter((i) => i.kind !== "builtin").length,
+                }}
+              />
               <Input
                 aria-label="搜索随机 APP 图标"
                 placeholder="搜索微信、QQ、自定义图标"
@@ -364,6 +396,11 @@ export function AppOptions({
                 只看已选
               </label>
               <div className="grid max-h-64 grid-cols-2 gap-2 overflow-auto sm:grid-cols-3">
+                {!choices.length && (
+                  <p className="col-span-full py-4 text-center text-xs text-muted-foreground">
+                    没有找到匹配图标，请尝试其他分类或关键词。
+                  </p>
+                )}
                 {choices.map((icon) => (
                   <label
                     key={appIconKey(icon)}

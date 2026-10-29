@@ -59,7 +59,7 @@ test("all offline APP icons decode and brand colours survive canvas PNG encoding
     }
     return samples;
   }, icons);
-  expect(samples).toHaveLength(60);
+  expect(samples).toHaveLength(90);
   for (const sample of samples) {
     expect(sample.visible, sample.id).toBeGreaterThan(50);
     if (!["x", "notion", "github"].includes(sample.id))

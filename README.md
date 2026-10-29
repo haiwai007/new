@@ -41,7 +41,7 @@
 | 批量作图     | 同一工作台切换为 2～200 张，支持固定值、候选值、随机区间（金额支持千位分隔）、随机时间段和自动编号，生成 PNG 并打包 ZIP |
 | 手机型号     | 100 个具体型号各有独立布局记录，81 个安卓及鸿蒙型号；30 套系统参考样式，真机标定状态见核对表              |
 | 状态栏适配   | 只框选外框；按具体型号与版本排版、边缘背景融合，框外像素保持不变                    |
-| APP 通知图标 | 内置微信、QQ、抖音、快手等 60 种彩色图标，支持搜索、自定义上传、固定显示或指定候选随机      |
+| APP 通知图标 | 内置微信、QQ、抖音、快手等 90 种彩色图标，国内 48／国外 42 分类查找，支持搜索、自定义上传、固定显示或指定候选随机      |
 | 本地数据管理 | 作品、模板、素材、收藏、导出记录、模板文件及完整备份                                    |
 | 保存冲突处理 | 跨标签页通知与版本校验，冲突修改另存副本，避免覆盖较新的作品                            |
 
@@ -167,7 +167,7 @@ PORT=4173 pnpm --filter @workspace/caishen-studio serve
 pnpm --filter @workspace/caishen-studio exec playwright install chromium
 ```
 
-本轮验收：**54 个测试文件、338 项单元测试、7 项资料检索与测量完整性检查、24 项相关浏览器用例通过**，并通过类型检查、生产构建和 Pages Functions 编译。逐型号实际 PNG 导出覆盖 100 个型号、268 组版本，框外像素变化为 0；这不等同于真机外观核准。详细范围与此前验收见[验收记录](docs/ACCEPTANCE.md)。
+本轮验收：**54 个测试文件、341 项单元测试、7 项资料检索与测量完整性检查、24 项相关浏览器用例通过**，并通过类型检查、生产构建和 Pages Functions 编译。逐型号实际 PNG 导出覆盖 100 个型号、268 组版本，框外像素变化为 0；这不等同于真机外观核准。详细范围与此前验收见[验收记录](docs/ACCEPTANCE.md)。
 
 ## Cloudflare Pages 部署
 
@@ -256,3 +256,5 @@ docs/                    功能、部署和验收说明
 许可条款见 [LICENSE](LICENSE)。第三方图片、字体及 APP 图标适用各自的来源与许可说明，例如 [APP 图标来源](artifacts/caishen-studio/public/attributions/statusbar-app-icons.txt)和[内置照片来源](artifacts/caishen-studio/public/templates/unsplash/README.txt)。
 
 逐型号配置与真机标定状态见 [DEVICE_LAYOUT_AUDIT](docs/DEVICE_LAYOUT_AUDIT.zh-CN.md)。当前为独立参考适配，未宣称逐台真机像素级核准。
+
+APP 图标扩充与分类：新增 30 个国内应用／服务图标，内置共 90 个（国内 48、国外 42）。选择界面支持分类和搜索，切换分类保留已选；批量候选另有“自定义”。[完整说明与来源](docs/app-icons/README.md)。本轮 4 项图标浏览器用例通过。

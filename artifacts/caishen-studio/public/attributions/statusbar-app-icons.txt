@@ -60,3 +60,15 @@ and simplified multi-colour treatments (Douyin, QQ, Chrome, Gmail,
 Drive, Photos, Figma and Snapchat); these are small notification renditions,
 not a claim to supply official application icon artwork.
 Status-bar text colour does not recolour built-in application icons.
+
+Additional domestic app/service notification renditions (30):
+Simple Icons (CC0-1.0), via react-icons 5.7.0: Dazhong Dianping, WeGame,
+China Railway, Air China, China Eastern Airlines, China Southern Airlines,
+CSDN, Juejin, Gitee, GitCode, Douban Read, DeepSeek, Qwen, MiniMax,
+Coze, Alibaba Cloud and Renren.
+Lobe Icons (MIT, Copyright (c) 2023 LobeHub): Doubao, Kimi, Wenxin, Spark,
+ChatGLM, Yuanbao, Jimeng, Kling, Hunyuan, Stepfun, BaiduCloud, TencentCloud,
+and Baichuan. Complete MIT notice: lobe-app-icons-MIT.txt.
+Source: https://github.com/lobehub/lobe-icons
+Pinned revision, individual source URLs and SHA-256: docs/app-icons/sources.json.
+SVG colour layers and gradients are bundled; display and export require no CDN.
