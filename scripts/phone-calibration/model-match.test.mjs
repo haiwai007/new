@@ -46,3 +46,17 @@ test("exact review names and hyphenated URLs resolve without stripping model bou
     );
   }
 });
+
+test("digit boundaries allow OEM naming spaces without confusing siblings", () => {
+  const catalog = [
+    { id: "se", name: "iPhone SE2022" },
+    { id: "gt6", name: "Realme GT6" },
+    { id: "magic6", name: "Honor Magic6" },
+  ];
+  assert.equal(
+    identifyModel("Apple iPhone SE 2022 smartphone review", catalog),
+    "se",
+  );
+  assert.equal(identifyModel("Realme GT 6 smartphone review", catalog), "gt6");
+  assert.equal(identifyModel("Honor Magic 6 Pro review", catalog), undefined);
+});

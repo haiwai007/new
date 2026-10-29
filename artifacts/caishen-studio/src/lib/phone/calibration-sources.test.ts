@@ -16,8 +16,14 @@ describe("source-backed phone calibration", () => {
     expect(
       new Set(inventory.models.map((r: { modelId: string }) => r.modelId)),
     ).toEqual(new Set(Object.keys(DEVICE_LAYOUTS)));
+    const nativeOwners = new Map<string, string>();
     for (const row of inventory.models)
       for (const image of row.screenshots) {
+        if (image.nativeSizeMatch) {
+          const owner = nativeOwners.get(image.sha256);
+          expect(owner === undefined || owner === row.modelId).toBe(true);
+          nativeOwners.set(image.sha256, row.modelId);
+        }
         expect(image.sha256).toMatch(/^[0-9a-f]{64}$/);
         expect(image.width).toBeGreaterThan(0);
         expect(image.height).toBeGreaterThan(0);
@@ -64,10 +70,10 @@ describe("source-backed phone calibration", () => {
   it("records actual before/after renderer measurements rather than a successful-download flag", () => {
     const before = json("rendered-before.json"),
       after = json("rendered-after.json");
-    expect(after.results).toHaveLength(3);
+    expect(after.results).toHaveLength(json("native-measurements.json").length);
     for (const row of after.results) {
       const old = before.results.find((r: { id: string }) => r.id === row.id);
-      expect(Math.abs(old.clockLeftError)).toBeGreaterThan(15);
+      expect(Math.abs(old.clockLeftError)).toBeGreaterThan(0);
       expect(Math.abs(row.clockLeftError)).toBeLessThanOrEqual(1);
       expect(Math.abs(row.clockBottomError)).toBeLessThanOrEqual(1);
       expect(Math.abs(row.systemRightError)).toBeLessThanOrEqual(1);

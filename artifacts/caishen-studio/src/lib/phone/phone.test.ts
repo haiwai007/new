@@ -49,6 +49,31 @@ describe("phone status bar", () => {
     expect(phoneDate(s)).toBe("10月25日 星期日");
     expect(phoneDate({ ...s, dateFormat: "iso" })).toBe("2026-10-25");
   });
+  it("uses the reviewed model/version period format while respecting 24-hour and legacy choices", () => {
+    const base = {
+      ...defaultPhoneSettings(),
+      modelId: "xiaomi15pro" as const,
+      rendering: "natural" as const,
+      styleId: "hyperos2" as const,
+      timeFormat: "12h" as const,
+    };
+    for (const [time, label] of [
+      ["00:05", "12:05"],
+      ["12:00", "12:00"],
+      ["13:38", "1:38"],
+      ["23:59", "11:59"],
+    ])
+      expect(phoneTime({ ...base, time })).toBe(label);
+    expect(phoneTime({ ...base, time: "13:38", timeFormat: "24h" })).toBe(
+      "13:38",
+    );
+    expect(phoneTime({ ...base, time: "13:38", styleId: "hyperos3" })).toBe(
+      "1:38 PM",
+    );
+    expect(phoneTime({ ...base, time: "13:38", rendering: "legacy" })).toBe(
+      "1:38 PM",
+    );
+  });
   it("preserves ordinary content, replaces status layers without duplication and persists settings", () => {
     const original = doc();
     const s = { ...defaultPhoneSettings(), battery: 67, showDate: true };
@@ -130,11 +155,21 @@ describe("phone status bar", () => {
 });
 
 it("preserves manually edited phone contents when resizing in every mode", () => {
-  const original = applyPhoneLayers(doc(), { ...defaultPhoneSettings(), showDate: true });
-  original.layers = original.layers.map(l => l.type === "text" && l.id.endsWith("_time") ? { ...l, text: "13:08", locked: false } : l);
+  const original = applyPhoneLayers(doc(), {
+    ...defaultPhoneSettings(),
+    showDate: true,
+  });
+  original.layers = original.layers.map((l) =>
+    l.type === "text" && l.id.endsWith("_time")
+      ? { ...l, text: "13:08", locked: false }
+      : l,
+  );
   for (const mode of ["none", "smart", "scale"] as const) {
     const next = resizeDoc(original, 750, 1600, mode);
     expect(next.phone?.time).toBe("13:08");
-    expect(next.layers.find(l => l.id.endsWith("_time"))).toMatchObject({ text: "13:08", locked: false });
+    expect(next.layers.find((l) => l.id.endsWith("_time"))).toMatchObject({
+      text: "13:08",
+      locked: false,
+    });
   }
 });

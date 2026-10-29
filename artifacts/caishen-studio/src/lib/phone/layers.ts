@@ -102,7 +102,13 @@ export function naturalPhoneSettings(): PhoneSettings {
 export function phoneTime(settings: PhoneSettings): string {
   if (settings.timeFormat === "24h") return settings.time;
   const [hour, minute] = settings.time.split(":").map(Number);
-  return `${hour % 12 || 12}:${String(minute).padStart(2, "0")} ${hour < 12 ? "AM" : "PM"}`;
+  const record = DEVICE_LAYOUTS[settings.modelId];
+  const version =
+    settings.styleId === "auto" ? record.defaultStyle : settings.styleId;
+  const periodHidden =
+    settings.rendering === "natural" &&
+    record.versions[version]?.clockPeriod === "hidden";
+  return `${hour % 12 || 12}:${String(minute).padStart(2, "0")}${periodHidden ? "" : ` ${hour < 12 ? "AM" : "PM"}`}`;
 }
 export function phoneDate(settings: PhoneSettings): string {
   if (settings.dateFormat === "iso") return settings.date;
@@ -190,6 +196,27 @@ const SMALL_ICONS = {
       `<path d="M1 6L8 12.5L4.5 16V3L8 6.5L1 13" fill="none" stroke="${c}" stroke-width="1.3" stroke-linejoin="round"/>`,
   },
 } satisfies Record<string, IconPart>;
+/** Percentage remains legible on both the filled and empty portions, including custom colours. */
+function batteryPercentage(
+  value: number,
+  x: number,
+  y: number,
+  size: number,
+  color: string,
+  fill: string,
+  clip: string,
+) {
+  const hex = fill.replace("#", "");
+  const lightness = [0.2126, 0.7152, 0.0722].reduce(
+    (sum, weight, i) =>
+      sum + parseInt(hex.slice(i * 2, i * 2 + 2), 16) * weight,
+    0,
+  );
+  const inverse = lightness > 140 ? "#111111" : "#ffffff";
+  const text = (ink: string, clipped = false) =>
+    `<text x="${x}" y="${y}" text-anchor="middle" font-family="Arial,sans-serif" font-size="${size}" font-weight="bold" fill="${ink}"${clipped ? ' clip-path="url(#phone-battery-fill)"' : ""}>${value}</text>`;
+  return `<defs><clipPath id="phone-battery-fill">${clip}</clipPath></defs>${text(color)}${text(inverse, true)}`;
+}
 function androidBatteryPart(
   settings: PhoneSettings,
   color: string,
@@ -210,11 +237,19 @@ function androidBatteryPart(
       : battery <= 20
         ? "#ef4444"
         : color;
-  const contrast =
-    settings.theme === "dark" && !settings.customColor ? "#ffffff" : "#111111";
   const label =
     settings.showBatteryPercent && !outside
-      ? `<text x="${w / 2}" y="${vertical ? 12.3 : 13.3}" text-anchor="middle" font-family="Arial,sans-serif" font-size="${vertical ? 5.5 : 9}" font-weight="bold" fill="${battery > 55 ? contrast : color}">${battery}</text>`
+      ? batteryPercentage(
+          battery,
+          w / 2,
+          vertical ? 12.3 : 13.3,
+          vertical ? 5.5 : 9,
+          color,
+          fill,
+          vertical
+            ? `<rect x="2" y="${y + 2 + (h - 4) * (1 - battery / 100)}" width="${w - 4}" height="${((h - 4) * battery) / 100}"/>`
+            : `<rect x="2" y="${y + 2}" width="${((w - 4) * battery) / 100}" height="${h - 4}"/>`,
+        )
       : "";
   return {
     width: prefix + w + (vertical ? 2 : 3) + (settings.charging ? 10 : 0),
@@ -262,7 +297,15 @@ function batteryPart(
         ? `<rect x="0" y="3.5" width="${(25 * battery) / 100}" height="13" rx="4" fill="${level}"/>`
         : "";
     const label = settings.showBatteryPercent
-      ? `<text x="12.5" y="13.6" text-anchor="middle" font-family="Arial,sans-serif" font-size="9.5" font-weight="bold" fill="${battery > 55 ? contrast : color}">${battery}</text>`
+      ? batteryPercentage(
+          battery,
+          12.5,
+          13.6,
+          9.5,
+          color,
+          level,
+          `<rect x="0" y="3.5" width="${(25 * battery) / 100}" height="13" rx="4"/>`,
+        )
       : "";
     return {
       width: settings.charging ? 34 : 28,
@@ -407,10 +450,16 @@ function renderPhoneLayers(doc: TemplateDoc, raw: PhoneSettings): TemplateDoc {
   };
   const model = phoneModel(phone.modelId);
   const device = DEVICE_LAYOUTS[phone.modelId];
-  const version = phone.styleId === "auto" ? device.defaultStyle : phone.styleId;
+  const version =
+    phone.styleId === "auto" ? device.defaultStyle : phone.styleId;
   const deviceLayout = device.versions[version];
   if (!deviceLayout) throw new Error("该型号缺少所选版本的独立布局");
-  const profile = { ...effectiveProfile(phone), inset: deviceLayout.clockX, fontSize: deviceLayout.clockSize, gap: deviceLayout.systemGap };
+  const profile = {
+    ...effectiveProfile(phone),
+    inset: deviceLayout.clockX,
+    fontSize: deviceLayout.clockSize,
+    gap: deviceLayout.systemGap,
+  };
   const W = doc.canvas.width;
   const H = doc.canvas.height;
   const s = Math.min(
@@ -736,7 +785,8 @@ function renderPhoneLayers(doc: TemplateDoc, raw: PhoneSettings): TemplateDoc {
       createShapeLayer(
         model.cutout === "hole" ? "ellipse" : "rect",
         {
-          x: model.cutoutPosition === "left" ? 8 * s : (W - cutoutWidth * s) / 2,
+          x:
+            model.cutoutPosition === "left" ? 8 * s : (W - cutoutWidth * s) / 2,
           y:
             model.cutout === "notch"
               ? 0

@@ -5,6 +5,10 @@ import vm from "node:vm";
 import crypto from "node:crypto";
 import ts from "typescript";
 const root = process.cwd();
+const imageBudget = Math.max(
+  2,
+  Math.min(8, Number(process.env.PHONE_RESEARCH_IMAGES ?? 2) || 2),
+);
 const cache =
   process.env.PHONE_RESEARCH_CACHE ?? "/tmp/phone-source-research/collection";
 const sha = (data) => crypto.createHash("sha256").update(data).digest("hex");
@@ -197,7 +201,7 @@ async function inspect(model, url) {
     .map((m) => decode(m[1]))
     .filter((s) => /screenshot|screenshots_os/i.test(s));
   const screenshots = [];
-  for (const image of images.slice(0, 2)) {
+  for (const image of images.slice(0, imageBudget)) {
     const processed = new URL(image, "https://www.notebookcheck.net/").href;
     const filename = path
       .basename(new URL(processed).pathname)
@@ -233,7 +237,7 @@ async function inspect(model, url) {
       }
     }
     if (asset) screenshots.push(asset);
-    if (asset?.nativeSizeMatch) break;
+    if (asset?.nativeSizeMatch && imageBudget === 2) break;
   }
   return {
     modelId: model.id,
@@ -260,6 +264,7 @@ async function inspect(model, url) {
   };
 }
 const seeds = [
+  "https://www.notebookcheck.net/Realme-GT-6-review-Mid-range-smartphone-with-6-000-nits-and-spectacular-runtimes.873275.0.html",
   "https://www.notebookcheck.net/Google-Pixel-9-review-The-small-Google-smartphone-has-taken-the-wrong-path.907380.0.html",
   "https://www.notebookcheck.net/Apple-iPhone-16-smartphone-review-More-innovations-than-one-would-think.908118.0.html",
   "https://www.notebookcheck.net/Samsung-Galaxy-S24-review-The-best-small-Android-smartphone-gets-cheaper-but-not-better.809474.0.html",

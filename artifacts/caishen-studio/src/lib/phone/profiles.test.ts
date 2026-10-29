@@ -250,5 +250,27 @@ it("hides pre-launch system versions on newer models", async () => {
     ["vivox200", "originos", "originos4"],
     ["iqoo13", "originos", "originos4"],
     ["realmegt7pro", "realme", "realme5"],
-  ] as const) expect(compatibleStyle(oldStyle, system, model), model).toBe(false);
+  ] as const)
+    expect(compatibleStyle(oldStyle, system, model), model).toBe(false);
+});
+
+it("uses reviewed device typography in previews without propagating it to sibling models", async () => {
+  const { effectiveProfile } = await import("./profiles");
+  const base = { ...defaultPhoneSettings(), rendering: "natural" as const };
+  expect(
+    effectiveProfile({ ...base, modelId: "galaxys25", styleId: "oneui7" })
+      .weight,
+  ).toBe("bold");
+  expect(
+    effectiveProfile({ ...base, modelId: "galaxys24", styleId: "oneui7" })
+      .weight,
+  ).toBe("normal");
+  expect(
+    effectiveProfile({ ...base, modelId: "iphone17promax", styleId: "ios26" })
+      .weight,
+  ).toBe("normal");
+  expect(
+    effectiveProfile({ ...base, modelId: "iphone17pro", styleId: "ios26" })
+      .weight,
+  ).toBe("bold");
 });

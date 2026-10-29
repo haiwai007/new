@@ -9,7 +9,7 @@ export function identifyModel(text, models) {
   )) {
     const pattern = model.name
       .replaceAll("+", "plus")
-      .split(/\s+/)
+      .match(/[a-z]+|[0-9]+/gi)
       .map(escape)
       .join("[\\s-]*");
     const match = new RegExp(`(?:^|[^a-z0-9])${pattern}(?![a-z0-9])`, "i").exec(

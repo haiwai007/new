@@ -1,0 +1,5007 @@
+{
+  "schemaVersion": 1,
+  "requirements": [
+    "geometry",
+    "fonts",
+    "icons",
+    "state-coverage",
+    "native-frame-height",
+    "os-build-display-scale"
+  ],
+  "summary": {
+    "models": 100,
+    "versions": 268,
+    "partialVariants": 27,
+    "referenceVariants": 241,
+    "fullyCalibrated": 0,
+    "nativeScreenshotFiles": 258
+  },
+  "rows": [
+    {
+      "modelId": "iphone17",
+      "name": "iPhone 17",
+      "version": "ios26",
+      "status": "partial",
+      "sourceIds": [
+        "iphone17-ios26"
+      ],
+      "verifiedScopes": [
+        "horizontal-positions",
+        "sample-clock-bottom",
+        "sample-system-center"
+      ],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": null
+    },
+    {
+      "modelId": "iphone17pro",
+      "name": "iPhone 17 Pro",
+      "version": "ios26",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "review-only",
+      "warning": null
+    },
+    {
+      "modelId": "iphone17promax",
+      "name": "iPhone 17 Pro Max",
+      "version": "ios26",
+      "status": "partial",
+      "sourceIds": [
+        "iphone17promax-ios26"
+      ],
+      "verifiedScopes": [
+        "horizontal-positions",
+        "sample-clock-bottom",
+        "sample-system-center"
+      ],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": null
+    },
+    {
+      "modelId": "iphone16",
+      "name": "iPhone 16",
+      "version": "ios18",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": null
+    },
+    {
+      "modelId": "iphone16",
+      "name": "iPhone 16",
+      "version": "ios26",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": null
+    },
+    {
+      "modelId": "iphone16",
+      "name": "iPhone 16",
+      "version": "ios1801",
+      "status": "partial",
+      "sourceIds": [
+        "iphone16-ios18.0.1"
+      ],
+      "verifiedScopes": [
+        "horizontal-positions",
+        "sample-clock-bottom",
+        "sample-system-center"
+      ],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": null
+    },
+    {
+      "modelId": "iphone16pro",
+      "name": "iPhone 16 Pro",
+      "version": "ios18",
+      "status": "partial",
+      "sourceIds": [
+        "iphone16pro-ios18"
+      ],
+      "verifiedScopes": [
+        "horizontal-positions",
+        "sample-clock-bottom",
+        "sample-system-center"
+      ],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": null
+    },
+    {
+      "modelId": "iphone16pro",
+      "name": "iPhone 16 Pro",
+      "version": "ios26",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": null
+    },
+    {
+      "modelId": "iphone16promax",
+      "name": "iPhone 16 Pro Max",
+      "version": "ios18",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "review-only",
+      "warning": null
+    },
+    {
+      "modelId": "iphone16promax",
+      "name": "iPhone 16 Pro Max",
+      "version": "ios26",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "review-only",
+      "warning": null
+    },
+    {
+      "modelId": "iphone15",
+      "name": "iPhone 15",
+      "version": "ios17",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "review-only",
+      "warning": null
+    },
+    {
+      "modelId": "iphone15",
+      "name": "iPhone 15",
+      "version": "ios18",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "review-only",
+      "warning": null
+    },
+    {
+      "modelId": "iphone15",
+      "name": "iPhone 15",
+      "version": "ios26",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "review-only",
+      "warning": null
+    },
+    {
+      "modelId": "iphone15promax",
+      "name": "iPhone 15 Pro Max",
+      "version": "ios17",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "review-only",
+      "warning": null
+    },
+    {
+      "modelId": "iphone15promax",
+      "name": "iPhone 15 Pro Max",
+      "version": "ios18",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "review-only",
+      "warning": null
+    },
+    {
+      "modelId": "iphone15promax",
+      "name": "iPhone 15 Pro Max",
+      "version": "ios26",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "review-only",
+      "warning": null
+    },
+    {
+      "modelId": "iphone13",
+      "name": "iPhone 13",
+      "version": "ios17",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "review-only",
+      "warning": null
+    },
+    {
+      "modelId": "iphone13",
+      "name": "iPhone 13",
+      "version": "ios18",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "review-only",
+      "warning": null
+    },
+    {
+      "modelId": "iphone13",
+      "name": "iPhone 13",
+      "version": "ios26",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "review-only",
+      "warning": null
+    },
+    {
+      "modelId": "iphone14",
+      "name": "iPhone 14",
+      "version": "ios17",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": "样本为 iOS 16，不能核准当前 iOS 17／18／26 记录。"
+    },
+    {
+      "modelId": "iphone14",
+      "name": "iPhone 14",
+      "version": "ios18",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": "样本为 iOS 16，不能核准当前 iOS 17／18／26 记录。"
+    },
+    {
+      "modelId": "iphone14",
+      "name": "iPhone 14",
+      "version": "ios26",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": "样本为 iOS 16，不能核准当前 iOS 17／18／26 记录。"
+    },
+    {
+      "modelId": "iphonese",
+      "name": "iPhone SE（第 3 代）",
+      "version": "iosclassic",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "review-only",
+      "warning": null
+    },
+    {
+      "modelId": "pixel8",
+      "name": "Google Pixel 8",
+      "version": "pixel14",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "review-only",
+      "warning": null
+    },
+    {
+      "modelId": "pixel8",
+      "name": "Google Pixel 8",
+      "version": "pixel15",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "review-only",
+      "warning": null
+    },
+    {
+      "modelId": "pixel8",
+      "name": "Google Pixel 8",
+      "version": "pixel16",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "review-only",
+      "warning": null
+    },
+    {
+      "modelId": "pixel8pro",
+      "name": "Google Pixel 8 Pro",
+      "version": "pixel14",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "scaled-screenshot-only",
+      "warning": null
+    },
+    {
+      "modelId": "pixel8pro",
+      "name": "Google Pixel 8 Pro",
+      "version": "pixel15",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "scaled-screenshot-only",
+      "warning": null
+    },
+    {
+      "modelId": "pixel8pro",
+      "name": "Google Pixel 8 Pro",
+      "version": "pixel16",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "scaled-screenshot-only",
+      "warning": null
+    },
+    {
+      "modelId": "pixel9",
+      "name": "Google Pixel 9",
+      "version": "pixel14",
+      "status": "partial",
+      "sourceIds": [
+        "pixel9-android14"
+      ],
+      "verifiedScopes": [
+        "horizontal-positions",
+        "sample-clock-bottom",
+        "sample-system-center"
+      ],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": null
+    },
+    {
+      "modelId": "pixel9",
+      "name": "Google Pixel 9",
+      "version": "pixel15",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": null
+    },
+    {
+      "modelId": "pixel9",
+      "name": "Google Pixel 9",
+      "version": "pixel16",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": null
+    },
+    {
+      "modelId": "pixel9pro",
+      "name": "Google Pixel 9 Pro",
+      "version": "pixel14",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": "评测规格列 Android 14，正文同时提到已推送 Android 15；尚不能确认截图的精确版本。"
+    },
+    {
+      "modelId": "pixel9pro",
+      "name": "Google Pixel 9 Pro",
+      "version": "pixel15",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": "评测规格列 Android 14，正文同时提到已推送 Android 15；尚不能确认截图的精确版本。"
+    },
+    {
+      "modelId": "pixel9pro",
+      "name": "Google Pixel 9 Pro",
+      "version": "pixel16",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": "评测规格列 Android 14，正文同时提到已推送 Android 15；尚不能确认截图的精确版本。"
+    },
+    {
+      "modelId": "pixel9proxl",
+      "name": "Google Pixel 9 Pro XL",
+      "version": "pixel14",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "review-only",
+      "warning": null
+    },
+    {
+      "modelId": "pixel9proxl",
+      "name": "Google Pixel 9 Pro XL",
+      "version": "pixel15",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "review-only",
+      "warning": null
+    },
+    {
+      "modelId": "pixel9proxl",
+      "name": "Google Pixel 9 Pro XL",
+      "version": "pixel16",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "review-only",
+      "warning": null
+    },
+    {
+      "modelId": "galaxys23",
+      "name": "Samsung Galaxy S23",
+      "version": "oneui6",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": "样本为 One UI 5.1，不能核准 One UI 6／7／8。"
+    },
+    {
+      "modelId": "galaxys23",
+      "name": "Samsung Galaxy S23",
+      "version": "oneui7",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": "样本为 One UI 5.1，不能核准 One UI 6／7／8。"
+    },
+    {
+      "modelId": "galaxys23",
+      "name": "Samsung Galaxy S23",
+      "version": "oneui8",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": "样本为 One UI 5.1，不能核准 One UI 6／7／8。"
+    },
+    {
+      "modelId": "galaxys24",
+      "name": "Samsung Galaxy S24",
+      "version": "oneui6",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": null
+    },
+    {
+      "modelId": "galaxys24",
+      "name": "Samsung Galaxy S24",
+      "version": "oneui7",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": null
+    },
+    {
+      "modelId": "galaxys24",
+      "name": "Samsung Galaxy S24",
+      "version": "oneui8",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": null
+    },
+    {
+      "modelId": "galaxys24",
+      "name": "Samsung Galaxy S24",
+      "version": "oneui61",
+      "status": "partial",
+      "sourceIds": [
+        "galaxys24-oneui6.1"
+      ],
+      "verifiedScopes": [
+        "horizontal-positions",
+        "sample-clock-bottom",
+        "sample-system-center"
+      ],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": null
+    },
+    {
+      "modelId": "galaxys24plus",
+      "name": "Samsung Galaxy S24+",
+      "version": "oneui6",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": null
+    },
+    {
+      "modelId": "galaxys24plus",
+      "name": "Samsung Galaxy S24+",
+      "version": "oneui7",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": null
+    },
+    {
+      "modelId": "galaxys24plus",
+      "name": "Samsung Galaxy S24+",
+      "version": "oneui8",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": null
+    },
+    {
+      "modelId": "galaxys24plus",
+      "name": "Samsung Galaxy S24+",
+      "version": "oneui61",
+      "status": "partial",
+      "sourceIds": [
+        "galaxys24plus-oneui61"
+      ],
+      "verifiedScopes": [
+        "horizontal-positions",
+        "sample-clock-bottom",
+        "sample-system-center"
+      ],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": null
+    },
+    {
+      "modelId": "galaxys24ultra",
+      "name": "Samsung Galaxy S24 Ultra",
+      "version": "oneui6",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": null
+    },
+    {
+      "modelId": "galaxys24ultra",
+      "name": "Samsung Galaxy S24 Ultra",
+      "version": "oneui7",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": null
+    },
+    {
+      "modelId": "galaxys24ultra",
+      "name": "Samsung Galaxy S24 Ultra",
+      "version": "oneui8",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": null
+    },
+    {
+      "modelId": "galaxys24ultra",
+      "name": "Samsung Galaxy S24 Ultra",
+      "version": "oneui61",
+      "status": "partial",
+      "sourceIds": [
+        "galaxys24ultra-oneui61"
+      ],
+      "verifiedScopes": [
+        "horizontal-positions",
+        "sample-clock-bottom",
+        "sample-system-center"
+      ],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": null
+    },
+    {
+      "modelId": "galaxys25",
+      "name": "Samsung Galaxy S25",
+      "version": "oneui7",
+      "status": "partial",
+      "sourceIds": [
+        "galaxys25-oneui7"
+      ],
+      "verifiedScopes": [
+        "horizontal-positions",
+        "sample-clock-bottom",
+        "sample-system-center"
+      ],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": null
+    },
+    {
+      "modelId": "galaxys25",
+      "name": "Samsung Galaxy S25",
+      "version": "oneui8",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": null
+    },
+    {
+      "modelId": "galaxys25ultra",
+      "name": "Samsung Galaxy S25 Ultra",
+      "version": "oneui7",
+      "status": "partial",
+      "sourceIds": [
+        "galaxys25ultra-oneui7"
+      ],
+      "verifiedScopes": [
+        "horizontal-positions",
+        "sample-clock-bottom",
+        "sample-system-center"
+      ],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": null
+    },
+    {
+      "modelId": "galaxys25ultra",
+      "name": "Samsung Galaxy S25 Ultra",
+      "version": "oneui8",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": null
+    },
+    {
+      "modelId": "xiaomi13",
+      "name": "小米 13",
+      "version": "hyperos1",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": "样本为 MIUI 14，不能核准 HyperOS。"
+    },
+    {
+      "modelId": "xiaomi13",
+      "name": "小米 13",
+      "version": "hyperos2",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": "样本为 MIUI 14，不能核准 HyperOS。"
+    },
+    {
+      "modelId": "xiaomi13",
+      "name": "小米 13",
+      "version": "hyperos3",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": "样本为 MIUI 14，不能核准 HyperOS。"
+    },
+    {
+      "modelId": "xiaomi14",
+      "name": "小米 14",
+      "version": "hyperos1",
+      "status": "partial",
+      "sourceIds": [
+        "xiaomi14-hyperos1"
+      ],
+      "verifiedScopes": [
+        "horizontal-positions",
+        "sample-clock-bottom",
+        "sample-system-center"
+      ],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": null
+    },
+    {
+      "modelId": "xiaomi14",
+      "name": "小米 14",
+      "version": "hyperos2",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": null
+    },
+    {
+      "modelId": "xiaomi14",
+      "name": "小米 14",
+      "version": "hyperos3",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": null
+    },
+    {
+      "modelId": "xiaomi14pro",
+      "name": "小米 14 Pro",
+      "version": "hyperos1",
+      "status": "partial",
+      "sourceIds": [
+        "xiaomi14pro-hyperos1"
+      ],
+      "verifiedScopes": [
+        "horizontal-positions",
+        "sample-clock-bottom",
+        "sample-system-center"
+      ],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": null
+    },
+    {
+      "modelId": "xiaomi14pro",
+      "name": "小米 14 Pro",
+      "version": "hyperos2",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": null
+    },
+    {
+      "modelId": "xiaomi14pro",
+      "name": "小米 14 Pro",
+      "version": "hyperos3",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": null
+    },
+    {
+      "modelId": "xiaomi14ultra",
+      "name": "小米 14 Ultra",
+      "version": "hyperos1",
+      "status": "partial",
+      "sourceIds": [
+        "xiaomi14ultra-hyperos1"
+      ],
+      "verifiedScopes": [
+        "horizontal-positions",
+        "sample-clock-bottom",
+        "sample-system-center"
+      ],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": null
+    },
+    {
+      "modelId": "xiaomi14ultra",
+      "name": "小米 14 Ultra",
+      "version": "hyperos2",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": null
+    },
+    {
+      "modelId": "xiaomi14ultra",
+      "name": "小米 14 Ultra",
+      "version": "hyperos3",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": null
+    },
+    {
+      "modelId": "xiaomi15",
+      "name": "小米 15",
+      "version": "hyperos2",
+      "status": "partial",
+      "sourceIds": [
+        "xiaomi15-hyperos2"
+      ],
+      "verifiedScopes": [
+        "horizontal-positions",
+        "sample-clock-bottom",
+        "sample-system-center"
+      ],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": null
+    },
+    {
+      "modelId": "xiaomi15",
+      "name": "小米 15",
+      "version": "hyperos3",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": null
+    },
+    {
+      "modelId": "redmik70",
+      "name": "Redmi K70",
+      "version": "hyperos1",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "redmik70",
+      "name": "Redmi K70",
+      "version": "hyperos2",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "redmik70",
+      "name": "Redmi K70",
+      "version": "hyperos3",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "redmik70pro",
+      "name": "Redmi K70 Pro",
+      "version": "hyperos1",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "redmik70pro",
+      "name": "Redmi K70 Pro",
+      "version": "hyperos2",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "redmik70pro",
+      "name": "Redmi K70 Pro",
+      "version": "hyperos3",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "redmik80",
+      "name": "Redmi K80",
+      "version": "hyperos2",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "redmik80",
+      "name": "Redmi K80",
+      "version": "hyperos3",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "redminote13pro",
+      "name": "Redmi Note 13 Pro 5G",
+      "version": "hyperos1",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": "样本为 MIUI 14，不能核准 HyperOS。"
+    },
+    {
+      "modelId": "redminote13pro",
+      "name": "Redmi Note 13 Pro 5G",
+      "version": "hyperos2",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": "样本为 MIUI 14，不能核准 HyperOS。"
+    },
+    {
+      "modelId": "redminote13pro",
+      "name": "Redmi Note 13 Pro 5G",
+      "version": "hyperos3",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": "样本为 MIUI 14，不能核准 HyperOS。"
+    },
+    {
+      "modelId": "huaweip60pro",
+      "name": "华为 P60 Pro",
+      "version": "harmony4",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": "规格表与正文存在系统口径差异；正文为 EMUI 13.1，不能当作 HarmonyOS 4 样本。"
+    },
+    {
+      "modelId": "huaweipura70",
+      "name": "华为 Pura 70",
+      "version": "harmony4",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "huaweipura70",
+      "name": "华为 Pura 70",
+      "version": "harmony5",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "huaweipura70",
+      "name": "华为 Pura 70",
+      "version": "harmony6",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "huaweipura70pro",
+      "name": "华为 Pura 70 Pro",
+      "version": "harmony4",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "huaweipura70pro",
+      "name": "华为 Pura 70 Pro",
+      "version": "harmony5",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "huaweipura70pro",
+      "name": "华为 Pura 70 Pro",
+      "version": "harmony6",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "huaweimate60",
+      "name": "华为 Mate 60",
+      "version": "harmony4",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "huaweimate60",
+      "name": "华为 Mate 60",
+      "version": "harmony5",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "huaweimate60",
+      "name": "华为 Mate 60",
+      "version": "harmony6",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "huaweimate60pro",
+      "name": "华为 Mate 60 Pro",
+      "version": "harmony4",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "huaweimate60pro",
+      "name": "华为 Mate 60 Pro",
+      "version": "harmony5",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "huaweimate60pro",
+      "name": "华为 Mate 60 Pro",
+      "version": "harmony6",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "huaweimate70",
+      "name": "华为 Mate 70",
+      "version": "harmony4",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "huaweimate70",
+      "name": "华为 Mate 70",
+      "version": "harmony5",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "huaweimate70",
+      "name": "华为 Mate 70",
+      "version": "harmony6",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "huaweimate70pro",
+      "name": "华为 Mate 70 Pro",
+      "version": "harmony4",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "huaweimate70pro",
+      "name": "华为 Mate 70 Pro",
+      "version": "harmony5",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "huaweimate70pro",
+      "name": "华为 Mate 70 Pro",
+      "version": "harmony6",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "honor90",
+      "name": "荣耀 90",
+      "version": "magic8",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "review-only",
+      "warning": null
+    },
+    {
+      "modelId": "honor90",
+      "name": "荣耀 90",
+      "version": "magic9",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "review-only",
+      "warning": null
+    },
+    {
+      "modelId": "honor90",
+      "name": "荣耀 90",
+      "version": "magic10",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "review-only",
+      "warning": null
+    },
+    {
+      "modelId": "honor200",
+      "name": "荣耀 200",
+      "version": "magic8",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "honor200",
+      "name": "荣耀 200",
+      "version": "magic9",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "honor200",
+      "name": "荣耀 200",
+      "version": "magic10",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "honormagic6",
+      "name": "荣耀 Magic6",
+      "version": "magic8",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "honormagic6",
+      "name": "荣耀 Magic6",
+      "version": "magic9",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "honormagic6",
+      "name": "荣耀 Magic6",
+      "version": "magic10",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "honormagic6pro",
+      "name": "荣耀 Magic6 Pro",
+      "version": "magic8",
+      "status": "partial",
+      "sourceIds": [
+        "honormagic6pro-magic8"
+      ],
+      "verifiedScopes": [
+        "horizontal-positions",
+        "sample-clock-bottom",
+        "sample-system-center"
+      ],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": null
+    },
+    {
+      "modelId": "honormagic6pro",
+      "name": "荣耀 Magic6 Pro",
+      "version": "magic9",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": null
+    },
+    {
+      "modelId": "honormagic6pro",
+      "name": "荣耀 Magic6 Pro",
+      "version": "magic10",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": null
+    },
+    {
+      "modelId": "honormagic7pro",
+      "name": "荣耀 Magic7 Pro",
+      "version": "magic9",
+      "status": "partial",
+      "sourceIds": [
+        "honormagic7pro-magic9"
+      ],
+      "verifiedScopes": [
+        "horizontal-positions",
+        "sample-clock-bottom",
+        "sample-system-center"
+      ],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": null
+    },
+    {
+      "modelId": "honormagic7pro",
+      "name": "荣耀 Magic7 Pro",
+      "version": "magic10",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": null
+    },
+    {
+      "modelId": "oppofindx7",
+      "name": "OPPO Find X7",
+      "version": "coloros14",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "oppofindx7",
+      "name": "OPPO Find X7",
+      "version": "coloros15",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "oppofindx7",
+      "name": "OPPO Find X7",
+      "version": "coloros16",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "oppofindx7ultra",
+      "name": "OPPO Find X7 Ultra",
+      "version": "coloros14",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "scaled-screenshot-only",
+      "warning": null
+    },
+    {
+      "modelId": "oppofindx7ultra",
+      "name": "OPPO Find X7 Ultra",
+      "version": "coloros15",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "scaled-screenshot-only",
+      "warning": null
+    },
+    {
+      "modelId": "oppofindx7ultra",
+      "name": "OPPO Find X7 Ultra",
+      "version": "coloros16",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "scaled-screenshot-only",
+      "warning": null
+    },
+    {
+      "modelId": "oppofindx8",
+      "name": "OPPO Find X8",
+      "version": "coloros15",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "oppofindx8",
+      "name": "OPPO Find X8",
+      "version": "coloros16",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "oppofindx8pro",
+      "name": "OPPO Find X8 Pro",
+      "version": "coloros15",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "scaled-screenshot-only",
+      "warning": null
+    },
+    {
+      "modelId": "oppofindx8pro",
+      "name": "OPPO Find X8 Pro",
+      "version": "coloros16",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "scaled-screenshot-only",
+      "warning": null
+    },
+    {
+      "modelId": "opporeno12",
+      "name": "OPPO Reno12",
+      "version": "coloros14",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "opporeno12",
+      "name": "OPPO Reno12",
+      "version": "coloros15",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "opporeno12",
+      "name": "OPPO Reno12",
+      "version": "coloros16",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "oneplus12",
+      "name": "一加 12",
+      "version": "coloros14",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": "评测样本为海外 OxygenOS 14，不能当作国行 ColorOS 14。"
+    },
+    {
+      "modelId": "oneplus12",
+      "name": "一加 12",
+      "version": "coloros15",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": "评测样本为海外 OxygenOS 14，不能当作国行 ColorOS 14。"
+    },
+    {
+      "modelId": "oneplus12",
+      "name": "一加 12",
+      "version": "coloros16",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": "评测样本为海外 OxygenOS 14，不能当作国行 ColorOS 14。"
+    },
+    {
+      "modelId": "oneplus13",
+      "name": "一加 13",
+      "version": "coloros15",
+      "status": "partial",
+      "sourceIds": [
+        "oneplus13-coloros15"
+      ],
+      "verifiedScopes": [
+        "horizontal-positions",
+        "sample-clock-bottom",
+        "sample-system-center"
+      ],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": null
+    },
+    {
+      "modelId": "oneplus13",
+      "name": "一加 13",
+      "version": "coloros16",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": null
+    },
+    {
+      "modelId": "oneplusace3",
+      "name": "一加 Ace 3",
+      "version": "coloros14",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "oneplusace3",
+      "name": "一加 Ace 3",
+      "version": "coloros15",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "oneplusace3",
+      "name": "一加 Ace 3",
+      "version": "coloros16",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "vivox100",
+      "name": "vivo X100",
+      "version": "originos4",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "vivox100",
+      "name": "vivo X100",
+      "version": "originos5",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "vivox100",
+      "name": "vivo X100",
+      "version": "originos6",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "vivox100pro",
+      "name": "vivo X100 Pro",
+      "version": "originos4",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": "评测样本为海外 Funtouch OS 14，不能当作国行 OriginOS。"
+    },
+    {
+      "modelId": "vivox100pro",
+      "name": "vivo X100 Pro",
+      "version": "originos5",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": "评测样本为海外 Funtouch OS 14，不能当作国行 OriginOS。"
+    },
+    {
+      "modelId": "vivox100pro",
+      "name": "vivo X100 Pro",
+      "version": "originos6",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": "评测样本为海外 Funtouch OS 14，不能当作国行 OriginOS。"
+    },
+    {
+      "modelId": "vivox200",
+      "name": "vivo X200",
+      "version": "originos5",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "vivox200",
+      "name": "vivo X200",
+      "version": "originos6",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "vivox200pro",
+      "name": "vivo X200 Pro",
+      "version": "originos5",
+      "status": "partial",
+      "sourceIds": [
+        "vivox200pro-originos5"
+      ],
+      "verifiedScopes": [
+        "horizontal-positions",
+        "sample-clock-bottom",
+        "sample-system-center"
+      ],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": null
+    },
+    {
+      "modelId": "vivox200pro",
+      "name": "vivo X200 Pro",
+      "version": "originos6",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": null
+    },
+    {
+      "modelId": "vivox200promini",
+      "name": "vivo X200 Pro mini",
+      "version": "originos5",
+      "status": "partial",
+      "sourceIds": [
+        "vivox200promini-originos5"
+      ],
+      "verifiedScopes": [
+        "horizontal-positions",
+        "sample-clock-bottom",
+        "sample-system-center"
+      ],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": null
+    },
+    {
+      "modelId": "vivox200promini",
+      "name": "vivo X200 Pro mini",
+      "version": "originos6",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": null
+    },
+    {
+      "modelId": "iqoo12",
+      "name": "iQOO 12",
+      "version": "originos4",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "iqoo12",
+      "name": "iQOO 12",
+      "version": "originos5",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "iqoo12",
+      "name": "iQOO 12",
+      "version": "originos6",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "iqoo13",
+      "name": "iQOO 13",
+      "version": "originos5",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "iqoo13",
+      "name": "iQOO 13",
+      "version": "originos6",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "iqooneo9",
+      "name": "iQOO Neo9",
+      "version": "originos4",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "iqooneo9",
+      "name": "iQOO Neo9",
+      "version": "originos5",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "iqooneo9",
+      "name": "iQOO Neo9",
+      "version": "originos6",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "realmegt5",
+      "name": "realme GT5",
+      "version": "realme5",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": "样本为 realme UI 4.0，不能核准 UI 5／6／7。"
+    },
+    {
+      "modelId": "realmegt5",
+      "name": "realme GT5",
+      "version": "realme6",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": "样本为 realme UI 4.0，不能核准 UI 5／6／7。"
+    },
+    {
+      "modelId": "realmegt5",
+      "name": "realme GT5",
+      "version": "realme7",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": "样本为 realme UI 4.0，不能核准 UI 5／6／7。"
+    },
+    {
+      "modelId": "realmegt6",
+      "name": "realme GT6",
+      "version": "realme5",
+      "status": "partial",
+      "sourceIds": [
+        "realmegt6-realme5"
+      ],
+      "verifiedScopes": [
+        "horizontal-positions",
+        "sample-clock-bottom",
+        "sample-system-center"
+      ],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": null
+    },
+    {
+      "modelId": "realmegt6",
+      "name": "realme GT6",
+      "version": "realme6",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": null
+    },
+    {
+      "modelId": "realmegt6",
+      "name": "realme GT6",
+      "version": "realme7",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": null
+    },
+    {
+      "modelId": "realmegt7pro",
+      "name": "realme GT7 Pro",
+      "version": "realme6",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "realmegt7pro",
+      "name": "realme GT7 Pro",
+      "version": "realme7",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "iphone15pro",
+      "name": "iPhone 15 Pro",
+      "version": "ios17",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "review-only",
+      "warning": null
+    },
+    {
+      "modelId": "iphone15pro",
+      "name": "iPhone 15 Pro",
+      "version": "ios18",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "review-only",
+      "warning": null
+    },
+    {
+      "modelId": "iphone15pro",
+      "name": "iPhone 15 Pro",
+      "version": "ios26",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "review-only",
+      "warning": null
+    },
+    {
+      "modelId": "iphone15plus",
+      "name": "iPhone 15 Plus",
+      "version": "ios17",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "review-only",
+      "warning": null
+    },
+    {
+      "modelId": "iphone15plus",
+      "name": "iPhone 15 Plus",
+      "version": "ios18",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "review-only",
+      "warning": null
+    },
+    {
+      "modelId": "iphone15plus",
+      "name": "iPhone 15 Plus",
+      "version": "ios26",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "review-only",
+      "warning": null
+    },
+    {
+      "modelId": "iphone14pro",
+      "name": "iPhone 14 Pro",
+      "version": "ios17",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "review-only",
+      "warning": null
+    },
+    {
+      "modelId": "iphone14pro",
+      "name": "iPhone 14 Pro",
+      "version": "ios18",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "review-only",
+      "warning": null
+    },
+    {
+      "modelId": "iphone14pro",
+      "name": "iPhone 14 Pro",
+      "version": "ios26",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "review-only",
+      "warning": null
+    },
+    {
+      "modelId": "iphone14promax",
+      "name": "iPhone 14 Pro Max",
+      "version": "ios17",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "review-only",
+      "warning": null
+    },
+    {
+      "modelId": "iphone14promax",
+      "name": "iPhone 14 Pro Max",
+      "version": "ios18",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "review-only",
+      "warning": null
+    },
+    {
+      "modelId": "iphone14promax",
+      "name": "iPhone 14 Pro Max",
+      "version": "ios26",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "review-only",
+      "warning": null
+    },
+    {
+      "modelId": "iphone13pro",
+      "name": "iPhone 13 Pro",
+      "version": "ios17",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "review-only",
+      "warning": null
+    },
+    {
+      "modelId": "iphone13pro",
+      "name": "iPhone 13 Pro",
+      "version": "ios18",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "review-only",
+      "warning": null
+    },
+    {
+      "modelId": "iphone13pro",
+      "name": "iPhone 13 Pro",
+      "version": "ios26",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "review-only",
+      "warning": null
+    },
+    {
+      "modelId": "iphone13promax",
+      "name": "iPhone 13 Pro Max",
+      "version": "ios17",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "review-only",
+      "warning": null
+    },
+    {
+      "modelId": "iphone13promax",
+      "name": "iPhone 13 Pro Max",
+      "version": "ios18",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "review-only",
+      "warning": null
+    },
+    {
+      "modelId": "iphone13promax",
+      "name": "iPhone 13 Pro Max",
+      "version": "ios26",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "review-only",
+      "warning": null
+    },
+    {
+      "modelId": "iphone16plus",
+      "name": "iPhone 16 Plus",
+      "version": "ios18",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "review-only",
+      "warning": null
+    },
+    {
+      "modelId": "iphone16plus",
+      "name": "iPhone 16 Plus",
+      "version": "ios26",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "review-only",
+      "warning": null
+    },
+    {
+      "modelId": "iphone16e",
+      "name": "iPhone 16e",
+      "version": "ios18",
+      "status": "partial",
+      "sourceIds": [
+        "iphone16e-ios18"
+      ],
+      "verifiedScopes": [
+        "horizontal-positions",
+        "sample-clock-bottom",
+        "sample-system-center"
+      ],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": null
+    },
+    {
+      "modelId": "iphone16e",
+      "name": "iPhone 16e",
+      "version": "ios26",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": null
+    },
+    {
+      "modelId": "galaxys23plus",
+      "name": "Samsung Galaxy S23+",
+      "version": "oneui6",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": "样本为 One UI 5.1，不能核准 One UI 6／7／8。"
+    },
+    {
+      "modelId": "galaxys23plus",
+      "name": "Samsung Galaxy S23+",
+      "version": "oneui7",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": "样本为 One UI 5.1，不能核准 One UI 6／7／8。"
+    },
+    {
+      "modelId": "galaxys23plus",
+      "name": "Samsung Galaxy S23+",
+      "version": "oneui8",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": "样本为 One UI 5.1，不能核准 One UI 6／7／8。"
+    },
+    {
+      "modelId": "galaxys23ultra",
+      "name": "Samsung Galaxy S23 Ultra",
+      "version": "oneui6",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": "样本为 One UI 5.1，不能核准 One UI 6／7／8。"
+    },
+    {
+      "modelId": "galaxys23ultra",
+      "name": "Samsung Galaxy S23 Ultra",
+      "version": "oneui7",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": "样本为 One UI 5.1，不能核准 One UI 6／7／8。"
+    },
+    {
+      "modelId": "galaxys23ultra",
+      "name": "Samsung Galaxy S23 Ultra",
+      "version": "oneui8",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": "样本为 One UI 5.1，不能核准 One UI 6／7／8。"
+    },
+    {
+      "modelId": "galaxys25plus",
+      "name": "Samsung Galaxy S25+",
+      "version": "oneui7",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "scaled-screenshot-only",
+      "warning": null
+    },
+    {
+      "modelId": "galaxys25plus",
+      "name": "Samsung Galaxy S25+",
+      "version": "oneui8",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "scaled-screenshot-only",
+      "warning": null
+    },
+    {
+      "modelId": "galaxya55",
+      "name": "Samsung Galaxy A55",
+      "version": "oneui6",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": null
+    },
+    {
+      "modelId": "galaxya55",
+      "name": "Samsung Galaxy A55",
+      "version": "oneui7",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": null
+    },
+    {
+      "modelId": "galaxya55",
+      "name": "Samsung Galaxy A55",
+      "version": "oneui8",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": null
+    },
+    {
+      "modelId": "galaxya55",
+      "name": "Samsung Galaxy A55",
+      "version": "oneui61",
+      "status": "partial",
+      "sourceIds": [
+        "galaxya55-oneui61"
+      ],
+      "verifiedScopes": [
+        "horizontal-positions",
+        "sample-clock-bottom",
+        "sample-system-center"
+      ],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": null
+    },
+    {
+      "modelId": "galaxya54",
+      "name": "Samsung Galaxy A54",
+      "version": "oneui6",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": "样本为 One UI 5.1，不能核准 One UI 6／7／8。"
+    },
+    {
+      "modelId": "galaxya54",
+      "name": "Samsung Galaxy A54",
+      "version": "oneui7",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": "样本为 One UI 5.1，不能核准 One UI 6／7／8。"
+    },
+    {
+      "modelId": "galaxya54",
+      "name": "Samsung Galaxy A54",
+      "version": "oneui8",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": "样本为 One UI 5.1，不能核准 One UI 6／7／8。"
+    },
+    {
+      "modelId": "pixel7",
+      "name": "Google Pixel 7",
+      "version": "pixel14",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": "样本为 Android 13，不能核准 Android 14／15／16。"
+    },
+    {
+      "modelId": "pixel7",
+      "name": "Google Pixel 7",
+      "version": "pixel15",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": "样本为 Android 13，不能核准 Android 14／15／16。"
+    },
+    {
+      "modelId": "pixel7",
+      "name": "Google Pixel 7",
+      "version": "pixel16",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": "样本为 Android 13，不能核准 Android 14／15／16。"
+    },
+    {
+      "modelId": "pixel7pro",
+      "name": "Google Pixel 7 Pro",
+      "version": "pixel14",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": "样本为 Android 13，不能核准 Android 14／15／16。"
+    },
+    {
+      "modelId": "pixel7pro",
+      "name": "Google Pixel 7 Pro",
+      "version": "pixel15",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": "样本为 Android 13，不能核准 Android 14／15／16。"
+    },
+    {
+      "modelId": "pixel7pro",
+      "name": "Google Pixel 7 Pro",
+      "version": "pixel16",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": "样本为 Android 13，不能核准 Android 14／15／16。"
+    },
+    {
+      "modelId": "pixel8a",
+      "name": "Google Pixel 8a",
+      "version": "pixel14",
+      "status": "partial",
+      "sourceIds": [
+        "pixel8a-pixel14"
+      ],
+      "verifiedScopes": [
+        "horizontal-positions",
+        "sample-clock-bottom",
+        "sample-system-center"
+      ],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": null
+    },
+    {
+      "modelId": "pixel8a",
+      "name": "Google Pixel 8a",
+      "version": "pixel15",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": null
+    },
+    {
+      "modelId": "pixel8a",
+      "name": "Google Pixel 8a",
+      "version": "pixel16",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": null
+    },
+    {
+      "modelId": "pixel9a",
+      "name": "Google Pixel 9a",
+      "version": "pixel14",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": null
+    },
+    {
+      "modelId": "pixel9a",
+      "name": "Google Pixel 9a",
+      "version": "pixel15",
+      "status": "partial",
+      "sourceIds": [
+        "pixel9a-pixel15"
+      ],
+      "verifiedScopes": [
+        "horizontal-positions",
+        "sample-clock-bottom",
+        "sample-system-center"
+      ],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": null
+    },
+    {
+      "modelId": "pixel9a",
+      "name": "Google Pixel 9a",
+      "version": "pixel16",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": null
+    },
+    {
+      "modelId": "xiaomi15pro",
+      "name": "小米 15 Pro",
+      "version": "hyperos2",
+      "status": "partial",
+      "sourceIds": [
+        "xiaomi15pro-hyperos2"
+      ],
+      "verifiedScopes": [
+        "horizontal-positions",
+        "sample-clock-bottom",
+        "sample-system-center"
+      ],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": null
+    },
+    {
+      "modelId": "xiaomi15pro",
+      "name": "小米 15 Pro",
+      "version": "hyperos3",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": null
+    },
+    {
+      "modelId": "xiaomi15ultra",
+      "name": "小米 15 Ultra",
+      "version": "hyperos2",
+      "status": "partial",
+      "sourceIds": [
+        "xiaomi15ultra-hyperos2"
+      ],
+      "verifiedScopes": [
+        "horizontal-positions",
+        "sample-clock-bottom",
+        "sample-system-center"
+      ],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": null
+    },
+    {
+      "modelId": "xiaomi15ultra",
+      "name": "小米 15 Ultra",
+      "version": "hyperos3",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": null
+    },
+    {
+      "modelId": "redmik80pro",
+      "name": "Redmi K80 Pro",
+      "version": "hyperos2",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "redmik80pro",
+      "name": "Redmi K80 Pro",
+      "version": "hyperos3",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "redminote14proplus",
+      "name": "Redmi Note 14 Pro+",
+      "version": "hyperos1",
+      "status": "partial",
+      "sourceIds": [
+        "redminote14proplus-hyperos1"
+      ],
+      "verifiedScopes": [
+        "horizontal-positions",
+        "sample-clock-bottom",
+        "sample-system-center"
+      ],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": null
+    },
+    {
+      "modelId": "redminote14proplus",
+      "name": "Redmi Note 14 Pro+",
+      "version": "hyperos2",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": null
+    },
+    {
+      "modelId": "redminote14proplus",
+      "name": "Redmi Note 14 Pro+",
+      "version": "hyperos3",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": null
+    },
+    {
+      "modelId": "huaweipura70ultra",
+      "name": "华为 Pura 70 Ultra",
+      "version": "harmony4",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": "样本为海外 EMUI 14.2，不能当作国行 HarmonyOS。"
+    },
+    {
+      "modelId": "huaweipura70ultra",
+      "name": "华为 Pura 70 Ultra",
+      "version": "harmony5",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": "样本为海外 EMUI 14.2，不能当作国行 HarmonyOS。"
+    },
+    {
+      "modelId": "huaweipura70ultra",
+      "name": "华为 Pura 70 Ultra",
+      "version": "harmony6",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": "样本为海外 EMUI 14.2，不能当作国行 HarmonyOS。"
+    },
+    {
+      "modelId": "huaweimate50pro",
+      "name": "华为 Mate 50 Pro",
+      "version": "harmony4",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": "评测规格为 Android 12；尚缺能够确认当前 HarmonyOS 记录的截图。"
+    },
+    {
+      "modelId": "huaweip60",
+      "name": "华为 P60",
+      "version": "harmony4",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "honormagic5",
+      "name": "荣耀 Magic5",
+      "version": "magic8",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "honormagic5",
+      "name": "荣耀 Magic5",
+      "version": "magic9",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "honormagic5",
+      "name": "荣耀 Magic5",
+      "version": "magic10",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "honormagic5pro",
+      "name": "荣耀 Magic5 Pro",
+      "version": "magic8",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": "样本为 MagicOS 7.1，不能核准 MagicOS 8／9／10。"
+    },
+    {
+      "modelId": "honormagic5pro",
+      "name": "荣耀 Magic5 Pro",
+      "version": "magic9",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": "样本为 MagicOS 7.1，不能核准 MagicOS 8／9／10。"
+    },
+    {
+      "modelId": "honormagic5pro",
+      "name": "荣耀 Magic5 Pro",
+      "version": "magic10",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": "样本为 MagicOS 7.1，不能核准 MagicOS 8／9／10。"
+    },
+    {
+      "modelId": "honormagic7",
+      "name": "荣耀 Magic7",
+      "version": "magic9",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "honormagic7",
+      "name": "荣耀 Magic7",
+      "version": "magic10",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "honor200pro",
+      "name": "荣耀 200 Pro",
+      "version": "magic8",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": "样本为运营商与时间同行；该场景的行内运营商布局尚未核准，现有配置不能把组合文字整体当作时钟起点。"
+    },
+    {
+      "modelId": "honor200pro",
+      "name": "荣耀 200 Pro",
+      "version": "magic9",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": "样本为运营商与时间同行；该场景的行内运营商布局尚未核准，现有配置不能把组合文字整体当作时钟起点。"
+    },
+    {
+      "modelId": "honor200pro",
+      "name": "荣耀 200 Pro",
+      "version": "magic10",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": "样本为运营商与时间同行；该场景的行内运营商布局尚未核准，现有配置不能把组合文字整体当作时钟起点。"
+    },
+    {
+      "modelId": "oppofindx6",
+      "name": "OPPO Find X6",
+      "version": "coloros14",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "oppofindx6",
+      "name": "OPPO Find X6",
+      "version": "coloros15",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "oppofindx6",
+      "name": "OPPO Find X6",
+      "version": "coloros16",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "oppofindx6pro",
+      "name": "OPPO Find X6 Pro",
+      "version": "coloros14",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": "样本为 ColorOS 13.1，不能核准 ColorOS 14／15／16。"
+    },
+    {
+      "modelId": "oppofindx6pro",
+      "name": "OPPO Find X6 Pro",
+      "version": "coloros15",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": "样本为 ColorOS 13.1，不能核准 ColorOS 14／15／16。"
+    },
+    {
+      "modelId": "oppofindx6pro",
+      "name": "OPPO Find X6 Pro",
+      "version": "coloros16",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": "样本为 ColorOS 13.1，不能核准 ColorOS 14／15／16。"
+    },
+    {
+      "modelId": "opporeno11pro",
+      "name": "OPPO Reno11 Pro",
+      "version": "coloros14",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "opporeno11pro",
+      "name": "OPPO Reno11 Pro",
+      "version": "coloros15",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "opporeno11pro",
+      "name": "OPPO Reno11 Pro",
+      "version": "coloros16",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "opporeno12pro",
+      "name": "OPPO Reno12 Pro",
+      "version": "coloros14",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "opporeno12pro",
+      "name": "OPPO Reno12 Pro",
+      "version": "coloros15",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "opporeno12pro",
+      "name": "OPPO Reno12 Pro",
+      "version": "coloros16",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "oneplus11",
+      "name": "一加 11",
+      "version": "coloros14",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": "评测样本为海外 OxygenOS 13，不能当作国行 ColorOS 14／15／16。"
+    },
+    {
+      "modelId": "oneplus11",
+      "name": "一加 11",
+      "version": "coloros15",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": "评测样本为海外 OxygenOS 13，不能当作国行 ColorOS 14／15／16。"
+    },
+    {
+      "modelId": "oneplus11",
+      "name": "一加 11",
+      "version": "coloros16",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "native-screenshot-candidate",
+      "warning": "评测样本为海外 OxygenOS 13，不能当作国行 ColorOS 14／15／16。"
+    },
+    {
+      "modelId": "oneplusace3pro",
+      "name": "一加 Ace 3 Pro",
+      "version": "coloros14",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "oneplusace3pro",
+      "name": "一加 Ace 3 Pro",
+      "version": "coloros15",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "oneplusace3pro",
+      "name": "一加 Ace 3 Pro",
+      "version": "coloros16",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "vivox90",
+      "name": "vivo X90",
+      "version": "originos4",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "vivox90",
+      "name": "vivo X90",
+      "version": "originos5",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "vivox90",
+      "name": "vivo X90",
+      "version": "originos6",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "vivox100ultra",
+      "name": "vivo X100 Ultra",
+      "version": "originos4",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "vivox100ultra",
+      "name": "vivo X100 Ultra",
+      "version": "originos5",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "vivox100ultra",
+      "name": "vivo X100 Ultra",
+      "version": "originos6",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "iqoo12pro",
+      "name": "iQOO 12 Pro",
+      "version": "originos4",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "iqoo12pro",
+      "name": "iQOO 12 Pro",
+      "version": "originos5",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "iqoo12pro",
+      "name": "iQOO 12 Pro",
+      "version": "originos6",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "realmegt5pro",
+      "name": "realme GT5 Pro",
+      "version": "realme5",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "realmegt5pro",
+      "name": "realme GT5 Pro",
+      "version": "realme6",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    },
+    {
+      "modelId": "realmegt5pro",
+      "name": "realme GT5 Pro",
+      "version": "realme7",
+      "status": "reference",
+      "sourceIds": [],
+      "verifiedScopes": [],
+      "missing": [
+        "geometry",
+        "fonts",
+        "icons",
+        "state-coverage",
+        "native-frame-height",
+        "os-build-display-scale"
+      ],
+      "sourceDiscovery": "no-verified-source",
+      "warning": null
+    }
+  ]
+}

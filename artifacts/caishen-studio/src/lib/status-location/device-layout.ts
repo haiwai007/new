@@ -250,7 +250,7 @@ export function renderDeviceLocation(
         height: textHeight,
       },
       source(
-        `<svg xmlns="http://www.w3.org/2000/svg" width="${Math.max(1, Math.ceil(timeWidth))}" height="${Math.max(1, Math.ceil(textHeight))}" viewBox="0 0 ${timeWidth} ${textHeight}"><text x="0" y="${textHeight * 0.78}" font-family="Arial,sans-serif" font-size="${font}" font-weight="${profile.weight === "bold" ? 700 : 400}" fill="${colour}">${escape(time)}</text></svg>`,
+        `<svg xmlns="http://www.w3.org/2000/svg" width="${Math.max(1, Math.ceil(timeWidth))}" height="${Math.max(1, Math.ceil(textHeight))}" viewBox="0 0 ${timeWidth} ${textHeight}"><text x="0" y="${textHeight * 0.78}" font-family="Arial,sans-serif" font-size="${font}" font-weight="${layout.clockWeight ?? (profile.weight === "bold" ? 700 : 400)}" fill="${colour}">${escape(time)}</text></svg>`,
       ),
       { name: "时间", fit: "stretch", autoFocus: false },
     ),

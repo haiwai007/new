@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "checkedAt": "2026-10-28T14:10:37.813Z",
+  "checkedAt": "2026-10-29T02:01:28.206Z",
   "scope": "horizontal geometry only; not full device approval",
   "results": [
     {
@@ -121,6 +121,1110 @@
       "suggested": {
         "clockX": 24.33333,
         "rightInset": 22.33333
+      },
+      "knownGaps": [
+        "font identity and full outlines",
+        "OS build/display scaling",
+        "other states",
+        "complete vertical layout"
+      ]
+    },
+    {
+      "id": "pixel8a-pixel14",
+      "modelId": "pixel8a",
+      "styleId": "pixel14",
+      "referenceSha256": "d47c577646a4e92195dcb9db85ace66a1f9408b52c60c54b1c93b74055afbf3b",
+      "referenceClock": {
+        "left": 94,
+        "top": 48,
+        "right": 175,
+        "bottom": 74
+      },
+      "referenceSystem": {
+        "left": 822,
+        "top": 44,
+        "right": 986,
+        "bottom": 78
+      },
+      "generatedClock": {
+        "left": 45,
+        "top": 62,
+        "right": 125,
+        "bottom": 85
+      },
+      "generatedSystem": {
+        "left": 879,
+        "top": 53,
+        "right": 1032,
+        "bottom": 89
+      },
+      "clockLeftError": -49,
+      "clockBottomError": 11,
+      "systemRightError": 46,
+      "systemCenterError": 10,
+      "suggested": {
+        "clockCenterY": 0.42361111,
+        "systemCenterY": 0.43055556,
+        "clockX": 34.69259,
+        "rightInset": 33.54815
+      },
+      "knownGaps": [
+        "font identity and full outlines",
+        "OS build/display scaling",
+        "other states",
+        "complete vertical layout"
+      ]
+    },
+    {
+      "id": "pixel9a-pixel15",
+      "modelId": "pixel9a",
+      "styleId": "pixel15",
+      "referenceSha256": "b3def8b5d361e3155d6fb9c81e9ddfedf55f39e92de30810b53972713faeb7c8",
+      "referenceClock": {
+        "left": 94,
+        "top": 64,
+        "right": 180,
+        "bottom": 91
+      },
+      "referenceSystem": {
+        "left": 914,
+        "top": 60,
+        "right": 988,
+        "bottom": 94
+      },
+      "generatedClock": {
+        "left": 45,
+        "top": 62,
+        "right": 125,
+        "bottom": 85
+      },
+      "generatedSystem": {
+        "left": 923,
+        "top": 53,
+        "right": 1032,
+        "bottom": 89
+      },
+      "clockLeftError": -49,
+      "clockBottomError": -6,
+      "systemRightError": 44,
+      "systemCenterError": -6,
+      "suggested": {
+        "clockCenterY": 0.54166667,
+        "systemCenterY": 0.54166667,
+        "clockX": 34.69259,
+        "rightInset": 32.78519
+      },
+      "knownGaps": [
+        "font identity and full outlines",
+        "OS build/display scaling",
+        "other states",
+        "complete vertical layout"
+      ]
+    },
+    {
+      "id": "galaxys25-oneui7",
+      "modelId": "galaxys25",
+      "styleId": "oneui7",
+      "referenceSha256": "a8d4b9df0457c07b077784786ef9ddbbde5160cc154d8cbc8822f3027ab3f159",
+      "referenceClock": {
+        "left": 62,
+        "top": 40,
+        "right": 162,
+        "bottom": 70
+      },
+      "referenceSystem": {
+        "left": 863,
+        "top": 36,
+        "right": 1020,
+        "bottom": 73
+      },
+      "generatedClock": {
+        "left": 51,
+        "top": 60,
+        "right": 146,
+        "bottom": 87
+      },
+      "generatedSystem": {
+        "left": 868,
+        "top": 55,
+        "right": 1028,
+        "bottom": 89
+      },
+      "clockLeftError": -11,
+      "clockBottomError": 17,
+      "systemRightError": 8,
+      "systemCenterError": 17.5,
+      "suggested": {
+        "clockCenterY": 0.38194444,
+        "systemCenterY": 0.37847222,
+        "clockX": 19.66667,
+        "rightInset": 18.66667
+      },
+      "knownGaps": [
+        "font identity and full outlines",
+        "OS build/display scaling",
+        "other states",
+        "complete vertical layout"
+      ]
+    },
+    {
+      "id": "iphone17-ios26",
+      "modelId": "iphone17",
+      "styleId": "ios26",
+      "referenceSha256": "862d0cbee01a4ecff69d6b42896c770c00b4c9cdb2e31055ed5f2d9ccda88430",
+      "referenceClock": {
+        "left": 124,
+        "top": 79,
+        "right": 264,
+        "bottom": 117
+      },
+      "referenceSystem": {
+        "left": 871,
+        "top": 78,
+        "right": 1088,
+        "bottom": 119
+      },
+      "generatedClock": {
+        "left": 78,
+        "top": 89,
+        "right": 203,
+        "bottom": 124
+      },
+      "generatedSystem": {
+        "left": 991,
+        "top": 86,
+        "right": 1131,
+        "bottom": 123
+      },
+      "clockLeftError": -46,
+      "clockBottomError": 7,
+      "systemRightError": 43,
+      "systemCenterError": 6,
+      "suggested": {
+        "clockCenterY": 0.52236559,
+        "systemCenterY": 0.52774194,
+        "clockX": 40.33333,
+        "rightInset": 39.33333
+      },
+      "knownGaps": [
+        "font identity and full outlines",
+        "OS build/display scaling",
+        "other states",
+        "complete vertical layout"
+      ]
+    },
+    {
+      "id": "iphone17promax-ios26",
+      "modelId": "iphone17promax",
+      "styleId": "ios26",
+      "referenceSha256": "1c513a84e1286d997a30a83cc3d05a3466ebe9f2d3329df370fe15bdb3f98056",
+      "referenceClock": {
+        "left": 182,
+        "top": 78,
+        "right": 320,
+        "bottom": 118
+      },
+      "referenceSystem": {
+        "left": 1025,
+        "top": 74,
+        "right": 1181,
+        "bottom": 119
+      },
+      "generatedClock": {
+        "left": 79,
+        "top": 89,
+        "right": 200,
+        "bottom": 124
+      },
+      "generatedSystem": {
+        "left": 1119,
+        "top": 86,
+        "right": 1228,
+        "bottom": 123
+      },
+      "clockLeftError": -103,
+      "clockBottomError": 6,
+      "systemRightError": 47,
+      "systemCenterError": 8,
+      "suggested": {
+        "clockCenterY": 0.52774194,
+        "systemCenterY": 0.51698925,
+        "clockX": 59.33333,
+        "rightInset": 40.66667
+      },
+      "knownGaps": [
+        "font identity and full outlines",
+        "OS build/display scaling",
+        "other states",
+        "complete vertical layout"
+      ]
+    },
+    {
+      "id": "iphone16pro-ios18",
+      "modelId": "iphone16pro",
+      "styleId": "ios18",
+      "referenceSha256": "473740914e3960516891321c04aa201b78603a6ecc025e7483fff1ce4414d7b8",
+      "referenceClock": {
+        "left": 120,
+        "top": 77,
+        "right": 269,
+        "bottom": 115
+      },
+      "referenceSystem": {
+        "left": 872,
+        "top": 76,
+        "right": 1086,
+        "bottom": 117
+      },
+      "generatedClock": {
+        "left": 77,
+        "top": 89,
+        "right": 203,
+        "bottom": 124
+      },
+      "generatedSystem": {
+        "left": 991,
+        "top": 86,
+        "right": 1131,
+        "bottom": 123
+      },
+      "clockLeftError": -43,
+      "clockBottomError": 9,
+      "systemRightError": 45,
+      "systemCenterError": 8,
+      "suggested": {
+        "clockCenterY": 0.5116129,
+        "systemCenterY": 0.51698925,
+        "clockX": 39.33333,
+        "rightInset": 40
+      },
+      "knownGaps": [
+        "font identity and full outlines",
+        "OS build/display scaling",
+        "other states",
+        "complete vertical layout"
+      ]
+    },
+    {
+      "id": "vivox200pro-originos5",
+      "modelId": "vivox200pro",
+      "styleId": "originos5",
+      "referenceSha256": "2b755b3d64e88d3e2ddf7dfecddece26f59df0ab7350bd558495a3b390ae2b46",
+      "referenceClock": {
+        "left": 73,
+        "top": 69,
+        "right": 183,
+        "bottom": 103
+      },
+      "referenceSystem": {
+        "left": 930,
+        "top": 63,
+        "right": 1190,
+        "bottom": 109
+      },
+      "generatedClock": {
+        "left": 51,
+        "top": 72,
+        "right": 147,
+        "bottom": 99
+      },
+      "generatedSystem": {
+        "left": 1052,
+        "top": 67,
+        "right": 1209,
+        "bottom": 102
+      },
+      "clockLeftError": -22,
+      "clockBottomError": -4,
+      "systemRightError": 19,
+      "systemCenterError": -1.5,
+      "suggested": {
+        "clockCenterY": 0.52380952,
+        "systemCenterY": 0.50892857,
+        "clockX": 23.33333,
+        "rightInset": 22.33333
+      },
+      "knownGaps": [
+        "font identity and full outlines",
+        "OS build/display scaling",
+        "other states",
+        "complete vertical layout"
+      ]
+    },
+    {
+      "id": "realmegt6-realme5",
+      "modelId": "realmegt6",
+      "styleId": "realme5",
+      "referenceSha256": "b1caa2804848c1f866c1a26d38c9d3707e10afeff47ed34d193ee2a43df2f16f",
+      "referenceClock": {
+        "left": 90,
+        "top": 61,
+        "right": 190,
+        "bottom": 91
+      },
+      "referenceSystem": {
+        "left": 986,
+        "top": 58,
+        "right": 1173,
+        "bottom": 96
+      },
+      "generatedClock": {
+        "left": 51,
+        "top": 60,
+        "right": 144,
+        "bottom": 87
+      },
+      "generatedSystem": {
+        "left": 1101,
+        "top": 55,
+        "right": 1213,
+        "bottom": 90
+      },
+      "clockLeftError": -39,
+      "clockBottomError": -4,
+      "systemRightError": 40,
+      "systemCenterError": -4.5,
+      "suggested": {
+        "clockCenterY": 0.52777778,
+        "systemCenterY": 0.53125,
+        "clockX": 28.98972,
+        "rightInset": 29.32278
+      },
+      "knownGaps": [
+        "font identity and full outlines",
+        "OS build/display scaling",
+        "other states",
+        "complete vertical layout"
+      ]
+    },
+    {
+      "id": "galaxys24plus-oneui61",
+      "modelId": "galaxys24plus",
+      "styleId": "oneui61",
+      "referenceSha256": "95532545a6af9baf4f0cf0fd54c4a8ce3951608d1831011c59fe77b1c7bef2cb",
+      "referenceClock": {
+        "left": 78,
+        "top": 49,
+        "right": 204,
+        "bottom": 86
+      },
+      "referenceSystem": {
+        "left": 1093,
+        "top": 49,
+        "right": 1365,
+        "bottom": 88
+      },
+      "generatedClock": {
+        "left": 51,
+        "top": 60,
+        "right": 144,
+        "bottom": 87
+      },
+      "generatedSystem": {
+        "left": 1217,
+        "top": 51,
+        "right": 1385,
+        "bottom": 91
+      },
+      "clockLeftError": -27,
+      "clockBottomError": 1,
+      "systemRightError": 20,
+      "systemCenterError": 2.5,
+      "suggested": {
+        "clockCenterY": 0.49305556,
+        "systemCenterY": 0.48263889,
+        "clockX": 25,
+        "rightInset": 22.66667
+      },
+      "knownGaps": [
+        "font identity and full outlines",
+        "OS build/display scaling",
+        "other states",
+        "complete vertical layout"
+      ]
+    },
+    {
+      "id": "galaxys24ultra-oneui61",
+      "modelId": "galaxys24ultra",
+      "styleId": "oneui61",
+      "referenceSha256": "701b9a68a88f68eadb1ec7d8380dda6817e143baaf7c6c38bf36ed37df18fe8d",
+      "referenceClock": {
+        "left": 61,
+        "top": 50,
+        "right": 177,
+        "bottom": 89
+      },
+      "referenceSystem": {
+        "left": 1130,
+        "top": 42,
+        "right": 1382,
+        "bottom": 90
+      },
+      "generatedClock": {
+        "left": 51,
+        "top": 60,
+        "right": 141,
+        "bottom": 87
+      },
+      "generatedSystem": {
+        "left": 1217,
+        "top": 51,
+        "right": 1385,
+        "bottom": 91
+      },
+      "clockLeftError": -10,
+      "clockBottomError": -2,
+      "systemRightError": 3,
+      "systemCenterError": 5,
+      "suggested": {
+        "clockCenterY": 0.51388889,
+        "systemCenterY": 0.46527778,
+        "clockX": 19.33333,
+        "rightInset": 17
+      },
+      "knownGaps": [
+        "font identity and full outlines",
+        "OS build/display scaling",
+        "other states",
+        "complete vertical layout"
+      ]
+    },
+    {
+      "id": "galaxya55-oneui61",
+      "modelId": "galaxya55",
+      "styleId": "oneui61",
+      "referenceSha256": "27864694221a416e982d6091f68afa31b26e9bacc524c7db05bb0affeebcbab5",
+      "referenceClock": {
+        "left": 59,
+        "top": 41,
+        "right": 153,
+        "bottom": 69
+      },
+      "referenceSystem": {
+        "left": 833,
+        "top": 35,
+        "right": 1023,
+        "bottom": 71
+      },
+      "generatedClock": {
+        "left": 51,
+        "top": 60,
+        "right": 144,
+        "bottom": 87
+      },
+      "generatedSystem": {
+        "left": 857,
+        "top": 51,
+        "right": 1025,
+        "bottom": 91
+      },
+      "clockLeftError": -8,
+      "clockBottomError": 18,
+      "systemRightError": 2,
+      "systemCenterError": 18,
+      "suggested": {
+        "clockCenterY": 0.375,
+        "systemCenterY": 0.375,
+        "clockX": 18.66667,
+        "rightInset": 16.66667
+      },
+      "knownGaps": [
+        "font identity and full outlines",
+        "OS build/display scaling",
+        "other states",
+        "complete vertical layout"
+      ]
+    },
+    {
+      "id": "xiaomi15ultra-hyperos2",
+      "modelId": "xiaomi15ultra",
+      "styleId": "hyperos2",
+      "referenceSha256": "38e4e0d52ad241481511890361501833fe1e727bc3be1152261aed4d7b9ed8c2",
+      "referenceClock": {
+        "left": 89,
+        "top": 69,
+        "right": 194,
+        "bottom": 107
+      },
+      "referenceSystem": {
+        "left": 1008,
+        "top": 65,
+        "right": 1352,
+        "bottom": 111
+      },
+      "generatedClock": {
+        "left": 51,
+        "top": 72,
+        "right": 141,
+        "bottom": 99
+      },
+      "generatedSystem": {
+        "left": 1276,
+        "top": 67,
+        "right": 1388,
+        "bottom": 101
+      },
+      "clockLeftError": -38,
+      "clockBottomError": -8,
+      "systemRightError": 36,
+      "systemCenterError": -4,
+      "suggested": {
+        "clockCenterY": 0.54761905,
+        "systemCenterY": 0.52380952,
+        "clockX": 28.66667,
+        "rightInset": 28
+      },
+      "knownGaps": [
+        "font identity and full outlines",
+        "OS build/display scaling",
+        "other states",
+        "complete vertical layout"
+      ]
+    },
+    {
+      "id": "iphone16e-ios18",
+      "modelId": "iphone16e",
+      "styleId": "ios18",
+      "referenceSha256": "c57e356b8f90003feddae0b90db32451db7d71e11a01317b7b4f3cf9429e220c",
+      "referenceClock": {
+        "left": 121,
+        "top": 59,
+        "right": 261,
+        "bottom": 97
+      },
+      "referenceSystem": {
+        "left": 936,
+        "top": 57,
+        "right": 1077,
+        "bottom": 98
+      },
+      "generatedClock": {
+        "left": 68,
+        "top": 74,
+        "right": 194,
+        "bottom": 110
+      },
+      "generatedSystem": {
+        "left": 978,
+        "top": 72,
+        "right": 1088,
+        "bottom": 109
+      },
+      "clockLeftError": -53,
+      "clockBottomError": 13,
+      "systemRightError": 11,
+      "systemCenterError": 13,
+      "suggested": {
+        "clockCenterY": 0.42777778,
+        "systemCenterY": 0.42777778,
+        "clockX": 39.66667,
+        "rightInset": 25.66667
+      },
+      "knownGaps": [
+        "font identity and full outlines",
+        "OS build/display scaling",
+        "other states",
+        "complete vertical layout"
+      ]
+    },
+    {
+      "id": "galaxys25ultra-oneui7",
+      "modelId": "galaxys25ultra",
+      "styleId": "oneui7",
+      "referenceSha256": "d7d64bb358dd14acfe5f0aa5a84595bd5785796d36ed0144b41b2ab9d0c33e69",
+      "referenceClock": {
+        "left": 72,
+        "top": 49,
+        "right": 202,
+        "bottom": 88
+      },
+      "referenceSystem": {
+        "left": 1115,
+        "top": 43,
+        "right": 1373,
+        "bottom": 94
+      },
+      "generatedClock": {
+        "left": 50,
+        "top": 72,
+        "right": 146,
+        "bottom": 99
+      },
+      "generatedSystem": {
+        "left": 1228,
+        "top": 67,
+        "right": 1389,
+        "bottom": 102
+      },
+      "clockLeftError": -22,
+      "clockBottomError": 11,
+      "systemRightError": 16,
+      "systemCenterError": 16,
+      "suggested": {
+        "clockCenterY": 0.43452381,
+        "systemCenterY": 0.4047619,
+        "clockX": 23.33333,
+        "rightInset": 21.33333
+      },
+      "knownGaps": [
+        "font identity and full outlines",
+        "OS build/display scaling",
+        "other states",
+        "complete vertical layout"
+      ]
+    },
+    {
+      "id": "xiaomi14-hyperos1",
+      "modelId": "xiaomi14",
+      "styleId": "hyperos1",
+      "referenceSha256": "0bc4773923737ba66f90d284277537d92fcd0e1bef865635e2a84866d91eb5a7",
+      "referenceClock": {
+        "left": 61,
+        "top": 57,
+        "right": 150,
+        "bottom": 88
+      },
+      "referenceSystem": {
+        "left": 925,
+        "top": 54,
+        "right": 1127,
+        "bottom": 91
+      },
+      "generatedClock": {
+        "left": 51,
+        "top": 66,
+        "right": 144,
+        "bottom": 93
+      },
+      "generatedSystem": {
+        "left": 1037,
+        "top": 61,
+        "right": 1149,
+        "bottom": 96
+      },
+      "clockLeftError": -10,
+      "clockBottomError": 5,
+      "systemRightError": 22,
+      "systemCenterError": 6,
+      "suggested": {
+        "clockCenterY": 0.46794872,
+        "systemCenterY": 0.46153846,
+        "clockX": 19.33333,
+        "rightInset": 23.33333
+      },
+      "knownGaps": [
+        "font identity and full outlines",
+        "OS build/display scaling",
+        "other states",
+        "complete vertical layout"
+      ]
+    },
+    {
+      "id": "xiaomi14pro-hyperos1",
+      "modelId": "xiaomi14pro",
+      "styleId": "hyperos1",
+      "referenceSha256": "e33fdb953dfd6c484306e2c54ff73e2966d0bdd84809a529b03043c96bfedc7b",
+      "referenceClock": {
+        "left": 72,
+        "top": 75,
+        "right": 190,
+        "bottom": 112
+      },
+      "referenceSystem": {
+        "left": 1056,
+        "top": 71,
+        "right": 1354,
+        "bottom": 117
+      },
+      "generatedClock": {
+        "left": 51,
+        "top": 72,
+        "right": 144,
+        "bottom": 99
+      },
+      "generatedSystem": {
+        "left": 1277,
+        "top": 67,
+        "right": 1389,
+        "bottom": 102
+      },
+      "clockLeftError": -21,
+      "clockBottomError": -13,
+      "systemRightError": 35,
+      "systemCenterError": -9.5,
+      "suggested": {
+        "clockCenterY": 0.57738095,
+        "systemCenterY": 0.55654762,
+        "clockX": 23,
+        "rightInset": 27.66667
+      },
+      "knownGaps": [
+        "font identity and full outlines",
+        "OS build/display scaling",
+        "other states",
+        "complete vertical layout"
+      ]
+    },
+    {
+      "id": "xiaomi14ultra-hyperos1",
+      "modelId": "xiaomi14ultra",
+      "styleId": "hyperos1",
+      "referenceSha256": "49c0b384572e12efeb2c43bb2ba3f0288d2a81eca1291ee5687a98e0d75211ab",
+      "referenceClock": {
+        "left": 81,
+        "top": 75,
+        "right": 185,
+        "bottom": 111
+      },
+      "referenceSystem": {
+        "left": 1060,
+        "top": 69,
+        "right": 1361,
+        "bottom": 117
+      },
+      "generatedClock": {
+        "left": 51,
+        "top": 72,
+        "right": 144,
+        "bottom": 99
+      },
+      "generatedSystem": {
+        "left": 1277,
+        "top": 67,
+        "right": 1389,
+        "bottom": 102
+      },
+      "clockLeftError": -30,
+      "clockBottomError": -12,
+      "systemRightError": 28,
+      "systemCenterError": -8.5,
+      "suggested": {
+        "clockCenterY": 0.57142857,
+        "systemCenterY": 0.55059524,
+        "clockX": 26,
+        "rightInset": 25.33333
+      },
+      "knownGaps": [
+        "font identity and full outlines",
+        "OS build/display scaling",
+        "other states",
+        "complete vertical layout"
+      ]
+    },
+    {
+      "id": "xiaomi15-hyperos2",
+      "modelId": "xiaomi15",
+      "styleId": "hyperos2",
+      "referenceSha256": "bced8f07a93597a2969de56818562b4f2f9bda629cdf20b115956478e0375858",
+      "referenceClock": {
+        "left": 70,
+        "top": 52,
+        "right": 151,
+        "bottom": 86
+      },
+      "referenceSystem": {
+        "left": 894,
+        "top": 47,
+        "right": 1137,
+        "bottom": 89
+      },
+      "generatedClock": {
+        "left": 51,
+        "top": 66,
+        "right": 122,
+        "bottom": 93
+      },
+      "generatedSystem": {
+        "left": 1014,
+        "top": 61,
+        "right": 1146,
+        "bottom": 95
+      },
+      "clockLeftError": -19,
+      "clockBottomError": 7,
+      "systemRightError": 9,
+      "systemCenterError": 10,
+      "suggested": {
+        "clockCenterY": 0.45512821,
+        "systemCenterY": 0.43589744,
+        "clockX": 22.33333,
+        "rightInset": 19
+      },
+      "knownGaps": [
+        "font identity and full outlines",
+        "OS build/display scaling",
+        "other states",
+        "complete vertical layout"
+      ]
+    },
+    {
+      "id": "xiaomi15pro-hyperos2",
+      "modelId": "xiaomi15pro",
+      "styleId": "hyperos2",
+      "referenceSha256": "5da79c2780567f4df6ea141cf52f2f555bff88140bc6dbfce1734390280dca7c",
+      "referenceClock": {
+        "left": 87,
+        "top": 73,
+        "right": 180,
+        "bottom": 112
+      },
+      "referenceSystem": {
+        "left": 1020,
+        "top": 66,
+        "right": 1352,
+        "bottom": 118
+      },
+      "generatedClock": {
+        "left": 51,
+        "top": 72,
+        "right": 122,
+        "bottom": 99
+      },
+      "generatedSystem": {
+        "left": 1276,
+        "top": 67,
+        "right": 1389,
+        "bottom": 102
+      },
+      "clockLeftError": -36,
+      "clockBottomError": -13,
+      "systemRightError": 37,
+      "systemCenterError": -7.5,
+      "suggested": {
+        "clockCenterY": 0.57738095,
+        "systemCenterY": 0.54464286,
+        "clockX": 28,
+        "rightInset": 28.33333
+      },
+      "knownGaps": [
+        "font identity and full outlines",
+        "OS build/display scaling",
+        "other states",
+        "complete vertical layout"
+      ]
+    },
+    {
+      "id": "honormagic6pro-magic8",
+      "modelId": "honormagic6pro",
+      "styleId": "magic8",
+      "referenceSha256": "f9157375b600f457bc845de87f55c42b07d8196f45f9c3ea19699b598766d5db",
+      "referenceClock": {
+        "left": 81,
+        "top": 72,
+        "right": 182,
+        "bottom": 102
+      },
+      "referenceSystem": {
+        "left": 1038,
+        "top": 68,
+        "right": 1205,
+        "bottom": 104
+      },
+      "generatedClock": {
+        "left": 51,
+        "top": 72,
+        "right": 143,
+        "bottom": 99
+      },
+      "generatedSystem": {
+        "left": 1116,
+        "top": 68,
+        "right": 1228,
+        "bottom": 101
+      },
+      "clockLeftError": -30,
+      "clockBottomError": -3,
+      "systemRightError": 23,
+      "systemCenterError": -1.5,
+      "suggested": {
+        "clockCenterY": 0.51785714,
+        "systemCenterY": 0.50892857,
+        "clockX": 26.00781,
+        "rightInset": 23.67266
+      },
+      "knownGaps": [
+        "font identity and full outlines",
+        "OS build/display scaling",
+        "other states",
+        "complete vertical layout"
+      ]
+    },
+    {
+      "id": "honormagic7pro-magic9",
+      "modelId": "honormagic7pro",
+      "styleId": "magic9",
+      "referenceSha256": "8d9a9eee1e87cf9a7752a75ec4e5c6e92849b7b56eef053798127d3be4ea0fbd",
+      "referenceClock": {
+        "left": 79,
+        "top": 69,
+        "right": 194,
+        "bottom": 104
+      },
+      "referenceSystem": {
+        "left": 897,
+        "top": 65,
+        "right": 1211,
+        "bottom": 106
+      },
+      "generatedClock": {
+        "left": 51,
+        "top": 72,
+        "right": 143,
+        "bottom": 99
+      },
+      "generatedSystem": {
+        "left": 1117,
+        "top": 67,
+        "right": 1228,
+        "bottom": 101
+      },
+      "clockLeftError": -28,
+      "clockBottomError": -5,
+      "systemRightError": 17,
+      "systemCenterError": -1.5,
+      "suggested": {
+        "clockCenterY": 0.5297619,
+        "systemCenterY": 0.50892857,
+        "clockX": 25.34062,
+        "rightInset": 21.67109
+      },
+      "knownGaps": [
+        "font identity and full outlines",
+        "OS build/display scaling",
+        "other states",
+        "complete vertical layout"
+      ]
+    },
+    {
+      "id": "vivox200promini-originos5",
+      "modelId": "vivox200promini",
+      "styleId": "originos5",
+      "referenceSha256": "79e4867ef72ff1153984d7dd6bf66493c9e71e6d07df6ed7a7d095e43a1ef2ca",
+      "referenceClock": {
+        "left": 73,
+        "top": 61,
+        "right": 189,
+        "bottom": 96
+      },
+      "referenceSystem": {
+        "left": 852,
+        "top": 56,
+        "right": 1122,
+        "bottom": 100
+      },
+      "generatedClock": {
+        "left": 50,
+        "top": 72,
+        "right": 146,
+        "bottom": 99
+      },
+      "generatedSystem": {
+        "left": 1052,
+        "top": 67,
+        "right": 1164,
+        "bottom": 102
+      },
+      "clockLeftError": -23,
+      "clockBottomError": 3,
+      "systemRightError": 42,
+      "systemCenterError": 6.5,
+      "suggested": {
+        "clockCenterY": 0.48214286,
+        "systemCenterY": 0.46130952,
+        "clockX": 23.66036,
+        "rightInset": 29.98849
+      },
+      "knownGaps": [
+        "font identity and full outlines",
+        "OS build/display scaling",
+        "other states",
+        "complete vertical layout"
+      ]
+    },
+    {
+      "id": "redminote14proplus-hyperos1",
+      "modelId": "redminote14proplus",
+      "styleId": "hyperos1",
+      "referenceSha256": "3283754e9559cb13429653217c4800aa05bcd65b8ab7ae58bd75e3bda0994b90",
+      "referenceClock": {
+        "left": 68,
+        "top": 41,
+        "right": 159,
+        "bottom": 72
+      },
+      "referenceSystem": {
+        "left": 899,
+        "top": 36,
+        "right": 1154,
+        "bottom": 75
+      },
+      "generatedClock": {
+        "left": 51,
+        "top": 66,
+        "right": 141,
+        "bottom": 93
+      },
+      "generatedSystem": {
+        "left": 1057,
+        "top": 61,
+        "right": 1169,
+        "bottom": 96
+      },
+      "clockLeftError": -17,
+      "clockBottomError": 21,
+      "systemRightError": 15,
+      "systemCenterError": 23,
+      "suggested": {
+        "clockCenterY": 0.36538462,
+        "systemCenterY": 0.3525641,
+        "clockX": 21.67131,
+        "rightInset": 21.0041
+      },
+      "knownGaps": [
+        "font identity and full outlines",
+        "OS build/display scaling",
+        "other states",
+        "complete vertical layout"
+      ]
+    },
+    {
+      "id": "oneplus13-coloros15",
+      "modelId": "oneplus13",
+      "styleId": "coloros15",
+      "referenceSha256": "c6865fb0166030ee5005742530b3f32741b198e852a507f2dd13e2275b6ded42",
+      "referenceClock": {
+        "left": 82,
+        "top": 61,
+        "right": 197,
+        "bottom": 96
+      },
+      "referenceSystem": {
+        "left": 1008,
+        "top": 56,
+        "right": 1350,
+        "bottom": 104
+      },
+      "generatedClock": {
+        "left": 51,
+        "top": 72,
+        "right": 146,
+        "bottom": 99
+      },
+      "generatedSystem": {
+        "left": 1276,
+        "top": 67,
+        "right": 1388,
+        "bottom": 101
+      },
+      "clockLeftError": -31,
+      "clockBottomError": 3,
+      "systemRightError": 38,
+      "systemCenterError": 4,
+      "suggested": {
+        "clockCenterY": 0.48214286,
+        "systemCenterY": 0.47619048,
+        "clockX": 26.33333,
+        "rightInset": 28.66667
       },
       "knownGaps": [
         "font identity and full outlines",

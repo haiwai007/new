@@ -628,6 +628,138 @@ test("source status follows exact model and system version without inheriting ap
       partial: "oneui61",
       reference: "oneui7",
     },
+    {
+      brand: "Google",
+      model: "pixel8a",
+      partial: "pixel14",
+      reference: "pixel15",
+    },
+    {
+      brand: "Google",
+      model: "pixel9a",
+      partial: "pixel15",
+      reference: "pixel16",
+    },
+    {
+      brand: "Samsung",
+      model: "galaxys25",
+      partial: "oneui7",
+      reference: "oneui8",
+    },
+    {
+      brand: "Apple",
+      model: "iphone16pro",
+      partial: "ios18",
+      reference: "ios26",
+    },
+    {
+      brand: "vivo",
+      model: "vivox200pro",
+      partial: "originos5",
+      reference: "originos6",
+    },
+    {
+      brand: "realme",
+      model: "realmegt6",
+      partial: "realme5",
+      reference: "realme6",
+    },
+    {
+      brand: "Samsung",
+      model: "galaxys24plus",
+      partial: "oneui61",
+      reference: "oneui6",
+    },
+    {
+      brand: "Samsung",
+      model: "galaxys24ultra",
+      partial: "oneui61",
+      reference: "oneui7",
+    },
+    {
+      brand: "Samsung",
+      model: "galaxya55",
+      partial: "oneui61",
+      reference: "oneui7",
+    },
+    {
+      brand: "小米",
+      model: "xiaomi15ultra",
+      partial: "hyperos2",
+      reference: "hyperos3",
+    },
+    {
+      brand: "Apple",
+      model: "iphone16e",
+      partial: "ios18",
+      reference: "ios26",
+    },
+    {
+      brand: "Samsung",
+      model: "galaxys25ultra",
+      partial: "oneui7",
+      reference: "oneui8",
+    },
+    {
+      brand: "小米",
+      model: "xiaomi14",
+      partial: "hyperos1",
+      reference: "hyperos2",
+    },
+    {
+      brand: "小米",
+      model: "xiaomi14pro",
+      partial: "hyperos1",
+      reference: "hyperos2",
+    },
+    {
+      brand: "小米",
+      model: "xiaomi14ultra",
+      partial: "hyperos1",
+      reference: "hyperos2",
+    },
+    {
+      brand: "小米",
+      model: "xiaomi15",
+      partial: "hyperos2",
+      reference: "hyperos3",
+    },
+    {
+      brand: "小米",
+      model: "xiaomi15pro",
+      partial: "hyperos2",
+      reference: "hyperos3",
+    },
+    {
+      brand: "荣耀",
+      model: "honormagic6pro",
+      partial: "magic8",
+      reference: "magic9",
+    },
+    {
+      brand: "荣耀",
+      model: "honormagic7pro",
+      partial: "magic9",
+      reference: "magic10",
+    },
+    {
+      brand: "vivo",
+      model: "vivox200promini",
+      partial: "originos5",
+      reference: "originos6",
+    },
+    {
+      brand: "Redmi",
+      model: "redminote14proplus",
+      partial: "hyperos1",
+      reference: "hyperos2",
+    },
+    {
+      brand: "一加",
+      model: "oneplus13",
+      partial: "coloros15",
+      reference: "coloros16",
+    },
   ]) {
     await page.getByLabel("手机品牌", { exact: true }).selectOption(item.brand);
     await page.getByLabel("手机型号", { exact: true }).selectOption(item.model);
@@ -642,4 +774,16 @@ test("source status follows exact model and system version without inheriting ap
     await expect(status).toContainText("参考适配（尚未真机核准）");
     await expect(status.getByRole("link")).toHaveCount(0);
   }
+  await page.getByLabel("手机品牌", { exact: true }).selectOption("Apple");
+  for (const model of ["iphone17", "iphone17promax"]) {
+    await page.getByLabel("手机型号", { exact: true }).selectOption(model);
+    await page
+      .getByLabel("系统参考样式", { exact: true })
+      .selectOption("ios26");
+    await expect(status).toContainText("部分核对（样本位置）");
+  }
+  await page
+    .getByLabel("手机型号", { exact: true })
+    .selectOption("iphone17pro");
+  await expect(status).toContainText("参考适配（尚未真机核准）");
 });

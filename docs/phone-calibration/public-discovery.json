@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "scope": "Search result links only, not model verification or calibration",
+  "rows": [
+    {
+      "modelId": "redmik70",
+      "query": "site:notebookcheck.net \"Redmi K 70\" review",
+      "url": "https://search.brave.com/search?q=site%3Anotebookcheck.net%20%22Redmi%20K%2070%22%20review",
+      "httpStatus": 429,
+      "blocked": true,
+      "links": [],
+      "checkedAt": "2026-10-29T01:34:35.966Z"
+    }
+  ]
+}

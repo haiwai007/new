@@ -1,3 +1,4 @@
+import { DEVICE_LAYOUTS } from "./device-layouts";
 import {
   SYSTEM_STYLES,
   compatibleStyle,
@@ -185,13 +186,21 @@ export function effectiveProfile(settings: PhoneSettings): StatusProfile {
   const base = statusProfile(settings.modelId);
   if (settings.rendering !== "natural") return base;
   const variant = resolvedStyle(settings);
+  const record = DEVICE_LAYOUTS[settings.modelId];
+  const deviceWeight =
+    record.versions[variant?.id ?? record.defaultStyle]?.clockWeight;
   return {
     ...base,
     ...(variant ?? {}),
+    ...(deviceWeight !== undefined
+      ? {
+          weight: deviceWeight >= 600 ? ("bold" as const) : ("normal" as const),
+        }
+      : {}),
     battery:
-      variant?.id === "oneui6"
+      variant?.id === "oneui6" || variant?.id === "oneui61"
         ? "vertical"
-        : (variant?.id === "oneui7" || variant?.id === "oneui8")
+        : variant?.id === "oneui7" || variant?.id === "oneui8"
           ? "horizontal"
           : base.battery,
   };

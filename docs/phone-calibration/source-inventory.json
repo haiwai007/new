@@ -1,14 +1,14 @@
 {
   "schemaVersion": 1,
-  "checkedAt": "2026-10-29T00:06:56.235Z",
+  "checkedAt": "2026-10-29T01:47:12.452Z",
   "scope": "Public review discovery, not device calibration approval",
   "searchBlocked": true,
   "summary": {
     "models": 100,
-    "nativeCandidates": 46,
+    "nativeCandidates": 47,
     "scaledOnly": 4,
-    "reviewsOnly": 15,
-    "missing": 35,
+    "reviewsOnly": 16,
+    "missing": 33,
     "fullyCalibrated": 0
   },
   "models": [
@@ -28,6 +28,51 @@
           "discovery": "publisher-original-path",
           "contentType": "image/png",
           "sha256": "862d0cbee01a4ecff69d6b42896c770c00b4c9cdb2e31055ed5f2d9ccda88430",
+          "width": 1206,
+          "height": 2622,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Apple/iPhone_17/Screenshots_Apple_iPhone_17_OS_2.PNG",
+          "discovery": "publisher-original-path",
+          "contentType": "image/png",
+          "sha256": "fb20da0ee36f809afafc0c13da78d52f41e20f43a2cac986e442d95891fb4629",
+          "width": 1206,
+          "height": 2622,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Apple/iPhone_17/Screenshots_Apple_iPhone_17_OS_3.PNG",
+          "discovery": "publisher-original-path",
+          "contentType": "image/png",
+          "sha256": "04db1878e8360c0bab7ba64208bff4573d02406c689dd0a341f224a64e0772d8",
+          "width": 1206,
+          "height": 2622,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Apple/iPhone_17/Screenshots_Apple_iPhone_17_OS_4.PNG",
+          "discovery": "publisher-original-path",
+          "contentType": "image/png",
+          "sha256": "01af285aedfedc48a81d5bfad7b985d4e161f2daae16daeb2fd62aeae8d44ab4",
+          "width": 1206,
+          "height": 2622,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Apple/iPhone_17/Screenshots_Apple_iPhone_17_OS_5.PNG",
+          "discovery": "publisher-original-path",
+          "contentType": "image/png",
+          "sha256": "8e27bd26c1c9f3e57d762d67bc608f294cf9620d7862252382ae201ddb979271",
+          "width": 1206,
+          "height": 2622,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Apple/iPhone_17/Screenshots_Apple_iPhone_17_OS_6.PNG",
+          "discovery": "publisher-original-path",
+          "contentType": "image/png",
+          "sha256": "1ffb3b01a1c5426a3454a9768fec7be99f9f2c8c2d6f2b6758e921a85fb73394",
           "width": 1206,
           "height": 2622,
           "nativeSizeMatch": true
@@ -79,6 +124,42 @@
           "width": 1320,
           "height": 2868,
           "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Apple/iPhone_17_Pro_Max/Screenshots_Apple_iPhone_17_Pro_Max_OS_2.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "3813a24b1bcdc92cec695f84cd7b759a729904d27f4861ce4e32e19feb6ac344",
+          "width": 1320,
+          "height": 2868,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Apple/iPhone_17_Pro_Max/Screenshots_Apple_iPhone_17_Pro_Max_OS_3.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "c2e28b1c246e8bc0a936e90d2ea1fd21ea5c6347de6f7f0820e405b6c502e14f",
+          "width": 1320,
+          "height": 2868,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Apple/iPhone_17_Pro_Max/Screenshots_Apple_iPhone_17_Pro_Max_Tastatur_hoch.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "2aeb7a9a3c8f2bb8522b78ac30388a70dbf1bb53d63ff26dff947a03470755b6",
+          "width": 1320,
+          "height": 2868,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/_processed_/a/7/csm_Screenshots_Apple_iPhone_17_Pro_Max_Tastatur_quer_ab0e0f2200.jpg",
+          "discovery": "linked-scaled-image",
+          "contentType": "image/jpeg",
+          "sha256": "9d7e8239c81314a478a83d17c58d67230a538ae037975e262afae2aba14e8716",
+          "width": 1920,
+          "height": 884,
+          "nativeSizeMatch": false
         }
       ],
       "status": "native-screenshot-candidate",
@@ -108,6 +189,51 @@
           "width": 1179,
           "height": 2556,
           "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Apple/iPhone_16/Screenshots_OS_2.PNG",
+          "discovery": "publisher-original-path",
+          "contentType": "image/png",
+          "sha256": "f7bf68a3ac3add0f9cde588317335abe73c4bb947f5414ae2840091bf23657e7",
+          "width": 1179,
+          "height": 2556,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Apple/iPhone_16/Screenshots_OS_3.PNG",
+          "discovery": "publisher-original-path",
+          "contentType": "image/png",
+          "sha256": "c299844264909ec26946ee4a0d84ecb351328934fcee0b1c709cf86d59e2387a",
+          "width": 1179,
+          "height": 2556,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Apple/iPhone_16/Screenshots_OS_4.PNG",
+          "discovery": "publisher-original-path",
+          "contentType": "image/png",
+          "sha256": "14a7cbbacce9ebb4166bdb52a3186bcfbfeb93ee3352ec95063796d6142708e9",
+          "width": 1179,
+          "height": 2556,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Apple/iPhone_16/Screenshots_OS_5.PNG",
+          "discovery": "publisher-original-path",
+          "contentType": "image/png",
+          "sha256": "1cd03d4acebaebf209a9ce1af9ba03f3127a2995207f3df5283112160078b91b",
+          "width": 1179,
+          "height": 2556,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Apple/iPhone_16/Screenshots_OS_6.PNG",
+          "discovery": "publisher-original-path",
+          "contentType": "image/png",
+          "sha256": "ff443f811cf9ad42671fb7ae5bdce5e329eaaef10c68164a8fb171795d7169a9",
+          "width": 1179,
+          "height": 2556,
+          "nativeSizeMatch": true
         }
       ],
       "status": "native-screenshot-candidate",
@@ -134,6 +260,51 @@
           "discovery": "publisher-original-path",
           "contentType": "image/png",
           "sha256": "473740914e3960516891321c04aa201b78603a6ecc025e7483fff1ce4414d7b8",
+          "width": 1206,
+          "height": 2622,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Apple/iPhone_16_Pro/Screenshots_OS_2.PNG",
+          "discovery": "publisher-original-path",
+          "contentType": "image/png",
+          "sha256": "a472262ea851df7669f3ef8c36e5dfcda3c547fc99b3a87781b483834a59dc51",
+          "width": 1206,
+          "height": 2622,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Apple/iPhone_16_Pro/Screenshots_OS_3.PNG",
+          "discovery": "publisher-original-path",
+          "contentType": "image/png",
+          "sha256": "47d2ab12ad098b33582bdfbf359e4f81d75c26a1f69c636c6f624fab7c9e2fa6",
+          "width": 1206,
+          "height": 2622,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Apple/iPhone_16_Pro/Screenshots_OS_4.PNG",
+          "discovery": "publisher-original-path",
+          "contentType": "image/png",
+          "sha256": "8eb54038f05a10ca7e545f120e7d928dd93500f15cf7427add6a6e0e3ea34ea7",
+          "width": 1206,
+          "height": 2622,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Apple/iPhone_16_Pro/Screenshots_OS_5.PNG",
+          "discovery": "publisher-original-path",
+          "contentType": "image/png",
+          "sha256": "a1c9ab5b1c31b4f7fab3bad768c5860c400c412ffc1877f4c07f5a28f4202743",
+          "width": 1206,
+          "height": 2622,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Apple/iPhone_16_Pro/Screenshots_OS_6.PNG",
+          "discovery": "publisher-original-path",
+          "contentType": "image/png",
+          "sha256": "4318289a7d093d59b17c7936a0a3f681cb1788da97d8f5b556098950eaaae1b1",
           "width": 1206,
           "height": 2622,
           "nativeSizeMatch": true
@@ -242,6 +413,51 @@
           "width": 1170,
           "height": 2532,
           "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Apple/iPhone_14/Screenshots_OS_2.PNG",
+          "discovery": "publisher-original-path",
+          "contentType": "image/png",
+          "sha256": "b52b3661f67f14ab6910155f6123732f20d64dbaa9ff975eb9b5302a56c27955",
+          "width": 1170,
+          "height": 2532,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Apple/iPhone_14/Screenshots_OS_3.PNG",
+          "discovery": "publisher-original-path",
+          "contentType": "image/png",
+          "sha256": "99b5a26196330db88db122a709e72518874fdd85e4dc4820bcb7fa82abf73fd1",
+          "width": 1170,
+          "height": 2532,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Apple/iPhone_14/Screenshots_OS_7.PNG",
+          "discovery": "publisher-original-path",
+          "contentType": "image/png",
+          "sha256": "ff519af9b8c00760cf8f42beb8b92f4738c9e5b47387c494e413e07a881f10e6",
+          "width": 1170,
+          "height": 2532,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Apple/iPhone_14/Screenshots_OS_5.PNG",
+          "discovery": "publisher-original-path",
+          "contentType": "image/png",
+          "sha256": "e1d57b72f66efa9fc02021631df48bc40a0e04727b8cad8df41b88ac0e91012a",
+          "width": 1170,
+          "height": 2532,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Apple/iPhone_14/Screenshots_OS_6.PNG",
+          "discovery": "publisher-original-path",
+          "contentType": "image/png",
+          "sha256": "9f7adebb48608366d5a70fdfc209557257a4b17c7a726983be7e596663b37820",
+          "width": 1170,
+          "height": 2532,
+          "nativeSizeMatch": true
         }
       ],
       "status": "native-screenshot-candidate",
@@ -255,13 +471,17 @@
     {
       "modelId": "iphonese",
       "name": "iPhone SE（第 3 代）",
-      "status": "no-verified-source",
-      "calibration": "reference",
-      "review": null,
+      "review": {
+        "url": "https://www.notebookcheck.net/Apple-iPhone-SE-2022-smartphone-review-Affordable-iPhone-dwarf-with-5G-and-retro-charm.613496.0.html",
+        "title": "Apple iPhone SE 2022 smartphone review - Affordable iPhone dwarf with 5G and retro charm - Notebookcheck Review",
+        "sha256": "3c309a96b56a0018d7a77a5a3d876102fcdb15d4ddf2b5f6249e0cc01bb7bbe4",
+        "reportedOs": "Apple iOS 15",
+        "checkedAt": "2026-10-28T14:01:18.083Z"
+      },
       "screenshots": [],
+      "status": "review-only",
+      "calibration": "reference",
       "missing": [
-        "model-specific-review",
-        "native-screenshot",
         "exact-build-and-display-settings",
         "state-coverage",
         "rendered-overlay-comparison"
@@ -314,6 +534,42 @@
           "width": 539,
           "height": 1200,
           "nativeSizeMatch": false
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/_processed_/5/a/csm_Screenshot_20231106-145425_1703b6d767.png",
+          "discovery": "linked-scaled-image",
+          "contentType": "image/png",
+          "sha256": "e66423228912957a0d36df733f7532d579efbae017251c66035a9addb5dc233a",
+          "width": 539,
+          "height": 1200,
+          "nativeSizeMatch": false
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/_processed_/4/b/csm_Screenshot_20231106-143336_0552f1c99f.png",
+          "discovery": "linked-scaled-image",
+          "contentType": "image/png",
+          "sha256": "361230dec1ddb651b168d72bdd0e79aa463cabc83a77b392c437173e685f4af1",
+          "width": 539,
+          "height": 1200,
+          "nativeSizeMatch": false
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/_processed_/3/8/csm_Screenshot_20231106-155523_9edca4a44b.png",
+          "discovery": "linked-scaled-image",
+          "contentType": "image/png",
+          "sha256": "3a4d711473946fa25bd42fd49d921fc31e2c20237d0ab6383384c350696d05ca",
+          "width": 539,
+          "height": 1200,
+          "nativeSizeMatch": false
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/_processed_/9/e/csm_Screenshot_20231106-155622_a9dfbb3a4c.png",
+          "discovery": "linked-scaled-image",
+          "contentType": "image/png",
+          "sha256": "89e1d71489ebdc0f25fd9ca21d37a4495a22381043e7f8e80bb1ebd1e653d274",
+          "width": 539,
+          "height": 1200,
+          "nativeSizeMatch": false
         }
       ],
       "status": "scaled-screenshot-only",
@@ -343,6 +599,51 @@
           "width": 1080,
           "height": 2424,
           "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Google/Pixel_9/Screenshot_20241012-100211.png",
+          "discovery": "publisher-original-path",
+          "contentType": "image/png",
+          "sha256": "38121edc88be98b3e2f2a2b41cb6999fbe16b81e3fdaf3edcc07e56b937e241f",
+          "width": 1080,
+          "height": 2424,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Google/Pixel_9/Screenshot_20241012-100152.png",
+          "discovery": "publisher-original-path",
+          "contentType": "image/png",
+          "sha256": "7cb7a0c2603a98e1f49b6101819e3f67094ae45550e935bd8c8b72a7e331d824",
+          "width": 1080,
+          "height": 2424,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Google/Pixel_9/Screenshot_20241012-100204.png",
+          "discovery": "publisher-original-path",
+          "contentType": "image/png",
+          "sha256": "ab5cd25e022ca9c1bf0790b4d533fe63ff8d0dc63d69e93c54ed108bb88cc833",
+          "width": 1080,
+          "height": 2424,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Google/Pixel_9/Screenshot_20241012-100605.png",
+          "discovery": "publisher-original-path",
+          "contentType": "image/png",
+          "sha256": "59d5fb2dcb961a1bb60ba5fa4d9fc7dfdee2d018ce556370531f4bbcc2c895de",
+          "width": 1080,
+          "height": 2424,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Google/Pixel_9/Screenshot_20241012-100622.png",
+          "discovery": "publisher-original-path",
+          "contentType": "image/png",
+          "sha256": "7a6f8fcd7f8b0d6b80d17a6bdd25067d468bf0b74a78ff83068994ac58ae02b1",
+          "width": 1080,
+          "height": 2424,
+          "nativeSizeMatch": true
         }
       ],
       "status": "native-screenshot-candidate",
@@ -369,6 +670,51 @@
           "discovery": "publisher-original-path",
           "contentType": "image/png",
           "sha256": "53dfdf47f06d22685081f597e2fca4ba696d9140829e038d2fe93a2074b8dbfd",
+          "width": 1280,
+          "height": 2856,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Google/Pixel_9_Pro/Screenshots_OS_2.png",
+          "discovery": "publisher-original-path",
+          "contentType": "image/png",
+          "sha256": "78ed96e4d3f67b2899672ae4d6a0a2841c858b767769f7c7e1aa519a08429cd1",
+          "width": 1280,
+          "height": 2856,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Google/Pixel_9_Pro/Screenshots_OS_3.png",
+          "discovery": "publisher-original-path",
+          "contentType": "image/png",
+          "sha256": "08b2abe153a2ac6e2bda66184ef085eb8bd21d9bd1aaa1dfadea2d1354c80807",
+          "width": 1280,
+          "height": 2856,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/_processed_/f/2/csm_Screenshots_OS_4_18373deac2.png",
+          "discovery": "linked-scaled-image",
+          "contentType": "image/png",
+          "sha256": "926a065ab03a586cfd00a10057ca035890178aed7cbc2c6c06056eb923831760",
+          "width": 538,
+          "height": 1200,
+          "nativeSizeMatch": false
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Google/Pixel_9_Pro/Screenshots_OS_5.png",
+          "discovery": "publisher-original-path",
+          "contentType": "image/png",
+          "sha256": "1d1cdbed107492a5770c139cde2ec12ecc6fda634c2e1bbbfa8978a8d5e5d19b",
+          "width": 1280,
+          "height": 2856,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Google/Pixel_9_Pro/Screenshots_OS_6.png",
+          "discovery": "publisher-original-path",
+          "contentType": "image/png",
+          "sha256": "3e51fb5620239efa352fda52ea5e5974eeaac14daa97989c5bb13f3f76f70335",
           "width": 1280,
           "height": 2856,
           "nativeSizeMatch": true
@@ -420,6 +766,51 @@
           "width": 1080,
           "height": 2340,
           "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Samsung/Galaxy_S23/Screenshot_20230224_095120_One_UI_Home.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "fe28a58e2b1da935768a6abded7406e724450c57a4e89dae9a7baf8d1b5df988",
+          "width": 1080,
+          "height": 2340,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Samsung/Galaxy_S23/Screenshot_20230224_095136_One_UI_Home.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "df90e3ff8cd16c27f8d7febdfc7579119537d9498da91c352fc14e0d03b3d07f",
+          "width": 1080,
+          "height": 2340,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/_processed_/7/0/csm_Screenshot_20230307_130613_Settings_9c3e8fb1d8.jpg",
+          "discovery": "linked-scaled-image",
+          "contentType": "image/jpeg",
+          "sha256": "82495d77000fc4a278e87ac7c4fee3e5641fea46b698be9f865eb6f77186adbf",
+          "width": 379,
+          "height": 1200,
+          "nativeSizeMatch": false
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Samsung/Galaxy_S23/Screenshot_20230224_094811_GPS_Test.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "1b19f36fe13873d83034638fc605bbff892817b922a20f4700869e1c81fbc511",
+          "width": 1080,
+          "height": 2340,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Samsung/Galaxy_S23/Screenshot_20230224_094832_GPS_Test.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "b1f5223fee5fb3f947cef53a4267383249dcf5e3f8b0e7471efbedd95ebf1465",
+          "width": 1080,
+          "height": 2340,
+          "nativeSizeMatch": true
         }
       ],
       "status": "native-screenshot-candidate",
@@ -446,6 +837,51 @@
           "discovery": "publisher-original-path",
           "contentType": "image/jpeg",
           "sha256": "d97a6db356bb7cfc0da69fb7a658b537a4fdf8999772a0f100ad31cdc3e6bc0e",
+          "width": 1080,
+          "height": 2340,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Samsung/Galaxy_S24/Screenshot_20240225_125554_One-UI-Home.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "eafa7208f65e2501265658b11c07d1e17751e044e1e0e5a334a01ac01a89a686",
+          "width": 1080,
+          "height": 2340,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Samsung/Galaxy_S24/Screenshot_20240225_125547_One-UI-Home.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "7892e478c738d07c4ca002c61eb77c8de2be25ab09f10ded07643a5da8a52b28",
+          "width": 1080,
+          "height": 2340,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Samsung/Galaxy_S24/Screenshot_20240227_192016_Settings.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "199ef50927483bfac598625df7a7b38c9bd5932af5613308bd623958cf38671c",
+          "width": 1080,
+          "height": 2340,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Samsung/Galaxy_S24/Screenshot_20240227_192022_Settings.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "e4b53ef34f0cc85538643f2bcd53db5ba4c386ff2ae8dca3adb2ef085c55722e",
+          "width": 1080,
+          "height": 2340,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Samsung/Galaxy_S24/Screenshot_20240227_192120_Samsung-Notes.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "6312cf9f7ae58838bc75bcf2bcce8fa5da106d58901a81f520e780bacd094994",
           "width": 1080,
           "height": 2340,
           "nativeSizeMatch": true
@@ -478,6 +914,51 @@
           "width": 1440,
           "height": 3120,
           "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Samsung/Galaxy_S24_Plus/Screenshot_20240302_102028_One-UI-Home.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "b346ecac2ecb8dd58cd29f8c07a116306fec14c78aaa36684f983f65f7cb07a3",
+          "width": 1440,
+          "height": 3120,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Samsung/Galaxy_S24_Plus/Screenshot_20240302_102041_One-UI-Home.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "81e5a2d5d8a921ce6a9f59d75937bbdac343375eb2400af1a419806fe94f61ab",
+          "width": 1440,
+          "height": 3120,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Samsung/Galaxy_S24_Plus/Screenshot_20240302_102058_One-UI-Home.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "380d4654b9bc130f8f701d2b2fff66041d2f75e8169ef7d8b08186d3117d1c5e",
+          "width": 1440,
+          "height": 3120,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Samsung/Galaxy_S24_Plus/Screenshot_20240302_102243_GPS-Test.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "30fdf03ff8ee357cacd47c419d10a6a15d88a3c24652879235e7cf429e92c147",
+          "width": 1440,
+          "height": 3120,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Samsung/Galaxy_S24_Plus/Screenshot_20240302_102300_GPS-Test.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "d449486d366f023e5df37866c07150dc2bfd6f1051282cfceaed179d15ff2ee0",
+          "width": 1440,
+          "height": 3120,
+          "nativeSizeMatch": true
         }
       ],
       "status": "native-screenshot-candidate",
@@ -507,6 +988,51 @@
           "width": 1440,
           "height": 3120,
           "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Samsung/Galaxy_S24_Ultra/Screenshot_20240223_112040_One-UI-Home.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "bd076a0c83040536f94bda14a136c7a153c5fd63d1b339ddc356eb2defd57005",
+          "width": 1440,
+          "height": 3120,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Samsung/Galaxy_S24_Ultra/Screenshot_20240223_113030_One-UI-Home.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "d8d77916ca92d66f7b128aecbeefb674d98ebe1822dbd36e1c6f958ce3c79046",
+          "width": 1440,
+          "height": 3120,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/_processed_/2/7/csm_Screenshot_20240223_112957_Settings_aaaeaddb4a.jpg",
+          "discovery": "linked-scaled-image",
+          "contentType": "image/jpeg",
+          "sha256": "5a7d54102306afa54a3c675a1785d653843dc82eff9d8d8ceb8de21f37052b30",
+          "width": 388,
+          "height": 1200,
+          "nativeSizeMatch": false
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Samsung/Galaxy_S24_Ultra/Screenshot_20240223_112941_Settings.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "c51cdf38dcd02ee169332bcf5fe57757541a1be95bbf8eaee49498f2c36a371b",
+          "width": 1440,
+          "height": 3120,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/_processed_/5/0/csm_Screenshot_20240223_112011_Settings_865ff47464.jpg",
+          "discovery": "linked-scaled-image",
+          "contentType": "image/jpeg",
+          "sha256": "a6fe4ecc2296aca5a9ccb9a5db8351716e06a96b5d9910f161c29f032d2cf1c8",
+          "width": 359,
+          "height": 1200,
+          "nativeSizeMatch": false
         }
       ],
       "status": "native-screenshot-candidate",
@@ -533,6 +1059,51 @@
           "discovery": "publisher-original-path",
           "contentType": "image/jpeg",
           "sha256": "a8d4b9df0457c07b077784786ef9ddbbde5160cc154d8cbc8822f3027ab3f159",
+          "width": 1080,
+          "height": 2340,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Samsung/Galaxy_S25/Screenshot_20250321_160253_One-UI-Home.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "a3e7d782bb178d04b3e8d834a7aa58d85fae3edfa21e65d0c065ffbdc149580e",
+          "width": 1080,
+          "height": 2340,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Samsung/Galaxy_S25/Screenshot_20250321_160322_Settings.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "a87348c4fe7b62a260cfa3fb2e2679c518ce799aba079a469d54f92e797d2f81",
+          "width": 1080,
+          "height": 2340,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Samsung/Galaxy_S25/Screenshot_20250321_160316_One-UI-Home.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "ecfb31578d3bb69f24dbac42d18b111d5bef353a2ff170b45ec687d5bf8a6b0b",
+          "width": 1080,
+          "height": 2340,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Samsung/Galaxy_S25/Screenshot_20250324_153045_GPS-Test.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "a575e12ede2b5bf841e293b1d6a2f6f8d403a4ddb94b727d0bcd5e098e89e6fb",
+          "width": 1080,
+          "height": 2340,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Samsung/Galaxy_S25/Screenshot_20250324_153104_GPS-Test.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "312d1248515544e939416dc9324a2ee2e62ba9365ff466fa3c98feb65399cf0b",
           "width": 1080,
           "height": 2340,
           "nativeSizeMatch": true
@@ -565,6 +1136,51 @@
           "width": 1440,
           "height": 3120,
           "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Samsung/Galaxy_S25_Ultra/Screenshot_20250224_173616_One-UI-Home.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "c37cf5ec3ad60d88fb27df34b1464c352ca7f860172c71846af0285c8a8e8cc2",
+          "width": 1440,
+          "height": 3120,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Samsung/Galaxy_S25_Ultra/Screenshot_20250224_173808_One-UI-Home.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "cfed05d6f30e76fc52a59087b8c05dc352add9e8829f33f46f8bb9f4fe3e83f6",
+          "width": 1440,
+          "height": 3120,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/_processed_/2/6/csm_Screenshot_20250224_173633_Personal-data-intelligence_e9c7fac34c.jpg",
+          "discovery": "linked-scaled-image",
+          "contentType": "image/jpeg",
+          "sha256": "7bd097c521a0948955e5dede72cc8a197ed9f7eef36ff98d3169d83a9081c4de",
+          "width": 459,
+          "height": 1200,
+          "nativeSizeMatch": false
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Samsung/Galaxy_S25_Ultra/Screenshot_20250224_173903_Personal-data-intelligence.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "d7d64bb358dd14acfe5f0aa5a84595bd5785796d36ed0144b41b2ab9d0c33e69",
+          "width": 1440,
+          "height": 3120,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/_processed_/d/d/csm_Screenshot_20250224_173836_Settings_09d5d818b5.jpg",
+          "discovery": "linked-scaled-image",
+          "contentType": "image/jpeg",
+          "sha256": "ad73259bdcd8cfd720b16bca9e90fa4b411c6a2cd14372a5a61ab53bdf50ec27",
+          "width": 229,
+          "height": 1200,
+          "nativeSizeMatch": false
         }
       ],
       "status": "native-screenshot-candidate",
@@ -591,6 +1207,51 @@
           "discovery": "publisher-original-path",
           "contentType": "image/jpeg",
           "sha256": "5201a66a2ccf61a95d9de2d78549fae7408c4fcfc0cd3668dff16b97218cd3c4",
+          "width": 1080,
+          "height": 2400,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Xiaomi/13/Screenshot_2023_02_03_11_54_05_363_com.miui.home.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "faaf22682316ef39a57cf97858a91e8db9853378400f1dbc99cfbe0d40666b7b",
+          "width": 1080,
+          "height": 2400,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Xiaomi/13/Screenshot_2023_02_03_11_54_13_714_com.miui.home.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "2edbeb64e1626825dd630113a0a9bbbcad7c3cec62a369cba3cbe0e0441ef258",
+          "width": 1080,
+          "height": 2400,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/_processed_/2/3/csm_Screenshot_2023_02_03_11_55_34_575_com.android.settings_3d7b4a78c1.jpg",
+          "discovery": "linked-scaled-image",
+          "contentType": "image/jpeg",
+          "sha256": "6802f5c97f713035416908742b0531a382a2e3ad57250faddf8d1e8ac4696579",
+          "width": 344,
+          "height": 1200,
+          "nativeSizeMatch": false
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Xiaomi/13/Screenshot_2023_02_03_14_25_09_970_com.chartcross.gpstest.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "21e1704a8e08459067fa75dee7fca20f4dcee33fa714eced24f5fae40dad7fd7",
+          "width": 1080,
+          "height": 2400,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Xiaomi/13/Screenshot_2023_02_03_14_26_00_591_com.chartcross.gpstest.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "442c5b10d64ac45ea6caf5fefbaec0b3734fe53efda657300e812dce8a9a9c39",
           "width": 1080,
           "height": 2400,
           "nativeSizeMatch": true
@@ -623,6 +1284,51 @@
           "width": 1200,
           "height": 2670,
           "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Xiaomi/14/Screenshots_OS_2.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "9f920372d02a107075a881bb86d39775073298db8cd36f1ed535186592f1fa0c",
+          "width": 1200,
+          "height": 2670,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Xiaomi/14/Screenshots_OS_3.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "058a5e018df705dd77bf92e931c83ebbb8c689dd93ab098ff26973361d38d0c7",
+          "width": 1200,
+          "height": 2670,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Xiaomi/14/Screenshots_OS_4.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "0bc4773923737ba66f90d284277537d92fcd0e1bef865635e2a84866d91eb5a7",
+          "width": 1200,
+          "height": 2670,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Xiaomi/14/Screenshots_OS_5.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "0e0d35d98905226a1f21667765da4121f002afb6cd2ad8df0ad5d4b47f739a6d",
+          "width": 1200,
+          "height": 2670,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Xiaomi/14/Screenshots_OS_6.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "fce88d8b73bf8fe70584c8c7c099950bcfc80952d5822a83b1f1ca9a1494770a",
+          "width": 1200,
+          "height": 2670,
+          "nativeSizeMatch": true
         }
       ],
       "status": "native-screenshot-candidate",
@@ -649,6 +1355,51 @@
           "discovery": "publisher-original-path",
           "contentType": "image/jpeg",
           "sha256": "b48b27c5ef3cd335c2171a6c9486a82eea39f20ff936c39bc8370ddc38804355",
+          "width": 1440,
+          "height": 3200,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Xiaomi/14_Pro/Screenshot_2023-12-22-14-05-17-382_com.miui.home26.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "0e8aaaf105f12ae6482b8f8447a2d01ee484f45767b3a2ac29a663c3ba04196c",
+          "width": 1440,
+          "height": 3200,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Xiaomi/14_Pro/Screenshot_2023-12-22-14-05-35-698_com.android.settings95.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "e33fdb953dfd6c484306e2c54ff73e2966d0bdd84809a529b03043c96bfedc7b",
+          "width": 1440,
+          "height": 3200,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Xiaomi/14_Pro/Screenshot_2023-12-22-14-05-04-032_com.miui.home54.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "f693e79eddcd44ec25d51efd91e624f080b2a3d0a308264e8c619622a9dd2881",
+          "width": 1440,
+          "height": 3200,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Xiaomi/14_Pro/Screenshot_2023-12-23-15-14-36-217_com.chartcross.gpstest.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "b1c9f5abdf149d0d3fe5a4dffaa03bfd6a99a663ac50090160f9fe000c5e420e",
+          "width": 1440,
+          "height": 3200,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Xiaomi/14_Pro/Screenshot_2023-12-23-15-15-22-304_com.chartcross.gpstest.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "ca51977339a47737753b490e7802ac195b47440b0e55b1cfa298a79585121f31",
           "width": 1440,
           "height": 3200,
           "nativeSizeMatch": true
@@ -681,6 +1432,51 @@
           "width": 1440,
           "height": 3200,
           "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Xiaomi/14_Ultra/Screenshot_2024-04-19-12-40-40-655_com.miui.home.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "9f2cf13969ab9a027bba950ca10d0fc7ffa7ff94d944272c9ea9f78fae53311f",
+          "width": 1440,
+          "height": 3200,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Xiaomi/14_Ultra/Screenshot_2024-04-19-12-40-50-374_com.miui.home.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "ff52cdd4513969183120acb2f018a16c5c9a248a327c98c39c518c6f806c07da",
+          "width": 1440,
+          "height": 3200,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Xiaomi/14_Ultra/Screenshot_2024-04-19-12-41-01-748_com.duokan.phone.remotecontroller.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "49c0b384572e12efeb2c43bb2ba3f0288d2a81eca1291ee5687a98e0d75211ab",
+          "width": 1440,
+          "height": 3200,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/_processed_/0/6/csm_Screenshot_2024-04-19-12-49-52-964_com.android.settings_debf868e9b.jpg",
+          "discovery": "linked-scaled-image",
+          "contentType": "image/jpeg",
+          "sha256": "60d65cb098cf910b906b4d3991d97bacfd4c4ae9b72602bdb70d7b4f4d00b819",
+          "width": 460,
+          "height": 1200,
+          "nativeSizeMatch": false
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Xiaomi/14_Ultra/Screenshot_2024-04-19-12-41-46-231_com.google.android.permissioncontroller.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "37262ae3179f8db9e5c68c4343cb64a46737960e1ebfb01968720bdeb34ffcf6",
+          "width": 1440,
+          "height": 3200,
+          "nativeSizeMatch": true
         }
       ],
       "status": "native-screenshot-candidate",
@@ -707,6 +1503,51 @@
           "discovery": "publisher-original-path",
           "contentType": "image/jpeg",
           "sha256": "bced8f07a93597a2969de56818562b4f2f9bda629cdf20b115956478e0375858",
+          "width": 1200,
+          "height": 2670,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Xiaomi/15/Screenshots_OS_2.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "e885d385df2b8af3fb662dc6210695665f039bfc100d86f7f28cce5b493872d7",
+          "width": 1200,
+          "height": 2670,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Xiaomi/15/Screenshots_OS_3.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "f6f7678f5601084ed2fb0d0d2aa1a0b1be4dabe8732d524a76cda2daf63033df",
+          "width": 1200,
+          "height": 2670,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Xiaomi/15/Screenshots_OS_4.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "3450257bfb18d9c1e3725568a245b40ed4ed79877fabff6a59e59f2b94d9c7ef",
+          "width": 1200,
+          "height": 2670,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Xiaomi/15/Screenshots_OS_5.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "e0f165dc6a21cde6c6696f048e1c0c9d955cdcc201d120c850d58c72fa105057",
+          "width": 1200,
+          "height": 2670,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Xiaomi/15/Screenshots_OS_6.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "0bf3a880af982d5ae4cadc4310ccc0469798dea9343e5f0e6dc41d7687b214e4",
           "width": 1200,
           "height": 2670,
           "nativeSizeMatch": true
@@ -784,6 +1625,51 @@
           "width": 1220,
           "height": 2712,
           "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Xiaomi/Redmi_Note_13_Pro_5G/Screenshot_2024-01-21-11-05-01-612_com.android.settings.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "6bf5f80d39ee36d912e5b66969d5b3753ac99eff5b9bf5559322ef85debf8950",
+          "width": 1220,
+          "height": 2712,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Xiaomi/Redmi_Note_13_Pro_5G/Screenshot_2024-01-21-11-05-14-534_com.android.settings.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "509d54f6006c639a4f3a4a7f44e67689e331f9c106c5053c1938e1abb77ec69c",
+          "width": 1220,
+          "height": 2712,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Xiaomi/Redmi_Note_13_Pro_5G/Screenshot_2024-01-14-11-00-38-912_com.chartcross.gpstest.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "4da04b8df49e2cf41c66a8b917ea838debb94d7d7de41b0339c7259945a065d5",
+          "width": 1220,
+          "height": 2712,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Xiaomi/Redmi_Note_13_Pro_5G/Screenshot_2024-01-14-11-00-49-148_com.android.gpstest.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "f3c8de52fbf166d034427d3ee57aeb89c002758b4174a1b5e5377584ddf098bc",
+          "width": 1220,
+          "height": 2712,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Xiaomi/Redmi_Note_13_Pro_5G/Screenshot_2024-01-21-11-05-25-311_com.android.chrome.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "7f8636440503d0664d2c95ef12bb88d7f183989c3694e889f7b28dbee8c46cf5",
+          "width": 1220,
+          "height": 2712,
+          "nativeSizeMatch": true
         }
       ],
       "status": "native-screenshot-candidate",
@@ -813,6 +1699,51 @@
           "width": 1220,
           "height": 2700,
           "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Huawei/P60_Pro/Screenshot_20230526_110511_com.huawei.android.launcher.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "6c29599c9096fe31da92840281924fc7f8863b4008dbcfd1ff380610a57a6c92",
+          "width": 1220,
+          "height": 2700,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Huawei/P60_Pro/Screenshot_20230526_110537_com.huawei.appmarket.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "3c45c6c8534254e5212d8b9d7ed37aa172fb311fbaf965af40478d6c522eb9b1",
+          "width": 1220,
+          "height": 2700,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/_processed_/b/b/csm_Screenshot_20230526_110618_com.android.settings_ace45d0a45.jpg",
+          "discovery": "linked-scaled-image",
+          "contentType": "image/jpeg",
+          "sha256": "d12b82ba205322e6e607f5630be98974e388db4fc9dacd2f41d785aff41ecf47",
+          "width": 348,
+          "height": 1200,
+          "nativeSizeMatch": false
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Huawei/P60_Pro/Screenshot_20230525_153927_com.huawei.desktop.explorer.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "42ebb4fd0ca3f8ece6bfb2b8afd9828c41490fcf06a35461260408a2dd934b58",
+          "width": 1220,
+          "height": 2700,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Huawei/P60_Pro/Screenshot_20230525_154130.jpg",
+          "discovery": "linked-scaled-image",
+          "contentType": "image/jpeg",
+          "sha256": "f887fe84c7de1c821342222df56184b465da02db53e666f51898b69e60cb4c9a",
+          "width": 1824,
+          "height": 1026,
+          "nativeSizeMatch": false
         }
       ],
       "status": "native-screenshot-candidate",
@@ -981,6 +1912,51 @@
           "width": 1280,
           "height": 2800,
           "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Honor/Magic6_Pro/Screenshot_20240320_152552_com.hihonor.android.launcher.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "a1961b2961c468c3946f8769884d3863cc61870283ccf4ffa533dff13ea7ea38",
+          "width": 1280,
+          "height": 2800,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Honor/Magic6_Pro/Screenshot_20240320_152610_com.hihonor.android.launcher.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "46f5d2399800e07fd74ed1121d2cdb0cad9b1d525b12848d95fc7fb63709dd34",
+          "width": 1280,
+          "height": 2800,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Honor/Magic6_Pro/Screenshot_20240320_150349_com.hihonor.desktop.systemui.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "f9157375b600f457bc845de87f55c42b07d8196f45f9c3ea19699b598766d5db",
+          "width": 1280,
+          "height": 2800,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/_processed_/9/6/csm_Screenshot_20240320_152656_com.android.settings_94d3f8c9a6.jpg",
+          "discovery": "linked-scaled-image",
+          "contentType": "image/jpeg",
+          "sha256": "41b566f3b14b44f6a0880c2b2b9186c6e96184a5c50f1153c48cf161f04f17f5",
+          "width": 289,
+          "height": 1200,
+          "nativeSizeMatch": false
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Honor/Magic6_Pro/Screenshot_20240321_104743_com.chartcross.gpstest.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "2bbc389eadfe43d27af14b388ba51e49e302e2232bcda9d2bea6c5983b421dcd",
+          "width": 1280,
+          "height": 2800,
+          "nativeSizeMatch": true
         }
       ],
       "status": "native-screenshot-candidate",
@@ -1007,6 +1983,51 @@
           "discovery": "publisher-original-path",
           "contentType": "image/jpeg",
           "sha256": "637a5d535eb3e70d58efde03e937eac375ab5e14f0c26222e61732b0cee4d299",
+          "width": 1280,
+          "height": 2800,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Honor/Magic7_Pro/Screenshot_20250110_134425_com_hihonor_android_launcher_UniHomeLauncher.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "d0e8af8b2ff4d6dffc6d82a0d2049886b1892e61d4d0900e0d5074a363422187",
+          "width": 1280,
+          "height": 2800,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Honor/Magic7_Pro/Screenshot_20250110_134534_com_hihonor_android_launcher_UniHomeLauncher.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "7bf3bb86ad99afa630114680320fb909edb510855c90ae17ff00d73022c62deb",
+          "width": 1280,
+          "height": 2800,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Honor/Magic7_Pro/Screenshot_20250110_134610_com_hihonor_controlcenter_ControlHomeActivity.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "8d9a9eee1e87cf9a7752a75ec4e5c6e92849b7b56eef053798127d3be4ea0fbd",
+          "width": 1280,
+          "height": 2800,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/_processed_/f/4/csm_Screenshot_20250110_134703_com_android_settings_SettingsDeviceInfoSettingsActivit_6592bb5ad6.jpg",
+          "discovery": "linked-scaled-image",
+          "contentType": "image/jpeg",
+          "sha256": "ed260200a353a01ac76afe816aacde0af2dc0fe4e7548aef053141e07eafcb50",
+          "width": 265,
+          "height": 1200,
+          "nativeSizeMatch": false
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Honor/Magic7_Pro/Screenshot_20250110_134304_com_google_android_googlequicksearchbox_OmnientActivity.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "a2dd04960c12eb03a1485875e9e4cd099a59c1ca74aef8b1bf937cc9229a6fd4",
           "width": 1280,
           "height": 2800,
           "nativeSizeMatch": true
@@ -1063,6 +2084,42 @@
           "width": 545,
           "height": 1200,
           "nativeSizeMatch": false
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/_processed_/9/0/csm_Screenshots_OS_3_dd6c4fa900.jpg",
+          "discovery": "linked-scaled-image",
+          "contentType": "image/jpeg",
+          "sha256": "effe7b6a75ac16e537f0ce3a93c363b98f36d7a7b570d172d295172030d4581c",
+          "width": 545,
+          "height": 1200,
+          "nativeSizeMatch": false
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/_processed_/4/1/csm_Screenshots_OS_4_817580bbf5.jpg",
+          "discovery": "linked-scaled-image",
+          "contentType": "image/jpeg",
+          "sha256": "307fee65633fbf1e09ff4cdad255176d5be569f8313187d0c37359869ea8fac1",
+          "width": 545,
+          "height": 1200,
+          "nativeSizeMatch": false
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/_processed_/e/4/csm_Screenshots_OS_5_0d3df0e8fc.jpg",
+          "discovery": "linked-scaled-image",
+          "contentType": "image/jpeg",
+          "sha256": "683d1f0773b5219c7708a2c17a709d3b54297b80b6992be8784d9531313c26e7",
+          "width": 545,
+          "height": 1200,
+          "nativeSizeMatch": false
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/_processed_/d/8/csm_Screenshots_OS_6_2bcf16044c.jpg",
+          "discovery": "linked-scaled-image",
+          "contentType": "image/jpeg",
+          "sha256": "1a4f98d08f35a17f5635773a894b19253e04338f0629370f6905ddbce94058a3",
+          "width": 545,
+          "height": 1200,
+          "nativeSizeMatch": false
         }
       ],
       "status": "scaled-screenshot-only",
@@ -1116,6 +2173,42 @@
           "width": 545,
           "height": 1200,
           "nativeSizeMatch": false
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/_processed_/a/7/csm_Screenshot_2024-11-26-12-22-55-13_e36a787ecbdd931f753253df745e8a64_9fe042c58d.jpg",
+          "discovery": "linked-scaled-image",
+          "contentType": "image/jpeg",
+          "sha256": "e540ef7e187077f07b521292da4f15de7d72bf595db6186af43e27dbd0db0f79",
+          "width": 545,
+          "height": 1200,
+          "nativeSizeMatch": false
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/_processed_/e/0/csm_Screenshot_2024-11-26-12-23-22-46_b783bf344239542886fee7b48fa4b892_15c30c386f.jpg",
+          "discovery": "linked-scaled-image",
+          "contentType": "image/jpeg",
+          "sha256": "4e76a3d67f0e36fe473afd21e25b3e59126edc6b18e599ce1ae9c72f545040b3",
+          "width": 545,
+          "height": 1200,
+          "nativeSizeMatch": false
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/_processed_/2/7/csm_Screenshot_2024-11-26-12-25-33-98_5762105cc17c3d76bf84b00dbfc2b9a8_88cf68292d.jpg",
+          "discovery": "linked-scaled-image",
+          "contentType": "image/jpeg",
+          "sha256": "7763913223f519b1f4059bfb8d8c038c3f972246025b9ab1e2ef3ed8b343b282",
+          "width": 545,
+          "height": 1200,
+          "nativeSizeMatch": false
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/_processed_/3/f/csm_Screenshot_2024-11-26-12-26-15-16_a1d55226c6.jpg",
+          "discovery": "linked-scaled-image",
+          "contentType": "image/jpeg",
+          "sha256": "83fd3df1813b42e06a5f5e31d7f9e5d5db71243e96fd37ceca26742bfd3bc460",
+          "width": 323,
+          "height": 1200,
+          "nativeSizeMatch": false
         }
       ],
       "status": "scaled-screenshot-only",
@@ -1160,6 +2253,51 @@
           "width": 1440,
           "height": 3168,
           "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/OnePlus/12/Screenshot_2024-06-23-22-49-59-51_b783bf344239542886fee7b48fa4b892.jpg",
+          "discovery": "linked-scaled-image",
+          "contentType": "image/jpeg",
+          "sha256": "0dece063fdead55664f3a41e861343a37ebf9d1df6bd087827433ba4c3e52def",
+          "width": 1440,
+          "height": 3168,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/OnePlus/12/Screenshot_2024-06-23-22-44-13-35_fc704e6b13c4fb26bf5e411f75da84f2.jpg",
+          "discovery": "linked-scaled-image",
+          "contentType": "image/jpeg",
+          "sha256": "a1f5df2eebca071f85898202c7e080b2ae01cd5f05a516b5c3b95d2df02f5cd5",
+          "width": 1440,
+          "height": 3168,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/OnePlus/12/Screenshot_2024-06-23-22-49-31-18_fc704e6b13c4fb26bf5e411f75da84f2.jpg",
+          "discovery": "linked-scaled-image",
+          "contentType": "image/jpeg",
+          "sha256": "5157b8850eaf27ebc6965a6357f993e3dc22a02ff1506031ef14a58dcd3b10d4",
+          "width": 1440,
+          "height": 3168,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/OnePlus/12/Screenshot_2024-06-23-22-52-56-91_f7aa348215f5d566f9e4ca860f474209.jpg",
+          "discovery": "linked-scaled-image",
+          "contentType": "image/jpeg",
+          "sha256": "13b4eb0e5366be75ae87cc8540c62df1665d81501346eaf2c0202bef9d27a34d",
+          "width": 1440,
+          "height": 3168,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/OnePlus/12/Screenshot_2024-06-23-22-45-29-14_fc704e6b13c4fb26bf5e411f75da84f2.jpg",
+          "discovery": "linked-scaled-image",
+          "contentType": "image/jpeg",
+          "sha256": "b919486a7e289a86650becc509703b9207791846e215dc6300d610cd0b8254a5",
+          "width": 1440,
+          "height": 3168,
+          "nativeSizeMatch": true
         }
       ],
       "status": "native-screenshot-candidate",
@@ -1186,6 +2324,51 @@
           "discovery": "publisher-original-path",
           "contentType": "image/jpeg",
           "sha256": "c6865fb0166030ee5005742530b3f32741b198e852a507f2dd13e2275b6ded42",
+          "width": 1440,
+          "height": 3168,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/OnePlus/13/Screenshot_2024-12-05-16-37-36-17_b783bf344239542886fee7b48fa4b892.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "3c1716cd4d5499b97e01a8e92028707438618bab15de05bc2538986c68ff43a9",
+          "width": 1440,
+          "height": 3168,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/OnePlus/13/Screenshot_2024-12-05-16-37-31-07_fc704e6b13c4fb26bf5e411f75da84f2.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "86e6228e1e41f128a693afe359580d965217db87bb1095de01574ae6806396de",
+          "width": 1440,
+          "height": 3168,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/OnePlus/13/Screenshot_2024-12-05-16-37-21-75_d97e70df473fd2e37898d35a3e82c2a2.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "92488aa59ee14dc1a9ba43cfa8cad91c3c7f23a025aa3788788052e207971b03",
+          "width": 1440,
+          "height": 3168,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/OnePlus/13/Screenshot_2024-12-05-16-40-31-56_5762105cc17c3d76bf84b00dbfc2b9a8.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "0a340e1fe59e26eeaaa0165cf4a070f720e5b04f14aaa8b11c57f52ddaa240a5",
+          "width": 1440,
+          "height": 3168,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/OnePlus/13/Screenshot_2024-12-05-16-41-18-82_5762105cc17c3d76bf84b00dbfc2b9a8.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "05f286ee4f2ea386b9f43012ef348dcc526a6ec1aa149cf36f31c35ef56de0b2",
           "width": 1440,
           "height": 3168,
           "nativeSizeMatch": true
@@ -1248,6 +2431,51 @@
           "width": 1260,
           "height": 2800,
           "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Vivo/X100_Pro/Screenshot_20240305_163020.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "82e0b79ac621be59d681c62aaec42f2ea35d2ffa3a487e25cd5636dd6f7f07d9",
+          "width": 1260,
+          "height": 2800,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/_processed_/b/d/csm_Screenshot_2024_0305_163104_eafe604ff6.jpg",
+          "discovery": "linked-scaled-image",
+          "contentType": "image/jpeg",
+          "sha256": "7f865d24c036ca41e7cbf5eb2d00e111856318300d1236cf634e53011af1495a",
+          "width": 319,
+          "height": 1200,
+          "nativeSizeMatch": false
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Vivo/X100_Pro/Screenshot_20240305_163125.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "4c83bd37d75d91fc1ea495a56be3260db3e8ff92b214a7accff4388c24cc0757",
+          "width": 1260,
+          "height": 2800,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Vivo/X100_Pro/Screenshot_20240305_163355.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "65031da6f5f40789c018401a3ee7124e4b6b524b70c9cc242ba2dea2b6049aa9",
+          "width": 1260,
+          "height": 2800,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Vivo/X100_Pro/Screenshot_20240305_162954.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "79cff06dd7414d06ca697c2af1f97ceb4572da18460c9b9ef96391f04ddf88b5",
+          "width": 1260,
+          "height": 2800,
+          "nativeSizeMatch": true
         }
       ],
       "status": "native-screenshot-candidate",
@@ -1292,6 +2520,51 @@
           "width": 1260,
           "height": 2800,
           "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Vivo/X200_Pro/Screenshot_20241212_151428.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "253d6ceccecd8194b65798ec982dde70bd336e4b13951e11e1805726e2d61e6a",
+          "width": 1260,
+          "height": 2800,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Vivo/X200_Pro/Screenshot_20241212_151442.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "c645e7028565cd9fc3643277fef76263581ad3bf99eb154041ceb700dd91f045",
+          "width": 1260,
+          "height": 2800,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Vivo/X200_Pro/Screenshot_20241212_151421.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "8ccba77fc63d0b37488bef7beb2fc3faaca2791284e7dc0489bab14d41f904d8",
+          "width": 1260,
+          "height": 2800,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Vivo/X200_Pro/Screenshot_20241212_140307.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "1184588247ed3722116c0061daf47fc1eefb915a3ed8b2165402a8359d48a3c9",
+          "width": 1260,
+          "height": 2800,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Vivo/X200_Pro/Screenshot_20241212_140323.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "b940fd05a74aed53685c4389586ebf07416111bcfa59386b8361b66af7b24299",
+          "width": 1260,
+          "height": 2800,
+          "nativeSizeMatch": true
         }
       ],
       "status": "native-screenshot-candidate",
@@ -1318,6 +2591,51 @@
           "discovery": "publisher-original-path",
           "contentType": "image/jpeg",
           "sha256": "06621552fa497f48496d4e3594c9f81a9e0bd7570b58369b908d724c0efc0d9d",
+          "width": 1216,
+          "height": 2640,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Vivo/X200_Pro_Mini/Screenshot_20250215_190228.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "bac3fbe72cfc7c2656fe3537ed7e8b18117ceb20e33d304ec5994032e3e19fee",
+          "width": 1216,
+          "height": 2640,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Vivo/X200_Pro_Mini/Screenshot_20250215_190242.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "d4b253f6fc1313614e5ca8a91d0dbe6753d61d51b8863d4eef2e255cf423bffd",
+          "width": 1216,
+          "height": 2640,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Vivo/X200_Pro_Mini/Screenshot_20250215_190246.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "79e4867ef72ff1153984d7dd6bf66493c9e71e6d07df6ed7a7d095e43a1ef2ca",
+          "width": 1216,
+          "height": 2640,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Vivo/X200_Pro_Mini/Screenshot_20250216_101224.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "af4fd68b978f4088ad94cbc9bddcdca2c1986554c64d06e8d51888bc0c293028",
+          "width": 1216,
+          "height": 2640,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Vivo/X200_Pro_Mini/Screenshot_20250216_101312.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "c9b774229a814052d68840644e2fd183ec2ca384091b6064b0639df01fd8a8be",
           "width": 1216,
           "height": 2640,
           "nativeSizeMatch": true
@@ -1395,6 +2713,51 @@
           "width": 1240,
           "height": 2772,
           "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Realme/GT5/Screenshot_2024-01-13-09-42-29-99_b783bf344239542886fee7b48fa4b892.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "5b7431ddbd88a2b4bef4febae86b83680e1a19acba0fa40a6dd14546d4208422",
+          "width": 1240,
+          "height": 2772,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Realme/GT5/Screenshot_2024-01-13-09-42-23-56_b783bf344239542886fee7b48fa4b892.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "638f0418b1fb40a482f1a91f9ce94cf550872d24edd593cabd9e7c0ebb9f851f",
+          "width": 1240,
+          "height": 2772,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Realme/GT5/Screenshot_2024-01-14-12-21-34-87_5762105cc17c3d76bf84b00dbfc2b9a8.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "56ffdacb325134ad840edb3e45992cc9fe096f82995f18da02ebf99d534aa8e2",
+          "width": 1240,
+          "height": 2772,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Realme/GT5/Screenshot_2024-01-14-12-21-10-50_5762105cc17c3d76bf84b00dbfc2b9a8.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "c4bc007653840c57d3f6be72795debe086bb46fbc813aa80d0202dc4c3add666",
+          "width": 1240,
+          "height": 2772,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Realme/GT5/Screenshot_2024-01-13-09-48-59-00_6ba589b35cca5ff8f234db69f4487e8f.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "842e20bb8cdaf89d055239a34bad31dc33c28cdf13e6c5ef6fb41608dda22fee",
+          "width": 1240,
+          "height": 2772,
+          "nativeSizeMatch": true
         }
       ],
       "status": "native-screenshot-candidate",
@@ -1408,13 +2771,72 @@
     {
       "modelId": "realmegt6",
       "name": "realme GT6",
-      "status": "no-verified-source",
+      "review": {
+        "url": "https://www.notebookcheck.net/Realme-GT-6-review-Mid-range-smartphone-with-6-000-nits-and-spectacular-runtimes.873275.0.html",
+        "title": "Realme GT 6 review - Mid-range smartphone with 6,000 nits and spectacular runtimes - Notebookcheck Review",
+        "sha256": "5def996076dff8f243f34354d139793761d5a79594ff67cb6c2bf629a1dba325",
+        "reportedOs": "Android 14",
+        "checkedAt": "2026-10-29T01:36:27.771Z"
+      },
+      "screenshots": [
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Realme/GT_6/Screenshot_2024-07-28-15-40-01-95_fc704e6b13c4fb26bf5e411f75da84f2.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "b1caa2804848c1f866c1a26d38c9d3707e10afeff47ed34d193ee2a43df2f16f",
+          "width": 1264,
+          "height": 2780,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Realme/GT_6/Screenshot_2024-07-28-15-39-57-38_b783bf344239542886fee7b48fa4b892.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "236f43169e91b5bd2a60479172beeddb3cf94bd11b8a192ba96ae3a8a42efec7",
+          "width": 1264,
+          "height": 2780,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Realme/GT_6/Screenshot_2024-07-28-15-40-05-40_b783bf344239542886fee7b48fa4b892.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "5df515672f1eca4d7ef0310ead296f26306e542462a534f903d6680408a36152",
+          "width": 1264,
+          "height": 2780,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Realme/GT_6/Screenshot_2024-07-28-15-39-51-10_b783bf344239542886fee7b48fa4b892.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "e7e9632982180cb9e0b7e6b5a6ad5e4f87ba0d8295dd33e9573d91fe29f3b230",
+          "width": 1264,
+          "height": 2780,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Realme/GT_6/Screenshot_2024-07-27-14-40-40-12_5762105cc17c3d76bf84b00dbfc2b9a8.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "efa2bf3715999efc5f9b902144f9ceda5409606116cf6c63a8cf10e079e2d454",
+          "width": 1264,
+          "height": 2780,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Realme/GT_6/Screenshot_2024-07-27-14-41-00-81_5762105cc17c3d76bf84b00dbfc2b9a8.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "10d74103fe738d4ed0db483f177a58aaf1322909ebcd8901678c566254c5031b",
+          "width": 1264,
+          "height": 2780,
+          "nativeSizeMatch": true
+        }
+      ],
+      "status": "native-screenshot-candidate",
       "calibration": "reference",
-      "review": null,
-      "screenshots": [],
       "missing": [
-        "model-specific-review",
-        "native-screenshot",
         "exact-build-and-display-settings",
         "state-coverage",
         "rendered-overlay-comparison"
@@ -1587,6 +3009,51 @@
           "width": 1170,
           "height": 2532,
           "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Apple/iPhone_16e/Screenshots_Apple_iPhone_16e_OS_2.PNG",
+          "discovery": "publisher-original-path",
+          "contentType": "image/png",
+          "sha256": "e4aecad9bc8197fe02430fd56b3a45cd39800b859d1900fd1c34e5a5ebefc2d5",
+          "width": 1170,
+          "height": 2532,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Apple/iPhone_16e/Screenshots_Apple_iPhone_16e_OS_3.PNG",
+          "discovery": "publisher-original-path",
+          "contentType": "image/png",
+          "sha256": "f424da6ca9e73a00416cafdbd40a5557a5c57ff4bc4ba3d6cc7bcdcc7ecebbcf",
+          "width": 1170,
+          "height": 2532,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Apple/iPhone_16e/Screenshots_Apple_iPhone_16e_OS_4.PNG",
+          "discovery": "publisher-original-path",
+          "contentType": "image/png",
+          "sha256": "cf19e68b9969a60497c0bc6d9db24bc252241190a2ddabd57184daceb9b11e53",
+          "width": 1170,
+          "height": 2532,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Apple/iPhone_16e/Screenshots_Apple_iPhone_16e_OS_5.PNG",
+          "discovery": "publisher-original-path",
+          "contentType": "image/png",
+          "sha256": "2f2c2ada31a3d04c08da9622728368fd36bf1277693dbab0b49ee5040e8c5aeb",
+          "width": 1170,
+          "height": 2532,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Apple/iPhone_16e/Screenshots_Apple_iPhone_16e_OS_6.PNG",
+          "discovery": "publisher-original-path",
+          "contentType": "image/png",
+          "sha256": "669409b5560418cf9fc3151ad8100063f95fce3ad41232465af4aa5983436768",
+          "width": 1170,
+          "height": 2532,
+          "nativeSizeMatch": true
         }
       ],
       "status": "native-screenshot-candidate",
@@ -1616,6 +3083,51 @@
           "width": 1080,
           "height": 2340,
           "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Samsung/Galaxy_S23_Plus/Screenshot_OS_2.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "c9893e2b82377c06578690059bdf46a5e85f2b5ef166d69dd8dc7a990479883e",
+          "width": 1080,
+          "height": 2340,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Samsung/Galaxy_S23_Plus/Screenshot_OS_3.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "0346e330b29841e4bdc6b31551e8f3448bbc3f1126485a8e7647ac1a29c03a40",
+          "width": 1080,
+          "height": 2340,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Samsung/Galaxy_S23_Plus/Screenshot_OS_4.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "db31e522d4dbb0d79cce4e148d50dd9709fbc11127ca59be47c732f0e091a9ac",
+          "width": 1080,
+          "height": 2340,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Samsung/Galaxy_S23_Plus/Screenshot_OS_5.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "0121fb49ddf30024c522ffc8ca6f5626923bf23ee39a74cdd47c8d82d1a350cd",
+          "width": 1080,
+          "height": 2340,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Samsung/Galaxy_S23_Plus/Screenshot_OS_6.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "32dab404314b2f29152437e2215008e23f45817c7292c674fd9782b62b97a9c3",
+          "width": 1080,
+          "height": 2340,
+          "nativeSizeMatch": true
         }
       ],
       "status": "native-screenshot-candidate",
@@ -1642,6 +3154,51 @@
           "discovery": "publisher-original-path",
           "contentType": "image/jpeg",
           "sha256": "1a25e488c370d372ec9d5313fd85ce3298016974201f90e694fb312bd7f2b069",
+          "width": 1440,
+          "height": 3088,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Samsung/Galaxy_S23_Ultra/Screenshot_20230223_114242_One_UI_Home.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "8098b780d915fc07727437117e45dc13a399744e7d294c63f295ff4b6c28a90c",
+          "width": 1440,
+          "height": 3088,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Samsung/Galaxy_S23_Ultra/Screenshot_20230223_114217_One_UI_Home.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "cb503df5ad50c31983f00002f3089c165c31c392880593f00f4f24a25235a108",
+          "width": 1440,
+          "height": 3088,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Samsung/Galaxy_S23_Ultra/Screenshot_20230223_114253_One_UI_Home.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "b806c186eaac620a8582c27e3727d33fb3e57f54f6bb78369c2d60f4127e2bfa",
+          "width": 1440,
+          "height": 3088,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Samsung/Galaxy_S23_Ultra/Screenshot_20230223_122554_GPS_Test.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "d24b70a8cb415e56a8f256c556d861b9be19e95bd3a07de641a87253427902ab",
+          "width": 1440,
+          "height": 3088,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Samsung/Galaxy_S23_Ultra/Screenshot_20230223_122534_GPS_Test.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "eb6243ab0336f5ec0f32aed9bdf5870fce75161f05977e0357581eb523df4833",
           "width": 1440,
           "height": 3088,
           "nativeSizeMatch": true
@@ -1683,6 +3240,42 @@
           "width": 554,
           "height": 1200,
           "nativeSizeMatch": false
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/_processed_/f/3/csm_Screenshots_Samsung_Galaxy_S25_Plus_OS_3_dc30f0ce9a.jpg",
+          "discovery": "linked-scaled-image",
+          "contentType": "image/jpeg",
+          "sha256": "fb5fd9e6f99596ae10cf9bbec69ece10e285416f81bd1aec33a88354ce725b5b",
+          "width": 554,
+          "height": 1200,
+          "nativeSizeMatch": false
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/_processed_/9/a/csm_Screenshots_Samsung_Galaxy_S25_Plus_OS_4_80dd712638.jpg",
+          "discovery": "linked-scaled-image",
+          "contentType": "image/jpeg",
+          "sha256": "de788de51ebac480f7ff526f0c2d6f107cdfa6db19da6b732d068ef1982f4f6b",
+          "width": 554,
+          "height": 1200,
+          "nativeSizeMatch": false
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/_processed_/b/2/csm_Screenshots_Samsung_Galaxy_S25_Plus_OS_5_869a711faf.jpg",
+          "discovery": "linked-scaled-image",
+          "contentType": "image/jpeg",
+          "sha256": "a1ca6e78f03a0dfb7f81a208abbd510c7563a0b9611e4742330946c3cc1f1fe2",
+          "width": 554,
+          "height": 1200,
+          "nativeSizeMatch": false
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/_processed_/1/7/csm_Screenshots_Samsung_Galaxy_S25_Plus_OS_6_f1d0d768a9.jpg",
+          "discovery": "linked-scaled-image",
+          "contentType": "image/jpeg",
+          "sha256": "ee7c878afc64e505ea048cf7b134338e8e2a3e8c3929775eeee20f52fefa5a47",
+          "width": 554,
+          "height": 1200,
+          "nativeSizeMatch": false
         }
       ],
       "status": "scaled-screenshot-only",
@@ -1709,6 +3302,51 @@
           "discovery": "publisher-original-path",
           "contentType": "image/jpeg",
           "sha256": "27864694221a416e982d6091f68afa31b26e9bacc524c7db05bb0affeebcbab5",
+          "width": 1080,
+          "height": 2340,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Samsung/Galaxy_A55_5G/Screenshot_20240503_152402_One-UI-Home.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "5227187c50751f951e0ee08722647767f6cae10c7c2e3e228defcfc31fb32562",
+          "width": 1080,
+          "height": 2340,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Samsung/Galaxy_A55_5G/Screenshot_20240503_152407_One-UI-Home.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "682f9cd21e43f724247abfb21c5c5ee2c31e08ac1d6ecae908d5b87aba105eb6",
+          "width": 1080,
+          "height": 2340,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Samsung/Galaxy_A55_5G/Screenshot_20240503_152413_One-UI-Home.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "349c8f53200b2b772085ebabd47fa31bfc0999474aed32e3a921112f4b9ad51f",
+          "width": 1080,
+          "height": 2340,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/_processed_/7/a/csm_Screenshot_20240503_155903_Settings_ae5dbd6096.jpg",
+          "discovery": "linked-scaled-image",
+          "contentType": "image/jpeg",
+          "sha256": "989bbfd66afe8d3352509580ca52de0b56636a6af551e239e0d7dfc676c2e478",
+          "width": 443,
+          "height": 1200,
+          "nativeSizeMatch": false
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Samsung/Galaxy_A55_5G/Screenshot_20240503_152546_GPS-Test.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "a6d97053c40053b959d792bfa9c305f2543654c212b87680cdb62f01d6197ddf",
           "width": 1080,
           "height": 2340,
           "nativeSizeMatch": true
@@ -1741,6 +3379,51 @@
           "width": 1080,
           "height": 2340,
           "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Samsung/Galaxy_A54_5G/Screenshot_20230425_155858_One_UI_Home.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "63899d4d6e6e9250282ddd8801e0940d58b79f113d6c752ea170d71967d9c3ef",
+          "width": 1080,
+          "height": 2340,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Samsung/Galaxy_A54_5G/Screenshot_20230425_155907_One_UI_Home.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "dc7b45a3b353e7d8596d3ea3b400899fb751bdb0bb10e10c0112929d6636ff51",
+          "width": 1080,
+          "height": 2340,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/_processed_/a/c/csm_Screenshot_20230425_155807_Settings_7f7f53dd89.jpg",
+          "discovery": "linked-scaled-image",
+          "contentType": "image/jpeg",
+          "sha256": "6f9eda5ee145713b680cc058fe961226ebedbe8dbccdd387e72f17788642b873",
+          "width": 436,
+          "height": 1200,
+          "nativeSizeMatch": false
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Samsung/Galaxy_A54_5G/Screenshot_20230426_112736_GPS_Test.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "d8b030bdbdc8f2683412e1500f6e60f40835183f21234400c755fe8a4821a62d",
+          "width": 1080,
+          "height": 2340,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Samsung/Galaxy_A54_5G/Screenshot_20230426_112800_GPS_Test.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "e7fc84331a18094230423e82cd9b92fcd6c24dde9f9977d6019489c3a1e605e2",
+          "width": 1080,
+          "height": 2340,
+          "nativeSizeMatch": true
         }
       ],
       "status": "native-screenshot-candidate",
@@ -1767,6 +3450,51 @@
           "discovery": "publisher-original-path",
           "contentType": "image/png",
           "sha256": "a0980ce0fef2650ab34293f676d5036f5ea03720e049a3cbd2adeb701f806928",
+          "width": 1080,
+          "height": 2400,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Google/Pixel_7/Screenshot_20221117_145207.png",
+          "discovery": "publisher-original-path",
+          "contentType": "image/png",
+          "sha256": "f0c2c14107d4dcfe7b1a55ae27c4799a5bf20d12afea70255c527a5f492f1fc7",
+          "width": 1080,
+          "height": 2400,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Google/Pixel_7/Screenshot_20221117_151616.png",
+          "discovery": "publisher-original-path",
+          "contentType": "image/png",
+          "sha256": "d70146b72c15e4b44b8599374a600d7799cde1567dca93216a1ebb2e89dc4114",
+          "width": 1080,
+          "height": 2400,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Google/Pixel_7/Screenshot_20221117_145443.png",
+          "discovery": "publisher-original-path",
+          "contentType": "image/png",
+          "sha256": "f5a00df22477324c09a8e4e356d5f8ea27abab64d25cd44480ff13fc14aba3a4",
+          "width": 1080,
+          "height": 2400,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Google/Pixel_7/Screenshot_20221117_160841.png",
+          "discovery": "publisher-original-path",
+          "contentType": "image/png",
+          "sha256": "2f51327baa14b94b586421aad11633286ebdb378e01d61cb135a6f3d6956ed39",
+          "width": 1080,
+          "height": 2400,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Google/Pixel_7/Screenshot_20221117_160830.png",
+          "discovery": "publisher-original-path",
+          "contentType": "image/png",
+          "sha256": "d92a4ac882380ebb7e7b96e8bb33bd6e97f27bb5d978b0585313634118b1d344",
           "width": 1080,
           "height": 2400,
           "nativeSizeMatch": true
@@ -1799,6 +3527,51 @@
           "width": 1440,
           "height": 3120,
           "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Google/Pixel_7_Pro/Screenshot_20221114_120811.png",
+          "discovery": "publisher-original-path",
+          "contentType": "image/png",
+          "sha256": "4891ea85509347243b99e9f804cfcefc7363d6a700a951e100f8801150354224",
+          "width": 1440,
+          "height": 3120,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Google/Pixel_7_Pro/Screenshot_20221114_115022.png",
+          "discovery": "publisher-original-path",
+          "contentType": "image/png",
+          "sha256": "afa8a51674e7cd279690b6f955d656b89c428646ef0b8622e84a8d869a4df891",
+          "width": 1440,
+          "height": 3120,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/_processed_/7/8/csm_Screenshot_20221114_115043_2d9a6aa956.png",
+          "discovery": "linked-scaled-image",
+          "contentType": "image/png",
+          "sha256": "52ab958fe7a2fbb727ac22b33f2602caa875685c2a71a4cd5dd5370f7d25da94",
+          "width": 398,
+          "height": 1200,
+          "nativeSizeMatch": false
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Google/Pixel_7_Pro/Screenshot_20221114_135733.png",
+          "discovery": "publisher-original-path",
+          "contentType": "image/png",
+          "sha256": "0dbef7285d31ff16a086a2092f11d696d23a4b99a8a5d39006b878d2dbae9a69",
+          "width": 1440,
+          "height": 3120,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Google/Pixel_7_Pro/Screenshot_20221114_115137.png",
+          "discovery": "publisher-original-path",
+          "contentType": "image/png",
+          "sha256": "120c2db8006ebe642dde22341b762499de5e478be5119c5aed681d399006d8c7",
+          "width": 1440,
+          "height": 3120,
+          "nativeSizeMatch": true
         }
       ],
       "status": "native-screenshot-candidate",
@@ -1825,6 +3598,51 @@
           "discovery": "publisher-original-path",
           "contentType": "image/png",
           "sha256": "d47c577646a4e92195dcb9db85ace66a1f9408b52c60c54b1c93b74055afbf3b",
+          "width": 1080,
+          "height": 2400,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Google/Pixel_8a/Screenshot_20240622-172328.png",
+          "discovery": "publisher-original-path",
+          "contentType": "image/png",
+          "sha256": "f700ab7c9b5c2abd92fe76636b5f0146be66bd76287d8f1e89b9267a8f819898",
+          "width": 1080,
+          "height": 2400,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Google/Pixel_8a/Screenshot_20240622-172250.png",
+          "discovery": "publisher-original-path",
+          "contentType": "image/png",
+          "sha256": "394664492f6b0824456aec8220d491a66458e7c8af771df2abeb43be126ccaa3",
+          "width": 1080,
+          "height": 2400,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Google/Pixel_8a/Screenshot_20240622-172259.png",
+          "discovery": "publisher-original-path",
+          "contentType": "image/png",
+          "sha256": "c0c256f163e9158e6069fc49380f55d68eaeea86f6e30313666b0da5f5fb5b2e",
+          "width": 1080,
+          "height": 2400,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Google/Pixel_8a/Screenshot_20240618-155708.png",
+          "discovery": "publisher-original-path",
+          "contentType": "image/png",
+          "sha256": "bfb99b337e7fce76ceaea5a09bcfbdba9d267817c7c19bec1738ccba440af9b1",
+          "width": 1080,
+          "height": 2400,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Google/Pixel_8a/Screenshot_20240618-153830.png",
+          "discovery": "publisher-original-path",
+          "contentType": "image/png",
+          "sha256": "f35104b3c07a3d5047f6f528567b73c86175376437bed8ff3dd593748b735a3e",
           "width": 1080,
           "height": 2400,
           "nativeSizeMatch": true
@@ -1857,6 +3675,51 @@
           "width": 1080,
           "height": 2424,
           "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Google/Pixel_9a/Screenshot_20250612-154914.png",
+          "discovery": "publisher-original-path",
+          "contentType": "image/png",
+          "sha256": "33be99eb3154cd70cae9998b1e3b586ddf807c3a975749f5444df4147b44e970",
+          "width": 1080,
+          "height": 2424,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Google/Pixel_9a/Screenshot_20250612-154856.png",
+          "discovery": "publisher-original-path",
+          "contentType": "image/png",
+          "sha256": "e6b844f15fcf8b0565ad789fa9f102335c183b66b6597b5a1f3469b0fdf00c01",
+          "width": 1080,
+          "height": 2424,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Google/Pixel_9a/Screenshot_20250612-154942.png",
+          "discovery": "publisher-original-path",
+          "contentType": "image/png",
+          "sha256": "05701b04d499b6bbdbd921751d9ba9ec813046d3140deb6b23e0db2f7acdad3b",
+          "width": 1080,
+          "height": 2424,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Google/Pixel_9a/Screenshot_20250612-162948.png",
+          "discovery": "publisher-original-path",
+          "contentType": "image/png",
+          "sha256": "77f1437dd05ee251b5b3ecb62e1d56132928b83b3e10154e0fb2b40bf29a2258",
+          "width": 1080,
+          "height": 2424,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Google/Pixel_9a/Screenshot_20250612-162925.png",
+          "discovery": "publisher-original-path",
+          "contentType": "image/png",
+          "sha256": "119f7e3178a38383314231ae06cce485a7fc71d73a3cb752545c3a4c0121bca8",
+          "width": 1080,
+          "height": 2424,
+          "nativeSizeMatch": true
         }
       ],
       "status": "native-screenshot-candidate",
@@ -1886,6 +3749,51 @@
           "width": 1440,
           "height": 3200,
           "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Xiaomi/15_Pro/Screenshot_2024-12-27-13-38-15-787_com.miui.home.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "3a2aa70691b473cf8f35bc0eac590d2d858d282fa666854029dda6b46e82d067",
+          "width": 1440,
+          "height": 3200,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Xiaomi/15_Pro/Screenshot_2024-12-27-13-38-08-661_com.miui.home.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "070e31ea9b1021731187a6ba02c99508db374d84001acab29ef60fa55269968f",
+          "width": 1440,
+          "height": 3200,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Xiaomi/15_Pro/Screenshot_2024-12-27-13-38-31-150_com.miui.home.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "39a0518b8b9d5e69393c734b013a10e479014f04010c22cff11d935be8168a86",
+          "width": 1440,
+          "height": 3200,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Xiaomi/15_Pro/Screenshot_2024-12-27-13-09-30-675_com.chartcross.gpstest.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "5c20f5018e94a789bb780666ed40a6a9b90969fcd1dd79580278a81427d89549",
+          "width": 1440,
+          "height": 3200,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Xiaomi/15_Pro/Screenshot_2024-12-27-13-10-06-710_com.chartcross.gpstest.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "f1c28350f05a812ec84624f402b66ed5371651226a06af09b7463ebc2d4ddcaf",
+          "width": 1440,
+          "height": 3200,
+          "nativeSizeMatch": true
         }
       ],
       "status": "native-screenshot-candidate",
@@ -1912,6 +3820,51 @@
           "discovery": "publisher-original-path",
           "contentType": "image/jpeg",
           "sha256": "38e4e0d52ad241481511890361501833fe1e727bc3be1152261aed4d7b9ed8c2",
+          "width": 1440,
+          "height": 3200,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/_processed_/5/c/csm_Screenshot_2025-03-07-11-12-27-955_com.android.settings_d74e4059b8.jpg",
+          "discovery": "linked-scaled-image",
+          "contentType": "image/jpeg",
+          "sha256": "79aa289c6762566df8c90c531c8e7ae2e5f4a915f27dbe816b0f1c774444384e",
+          "width": 445,
+          "height": 1200,
+          "nativeSizeMatch": false
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/_processed_/c/5/csm_Screenshot_2025-03-07-11-09-40-979_com.android.settings_c77a179772.jpg",
+          "discovery": "linked-scaled-image",
+          "contentType": "image/jpeg",
+          "sha256": "dab1545c171218d4615a2da959a50a2225dd904a78523d69e5a390235f9e28aa",
+          "width": 500,
+          "height": 1200,
+          "nativeSizeMatch": false
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/_processed_/c/4/csm_Screenshot_2025-03-07-11-30-16-105_com.miui.mediaeditor_84c20f8b10.jpg",
+          "discovery": "linked-scaled-image",
+          "contentType": "image/jpeg",
+          "sha256": "c5b5b9c6adf60e72563b5b710fae8786e968494739dada53295b7e844c42360a",
+          "width": 326,
+          "height": 1200,
+          "nativeSizeMatch": false
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Xiaomi/15_Ultra/Screenshot_2025-03-07-11-10-08-824_com.miui.mediaeditor.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "c8d45a09a4c97f17f705252acc41df7867ac98b0c1d974cf0171101da00dce5c",
+          "width": 1440,
+          "height": 3200,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Xiaomi/15_Ultra/Screenshot_2025-02-28-10-50-12-979_com.chartcross.gpstest.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "7a824ad6fbd92af7f4828b077fde35eb57537047c32223b34ff080f860b4d0de",
           "width": 1440,
           "height": 3200,
           "nativeSizeMatch": true
@@ -1959,6 +3912,51 @@
           "width": 1220,
           "height": 2712,
           "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Xiaomi/Redmi_Note_14_Pro_Plus_5G/Screenshot_2025-02-14-11-39-48-710_com.miui.home.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "5f6d98ab09da98731b417ea5c5940a6a8a193d8c2e94b4b9cb4a0225aa30047e",
+          "width": 1220,
+          "height": 2712,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Xiaomi/Redmi_Note_14_Pro_Plus_5G/Screenshot_2025-02-14-11-39-31-074_com.android.htmlviewer.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "3283754e9559cb13429653217c4800aa05bcd65b8ab7ae58bd75e3bda0994b90",
+          "width": 1220,
+          "height": 2712,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Xiaomi/Redmi_Note_14_Pro_Plus_5G/Screenshot_2025-02-14-11-40-05-564_com.android.settings.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "19b42e4fdd53f43d3856a1056998f3184aef6d28a77f60b983c0d2f39d575782",
+          "width": 1220,
+          "height": 2712,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Xiaomi/Redmi_Note_14_Pro_Plus_5G/Screenshot_2025-02-17-11-08-03-851_com.chartcross.gpstest.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "9df9de4d650f256f783c8446dc08965e3d4ca3b2f51ce3670f39b88e31bc9f6d",
+          "width": 1220,
+          "height": 2712,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Xiaomi/Redmi_Note_14_Pro_Plus_5G/Screenshot_2025-02-17-11-07-33-822_com.chartcross.gpstest.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "94e4729af5dc67aadb6868a16eb1ed87535458ddfd70fac47b42fe5883a05643",
+          "width": 1220,
+          "height": 2712,
+          "nativeSizeMatch": true
         }
       ],
       "status": "native-screenshot-candidate",
@@ -1985,6 +3983,51 @@
           "discovery": "publisher-original-path",
           "contentType": "image/jpeg",
           "sha256": "93a81dee3ea0bcfc7ae7611d99c0a83d6018755a060fe20918bf44f0a0aef465",
+          "width": 1260,
+          "height": 2844,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Huawei/Pura_70_Ultra/Screenshot_20240710_101825_com.huawei.android.launcher.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "2ff5626eaebf2056d709a7e0e5de8c19bfe748512caf1890212f03e41a4b81ee",
+          "width": 1260,
+          "height": 2844,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Huawei/Pura_70_Ultra/Screenshot_20240710_101801_com.huawei.android.launcher.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "0acd5493635455284522a8df54a3ce1f0495ce9c13a3f800cfdc31c27ae21065",
+          "width": 1260,
+          "height": 2844,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Huawei/Pura_70_Ultra/Screenshot_20240710-095405.jpg",
+          "discovery": "linked-scaled-image",
+          "contentType": "image/jpeg",
+          "sha256": "c820ebac5ae883b7901f2bc018a71e39e1251c9c8b9ebd48cbe06d066ec8d1ed",
+          "width": 1824,
+          "height": 1026,
+          "nativeSizeMatch": false
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Huawei/Pura_70_Ultra/Screenshot_20240710_110631_com.chartcross.gpstest.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "7b753a2153c1b52012d81029d5d36e8fe13211cd182890a8f2af2aac51922a69",
+          "width": 1260,
+          "height": 2844,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Huawei/Pura_70_Ultra/Screenshot_20240710_110538_com.chartcross.gpstest.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "fefedbac1b0586de335fda14f16085f50623e651fd11ad44bc90a39bec094122",
           "width": 1260,
           "height": 2844,
           "nativeSizeMatch": true
@@ -2017,6 +4060,51 @@
           "width": 1212,
           "height": 2616,
           "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Huawei/Mate_50_Pro/Screenshot_20221116_100922_com.huawei.appmarket.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "869ee3405a483601bfd4f25fd01fb19731e7bba4dba6f64f2d822c06e9adcc26",
+          "width": 1212,
+          "height": 2616,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Huawei/Mate_50_Pro/Screenshot_20221118_122658_com.huawei.android.launcher.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "97302dd9afdf2fb1840276ec7272e8ece339355a973b161f32644b299907f4d0",
+          "width": 1212,
+          "height": 2616,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Huawei/Mate_50_Pro/Screenshot_20221118_122649_com.chartcross.gpstest.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "eb5bdccb940b72704e7410fa13ff5ad89d5b0f529d896ca495ccf4d1b7f90663",
+          "width": 1212,
+          "height": 2616,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Huawei/Mate_50_Pro/Screenshot_20221118_122812_com.android.chrome.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "a045221f0dc7df036fbb56f620955e249f2bd2a58c82c232495d6aff9367010b",
+          "width": 1212,
+          "height": 2616,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/_processed_/8/2/csm_Screenshot_20221118_122815_com.android.chrome_04f75177a4.jpg",
+          "discovery": "linked-scaled-image",
+          "contentType": "image/jpeg",
+          "sha256": "7b771b7bc3a743f5a7798b6f2e74aff14c9beecdaa8ba4eb22d1bf8dfc7b1c40",
+          "width": 1920,
+          "height": 890,
+          "nativeSizeMatch": false
         }
       ],
       "status": "native-screenshot-candidate",
@@ -2076,6 +4164,51 @@
           "width": 1312,
           "height": 2848,
           "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Honor/Magic5_Pro/Screenshot_20230406_130138.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "0181990ace29f6d80bae11f255b5c841c72fde80bc537970a238a90adabca7a2",
+          "width": 1312,
+          "height": 2848,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Honor/Magic5_Pro/Screenshot_20230406_130127.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "62994605e0a6ffa72cad4ce394d1551aa51f1e6e485ae23b511bd0b9bdaed3cc",
+          "width": 1312,
+          "height": 2848,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/_processed_/7/a/csm_Screenshot_20230406_130232_a4d70aac07.jpg",
+          "discovery": "linked-scaled-image",
+          "contentType": "image/jpeg",
+          "sha256": "2309874066726ea18c0b60da2d753986a320c8c5b91827dd151ccb750488fc26",
+          "width": 303,
+          "height": 1200,
+          "nativeSizeMatch": false
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Honor/Magic5_Pro/Screenshot_20230406_130200.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "b8b1537db8a9ac845dddc41f829235aab7aae501dc22adc2537e6b27cb5e7222",
+          "width": 1312,
+          "height": 2848,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Honor/Magic5_Pro/Screenshot_20230406_115944.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "9c892522db8e5c1efbbc0fb44f6ab7965462bcac35373a52c2eb74e3c6537354",
+          "width": 1312,
+          "height": 2848,
+          "nativeSizeMatch": true
         }
       ],
       "status": "native-screenshot-candidate",
@@ -2120,6 +4253,51 @@
           "width": 1224,
           "height": 2700,
           "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Honor/200_Pro/Screenshot_20240717_171636_com.hihonor.android.launcher25.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "b5318d5778270f21a03289f14d40dce83c404a8b55f9f4498594e32b394ae9f9",
+          "width": 1224,
+          "height": 2700,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Honor/200_Pro/Screenshot_20240717_171628_com.hihonor.android.launcher43.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "6ad3b27bdb9ef17b6710bf3d7a8c9821029bf20beeb104d1aaa9d20f1a28cc39",
+          "width": 1224,
+          "height": 2700,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Honor/200_Pro/Screenshot_20240717_171641_com.android.settings.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "65dc49f582de14516da5197f93d43452e7118b699065b635d3d034ab42efc7d5",
+          "width": 1224,
+          "height": 2700,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Honor/200_Pro/Screenshot_20240715_135453_com.chartcross.gpstest.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "9d02e6d803fffbadd7d85a55ab115ebb52817849a75306310df3be0e4939ad3c",
+          "width": 1224,
+          "height": 2700,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Honor/200_Pro/Screenshot_20240715_135526_com.chartcross.gpstest.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "4879abba0d21296564c1eb268681e9ca5bfe1bfa56ae14fd94fc939201a712be",
+          "width": 1224,
+          "height": 2700,
+          "nativeSizeMatch": true
         }
       ],
       "status": "native-screenshot-candidate",
@@ -2161,6 +4339,51 @@
           "discovery": "publisher-original-path",
           "contentType": "image/jpeg",
           "sha256": "4ea3f36b8d4acb9c09f1ac8577b92116d99447ef2beb3c007bd2f0010417d76b",
+          "width": 1440,
+          "height": 3168,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Oppo/Find_X6_Pro/Screenshot_2023_05_17_15_38_37_87_b783bf344239542886fee7b48fa4b892.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "2ebf6547706d2961441e51ef044c5502a5d2f2509a482e13597711ab4d5fe06d",
+          "width": 1440,
+          "height": 3168,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Oppo/Find_X6_Pro/Screenshot_2023_05_17_15_38_25_40_b783bf344239542886fee7b48fa4b892.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "475556ce8de6dbb6f688943ee652e5fd21d9a0b32822677b4b6990718af6843c",
+          "width": 1440,
+          "height": 3168,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Oppo/Find_X6_Pro/Screenshot_2023_05_17_15_38_55_59_d97e70df473fd2e37898d35a3e82c2a2.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "954e4c3af7538e3742c075f48cbd365813d4c7fcd33c3646feb84ecde48dd5a1",
+          "width": 1440,
+          "height": 3168,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Oppo/Find_X6_Pro/Screenshot_2023_05_17_18_34_34_24_5762105cc17c3d76bf84b00dbfc2b9a8.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "8211a2354a2e1b63653d294d0483f89c8424825c04d43c99417c1a3fa6537274",
+          "width": 1440,
+          "height": 3168,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/Oppo/Find_X6_Pro/Screenshot_2023_05_17_18_34_11_85_5762105cc17c3d76bf84b00dbfc2b9a8.jpg",
+          "discovery": "publisher-original-path",
+          "contentType": "image/jpeg",
+          "sha256": "4919f215bfc1107d1f88f76d1af113dfc95dc458ae1355f052679cd13a003d66",
           "width": 1440,
           "height": 3168,
           "nativeSizeMatch": true
@@ -2220,6 +4443,51 @@
           "discovery": "linked-scaled-image",
           "contentType": "image/jpeg",
           "sha256": "b010d27c465e964498a0ab1431125364b2f51c945b055628c1308feeed0aa3a5",
+          "width": 1440,
+          "height": 3216,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/OnePlus/11_5G/Screenshot_2023_04_30_22_34_21_85_b783bf344239542886fee7b48fa4b892.jpg",
+          "discovery": "linked-scaled-image",
+          "contentType": "image/jpeg",
+          "sha256": "f9a753cc96e9d0867cafd426767fb34b6b6368045c7de4e270b135dce6c3c4f0",
+          "width": 1440,
+          "height": 3216,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/OnePlus/11_5G/Screenshot_2023_04_30_22_34_31_51_fc704e6b13c4fb26bf5e411f75da84f2.jpg",
+          "discovery": "linked-scaled-image",
+          "contentType": "image/jpeg",
+          "sha256": "0ee052c75115a0419064bd8407e04619bdc97c10876b3d40de12a1c93821eba2",
+          "width": 1440,
+          "height": 3216,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/OnePlus/11_5G/Screenshot_2023_04_30_22_38_29_75_b783bf344239542886fee7b48fa4b892.jpg",
+          "discovery": "linked-scaled-image",
+          "contentType": "image/jpeg",
+          "sha256": "eba5d2fced6972f75ef9fba041a3de46a8e8cf450d2217d391c2835a9327e966",
+          "width": 1440,
+          "height": 3216,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/OnePlus/11_5G/Screenshot_2023_04_30_22_39_10_18_fc704e6b13c4fb26bf5e411f75da84f2.jpg",
+          "discovery": "linked-scaled-image",
+          "contentType": "image/jpeg",
+          "sha256": "4f866169167dd068172f82d94a5a396d283428af01b6790fe10abbdde6ddaad1",
+          "width": 1440,
+          "height": 3216,
+          "nativeSizeMatch": true
+        },
+        {
+          "url": "https://www.notebookcheck.net/fileadmin/Notebooks/OnePlus/11_5G/Screenshot_2023_04_30_22_39_36_65_fc704e6b13c4fb26bf5e411f75da84f2.jpg",
+          "discovery": "linked-scaled-image",
+          "contentType": "image/jpeg",
+          "sha256": "0ab1480f51eb7e1bcfa6112c88484817a57e40d60e6935678a42a9e878e49f7b",
           "width": 1440,
           "height": 3216,
           "nativeSizeMatch": true
