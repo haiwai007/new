@@ -1,3 +1,4 @@
+import { normalizeIconCanvas } from "./app-icon-normalize";
 import { importImageFile } from "../image/import";
 import { saveAsset } from "../storage/assets";
 export const MAX_APP_ICON_BYTES = 2 * 1024 * 1024;
@@ -30,13 +31,15 @@ export async function uploadAppIcon(file: File) {
         w,
         h,
       );
+      const normalized = normalizeIconCanvas(canvas);
       const blob = await new Promise<Blob>((resolve, reject) =>
-        canvas.toBlob(
+        (normalized ?? canvas).toBlob(
           (value) =>
             value ? resolve(value) : reject(new Error("图标转换失败")),
           "image/png",
         ),
       );
+      if (normalized) normalized.width = normalized.height = 0;
       return await saveAsset(blob, {
         name: image.name.replace(/\.[^.]+$/, "").slice(0, 40) || "APP 图标",
         width: APP_ICON_CANVAS_SIZE,

@@ -170,6 +170,8 @@ export async function confirmStatusLocation(
     fills: [],
     sourceKey: locationSourceKey(base, draft.bounds),
     testKey: "",
+    blendVersion: 2,
+    backgroundQuality: undefined,
     backgroundPatch: undefined,
     sourceFit: undefined,
   };
@@ -208,6 +210,9 @@ export async function confirmStatusLocation(
     if (canvas && location.background === "auto") {
       try {
         location.backgroundPatch = boundaryBackground(canvas, location.bounds);
+        location.backgroundQuality = location.backgroundPatch
+          ? "smooth"
+          : "complex";
       } catch {
         /* Fall back to sampled gradients without blocking confirmation. */
       }

@@ -113,6 +113,7 @@ export const locationTestKey = (l: StatusLocation) =>
     ...(l.layout ? [l.layout] : []),
     ...(l.backgroundPatch ? [l.backgroundPatch] : []),
     ...(l.sourceFit ? [l.sourceFit] : []),
+    ...(l.blendVersion ? [l.blendVersion, l.backgroundQuality] : []),
   ]);
 export function isLocationConfirmed(doc: TemplateDoc) {
   const l = doc.statusLocation;

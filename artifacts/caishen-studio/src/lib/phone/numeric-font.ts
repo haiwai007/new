@@ -49,10 +49,11 @@ export function numericSvg(
   height: number,
   width: number,
   color: string,
+  baseline = height * 0.78,
 ): string {
   const fitted = Math.min(
     size,
     width / Math.max(0.01, numericAdvance(fontId, text)),
   );
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${Math.max(1, Math.ceil(width))}" height="${Math.max(1, Math.ceil(height))}" viewBox="0 0 ${width} ${height}">${numericRun(fontId, text, fitted, height * 0.78, color)}</svg>`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${Math.max(1, Math.ceil(width))}" height="${Math.max(1, Math.ceil(height))}" viewBox="0 0 ${width} ${height}">${numericRun(fontId, text, fitted, baseline, color)}</svg>`;
 }

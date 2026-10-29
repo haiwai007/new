@@ -11,11 +11,13 @@ test("all offline APP icons decode and brand colours survive canvas PNG encoding
     sessionStorage.setItem("haishen.entry-confirmed.v1", "yes"),
   );
   await page.goto("/draw");
-  const icons = APP_ICONS.map((icon) => ({
-    id: icon.id,
-    name: icon.name,
-    url: builtinAppIconSource(icon.id).url,
-  }));
+  const icons = APP_ICONS.flatMap((icon) =>
+    [false, true].map((normalize) => ({
+      id: icon.id,
+      name: icon.name,
+      url: builtinAppIconSource(icon.id, normalize).url,
+    })),
+  );
   const samples = await page.evaluate(async (icons) => {
     const gallery = document.createElement("div");
     gallery.style.cssText =
@@ -59,7 +61,7 @@ test("all offline APP icons decode and brand colours survive canvas PNG encoding
     }
     return samples;
   }, icons);
-  expect(samples).toHaveLength(90);
+  expect(samples).toHaveLength(180);
   for (const sample of samples) {
     expect(sample.visible, sample.id).toBeGreaterThan(50);
     if (!["x", "notion", "github"].includes(sample.id))

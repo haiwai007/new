@@ -884,6 +884,7 @@ export default function BatchPage() {
                             {p.name}：{String(getParamValue(i.doc, p) ?? "")}
                           </p>
                         ))}
+                      {i.doc.phone && i.doc.statusLocation?.backgroundQuality === "complex" && <p role="status" className="text-[11px] text-amber-700">背景较复杂，可调整状态栏外框改善接缝；仍可预览和导出。</p>}
                       {i.doc.phone && (
                         <p
                           aria-label={`第 ${i.index + 1} 张状态栏`}

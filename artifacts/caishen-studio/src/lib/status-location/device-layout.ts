@@ -1,3 +1,4 @@
+import { adjustInkTone } from "./source-fit";
 import { numericAdvance, numericSvg } from "../phone/numeric-font";
 import type { TemplateDoc, Layer, ImageSource } from "../../types/template";
 import type { PhoneSettings } from "../phone/schema";
@@ -6,7 +7,7 @@ import { effectiveProfile } from "../phone/profiles";
 import { DEVICE_LAYOUTS } from "../phone/device-layouts";
 import { builtinAppIconSource } from "../phone/app-icon-catalog";
 import { createImageLayer, createTextLayer } from "../template/layers";
-import { locationRenderKey } from "./model";
+import { locationRenderKey, smallHash } from "./model";
 
 type Helpers = {
   time: (p: PhoneSettings) => string;
@@ -60,12 +61,19 @@ export function renderDeviceLocation(
           [0.2126, 0.7152, 0.0722][i],
       0,
     );
-  const colour =
+  const autoColour =
     raw.customColor || raw.fusion.locks.includes("color")
       ? helpers.color(raw)
-      : (lightness(top) + lightness(bottom)) / 2 > 140
-        ? "#111111"
-        : "#ffffff";
+      : ((location.background === "auto"
+          ? location.sourceFit?.inkColor
+          : undefined) ??
+        ((lightness(top) + lightness(bottom)) / 2 > 140
+          ? "#111111"
+          : "#ffffff"));
+  const colour =
+    raw.customColor || raw.fusion.locks.includes("color")
+      ? autoColour
+      : adjustInkTone(autoColour, raw.toneAdjustment);
   const phone = {
     ...raw,
     groupId: base.phone?.groupId ?? raw.groupId,
@@ -73,7 +81,7 @@ export function renderDeviceLocation(
     addedHeight: 0,
     timeWeight: profile.weight,
     batteryStyle: profile.batteryStyle,
-    theme: colour === "#ffffff" ? ("light" as const) : ("dark" as const),
+    theme: lightness(colour) > 140 ? ("light" as const) : ("dark" as const),
   };
   const layers: Layer[] = [];
   function add(role: string, layer: Layer) {
@@ -133,23 +141,22 @@ export function renderDeviceLocation(
   );
   const icons = helpers.icons({ ...phone, customColor: colour });
   const nativeWidth = Number(icons.match(/\bwidth="([\d.]+)"/)?.[1] ?? 100);
-  // Fit the source once against a fixed reference, not each model’s own font.
-  // Dividing by layout.clockSize would cancel the selected model’s typography.
-  const nativeFont = 13 * (frame.width / 360);
-  const fitScale = location.sourceFit
-    ? Math.max(
-        0.6,
-        Math.min(
-          1.5,
-          (location.sourceFit.glyphRatio * primaryHeight) / (nativeFont * 0.74),
-        ),
-      )
+  // Original visual scale leads; model size is a restrained proportional adjustment.
+  const measuredFont = location.sourceFit
+    ? (location.sourceFit.glyphRatio * primaryHeight) / 0.72
+    : undefined;
+  const modelAdjustment = Math.max(
+    0.94,
+    Math.min(1.06, Math.pow(layout.clockSize / 14, 0.2)),
+  );
+  const fitScale = measuredFont
+    ? (measuredFont * modelAdjustment) / (layout.clockSize * unit)
     : 1;
   const targetFont = Math.max(
     0.001,
     Math.min(
       ((layout.clockSize * unit * phone.scale) / 100) * fitScale,
-      primaryHeight / 1.6,
+      primaryHeight / (location.sourceFit ? 0.9 : 1.6),
     ),
   );
   const iconHeight = Math.max(
@@ -235,11 +242,38 @@ export function renderDeviceLocation(
     layout.clockAlign === "center" && !visibleApps.length
       ? frame.x + (frame.width - timeWidth) / 2
       : left;
-  const textHeight = Math.max(0.001, Math.min(primaryHeight, font * 1.4));
+  const textHeight = Math.max(
+    0.001,
+    Math.min(primaryHeight, font * (location.sourceFit ? 0.9 : 1.4)),
+  );
+  const textBaseline = location.sourceFit
+    ? Math.min(textHeight, font * 0.8)
+    : textHeight * 0.78;
   const clockCenter = centerFor(
     layout.clockCenterY ?? layout.centerY,
     textHeight,
   );
+  const sourceBaseline = location.sourceFit?.baselineRatio;
+  const modelNudge =
+    primaryHeight *
+    Math.max(
+      -0.03,
+      Math.min(0.03, (layout.clockCenterY ?? layout.centerY) - 0.5),
+    );
+  const timeY =
+    sourceBaseline !== undefined
+      ? frame.y +
+        primaryHeight * sourceBaseline -
+        textBaseline +
+        phone.offsetY * unit +
+        modelNudge
+      : location.sourceFit
+        ? frame.y +
+          primaryHeight * location.sourceFit.centerRatio -
+          (textBaseline - font * 0.36) +
+          phone.offsetY * unit +
+          modelNudge
+        : clockCenter - textHeight / 2;
   add(
     "time",
     createImageLayer(
@@ -247,10 +281,7 @@ export function renderDeviceLocation(
         x: timeX,
         y: Math.max(
           frame.y,
-          Math.min(
-            frame.y + primaryHeight - textHeight,
-            clockCenter - textHeight / 2,
-          ),
+          Math.min(frame.y + primaryHeight - textHeight, timeY),
         ),
         width: Math.max(0.001, timeWidth),
         height: textHeight,
@@ -264,8 +295,9 @@ export function renderDeviceLocation(
               textHeight,
               timeWidth,
               colour,
+              textBaseline,
             )
-          : `<svg xmlns="http://www.w3.org/2000/svg" width="${Math.max(1, Math.ceil(timeWidth))}" height="${Math.max(1, Math.ceil(textHeight))}" viewBox="0 0 ${timeWidth} ${textHeight}"><text x="0" y="${textHeight * 0.78}" font-family="Arial,sans-serif" font-size="${font}" font-weight="${layout.clockWeight ?? (profile.weight === "bold" ? 700 : 400)}" fill="${colour}">${escape(time)}</text></svg>`,
+          : `<svg xmlns="http://www.w3.org/2000/svg" width="${Math.max(1, Math.ceil(timeWidth))}" height="${Math.max(1, Math.ceil(textHeight))}" viewBox="0 0 ${timeWidth} ${textHeight}"><text x="0" y="${textBaseline}" font-family="Arial,sans-serif" font-size="${font}" font-weight="${layout.clockWeight ?? (profile.weight === "bold" ? 700 : 400)}" fill="${colour}">${escape(time)}</text></svg>`,
       ),
       { name: "时间", fit: "stretch", autoFocus: false },
     ),
@@ -291,7 +323,11 @@ export function renderDeviceLocation(
           width: appSize,
           height: appSize,
         },
-        app.kind === "builtin" ? builtinAppIconSource(app.builtinId) : app.src,
+        app.kind === "builtin"
+          ? builtinAppIconSource(app.builtinId, true)
+          : app.displaySrc && app.displayKey === smallHash(app.src)
+            ? { kind: "url", url: app.displaySrc }
+            : app.src,
         {
           name: `APP · ${app.name}`,
           fit: "contain",

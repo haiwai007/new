@@ -1,3 +1,4 @@
+import { adjustInkTone } from "@/lib/status-location/source-fit";
 import {
   clockFontForSettings,
   numericAdvance,
@@ -381,7 +382,26 @@ export default function PhoneSettingsEditor({
     draft,
     removePhoneLayers(doc).canvas,
   );
-  const iconColor = phoneColor(previewSettings);
+  const iconColor =
+    draft.rendering === "natural" &&
+    doc.statusLocation?.background === "auto" &&
+    doc.statusLocation?.sourceFit?.inkColor &&
+    !draft.customColor &&
+    !draft.fusion.locks.includes("color")
+      ? adjustInkTone(
+          doc.statusLocation.sourceFit.inkColor,
+          draft.toneAdjustment,
+        )
+      : phoneColor(previewSettings);
+  const previewBackground = doc.statusLocation
+    ? doc.statusLocation.background === "solid"
+      ? doc.statusLocation.color
+      : (doc.statusLocation.fills[0]?.top ?? draft.backgroundColor)
+    : draft.backgroundColor;
+  const previewBottom =
+    doc.statusLocation?.background === "auto"
+      ? (doc.statusLocation.fills[0]?.bottom ?? previewBackground)
+      : previewBackground;
   return (
     <div className="space-y-3 p-3">
       {!advancedOnly && (
@@ -529,13 +549,19 @@ export default function PhoneSettingsEditor({
           <div
             className="overflow-hidden rounded-lg border"
             style={{
-              backgroundColor: draft.transparent
-                ? undefined
-                : draft.backgroundColor,
-              backgroundImage: draft.transparent
-                ? "repeating-conic-gradient(#d4d4d4 0% 25%, #f4f4f4 0% 50%)"
-                : undefined,
-              backgroundSize: "12px 12px",
+              backgroundColor: doc.statusLocation
+                ? previewBackground
+                : draft.transparent
+                  ? undefined
+                  : draft.backgroundColor,
+              backgroundImage: doc.statusLocation
+                ? previewBottom !== previewBackground
+                  ? `linear-gradient(${previewBackground},${previewBottom})`
+                  : undefined
+                : draft.transparent
+                  ? "repeating-conic-gradient(#d4d4d4 0% 25%, #f4f4f4 0% 50%)"
+                  : undefined,
+              backgroundSize: doc.statusLocation ? "100% 100%" : "12px 12px",
               color: iconColor,
             }}
             data-testid="phone-panel-preview"
@@ -560,7 +586,7 @@ export default function PhoneSettingsEditor({
               <img
                 alt="状态图标预览"
                 className="h-4 max-w-[70%]"
-                src={`data:image/svg+xml;charset=utf-8,${encodeURIComponent(statusIconsSvg(previewSettings))}`}
+                src={`data:image/svg+xml;charset=utf-8,${encodeURIComponent(statusIconsSvg({ ...previewSettings, customColor: iconColor }))}`}
               />
             </div>
             {draft.showDate && (
@@ -661,64 +687,70 @@ export default function PhoneSettingsEditor({
       )}
       <details className="rounded-lg border">
         <summary className="cursor-pointer p-2 text-xs font-medium">
-          高级微调（颜色、位置与覆盖高度）
+          {doc.statusLocation
+            ? "融合微调（大小、位置与深浅）"
+            : "高级微调（颜色、位置与覆盖高度）"}
         </summary>
         <Section title="配色与位置" open>
-          <Segmented
-            label="图标颜色"
-            value={draft.customColor ? "custom" : draft.theme}
-            options={[
-              { value: "dark", label: "黑色" },
-              { value: "light", label: "白色" },
-              { value: "custom", label: "自定义" },
-            ]}
-            onChange={(v) =>
-              v === "custom"
-                ? set("customColor", draft.customColor ?? "#333333")
-                : update({ theme: v, customColor: null })
-            }
-          />
-          {draft.customColor && (
-            <label className="flex items-center justify-between text-xs">
-              <span className="text-muted-foreground">自定义图标颜色</span>
-              <input
-                aria-label="自定义图标颜色"
-                type="color"
-                className="h-7 w-12 cursor-pointer"
-                value={draft.customColor}
-                onChange={(e) => set("customColor", e.target.value)}
+          {!doc.statusLocation && (
+            <>
+              <Segmented
+                label="图标颜色"
+                value={draft.customColor ? "custom" : draft.theme}
+                options={[
+                  { value: "dark", label: "黑色" },
+                  { value: "light", label: "白色" },
+                  { value: "custom", label: "自定义" },
+                ]}
+                onChange={(v) =>
+                  v === "custom"
+                    ? set("customColor", draft.customColor ?? "#333333")
+                    : update({ theme: v, customColor: null })
+                }
               />
-            </label>
-          )}
-          <SwitchRow
-            label="透明背景"
-            hint="让原图透出来；需要盖住原图状态栏时请关闭"
-            checked={draft.transparent}
-            onChange={(v) => set("transparent", v)}
-          />
-          {!draft.transparent && (
-            <label className="flex items-center justify-between text-xs">
-              <span className="text-muted-foreground">背景颜色</span>
-              <span className="flex items-center gap-2">
-                <Input
-                  aria-label="背景颜色色值"
-                  className="h-7 w-20 px-1.5 font-mono text-[11px]"
-                  value={draft.backgroundColor}
-                  onChange={(e) => {
-                    const value = e.target.value.trim();
-                    if (/^#[0-9a-fA-F]{6}$/.test(value))
-                      set("backgroundColor", value);
-                  }}
-                />
-                <input
-                  aria-label="状态栏背景颜色"
-                  type="color"
-                  className="h-7 w-10 cursor-pointer"
-                  value={draft.backgroundColor}
-                  onChange={(e) => set("backgroundColor", e.target.value)}
-                />
-              </span>
-            </label>
+              {draft.customColor && (
+                <label className="flex items-center justify-between text-xs">
+                  <span className="text-muted-foreground">自定义图标颜色</span>
+                  <input
+                    aria-label="自定义图标颜色"
+                    type="color"
+                    className="h-7 w-12 cursor-pointer"
+                    value={draft.customColor}
+                    onChange={(e) => set("customColor", e.target.value)}
+                  />
+                </label>
+              )}
+              <SwitchRow
+                label="透明背景"
+                hint="让原图透出来；需要盖住原图状态栏时请关闭"
+                checked={draft.transparent}
+                onChange={(v) => set("transparent", v)}
+              />
+              {!draft.transparent && (
+                <label className="flex items-center justify-between text-xs">
+                  <span className="text-muted-foreground">背景颜色</span>
+                  <span className="flex items-center gap-2">
+                    <Input
+                      aria-label="背景颜色色值"
+                      className="h-7 w-20 px-1.5 font-mono text-[11px]"
+                      value={draft.backgroundColor}
+                      onChange={(e) => {
+                        const value = e.target.value.trim();
+                        if (/^#[0-9a-fA-F]{6}$/.test(value))
+                          set("backgroundColor", value);
+                      }}
+                    />
+                    <input
+                      aria-label="状态栏背景颜色"
+                      type="color"
+                      className="h-7 w-10 cursor-pointer"
+                      value={draft.backgroundColor}
+                      onChange={(e) => set("backgroundColor", e.target.value)}
+                    />
+                  </span>
+                </label>
+              )}
+            </>
           )}
           {!doc.statusLocation && (
             <label className="block space-y-1 text-xs">
@@ -743,6 +775,71 @@ export default function PhoneSettingsEditor({
             <p className="text-xs text-muted-foreground">
               替换位置和清理范围由模板定位决定，调整请打开“状态栏定位”。
             </p>
+          )}
+          {doc.statusLocation && (
+            <>
+              {doc.statusLocation.backgroundQuality === "complex" && (
+                <p role="status" className="text-xs text-amber-700">
+                  背景较复杂，本地修补可能存在接缝，可调整状态栏外框改善效果。
+                </p>
+              )}
+              <SliderRow
+                label="整体大小"
+                unit="%"
+                min={70}
+                max={150}
+                value={draft.scale}
+                onChange={(v) => set("scale", v)}
+              />
+              <SliderRow
+                label="上下位置"
+                min={-30}
+                max={30}
+                value={draft.offsetY}
+                onChange={(v) => set("offsetY", v)}
+              />
+              <SliderRow
+                label="深浅"
+                unit="%"
+                min={-20}
+                max={20}
+                value={draft.toneAdjustment}
+                onChange={(v) =>
+                  update({
+                    toneAdjustment: v,
+                    customColor: null,
+                    fusion: {
+                      ...draft.fusion,
+                      locks: draft.fusion.locks.filter(
+                        (lock) => lock !== "color",
+                      ),
+                    },
+                  })
+                }
+              />
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={() =>
+                  update({
+                    scale: 100,
+                    offsetY: 0,
+                    insetX: 0,
+                    toneAdjustment: 0,
+                    customColor: null,
+                    fusion: {
+                      ...draft.fusion,
+                      locks: draft.fusion.locks.filter(
+                        (lock) => lock !== "geometry" && lock !== "color",
+                      ),
+                    },
+                  })
+                }
+              >
+                恢复自动
+              </Button>
+            </>
           )}
           {!doc.statusLocation && (
             <>

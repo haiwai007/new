@@ -1,3 +1,4 @@
+import { normalizeCustomAppIcons } from "./app-icon-normalize";
 import {
   isLocationConfirmed,
   deviceLocationDoc,
@@ -182,6 +183,7 @@ export async function fitPhoneToImage(
 ): Promise<TemplateDoc> {
   if (!settings.fusion.enabled || settings.rendering !== "natural")
     return applyPhoneLayers(doc, settings);
+  settings = await normalizeCustomAppIcons(settings);
   if (settings.placement === "overlay") {
     if (!isLocationConfirmed(removePhoneLayers(doc)))
       throw new Error(
@@ -191,9 +193,12 @@ export async function fitPhoneToImage(
       location = base.statusLocation!;
     if (
       location.layout !== "manual" &&
-      (location.layout !== "device" ||
+      (location.blendVersion !== 2 ||
+        location.layout !== "device" ||
         location.sourceKey !== locationSourceKey(base, location.bounds) ||
-        (location.background === "auto" && !location.backgroundPatch))
+        (location.background === "auto" &&
+          !location.backgroundPatch &&
+          location.backgroundQuality !== "complex"))
     ) {
       const key = smallHash([
         locationSourceKey(base, location.bounds),
@@ -213,7 +218,11 @@ export async function fitPhoneToImage(
           );
         pending.then(
           (l) => {
-            if (l.background === "auto" && !l.backgroundPatch)
+            if (
+              l.background === "auto" &&
+              !l.backgroundPatch &&
+              l.backgroundQuality !== "complex"
+            )
               locatedAnalysisCache.delete(key);
           },
           () => locatedAnalysisCache.delete(key),

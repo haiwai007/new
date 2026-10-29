@@ -806,8 +806,8 @@ test("old manual templates with source fitting render different model layouts an
   const packaged = JSON.parse(await readFile(file, "utf8"));
   packaged.doc.statusLocation.layout = "manual";
   packaged.doc.statusLocation.sourceFit = {
-    glyphRatio: 0.35,
-    centerRatio: 0.5,
+    glyphRatio: packaged.doc.statusLocation.sourceFit?.glyphRatio ?? 0.5,
+    centerRatio: packaged.doc.statusLocation.sourceFit?.centerRatio ?? 0.5,
   };
   packaged.doc.statusLocation.testKey = locationTestKey(
     packaged.doc.statusLocation,
@@ -853,6 +853,46 @@ test("old manual templates with source fitting render different model layouts an
     const pngPath = info.outputPath(model + ".png");
     await (await png).saveAs(pngPath);
     await expect(page.getByRole("dialog")).toHaveCount(0);
+    if (model === "iphone16") {
+      const time = doc.layers.find((l: any) => l.id.endsWith("_time"));
+      const inkHeight = await page.evaluate(
+        async ({ png, time }) => {
+          const image = new Image();
+          image.src = "data:image/png;base64," + png;
+          await image.decode();
+          const c = document.createElement("canvas");
+          c.width = image.width;
+          c.height = image.height;
+          const ctx = c.getContext("2d")!;
+          ctx.drawImage(image, 0, 0);
+          const left = Math.max(0, Math.floor(time.x) - 1),
+            top = Math.max(0, Math.floor(time.y) - 1),
+            w = Math.ceil(time.width) + 2,
+            h = Math.ceil(time.height) + 2;
+          const data = ctx.getImageData(left, top, w, h).data;
+          let min = h,
+            max = -1;
+          for (let y = 0; y < h; y++)
+            for (let x = 0; x < w; x++) {
+              const i = (y * w + x) * 4;
+              if (data[i] < 160 && data[i + 1] < 160 && data[i + 2] < 160) {
+                min = Math.min(min, y);
+                max = Math.max(max, y);
+              }
+            }
+          return max - min + 1;
+        },
+        { png: (await readFile(pngPath)).toString("base64"), time },
+      );
+      expect(
+        Math.abs(
+          inkHeight -
+            doc.statusLocation.sourceFit.glyphRatio *
+              doc.statusLocation.bounds.height *
+              doc.canvas.height,
+        ),
+      ).toBeLessThanOrEqual(2);
+    }
     pngHashes.push(
       createHash("sha256")
         .update(await readFile(pngPath))
@@ -864,8 +904,26 @@ test("old manual templates with source fitting render different model layouts an
       icons: doc.layers.find((l: any) => l.id.endsWith("_icons")),
     });
   }
+  await page.getByText("融合微调（大小、位置与深浅）", { exact: true }).click();
+  const size = page.getByRole("slider", { name: "整体大小", exact: true }),
+    position = page.getByRole("slider", { name: "上下位置", exact: true }),
+    tone = page.getByRole("slider", { name: "深浅", exact: true });
+  await size.focus();
+  await page.keyboard.press("End");
+  await expect(size).toHaveAttribute("aria-valuenow", "150");
+  await position.focus();
+  await page.keyboard.press("Home");
+  await expect(position).toHaveAttribute("aria-valuenow", "-30");
+  await tone.focus();
+  await page.keyboard.press("ArrowRight");
+  await expect(tone).toHaveAttribute("aria-valuenow", "1");
+  await page.getByRole("button", { name: "恢复自动", exact: true }).click();
+  await expect(size).toHaveAttribute("aria-valuenow", "100");
+  await expect(position).toHaveAttribute("aria-valuenow", "0");
+  await expect(tone).toHaveAttribute("aria-valuenow", "0");
+  expect(layouts[0].time.height).toBeGreaterThan(10);
   expect(new Set(pngHashes).size).toBe(4);
-  expect(layouts[0].time.height / layouts[1].time.height).toBeGreaterThan(1.12);
+  expect(layouts[0].time.height / layouts[1].time.height).toBeGreaterThan(1.01);
   expect(
     new Set(
       layouts.map((l) =>

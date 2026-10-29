@@ -163,7 +163,7 @@ it("keeps model typography distinct when automatically matching the same source 
     settingsForModel(naturalPhoneSettings(), "pixel9"),
   );
   const time = (d: typeof a) => d.layers.find((l) => l.id.endsWith("_time"))!;
-  expect(time(a).height / time(b).height).toBeGreaterThan(1.12);
+  expect(time(a).height / time(b).height).toBeGreaterThan(1.01);
   expect(a.layers.find((l) => l.id.endsWith("_icons"))).not.toEqual(
     b.layers.find((l) => l.id.endsWith("_icons")),
   );
@@ -198,4 +198,53 @@ it("switches to the new model's default OS instead of leaking the previous model
   expect(s24.styleId).toBe("auto");
   expect(DEVICE_LAYOUTS[s24.modelId].defaultStyle).toBe("oneui61");
   expect(settingsForModel(s25, "galaxys25").styleId).toBe("oneui7");
+});
+it("matches measured ink, a restrained font scale and the original baseline while allowing manual tone", () => {
+  const doc = fixture();
+  doc.statusLocation!.sourceFit = {
+    version: 2,
+    glyphRatio: 0.3,
+    centerRatio: 0.5,
+    baselineRatio: 0.65,
+    inkColor: "#414141",
+  };
+  doc.statusLocation!.testKey = locationTestKey(doc.statusLocation!);
+  const settings = settingsForModel(naturalPhoneSettings(), "iphone16");
+  const result = applyPhoneLayers(doc, settings);
+  const time = result.layers.find((l) => l.id.endsWith("_time"))!;
+  if (time.type !== "image" || time.src?.kind !== "url") throw Error("time");
+  expect(decodeURIComponent(time.src.url)).toContain("#414141");
+  const other = applyPhoneLayers(
+    doc,
+    settingsForModel(naturalPhoneSettings(), "pixel9"),
+  );
+  const ratio =
+    time.height / other.layers.find((l) => l.id.endsWith("_time"))!.height;
+  expect(ratio).toBeGreaterThan(1);
+  expect(ratio).toBeLessThan(1.12);
+  const brighter = applyPhoneLayers(doc, { ...settings, toneAdjustment: 10 });
+  const icon = brighter.layers.find((l) => l.id.endsWith("_icons"))!;
+  if (icon.type !== "image" || icon.src?.kind !== "url") throw Error("icons");
+  expect(decodeURIComponent(icon.src.url)).toContain("#5b5b5b");
+  const narrow = structuredClone(doc);
+  narrow.statusLocation!.bounds.height = 17 / 800;
+  narrow.statusLocation!.sourceFit = {
+    version: 2,
+    glyphRatio: 0.6,
+    centerRatio: 0.5,
+    baselineRatio: 0.8,
+    inkColor: "#414141",
+  };
+  narrow.statusLocation!.testKey = locationTestKey(narrow.statusLocation!);
+  const compact = applyPhoneLayers(narrow, settings).layers.find((l) =>
+    l.id.endsWith("_time"),
+  )!;
+  if (compact.type !== "image" || compact.src?.kind !== "url")
+    throw Error("time");
+  const fontSize = Number(
+    decodeURIComponent(compact.src.url).match(/font-size="([\d.]+)"/)?.[1],
+  );
+  expect(Math.abs(fontSize * 0.72 - 10.2)).toBeLessThan(0.8);
+  expect(naturalPhoneSettings().toneAdjustment).toBe(0);
+  expect(Math.abs(time.y + (time.height / 0.9) * 0.8 - 35.4)).toBeLessThan(1.2);
 });

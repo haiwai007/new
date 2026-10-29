@@ -1,3 +1,4 @@
+import { APP_ICON_INK } from "./app-icon-ink";
 import { ADDITIONAL_APP_ICONS } from "./app-icon-additions";
 // Geometry from Simple Icons (CC0), Ant Design (MIT), and Font Awesome Free QQ (CC BY 4.0), distributed by react-icons.
 // Attribution: public/attributions/statusbar-app-icons.txt. No external icon CDN is used.
@@ -591,7 +592,10 @@ export type BuiltinAppIconId = (typeof APP_ICONS)[number]["id"];
 export const APP_ICON_IDS = APP_ICONS.map((icon) => icon.id);
 export const MAX_APP_ICONS = 8;
 /** Self-contained brand-colour SVG shared by the picker, canvas and exports. */
-export function builtinAppIconSource(id: BuiltinAppIconId): {
+export function builtinAppIconSource(
+  id: BuiltinAppIconId,
+  normalize = false,
+): {
   kind: "url";
   url: string;
 } {
@@ -658,7 +662,12 @@ export function builtinAppIconSource(id: BuiltinAppIconId): {
       paths("none") +
       "</g>";
   }
-  const viewBox = id === "figma" ? "0 0 24 36" : icon.viewBox;
+  const viewBox =
+    normalize && APP_ICON_INK[id]
+      ? APP_ICON_INK[id].join(" ")
+      : id === "figma"
+        ? "0 0 24 36"
+        : icon.viewBox;
   const svg =
     '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="' +
     viewBox +

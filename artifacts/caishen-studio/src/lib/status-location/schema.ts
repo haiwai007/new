@@ -28,10 +28,15 @@ export const statusLocationSchema = z.object({
   layout: z.enum(["device", "manual"]).optional(),
   sourceFit: z
     .object({
+      version: z.literal(2).optional(),
+      inkColor: hex.optional(),
+      baselineRatio: z.number().min(0).max(1).optional(),
       glyphRatio: z.number().min(0.18).max(0.85),
       centerRatio: z.number().min(0).max(1),
     })
     .optional(),
+  blendVersion: z.literal(2).optional(),
+  backgroundQuality: z.enum(["smooth", "complex"]).optional(),
   backgroundPatch: z
     .string()
     .max(4_000_000)

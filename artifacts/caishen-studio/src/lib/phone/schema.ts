@@ -39,7 +39,17 @@ export const phoneAppIconSchema = z.discriminatedUnion("kind", [
     kind: z.literal("builtin"),
     builtinId: z.enum(APP_ICON_IDS),
   }),
-  z.object({ ...appBase, kind: z.literal("custom"), src: appSource }),
+  z.object({
+    ...appBase,
+    kind: z.literal("custom"),
+    src: appSource,
+    displaySrc: z
+      .string()
+      .max(300_000)
+      .regex(/^data:image\/png;base64,[A-Za-z0-9+/=]+$/)
+      .optional(),
+    displayKey: z.string().max(120).optional(),
+  }),
 ]);
 export type PhoneAppIcon = z.infer<typeof phoneAppIconSchema>;
 export const phoneSettingsSchema = z.object({
@@ -82,6 +92,7 @@ export const phoneSettingsSchema = z.object({
   /** Overrides the dark/light icon colour when set. */
   customColor: z.string().regex(HEX).nullable().default(null),
   /** Text and icon size relative to the model's native size (percent). */
+  toneAdjustment: z.number().int().min(-20).max(20).default(0),
   scale: z.number().int().min(70).max(150).default(100),
   /** Vertical nudge in device points. */
   offsetY: z.number().int().min(-30).max(30).default(0),

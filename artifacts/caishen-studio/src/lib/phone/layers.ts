@@ -81,6 +81,7 @@ export function defaultPhoneSettings(): PhoneSettings {
     showHomeIndicator: true,
     customColor: null,
     coverRatio: 0,
+    toneAdjustment: 0,
     scale: 100,
     offsetY: 0,
     insetX: 0,
