@@ -1,12 +1,11 @@
 {
   "name": "workspace",
   "version": "0.0.0",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "scripts": {
     "preinstall": "sh -c 'case \"$npm_config_user_agent\" in pnpm/*) ;; *) echo \"Use pnpm instead\" >&2; exit 1 ;; esac'",
-    "build": "pnpm run typecheck && pnpm -r --if-present run build",
-    "typecheck:libs": "tsc --build",
-    "typecheck": "pnpm run typecheck:libs && pnpm -r --filter \"./artifacts/**\" --filter \"./scripts\" --if-present run typecheck",
+    "build": "pnpm typecheck && pnpm build:studio",
+    "typecheck": "pnpm --filter @workspace/caishen-studio typecheck && pnpm exec tsc -p artifacts/caishen-studio/convex/tsconfig.json --noEmit",
     "dev": "pnpm --filter @workspace/caishen-studio dev",
     "build:studio": "pnpm --filter @workspace/caishen-studio build",
     "test:studio": "pnpm --filter @workspace/caishen-studio test",
@@ -15,9 +14,6 @@
     "cms:password": "node scripts/create-admin-password.mjs"
   },
   "private": true,
-  "dependencies": {
-    "@replit/connectors-sdk": "^0.4.3"
-  },
   "devDependencies": {
     "prettier": "^3.9.10",
     "typescript": "~5.9.3",

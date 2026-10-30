@@ -17,7 +17,6 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: node scripts/prepare-ocr.mjs
       - run: pnpm typecheck
-      - run: pnpm exec tsc -p artifacts/caishen-studio/convex/tsconfig.json --noEmit
       - run: pnpm --filter @workspace/caishen-studio test
       - run: pnpm --filter @workspace/caishen-studio exec playwright install --with-deps chromium
       - run: pnpm --filter @workspace/caishen-studio build

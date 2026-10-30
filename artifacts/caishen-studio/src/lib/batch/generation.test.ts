@@ -1,9 +1,14 @@
+// jsdom Blob omits arrayBuffer/text; use native binary APIs for mocked PNG and ZIP bytes.
+import { Blob as NativeBlob } from "node:buffer";
 import { unzipSync } from "fflate";
-import { describe, expect, it, vi } from "vitest";
+import { afterAll, describe, expect, it, vi } from "vitest";
+
+vi.stubGlobal("Blob", NativeBlob);
+afterAll(() => vi.unstubAllGlobals());
 
 vi.mock("@/lib/canvas/render.ts", () => ({
   renderDoc: vi.fn(async () => ({
-    canvas: document.createElement("canvas"),
+    canvas: { width: 1, height: 1 },
     warnings: [],
   })),
   canvasToBlob: vi.fn(
