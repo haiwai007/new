@@ -2,7 +2,7 @@
 
 当前 100 个型号、30 种系统参考样式、268 个型号／版本记录。27 个版本部分核对，完整真机核准为 0。同型号的其他版本不继承核对结果。
 
-详见[来源和复现](phone-calibration/README.md)与[全部版本缺口](phone-calibration/COVERAGE.zh-CN.md)。不能使用旧系统、海外 ROM 或锁屏截图冒充其他系统、国行 ROM 与普通界面的证据。
+详见[来源和复现](../phone-calibration/README.md)与[全部版本缺口](../phone-calibration/COVERAGE.zh-CN.md)。不能使用旧系统、海外 ROM 或锁屏截图冒充其他系统、国行 ROM 与普通界面的证据。
 
 | 型号 | 参考截图尺寸 | 独立版本记录 | 核对状态 |
 |---|---|---|---|
