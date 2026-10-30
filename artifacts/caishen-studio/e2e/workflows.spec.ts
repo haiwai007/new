@@ -969,9 +969,9 @@ test("expanded APP library supports search, selection limits, saving and PNG exp
     name: "内置 APP 图标",
     exact: true,
   });
-  await expect(choices.getByRole("button")).toHaveCount(90);
+  await expect(choices.getByRole("button")).toHaveCount(140);
   await page.getByRole("button", { name: "国内APP图标", exact: true }).click();
-  await expect(choices.getByRole("button")).toHaveCount(48);
+  await expect(choices.getByRole("button")).toHaveCount(98);
   await expect(
     page.getByRole("button", { name: "添加豆包图标", exact: true }),
   ).toBeVisible();
@@ -983,9 +983,9 @@ test("expanded APP library supports search, selection limits, saving and PNG exp
   await page.getByRole("button", { name: "全部APP图标", exact: true }).click();
   for (const name of [
     "小红书",
-    "豆包",
-    "DeepSeek",
-    "通义千问",
+    "58同城",
+    "唯品会",
+    "京东",
     "铁路 12306",
     "百度",
     "钉钉",
@@ -1019,7 +1019,10 @@ test("expanded APP library supports search, selection limits, saving and PNG exp
     page.getByRole("switch", { name: "显示WhatsApp图标", exact: true }),
   ).toBeChecked();
   await expect(
-    page.getByRole("switch", { name: "显示豆包图标", exact: true }),
+    page.getByRole("switch", { name: "显示58同城图标", exact: true }),
+  ).toBeChecked();
+  await expect(
+    page.getByRole("switch", { name: "显示唯品会图标", exact: true }),
   ).toBeChecked();
   await exportPNG(page, info.outputPath("expanded-app-icons.png"));
 });
@@ -1041,12 +1044,14 @@ test("batch chooses specified models evenly, samples checked APPs and preserves 
     .selectOption("balanced");
   await page.getByRole("button", { name: "APP 图标随机", exact: true }).click();
   await page.getByRole("button", { name: "国内APP图标", exact: true }).click();
-  await page.getByLabel("候选 APP 豆包", { exact: true }).check();
-  await page.getByLabel("候选 APP DeepSeek", { exact: true }).check();
+  await page.getByLabel("候选 APP 58同城", { exact: true }).check();
+  await page.getByLabel("候选 APP 唯品会", { exact: true }).check();
   await page.getByRole("button", { name: "国外APP图标", exact: true }).click();
   await page.getByLabel("候选 APP WhatsApp", { exact: true }).check();
   await page.getByRole("button", { name: "全部APP图标", exact: true }).click();
-  await expect(page.getByLabel("候选 APP 豆包", { exact: true })).toBeChecked();
+  await expect(
+    page.getByLabel("候选 APP 58同城", { exact: true }),
+  ).toBeChecked();
   await page.getByLabel("随机 APP 最少数量", { exact: true }).fill("1");
   await page.getByLabel("随机 APP 最多数量", { exact: true }).fill("2");
   await expect(
@@ -1057,7 +1062,7 @@ test("batch chooses specified models evenly, samples checked APPs and preserves 
   const before = await summaries.allTextContents();
   expect(before.filter((s) => s.includes("iPhone 16"))).toHaveLength(2);
   expect(before.filter((s) => s.includes("Pixel 9"))).toHaveLength(2);
-  expect(before.every((s) => /APP：(豆包|DeepSeek|WhatsApp)/.test(s))).toBe(
+  expect(before.every((s) => /APP：(58同城|唯品会|WhatsApp)/.test(s))).toBe(
     true,
   );
   const model = before[0].split(" · ")[0];

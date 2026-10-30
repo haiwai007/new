@@ -61,10 +61,10 @@ test("all offline APP icons decode and brand colours survive canvas PNG encoding
     }
     return samples;
   }, icons);
-  expect(samples).toHaveLength(180);
+  expect(samples).toHaveLength(280);
   for (const sample of samples) {
     expect(sample.visible, sample.id).toBeGreaterThan(50);
-    if (!["x", "notion", "github"].includes(sample.id))
+    if (!["x", "notion", "github", "sfexpress"].includes(sample.id))
       expect(sample.coloured, sample.id).toBeGreaterThan(50);
   }
   await page.screenshot({

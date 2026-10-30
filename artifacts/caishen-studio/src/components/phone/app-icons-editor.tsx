@@ -194,7 +194,7 @@ export default function AppIconsEditor({
         />
         <Input
           aria-label="搜索 APP 图标"
-          placeholder="搜索 APP，如小红书、QQ、WhatsApp"
+          placeholder="搜索 APP，如58同城、唯品会、微信"
           value={query}
           onChange={(event) => setQuery(event.target.value)}
         />

@@ -383,7 +383,7 @@ export function AppOptions({
               />
               <Input
                 aria-label="搜索随机 APP 图标"
-                placeholder="搜索微信、QQ、自定义图标"
+                placeholder="搜索58同城、唯品会、微信或自定义图标"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
               />

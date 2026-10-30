@@ -72,3 +72,13 @@ and Baichuan. Complete MIT notice: lobe-app-icons-MIT.txt.
 Source: https://github.com/lobehub/lobe-icons
 Pinned revision, individual source URLs and SHA-256: docs/app-icons/sources.json.
 SVG colour layers and gradients are bundled; display and export require no CDN.
+
+Popular Chinese app publisher artwork (50, added 2026-10-30):
+Colour application artwork is sourced from the respective publishers' public
+China App Store listings. Copyright and trademark rights remain with their
+respective publishers; this artwork is not covered by Simple Icons CC0 or
+Lobe Icons MIT. App names/icons identify the applications without implying
+an affiliation or endorsement. Exact app IDs, bundle IDs, publisher names,
+listing/artwork URLs and SHA-256 hashes: docs/app-icons/popular-cn-sources.json.
+Artwork is embedded in self-contained SVG data URLs; users' browsers do not
+request the App Store or a third-party icon CDN to display or export it.

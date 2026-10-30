@@ -124,7 +124,7 @@ it("merges a pending upload with the latest icon settings instead of reverting c
   expect(mocks.remove).not.toHaveBeenCalled();
 });
 
-it("offers 90 built-ins and searches Chinese names or case-insensitive English IDs", () => {
+it("offers 140 built-ins and searches Chinese names or case-insensitive English IDs", () => {
   const onChange = vi.fn();
   render(
     <AppIconsEditor
@@ -134,7 +134,7 @@ it("offers 90 built-ins and searches Chinese names or case-insensitive English I
     />,
   );
   const choices = screen.getByRole("group", { name: "内置 APP 图标" });
-  expect(choices.querySelectorAll("button")).toHaveLength(90);
+  expect(choices.querySelectorAll("button")).toHaveLength(140);
   fireEvent.change(screen.getByLabelText("搜索 APP 图标"), {
     target: { value: "小红书" },
   });
@@ -209,4 +209,37 @@ it("filters domestic and international icons without changing the selection, and
     screen.getByRole("button", { name: "添加WhatsApp图标" }),
   ).toBeInTheDocument();
   expect(onChange).toHaveBeenCalledOnce();
+});
+
+it("finds and selects 58同城 and 唯品会 in the domestic catalogue", () => {
+  const onChange = vi.fn();
+  render(
+    <AppIconsEditor
+      settings={defaultPhoneSettings()}
+      onChange={onChange}
+      scopeKey="popular-cn"
+    />,
+  );
+  fireEvent.click(screen.getByRole("button", { name: "国内APP图标" }));
+  fireEvent.change(screen.getByLabelText("搜索 APP 图标"), {
+    target: { value: "58" },
+  });
+  fireEvent.click(screen.getByRole("button", { name: "添加58同城图标" }));
+  expect(onChange.mock.calls[0][0].appIcons[0].builtinId).toBe("tongcheng58");
+  fireEvent.change(screen.getByLabelText("搜索 APP 图标"), {
+    target: { value: "唯品会" },
+  });
+  fireEvent.click(screen.getByRole("button", { name: "添加唯品会图标" }));
+  expect(onChange.mock.calls[1][0].appIcons[0].builtinId).toBe("vipshop");
+  fireEvent.click(screen.getByRole("button", { name: "国外APP图标" }));
+  expect(
+    screen.queryByRole("button", { name: "添加唯品会图标" }),
+  ).not.toBeInTheDocument();
+  fireEvent.click(screen.getByRole("button", { name: "全部APP图标" }));
+  fireEvent.change(screen.getByLabelText("搜索 APP 图标"), {
+    target: { value: "vipshop" },
+  });
+  expect(
+    screen.getByRole("button", { name: "添加唯品会图标" }),
+  ).toBeInTheDocument();
 });

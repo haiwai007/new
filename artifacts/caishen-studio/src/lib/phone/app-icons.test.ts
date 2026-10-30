@@ -1,3 +1,6 @@
+import { readFileSync } from "node:fs";
+import { createHash } from "node:crypto";
+import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
   APP_ICONS,
@@ -202,7 +205,7 @@ it("can randomize a legacy IndexedDB work before its missing APP defaults have b
 it("keeps existing IDs and persists the expanded colour library in portable templates", async () => {
   const { buildPackage, parseTemplateFile } =
     await import("../template/package");
-  expect(APP_ICONS).toHaveLength(90);
+  expect(APP_ICONS).toHaveLength(140);
   expect(APP_ICONS.slice(0, 8).map((icon) => icon.id)).toEqual([
     "kuaishou",
     "douyin",
@@ -213,10 +216,10 @@ it("keeps existing IDs and persists the expanded colour library in portable temp
     "alipay",
     "telegram",
   ]);
-  expect(new Set(APP_ICONS.map((icon) => icon.id)).size).toBe(90);
-  expect(new Set(APP_ICONS.map((icon) => icon.name)).size).toBe(90);
+  expect(new Set(APP_ICONS.map((icon) => icon.id)).size).toBe(140);
+  expect(new Set(APP_ICONS.map((icon) => icon.name)).size).toBe(140);
   const added = APP_ICONS.slice(8);
-  expect(added).toHaveLength(82);
+  expect(added).toHaveLength(132);
   for (let index = 0; index < added.length; index += MAX_APP_ICONS) {
     const icons = added.slice(index, index + MAX_APP_ICONS).map((icon, i) => ({
       id: `app_${i.toString(36).padStart(10, "a")}`,
@@ -240,7 +243,7 @@ it("keeps existing IDs and persists the expanded colour library in portable temp
 });
 
 it("classifies every builtin once and keeps custom uploads separate", () => {
-  expect(APP_ICONS.filter((i) => i.region === "domestic")).toHaveLength(48);
+  expect(APP_ICONS.filter((i) => i.region === "domestic")).toHaveLength(98);
   expect(APP_ICONS.filter((i) => i.region === "international")).toHaveLength(
     42,
   );
@@ -249,4 +252,37 @@ it("classifies every builtin once and keeps custom uploads separate", () => {
   expect(matchesAppIconRegion("domestic", undefined)).toBe(false);
   expect(matchesAppIconRegion("custom", undefined)).toBe(true);
   expect(matchesAppIconRegion("custom", "wechat")).toBe(false);
+});
+
+it("bundles all 50 identified publisher icons with matching provenance and the requested 58/Vipshop identities", () => {
+  const manifest = JSON.parse(
+    readFileSync(
+      resolve(process.cwd(), "../../docs/app-icons/popular-cn-sources.json"),
+      "utf8",
+    ),
+  );
+  expect(manifest.rows).toHaveLength(50);
+  expect(
+    new Set(manifest.rows.map((r: { sha256: string }) => r.sha256)).size,
+  ).toBe(50);
+  expect(manifest.rows.find((r: any) => r.id === "tongcheng58")).toMatchObject({
+    trackId: 480079300,
+    bundleId: "com.taofang.iphone",
+  });
+  expect(manifest.rows.find((r: any) => r.id === "vipshop")).toMatchObject({
+    trackId: 417200582,
+    bundleId: "com.vipshop.iphone",
+  });
+  for (const row of manifest.rows) {
+    const icon = APP_ICONS.find((i) => i.id === row.id)!;
+    expect(icon.region).toBe("domestic");
+    if (!("imageData" in icon)) throw Error(row.id);
+    const bytes = Buffer.from(icon.imageData.split(",")[1], "base64");
+    expect(createHash("sha256").update(bytes).digest("hex")).toBe(row.sha256);
+    expect(row.sellerName.length).toBeGreaterThan(2);
+    expect(row.storeUrl).toMatch(/^https:\/\/apps.apple.com\/cn\//);
+    expect(
+      decodeURIComponent(builtinAppIconSource(icon.id, true).url),
+    ).toContain(icon.imageData);
+  }
 });
