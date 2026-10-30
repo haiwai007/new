@@ -524,3 +524,29 @@ test("batch image parameters accept uploaded candidates and export their chosen 
     [0, 255, 0, 255],
   ]);
 });
+
+test("multiple parameter regions align from the list and undo without moving the background", async ({ page }, info) => {
+  await source(page);
+  await region(page, { x: 40, y: 70, width: 120, height: 35 }, "文字");
+  await region(page, { x: 90, y: 170, width: 150, height: 45 }, "文字");
+  const manager = page.getByLabel("模板参数管理", { exact: true });
+  const checks = manager.getByRole("checkbox", { name: /^多选参数/ });
+  await expect(checks).toHaveCount(2);
+  await checks.nth(0).check();
+  await checks.nth(1).check();
+  const panel = manager.getByRole("region", { name: "参数框对齐", exact: true });
+  await expect(panel.getByText("参数框一键对齐 · 已选 2 个")).toBeVisible();
+  await expect(panel.getByRole("button", {name:"水平等间距",exact:true})).toBeDisabled();
+  const before = (await packaged(page, info, "align-before.json")).doc;
+  await panel.getByLabel("参数框对齐基准").selectOption(before.parameters[0].layerId);
+  await panel.getByRole("button", { name: "左对齐", exact: true }).click();
+  const aligned = (await packaged(page, info, "align-after.json")).doc;
+  const first = aligned.layers.find((l:any) => l.id === aligned.parameters[0].layerId);
+  const second = aligned.layers.find((l:any) => l.id === aligned.parameters[1].layerId);
+  expect(second.x).toBe(first.x);
+  expect(first).toEqual(before.layers.find((l:any) => l.id === first.id));
+  expect(aligned.canvas).toEqual(before.canvas);
+  await page.getByRole("button", {name:"撤销",exact:true}).click();
+  const undone = (await packaged(page, info, "align-undo.json")).doc;
+  expect(undone.layers).toEqual(before.layers);
+});

@@ -1,3 +1,4 @@
+import ParameterAlignPanel from "./_components/parameter-align-panel";
 import ParameterDrawOptions from "./_components/parameter-draw-options";
 import ParameterInspector from "./_components/parameter-inspector";
 import {parameterLayerIds} from "@/lib/parameters/document";
@@ -61,6 +62,7 @@ function RightPanel() {
   const setTab = useEditor((s) => s.setRightTab);
   const count = useEditor((s) => s.doc?.parameters.length ?? 0);
   const hasParameter = useEditor(s=>s.isTemplate&&!!s.doc?.parameters.some(p=>parameterLayerIds(p).some(id=>s.selectedIds.includes(id))));
+  const multiParameter = useEditor(s => s.isTemplate && (s.doc?.layers.filter(l => s.selectedIds.includes(l.id) && s.doc?.parameters.some(p => parameterLayerIds(p).includes(l.id))).length ?? 0) > 1);
   return (
     <Tabs
       value={tab}
@@ -77,7 +79,7 @@ function RightPanel() {
         </TabsTrigger>
       </TabsList>
       <TabsContent value="props" className="flex-1 overflow-y-auto">
-        {hasParameter ? <ParameterInspector/> : <PropertiesPanel />}
+        {multiParameter ? <ParameterAlignPanel /> : hasParameter ? <ParameterInspector/> : <PropertiesPanel />}
       </TabsContent>
       <TabsContent value="params" className="flex-1 overflow-y-auto">
         <ParamsPanel />

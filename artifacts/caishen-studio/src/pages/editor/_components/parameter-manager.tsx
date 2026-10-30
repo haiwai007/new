@@ -1,3 +1,4 @@
+import ParameterAlignPanel from "./parameter-align-panel";
 import {defaultCardRule,cardSummary} from "@/lib/parameters/card";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -54,6 +55,11 @@ export default function ParameterManager() {
       >
         新增参数 · 框选区域
       </Button>
+      <ParameterAlignPanel />
+      <div className="flex gap-2">
+        <Button size="sm" variant="outline" onClick={() => { useEditor.getState().setTool("select"); useEditor.getState().select(items.flatMap(p => parameterLayerIds(p)).filter(id => doc.layers.some(l => l.id === id && !l.locked && l.visible))); }}>全选当前列表</Button>
+        <Button size="sm" variant="ghost" onClick={() => useEditor.getState().select([])}>取消选择</Button>
+      </div>
       <Input
         aria-label="搜索模板参数"
         placeholder="搜索参数名称"
@@ -110,6 +116,13 @@ export default function ParameterManager() {
               }}
               className={`space-y-2 rounded-lg border p-2 ${on ? "border-primary bg-primary/5" : ""}`}
             >
+              <label className="flex items-center gap-2 text-xs">
+                <input type="checkbox" aria-label={`多选参数${p.name}`} checked={parameterLayerIds(p).every(id => selected.includes(id))} disabled={!layer?.visible || layer.locked} onChange={e => {
+                  const state = useEditor.getState(); const ids = parameterLayerIds(p);
+                  state.setTool("select");
+                  state.select(e.target.checked ? [...new Set([...selected, ...ids])] : selected.filter(id => !ids.includes(id)));
+                }} />加入对齐选择
+              </label>
               <button
                 className="w-full cursor-pointer text-left"
                 onClick={() => pick(p.id)}
